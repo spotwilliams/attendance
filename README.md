@@ -1,6 +1,13 @@
-# adminlte-generator (Coming Soon...)
-### Boilerplate of Laravel with InfyOm Laravel Generator for AdminLTE Templates
 
-This is a fresh new laravel package with all [InfyOm Laravel Generator](https://github.com/InfyOmLabs/laravel-generator) installed.
+### CAT  - Sistema de presentismo correspondiente a los agentes
 
-You can use this, if you want to get started with your fresh new laravel project and generate CRUD by skipping all installation steps.
+     "php": ">=5.5.9",
+	 "laravel/framework": "5.2.*",
+	 "yajra/laravel-datatables-oracle": "~6.0",
+	 "barryvdh/laravel-ide-helper": "^2.1",
+	 "infyomlabs/laravel-generator": "5.2.x-dev",
+	 "laravelcollective/html": "5.2.*",
+	 "infyomlabs/adminlte-templates": "5.2.x-dev",
+	 "infyomlabs/swagger-generator": "dev-master",
+	 "jlapp/swaggervel": "dev-master",
+	 "doctrine/dbal": "~2.3"
