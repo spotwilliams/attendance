@@ -1,0 +1,36 @@
+<?php
+
+use Illuminate\Database\Migrations\Migration;
+use Illuminate\Database\Schema\Blueprint;
+
+class CreateTiposPresentismoTable extends Migration {
+
+	/**
+	 * Run the migrations.
+	 *
+	 * @return void
+	 */
+	public function up()
+	{
+		Schema::create('tipos_presentismo', function(Blueprint $table)
+		{
+			$table->integer('id', true);
+			$table->string('tipo', 50)->index('tipo_index');
+			$table->integer('dias_permitidos');
+            $table->timestamps();
+            
+        });
+	}
+
+
+	/**
+	 * Reverse the migrations.
+	 *
+	 * @return void
+	 */
+	public function down()
+	{
+		Schema::drop('tipos_presentismo');
+	}
+
+}

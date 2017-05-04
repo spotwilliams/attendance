@@ -32,3 +32,17 @@ Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
+
+Route::resource('domicilioModels', 'DomicilioModelController');
+
+Route::resource('agenteModels', 'AgenteModelController');
+
+Route::resource('areasModels', 'AreasModelController');
+
+Route::resource('contratosModels', 'ContratosModelController');
+
+Route::resource('estudioModels', 'EstudioModelController');
+
+Route::resource('periodoModels', 'PeriodoModelController');
+
+Route::resource('presentismoModels', 'PresentismoModelController');
