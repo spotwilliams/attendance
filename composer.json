@@ -1,12 +1,12 @@
 {
-    "name": "laravel/laravel",
-    "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
-    "license": "MIT",
+    "name": "remain/cat",
+    "description": "Presentismo CAT.",
+    "keywords": ["remain", "laravel"],
+    "license": "Private",
     "type": "project",
     "require": {
         "php": ">=5.5.9",
-        "laravel/framework": "5.2.*",
+        "laravel/framework": "5.3.*",
         "yajra/laravel-datatables-oracle": "~6.0",
         "barryvdh/laravel-ide-helper": "^2.1",
         "infyomlabs/laravel-generator": "5.2.x-dev",
