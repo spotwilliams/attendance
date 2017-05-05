@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreateContratosModelRequest;
-use App\Http\Requests\UpdateContratosModelRequest;
-use App\Repositories\ContratosModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreateContratosModelRequest;
+use Cat\Http\Requests\UpdateContratosModelRequest;
+use Cat\Repositories\ContratosModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

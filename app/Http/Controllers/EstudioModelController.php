@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreateEstudioModelRequest;
-use App\Http\Requests\UpdateEstudioModelRequest;
-use App\Repositories\EstudioModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreateEstudioModelRequest;
+use Cat\Http\Requests\UpdateEstudioModelRequest;
+use Cat\Repositories\EstudioModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

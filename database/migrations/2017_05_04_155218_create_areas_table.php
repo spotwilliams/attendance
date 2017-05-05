@@ -19,6 +19,7 @@ class CreateAreasTable extends Migration {
 			$table->string('gerencia', 200);
 			$table->string('subgerencia', 200);
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}

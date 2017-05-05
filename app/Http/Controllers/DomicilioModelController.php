@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreateDomicilioModelRequest;
-use App\Http\Requests\UpdateDomicilioModelRequest;
-use App\Repositories\DomicilioModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreateDomicilioModelRequest;
+use Cat\Http\Requests\UpdateDomicilioModelRequest;
+use Cat\Repositories\DomicilioModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

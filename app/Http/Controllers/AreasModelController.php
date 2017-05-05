@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreateAreasModelRequest;
-use App\Http\Requests\UpdateAreasModelRequest;
-use App\Repositories\AreasModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreateAreasModelRequest;
+use Cat\Http\Requests\UpdateAreasModelRequest;
+use Cat\Repositories\AreasModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

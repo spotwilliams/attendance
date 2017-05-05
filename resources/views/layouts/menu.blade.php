@@ -26,3 +26,7 @@
     <a href="{!! route('presentismoModels.index') !!}"><i class="fa fa-edit"></i><span>PresentismoModels</span></a>
 </li>
 
+<li class="{{ Request::is('domicilioModels*') ? 'active' : '' }}">
+    <a href="{!! route('domicilioModels.index') !!}"><i class="fa fa-edit"></i><span>DomicilioModels</span></a>
+</li>
+

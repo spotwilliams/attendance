@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Cat\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -141,7 +141,7 @@ class AgenteModel extends Model
      **/
     public function area()
     {
-        return $this->belongsTo(\App\Models\Area::class);
+        return $this->belongsTo(\Cat\Models\Area::class);
     }
 
     /**
@@ -149,7 +149,7 @@ class AgenteModel extends Model
      **/
     public function basis()
     {
-        return $this->belongsTo(\App\Models\Basis::class);
+        return $this->belongsTo(\Cat\Models\Basis::class);
     }
 
     /**
@@ -157,7 +157,7 @@ class AgenteModel extends Model
      **/
     public function contrato()
     {
-        return $this->belongsTo(\App\Models\Contrato::class);
+        return $this->belongsTo(\Cat\Models\Contrato::class);
     }
 
     /**
@@ -165,7 +165,7 @@ class AgenteModel extends Model
      **/
     public function diasDisponible()
     {
-        return $this->belongsTo(\App\Models\DiasDisponible::class);
+        return $this->belongsTo(\Cat\Models\DiasDisponible::class);
     }
 
     /**
@@ -173,7 +173,7 @@ class AgenteModel extends Model
      **/
     public function domicilio()
     {
-        return $this->belongsTo(\App\Models\Domicilio::class);
+        return $this->belongsTo(\Cat\Models\Domicilio::class);
     }
 
     /**
@@ -181,7 +181,7 @@ class AgenteModel extends Model
      **/
     public function estudio()
     {
-        return $this->belongsTo(\App\Models\Estudio::class);
+        return $this->belongsTo(\Cat\Models\Estudio::class);
     }
 
     /**
@@ -189,6 +189,6 @@ class AgenteModel extends Model
      **/
     public function presentismos()
     {
-        return $this->hasMany(\App\Models\Presentismo::class);
+        return $this->hasMany(\Cat\Models\Presentismo::class);
     }
 }

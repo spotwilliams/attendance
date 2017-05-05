@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Cat\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -80,6 +80,6 @@ class PeriodoModel extends Model
      **/
     public function jornadasLaborables()
     {
-        return $this->hasMany(\App\Models\JornadasLaborable::class);
+        return $this->hasMany(\Cat\Models\JornadasLaborable::class);
     }
 }

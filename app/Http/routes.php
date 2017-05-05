@@ -46,3 +46,5 @@ Route::resource('estudioModels', 'EstudioModelController');
 Route::resource('periodoModels', 'PeriodoModelController');
 
 Route::resource('presentismoModels', 'PresentismoModelController');
+
+Route::resource('domicilioModels', 'DomicilioModelController');

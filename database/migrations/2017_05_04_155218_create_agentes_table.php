@@ -27,6 +27,7 @@ class CreateAgentesTable extends Migration {
 			$table->integer('id_dias_disponibles')->index('agente_tiene_dias_diasponibles_idx');
 			$table->integer('id_estudio')->nullable()->index('agente_tiene_estudio_idx');
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}

@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreateAgenteModelRequest;
-use App\Http\Requests\UpdateAgenteModelRequest;
-use App\Repositories\AgenteModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreateAgenteModelRequest;
+use Cat\Http\Requests\UpdateAgenteModelRequest;
+use Cat\Repositories\AgenteModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

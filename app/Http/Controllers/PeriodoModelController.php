@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreatePeriodoModelRequest;
-use App\Http\Requests\UpdatePeriodoModelRequest;
-use App\Repositories\PeriodoModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreatePeriodoModelRequest;
+use Cat\Http\Requests\UpdatePeriodoModelRequest;
+use Cat\Repositories\PeriodoModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

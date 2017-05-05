@@ -20,6 +20,7 @@ class CreateContratosTable extends Migration {
 			$table->date('fecha_comienzo');
 			$table->integer('id_estado_contrato')->index('contrato_esta_en_estado_idx');
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}

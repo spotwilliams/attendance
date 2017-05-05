@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\PeriodoModel;
+use Cat\Models\PeriodoModel;
 use InfyOm\Generator\Common\BaseRepository;
 
 class PeriodoModelRepository extends BaseRepository

@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\ContratosModel;
+use Cat\Models\ContratosModel;
 use InfyOm\Generator\Common\BaseRepository;
 
 class ContratosModelRepository extends BaseRepository

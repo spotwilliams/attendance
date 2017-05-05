@@ -17,6 +17,7 @@ class CreateTiposPresentismoTable extends Migration {
 			$table->integer('id', true);
 			$table->string('tipo', 50)->index('tipo_index');
 			$table->integer('dias_permitidos');
+            $table->integer('id_padre')->nullable()->index('tipo_es_hijo_idx');
             $table->timestamps();
             
         });

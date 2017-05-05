@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Cat\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -80,7 +80,7 @@ class PresentismoModel extends Model
      **/
     public function agente()
     {
-        return $this->belongsTo(\App\Models\Agente::class);
+        return $this->belongsTo(\Cat\Models\Agente::class);
     }
 
     /**
@@ -88,7 +88,7 @@ class PresentismoModel extends Model
      **/
     public function tiposPresentismo()
     {
-        return $this->belongsTo(\App\Models\TiposPresentismo::class);
+        return $this->belongsTo(\Cat\Models\TiposPresentismo::class);
     }
 
     /**
@@ -96,6 +96,6 @@ class PresentismoModel extends Model
      **/
     public function jornadasLaborable()
     {
-        return $this->belongsTo(\App\Models\JornadasLaborable::class);
+        return $this->belongsTo(\Cat\Models\JornadasLaborable::class);
     }
 }

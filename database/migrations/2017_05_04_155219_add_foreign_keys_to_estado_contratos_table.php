@@ -14,7 +14,7 @@ class AddForeignKeysToEstadoContratosTable extends Migration {
 	{
 		Schema::table('estado_contratos', function(Blueprint $table)
 		{
-			$table->foreign('id_estado_padre', 'estado_es_hijo')->references('id')->on('estado_contratos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_padre', 'estado_es_hijo')->references('id')->on('estado_contratos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 

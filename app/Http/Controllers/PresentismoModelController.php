@@ -1,11 +1,11 @@
 <?php
 
-namespace App\Http\Controllers;
+namespace Cat\Http\Controllers;
 
-use App\Http\Requests\CreatePresentismoModelRequest;
-use App\Http\Requests\UpdatePresentismoModelRequest;
-use App\Repositories\PresentismoModelRepository;
-use App\Http\Controllers\AppBaseController;
+use Cat\Http\Requests\CreatePresentismoModelRequest;
+use Cat\Http\Requests\UpdatePresentismoModelRequest;
+use Cat\Repositories\PresentismoModelRepository;
+use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
 use Prettus\Repository\Criteria\RequestCriteria;

@@ -17,6 +17,7 @@ class CreateBasesTable extends Migration {
 			$table->integer('id', true);
 			$table->string('nombre', 200);
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}

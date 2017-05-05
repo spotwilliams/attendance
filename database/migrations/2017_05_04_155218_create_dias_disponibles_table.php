@@ -18,6 +18,7 @@ class CreateDiasDisponiblesTable extends Migration {
 			$table->integer('id_tipo_presentismo')->index('dias_es_de_tipo_idx');
 			$table->integer('cant_dias');
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}

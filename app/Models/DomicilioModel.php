@@ -1,9 +1,8 @@
 <?php
 
-namespace App\Models;
+namespace Cat\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
@@ -54,15 +53,12 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class DomicilioModel extends Model
 {
-    use SoftDeletes;
 
     public $table = 'domicilios';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [
@@ -105,6 +101,6 @@ class DomicilioModel extends Model
      **/
     public function agentes()
     {
-        return $this->hasMany(\App\Models\Agente::class);
+        return $this->hasMany(\Cat\Models\Agente::class);
     }
 }

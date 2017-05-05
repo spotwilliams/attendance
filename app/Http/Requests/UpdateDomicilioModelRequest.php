@@ -1,9 +1,9 @@
 <?php
 
-namespace App\Http\Requests;
+namespace Cat\Http\Requests;
 
-use App\Http\Requests\Request;
-use App\Models\DomicilioModel;
+use Cat\Http\Requests\Request;
+use Cat\Models\DomicilioModel;
 
 class UpdateDomicilioModelRequest extends Request
 {

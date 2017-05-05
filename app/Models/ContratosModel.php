@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Cat\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -87,7 +87,7 @@ class ContratosModel extends Model
      **/
     public function estadoContrato()
     {
-        return $this->belongsTo(\App\Models\EstadoContrato::class);
+        return $this->belongsTo(\Cat\Models\EstadoContrato::class);
     }
 
     /**
@@ -95,6 +95,6 @@ class ContratosModel extends Model
      **/
     public function agentes()
     {
-        return $this->hasMany(\App\Models\Agente::class);
+        return $this->hasMany(\Cat\Models\Agente::class);
     }
 }

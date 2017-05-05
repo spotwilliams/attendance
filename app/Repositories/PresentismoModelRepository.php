@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\PresentismoModel;
+use Cat\Models\PresentismoModel;
 use InfyOm\Generator\Common\BaseRepository;
 
 class PresentismoModelRepository extends BaseRepository

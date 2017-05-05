@@ -1,6 +1,6 @@
 <?php
 
-namespace App\Models;
+namespace Cat\Models;
 
 use Eloquent as Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -77,6 +77,6 @@ class AreasModel extends Model
      **/
     public function agentes()
     {
-        return $this->hasMany(\App\Models\Agente::class);
+        return $this->hasMany(\Cat\Models\Agente::class);
     }
 }

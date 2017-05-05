@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\EstudioModel;
+use Cat\Models\EstudioModel;
 use InfyOm\Generator\Common\BaseRepository;
 
 class EstudioModelRepository extends BaseRepository

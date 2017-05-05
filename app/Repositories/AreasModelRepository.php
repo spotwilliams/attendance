@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\AreasModel;
+use Cat\Models\AreasModel;
 use InfyOm\Generator\Common\BaseRepository;
 
 class AreasModelRepository extends BaseRepository

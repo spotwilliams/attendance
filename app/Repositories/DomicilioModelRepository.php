@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\DomicilioModel;
+use Cat\Models\DomicilioModel;
 use InfyOm\Generator\Common\BaseRepository;
 
 class DomicilioModelRepository extends BaseRepository
