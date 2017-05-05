@@ -21,6 +21,7 @@ class CreatePresentismosTable extends Migration {
             $table->integer('id_padre')->nullable()->index('tiene_tipo_padre_idx');
             
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}
