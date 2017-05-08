@@ -3,11 +3,10 @@
 namespace Cat\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="EstudioModel",
+ *      definition="Areas",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -16,45 +15,36 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="institucion",
- *          description="institucion",
+ *          property="direccion",
+ *          description="direccion",
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="carrera",
- *          description="carrera",
+ *          property="gerencia",
+ *          description="gerencia",
  *          type="string"
  *      ),
  *      @SWG\Property(
- *          property="estado",
- *          description="estado",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="comentario",
- *          description="comentario",
+ *          property="subgerencia",
+ *          description="subgerencia",
  *          type="string"
  *      )
  * )
  */
-class EstudioModel extends Model
+class Areas extends Model
 {
-    use SoftDeletes;
 
-    public $table = 'estudios';
+    public $table = 'areas';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
 
-    protected $dates = ['deleted_at'];
-
 
     public $fillable = [
-        'institucion',
-        'carrera',
-        'estado',
-        'comentario'
+        'direccion',
+        'gerencia',
+        'subgerencia'
     ];
 
     /**
@@ -64,10 +54,9 @@ class EstudioModel extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'institucion' => 'string',
-        'carrera' => 'string',
-        'estado' => 'string',
-        'comentario' => 'string'
+        'direccion' => 'string',
+        'gerencia' => 'string',
+        'subgerencia' => 'string'
     ];
 
     /**

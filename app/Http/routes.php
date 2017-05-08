@@ -48,3 +48,21 @@ Route::resource('periodoModels', 'PeriodoModelController');
 Route::resource('presentismoModels', 'PresentismoModelController');
 
 Route::resource('domicilioModels', 'DomicilioModelController');
+
+Route::resource('jornadaLaborables', 'JornadaLaborableController');
+
+Route::resource('agentes', 'AgenteController');
+
+Route::resource('areas', 'AreasController');
+
+Route::resource('contratos', 'ContratosController');
+
+Route::resource('domicilios', 'DomicilioController');
+
+Route::resource('presentismos', 'PresentismoController');
+
+Route::resource('diaDisponibles', 'DiaDisponibleController');
+
+Route::resource('periodos', 'PeriodoController');
+
+Route::resource('presentismos', 'PresentismoController');

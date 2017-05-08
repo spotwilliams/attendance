@@ -166,6 +166,7 @@ return [
         Cat\Providers\RouteServiceProvider::class,
         Way\Generators\GeneratorsServiceProvider::class,
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
+        Cat\Modules\ModuleServiceProvider::class,
 
     ],
 

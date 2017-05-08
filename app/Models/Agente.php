@@ -2,12 +2,12 @@
 
 namespace Cat\Models;
 
-use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
+
 
 /**
  * @SWG\Definition(
- *      definition="AgenteModel",
+ *      definition="Agente",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -80,62 +80,61 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class AgenteModel extends Model
+class Agente extends Model
 {
-    use SoftDeletes;
-
+    
     public $table = 'agentes';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'nombre',
-        'apellido',
-        'dni',
-        'fecha_nacimiento',
-        'cuit',
-        'id_base',
-        'id_area',
-        'id_domicilio',
-        'id_contrato',
-        'id_dias_disponibles',
-        'id_estudio'
-    ];
-
+    
+    
+    public $fillable
+        = [
+            'nombre',
+            'apellido',
+            'dni',
+            'fecha_nacimiento',
+            'cuit',
+            'id_base',
+            'id_area',
+            'id_domicilio',
+            'id_contrato',
+            'id_dias_disponibles',
+            'id_estudio',
+        ];
+    
     /**
      * The attributes that should be casted to native types.
      *
      * @var array
      */
-    protected $casts = [
-        'id' => 'integer',
-        'nombre' => 'string',
-        'apellido' => 'string',
-        'dni' => 'integer',
-        'fecha_nacimiento' => 'date',
-        'cuit' => 'string',
-        'id_base' => 'integer',
-        'id_area' => 'integer',
-        'id_domicilio' => 'integer',
-        'id_contrato' => 'integer',
-        'id_dias_disponibles' => 'integer',
-        'id_estudio' => 'integer'
-    ];
-
+    protected $casts
+        = [
+            'id'                  => 'integer',
+            'nombre'              => 'string',
+            'apellido'            => 'string',
+            'dni'                 => 'integer',
+            'fecha_nacimiento'    => 'date',
+            'cuit'                => 'string',
+            'id_base'             => 'integer',
+            'id_area'             => 'integer',
+            'id_domicilio'        => 'integer',
+            'id_contrato'         => 'integer',
+            'id_dias_disponibles' => 'integer',
+            'id_estudio'          => 'integer',
+        ];
+    
     /**
      * Validation rules
      *
      * @var array
      */
-    public static $rules = [
+    public static $rules
+        = [
         
-    ];
-
+        ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -143,7 +142,7 @@ class AgenteModel extends Model
     {
         return $this->belongsTo(\Cat\Models\Area::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -151,15 +150,15 @@ class AgenteModel extends Model
     {
         return $this->belongsTo(\Cat\Models\Basis::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function contrato()
     {
-        return $this->belongsTo(\Cat\Models\Contrato::class);
+        return $this->belongsTo(Contrato::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -167,7 +166,7 @@ class AgenteModel extends Model
     {
         return $this->belongsTo(\Cat\Models\DiasDisponible::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -175,7 +174,7 @@ class AgenteModel extends Model
     {
         return $this->belongsTo(\Cat\Models\Domicilio::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -183,12 +182,24 @@ class AgenteModel extends Model
     {
         return $this->belongsTo(\Cat\Models\Estudio::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function presentismos()
     {
         return $this->hasMany(\Cat\Models\Presentismo::class);
+    }
+    
+    /**
+     * @param TipoPresentismo $ausencia
+     * @return integer
+     */
+    public function getCantDiasDisponibles(TipoPresentismo $ausencia)
+    {
+        $diasDisponibles = $this->diasDisponible()
+            ->where('id_tipo_presentismo', '=', $ausencia->id)->get('cant_dias');
+        
+        return $diasDisponibles;
     }
 }

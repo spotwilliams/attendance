@@ -3,11 +3,10 @@
 namespace Cat\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="PeriodoModel",
+ *      definition="Periodo",
  *      required={""},
  *      @SWG\Property(
  *          property="id_periodo",
@@ -35,17 +34,14 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class PeriodoModel extends Model
+class Periodo extends Model
 {
-    use SoftDeletes;
 
     public $table = 'periodos';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
-    protected $dates = ['deleted_at'];
 
 
     public $fillable = [

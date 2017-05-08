@@ -3,11 +3,10 @@
 namespace Cat\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="PresentismoModel",
+ *      definition="Presentismo",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -32,12 +31,17 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          description="id_tipo_presentismo",
  *          type="integer",
  *          format="int32"
+ *      ),
+ *      @SWG\Property(
+ *          property="id_padre",
+ *          description="id_padre",
+ *          type="integer",
+ *          format="int32"
  *      )
  * )
  */
-class PresentismoModel extends Model
+class Presentismo extends Model
 {
-    use SoftDeletes;
 
     public $table = 'presentismos';
     
@@ -45,13 +49,12 @@ class PresentismoModel extends Model
     const UPDATED_AT = 'updated_at';
 
 
-    protected $dates = ['deleted_at'];
-
 
     public $fillable = [
         'id_agente',
         'id_jornada',
-        'id_tipo_presentismo'
+        'id_tipo_presentismo',
+        'id_padre'
     ];
 
     /**
@@ -63,7 +66,8 @@ class PresentismoModel extends Model
         'id' => 'integer',
         'id_agente' => 'integer',
         'id_jornada' => 'integer',
-        'id_tipo_presentismo' => 'integer'
+        'id_tipo_presentismo' => 'integer',
+        'id_padre' => 'integer'
     ];
 
     /**
