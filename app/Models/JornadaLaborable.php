@@ -3,11 +3,10 @@
 namespace Cat\Models;
 
 use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 /**
  * @SWG\Definition(
- *      definition="AreasModel",
+ *      definition="JornadaLaborable",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -16,39 +15,32 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *          format="int32"
  *      ),
  *      @SWG\Property(
- *          property="direccion",
- *          description="direccion",
- *          type="string"
+ *          property="fecha",
+ *          description="fecha",
+ *          type="string",
+ *          format="date"
  *      ),
  *      @SWG\Property(
- *          property="gerencia",
- *          description="gerencia",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="subgerencia",
- *          description="subgerencia",
- *          type="string"
+ *          property="id_periodo",
+ *          description="id_periodo",
+ *          type="integer",
+ *          format="int32"
  *      )
  * )
  */
-class AreasModel extends Model
+class JornadaLaborable extends Model
 {
-    use SoftDeletes;
 
-    public $table = 'areas';
+    public $table = 'jornadas_laborables';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
 
-    protected $dates = ['deleted_at'];
-
 
     public $fillable = [
-        'direccion',
-        'gerencia',
-        'subgerencia'
+        'fecha',
+        'id_periodo'
     ];
 
     /**
@@ -58,9 +50,8 @@ class AreasModel extends Model
      */
     protected $casts = [
         'id' => 'integer',
-        'direccion' => 'string',
-        'gerencia' => 'string',
-        'subgerencia' => 'string'
+        'fecha' => 'date',
+        'id_periodo' => 'integer'
     ];
 
     /**
@@ -73,10 +64,18 @@ class AreasModel extends Model
     ];
 
     /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function periodo()
+    {
+        return $this->belongsTo(\Cat\Models\Periodo::class);
+    }
+
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
-    public function agentes()
+    public function presentismos()
     {
-        return $this->hasMany(\Cat\Models\Agente::class);
+        return $this->hasMany(\Cat\Models\Presentismo::class);
     }
 }

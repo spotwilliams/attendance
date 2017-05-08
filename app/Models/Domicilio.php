@@ -6,7 +6,7 @@ use Eloquent as Model;
 
 /**
  * @SWG\Definition(
- *      definition="DomicilioModel",
+ *      definition="Domicilio",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -51,7 +51,7 @@ use Eloquent as Model;
  *      )
  * )
  */
-class DomicilioModel extends Model
+class Domicilio extends Model
 {
 
     public $table = 'domicilios';

@@ -12,10 +12,11 @@ class CreateTiposPresentismoTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('tipos_presentismo', function(Blueprint $table)
+		Schema::create('tipos_presentismos', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('tipo', 50)->index('tipo_index');
+			$table->string('codigo', 50)->index('codigo_index');
+			$table->string('descripcion', 50);
 			$table->integer('dias_permitidos');
             $table->integer('id_padre')->nullable()->index('tipo_es_hijo_idx');
             $table->timestamps();
@@ -31,7 +32,7 @@ class CreateTiposPresentismoTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('tipos_presentismo');
+		Schema::drop('tipos_presentismos');
 	}
 
 }

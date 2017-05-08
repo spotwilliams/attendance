@@ -13,10 +13,10 @@ class AddForeignKeysToTiposPresentismoTable extends Migration
      */
     public function up()
     {
-        Schema::table('tipos_presentismo', function (Blueprint $table) {
+        Schema::table('tipos_presentismos', function (Blueprint $table) {
             $table->foreign('id_padre', 'tiene_tipo_padre')
                 ->references('id')
-                ->on('tipos_presentismo')
+                ->on('tipos_presentismos')
                 ->onUpdate('NO ACTION')
                 ->onDelete('NO ACTION');
         });
@@ -30,7 +30,7 @@ class AddForeignKeysToTiposPresentismoTable extends Migration
      */
     public function down()
     {
-        Schema::table('tipos_presentismo', function (Blueprint $table) {
+        Schema::table('tipos_presentismos', function (Blueprint $table) {
             $table->dropForeign('tiene_tipo_padre');
         });
     }

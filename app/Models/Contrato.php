@@ -2,12 +2,12 @@
 
 namespace Cat\Models;
 
-use Eloquent as Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Database\Eloquent\Model;
+
 
 /**
  * @SWG\Definition(
- *      definition="ContratosModel",
+ *      definition="Contrato",
  *      required={""},
  *      @SWG\Property(
  *          property="id",
@@ -40,61 +40,74 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  *      )
  * )
  */
-class ContratosModel extends Model
+class Contrato extends Model
 {
-    use SoftDeletes;
-
+    public const TIPO_LOCACION = 'LOCACION';
+    
     public $table = 'contratos';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
-
-    protected $dates = ['deleted_at'];
-
-
-    public $fillable = [
-        'tipo_contrato',
-        'fecha_firma',
-        'fecha_comienzo',
-        'id_estado_contrato'
-    ];
-
+    
+    public $fillable
+        = [
+            'tipo_contrato',
+            'fecha_firma',
+            'fecha_comienzo',
+            'id_estado_contrato',
+        ];
+    
     /**
      * The attributes that should be casted to native types.
      *
      * @var array
      */
-    protected $casts = [
-        'id' => 'integer',
-        'tipo_contrato' => 'string',
-        'fecha_firma' => 'date',
-        'fecha_comienzo' => 'date',
-        'id_estado_contrato' => 'integer'
-    ];
-
+    protected $casts
+        = [
+            'id'                 => 'integer',
+            'tipo_contrato'      => 'string',
+            'fecha_firma'        => 'date',
+            'fecha_comienzo'     => 'date',
+            'id_estado_contrato' => 'integer',
+        ];
+    
     /**
      * Validation rules
      *
      * @var array
      */
-    public static $rules = [
+    public static $rules
+        = [
         
-    ];
-
+        ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function estadoContrato()
     {
-        return $this->belongsTo(\Cat\Models\EstadoContrato::class);
+        return $this->belongsTo(EstadoContrato::class);
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function agentes()
     {
         return $this->hasMany(\Cat\Models\Agente::class);
+    }
+    
+    
+    /**
+     * True si es del tipo Locacion de servicios
+     * @return bool
+     */
+    public function esLocacion()
+    {
+        if (strtolower($this->tipo_contrato) === strtolower(Contrato::TIPO_LOCACION)) {
+            return true;
+        } else {
+            return false;
+        }
     }
 }

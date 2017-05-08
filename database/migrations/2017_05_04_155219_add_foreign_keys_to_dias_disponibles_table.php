@@ -14,7 +14,7 @@ class AddForeignKeysToDiasDisponiblesTable extends Migration {
 	{
 		Schema::table('dias_disponibles', function(Blueprint $table)
 		{
-			$table->foreign('id_tipo_presentismo', 'dias_es_de_tipo')->references('id')->on('tipos_presentismo')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_tipo_presentismo', 'dias_es_de_tipo')->references('id')->on('tipos_presentismos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 
