@@ -13,11 +13,13 @@ class PeriodosSeeder extends Seeder
     {
         
         $cantDías     = 15;
-        $cantPeriodos = date('z') / $cantDías;
+        $cantPeriodos = round (date('z') / $cantDías);
         
         $date  = new DateTime('2017-01-01');
-        $date2 = $date->modify("+$cantDías day");
-        for ($i = 1; $i <= $cantPeriodos; $i++) {
+        $date2 = new DateTime('2017-01-15');
+        echo $cantPeriodos . PHP_EOL;
+        for ($i = 1; $i <= $cantPeriodos ; $i++) {
+            echo $i . PHP_EOL;
             //
             //
             // creacion periodo
@@ -30,8 +32,8 @@ class PeriodosSeeder extends Seeder
                 'fecha_fin'      => $date2->format('Y-m-d'),
                 'cant_dias'      => $cantDías,
             ];
-            $date    = $date->modify("+$cantDías day");
-            $date2   = $date->modify("+$cantDías day");
+            $date->modify("+$cantDías day");
+            $date2->modify("+$cantDías day");
             
             \Cat\Models\Periodo::create($periodo);
             
