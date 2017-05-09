@@ -23,7 +23,7 @@ class TiposContratoSeeder extends Seeder
         
         
         foreach ( $tipos as $nuevo) {
-            TipoContrato::create($nuevo);
+            \Cat\Models\TipoContrato::create($nuevo);
         }
     }
 }

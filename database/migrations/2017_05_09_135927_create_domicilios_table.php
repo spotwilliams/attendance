@@ -18,12 +18,14 @@ class CreateDomiciliosTable extends Migration {
 			$table->integer('id_agente')->index('domicilio_es_de_agente_idx');
 			$table->string('calle', 100)->nullable();
 			$table->string('numero', 10)->nullable();
-			$table->string('deptartamento', 100)->nullable();
+			$table->string('departamento', 100)->nullable();
 			$table->string('piso', 100)->nullable();
 			$table->string('barrio', 100)->nullable();
 			$table->string('provincia', 100)->nullable();
 			$table->string('libre', 500)->nullable();
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

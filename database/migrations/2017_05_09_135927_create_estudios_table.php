@@ -20,7 +20,9 @@ class CreateEstudiosTable extends Migration {
 			$table->string('carrera', 45);
 			$table->enum('estado', array('En carrera','Abandonado','Recibido','Falta tesis'));
 			$table->string('comentario', 200)->nullable();
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

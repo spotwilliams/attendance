@@ -13,14 +13,14 @@ class DatabaseSeeder extends Seeder
     {
         
         $this->call(UsersTableSeeder::class);
-    
+
         $this->call(AreasSeeder::class);
         $this->call(BasesSeeder::class);
         $this->call(EstadosContratoSeeder::class);
         $this->call(TiposPresentismoSeeder::class);
         $this->call(TiposContratoSeeder::class);
-    
-    
+
+
         $this->call(AgentesSeeder::class);
         $this->call(DomicilioSeeder::class);
         $this->call(ContratosSeeder::class);

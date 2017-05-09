@@ -17,7 +17,9 @@ class CreateTipoContratosTable extends Migration {
 			$table->integer('id', true);
 			$table->string('codigo', 45)->index('codigo_idx');
 			$table->string('descripcion', 45);
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

@@ -18,7 +18,8 @@ class CreateEstadoContratosTable extends Migration {
 			$table->string('estado', 45);
 			$table->string('descripcion', 100)->nullable();
 			$table->integer('id_padre')->nullable()->index('estado_es_hijo_idx');
-		});
+            $table->timestamps();
+        });
 	}
 
 

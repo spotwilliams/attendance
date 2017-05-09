@@ -18,7 +18,9 @@ class CreatePresentismosTable extends Migration {
 			$table->integer('id_agente')->index('jornada_es_de_agente_idx');
 			$table->integer('id_jornada')->index('presente_es_en_jornada_idx');
 			$table->integer('id_tipo_presentismo')->index('presente_es_de_tipo_idx');
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

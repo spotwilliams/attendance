@@ -14,7 +14,7 @@ class AddForeignKeysToJornadasLaborablesTable extends Migration {
 	{
 		Schema::table('jornadas_laborables', function(Blueprint $table)
 		{
-			$table->foreign('id_periodo', 'jornada_pertenece_a_periodo')->references('id_periodo')->on('periodos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_periodo', 'jornada_pertenece_a_periodo')->references('id')->on('periodos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 

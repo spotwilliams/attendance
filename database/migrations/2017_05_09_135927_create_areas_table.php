@@ -18,6 +18,7 @@ class CreateAreasTable extends Migration {
 			$table->string('direccion', 200);
 			$table->string('gerencia', 200);
 			$table->string('subgerencia', 200);
+            $table->timestamps();
 		});
 	}
 

@@ -20,7 +20,9 @@ class CreateContratosTable extends Migration {
 			$table->integer('id_agente')->index('contrato_es_de_agente_idx');
 			$table->date('fecha_firma');
 			$table->date('fecha_comienzo');
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

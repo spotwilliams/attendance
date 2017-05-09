@@ -17,7 +17,9 @@ class CreateJornadasLaborablesTable extends Migration {
 			$table->integer('id', true);
 			$table->date('fecha')->index('fecha_index');
 			$table->integer('id_periodo')->index('jornada_pertenece_a_periodo_idx');
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

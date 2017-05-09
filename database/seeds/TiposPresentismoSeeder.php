@@ -41,7 +41,7 @@ class TiposPresentismoSeeder extends Seeder
                 'dias_permitidos' => rand(1, 10),
             ],
             [
-                'id'              => 1,
+                'id'              => 5,
                 'id_padre'        => 2,
                 'codigo'          => 'JUDIO',
                 'descripcion'     => 'Festividad judia',

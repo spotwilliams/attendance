@@ -22,6 +22,7 @@ class CreateAgentesTable extends Migration {
 			$table->string('cuit', 45)->index('cuit_index');
 			$table->integer('id_base')->index('agente_pertenece_base_idx');
 			$table->integer('id_area')->index('agente_es_de_area_idx');
+            $table->timestamps();
 		});
 	}
 

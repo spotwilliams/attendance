@@ -14,7 +14,7 @@ class AddForeignKeysToEstadoPeriodoTable extends Migration {
 	{
 		Schema::table('estado_periodos', function(Blueprint $table)
 		{
-			$table->foreign('id_periodo', 'estado_es_de_periodo')->references('id_periodo')->on('periodos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_periodo', 'estado_es_de_periodo')->references('id')->on('periodos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_base', 'estado_periodo_es_de_base')->references('id')->on('bases')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}

@@ -14,11 +14,13 @@ class CreatePeriodosTable extends Migration {
 	{
 		Schema::create('periodos', function(Blueprint $table)
 		{
-			$table->integer('id_periodo', true);
+			$table->integer('id', true);
 			$table->date('fecha_comienzo')->index('comienzo_index');
 			$table->date('fecha_fin')->index('fin_index');
 			$table->integer('cant_dias');
-		});
+            $table->timestamps();
+            
+        });
 	}
 
 

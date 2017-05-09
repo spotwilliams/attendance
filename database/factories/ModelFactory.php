@@ -25,8 +25,8 @@ $factory->define(\Cat\Models\Agente::class, function (Faker\Generator $faker) {
     return [
         'nombre'           => $faker->name,
         'apellido'         => $faker->lastName,
-        'dni'              => rand(30000000, 50000000),
-        'fecha_nacimiento' => $faker->date('d-m-Y'),
+        'dni'              => rand(3000000, 50000000),
+        'fecha_nacimiento' => $faker->date('Y-m-d'),
         'cuit'             => $faker->word,
         'id_base'          => rand(1, 20),
         'id_area'          => rand(1, 20),
@@ -67,9 +67,9 @@ $factory->define(\Cat\Models\Contrato::class, function (Faker\Generator $faker) 
     return [
         'id_tipo_contrato'   => rand(1, 7),
         'id_estado_contrato' => rand(1, 7),
-        'id_agente'    => rand(1, 20),
-        'fecha_firma'        => $faker->date(),
-        'fecha_comienzo'     => $faker->date(),
+        'id_agente'          => rand(1, 20),
+        'fecha_firma'        => $faker->date('Y-m-d'),
+        'fecha_comienzo'     => $faker->date('Y-m-d'),
     ];
 });
 
@@ -77,8 +77,8 @@ $factory->define(\Cat\Models\Contrato::class, function (Faker\Generator $faker) 
 // Dias disponibles
 $factory->define(\Cat\Models\DiaDisponible::class, function (Faker\Generator $faker) {
     return [
-        'id_agente'   => rand(1, 20),
+        'id_agente'           => rand(1, 20),
         'id_tipo_presentismo' => rand(1, 5),
-        'cant_dias'    => rand(1, 10),
+        'cant_dias'           => rand(1, 10),
     ];
 });

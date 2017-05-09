@@ -12,6 +12,5 @@ class DomicilioSeeder extends Seeder
     public function run()
     {
         factory(\Cat\Models\Domicilio::class, 20)->create();
-    
     }
 }
