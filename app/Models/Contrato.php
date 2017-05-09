@@ -86,7 +86,15 @@ class Contrato extends Model
      **/
     public function estadoContrato()
     {
-        return $this->belongsTo(EstadoContrato::class);
+        return $this->belongsTo(EstadoContrato::class, 'id_estado_contrato');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function tipoContrato()
+    {
+        return $this->belongsTo(TipoContrato::class, 'id_tipo_contrato');
     }
     
     /**
@@ -94,7 +102,7 @@ class Contrato extends Model
      **/
     public function agentes()
     {
-        return $this->hasMany(\Cat\Models\Agente::class);
+        return $this->belongsTo(Agente::class, 'id_agente');
     }
     
     

@@ -53,19 +53,19 @@ return [
 
     'namespace' => [
 
-        'model'             => 'App\Models',
+        'model'             => 'Cat\Models',
 
-        'datatables'        => 'App\DataTables',
+        'datatables'        => 'Cat\DataTables',
 
-        'repository'        => 'App\Repositories',
+        'repository'        => 'Cat\Repositories',
 
-        'controller'        => 'App\Http\Controllers',
+        'controller'        => 'Cat\Http\Controllers',
 
-        'api_controller'    => 'App\Http\Controllers\API',
+        'api_controller'    => 'Cat\Http\Controllers\API',
 
-        'request'           => 'App\Http\Requests',
+        'request'           => 'Cat\Http\Requests',
 
-        'api_request'       => 'App\Http\Requests\API',
+        'api_request'       => 'Cat\Http\Requests\API',
     ],
 
     /*

@@ -2,36 +2,9 @@
 
 namespace Cat\Models;
 
-use Eloquent as Model;
+use Illuminate\Database\Eloquent\Model;
 
-/**
- * @SWG\Definition(
- *      definition="Areas",
- *      required={""},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="direccion",
- *          description="direccion",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="gerencia",
- *          description="gerencia",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="subgerencia",
- *          description="subgerencia",
- *          type="string"
- *      )
- * )
- */
-class Areas extends Model
+class Area extends Model
 {
 
     public $table = 'areas';
@@ -73,6 +46,6 @@ class Areas extends Model
      **/
     public function agentes()
     {
-        return $this->hasMany(\Cat\Models\Agente::class);
+        return $this->hasMany(Agente::class, 'id_area');
     }
 }

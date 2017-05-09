@@ -5,34 +5,7 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-/**
- * @SWG\Definition(
- *      definition="EstadoContrato",
- *      required={""},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="estado",
- *          description="estado",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="descripcion",
- *          description="descripcion",
- *          type="string",
- *      ),
- *      @SWG\Property(
- *          property="id_padre",
- *          description="id_padre",
- *          type="integer",
- *          format="int32"
- *      )
- * )
- */
+
 class EstadoContrato extends Model
 {
     
@@ -42,22 +15,6 @@ class EstadoContrato extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
-    
-    public $fillable
-        = [
-            'estado',
-            'descripcion',
-        ];
-    
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
-        = [
-            'id_padre' => 'integer',
-        ];
     
     /**
      * Validation rules
@@ -75,7 +32,7 @@ class EstadoContrato extends Model
      **/
     public function contratos()
     {
-        return $this->hasMany(Contrato::class);
+        return $this->hasMany(Contrato::class, 'id_estado_contrato');
     }
     
     public function estadoPadreActivo()
@@ -88,7 +45,7 @@ class EstadoContrato extends Model
      **/
     public function padre()
     {
-        return $this->belongsTo(EstadoContrato::class, 'id_padre');
+        return $this->belongsTo(EstadoContrato::class, 'id_padre', 'id');
     }
     
     
@@ -97,7 +54,7 @@ class EstadoContrato extends Model
      **/
     public function hijos()
     {
-        return $this->hasMany(EstadoContrato::class, 'id_padre');
+        return $this->hasMany(EstadoContrato::class, 'id_padre', 'id');
     }
     
     public function esActivo()

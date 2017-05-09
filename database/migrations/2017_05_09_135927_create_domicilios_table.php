@@ -15,6 +15,7 @@ class CreateDomiciliosTable extends Migration {
 		Schema::create('domicilios', function(Blueprint $table)
 		{
 			$table->integer('id', true);
+			$table->integer('id_agente')->index('domicilio_es_de_agente_idx');
 			$table->string('calle', 100)->nullable();
 			$table->string('numero', 10)->nullable();
 			$table->string('deptartamento', 100)->nullable();
@@ -22,9 +23,7 @@ class CreateDomiciliosTable extends Migration {
 			$table->string('barrio', 100)->nullable();
 			$table->string('provincia', 100)->nullable();
 			$table->string('libre', 500)->nullable();
-            $table->timestamps();
-            
-        });
+		});
 	}
 
 

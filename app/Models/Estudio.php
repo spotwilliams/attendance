@@ -5,36 +5,31 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class DiaDisponible extends Model
+class Estudio extends Model
 {
-
-    public $table = 'dias_disponibles';
+    
+    public $table = 'estudios';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
+    
+    
     /**
      * Validation rules
      *
      * @var array
      */
-    public static $rules = [
+    public static $rules
+        = [
         
-    ];
-
+        ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function tiposPresentismo()
-    {
-        return $this->belongsTo(TipoPresentismo::class,  'id_tipo_presentismo');
-    }
-
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function agentes()
+    public function agente()
     {
         return $this->belongsTo(Agente::class, 'id_agente');
     }
+    
 }

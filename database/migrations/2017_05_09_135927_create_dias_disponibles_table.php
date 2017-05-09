@@ -15,12 +15,10 @@ class CreateDiasDisponiblesTable extends Migration {
 		Schema::create('dias_disponibles', function(Blueprint $table)
 		{
 			$table->integer('id', true);
+			$table->integer('id_agente')->index('dias_es_de_agente_idx');
 			$table->integer('id_tipo_presentismo')->index('dias_es_de_tipo_idx');
 			$table->integer('cant_dias');
-            $table->timestamps();
-            $table->softDeletes();
-            
-        });
+		});
 	}
 
 

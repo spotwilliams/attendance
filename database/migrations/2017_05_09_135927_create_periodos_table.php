@@ -18,10 +18,7 @@ class CreatePeriodosTable extends Migration {
 			$table->date('fecha_comienzo')->index('comienzo_index');
 			$table->date('fecha_fin')->index('fin_index');
 			$table->integer('cant_dias');
-            $table->timestamps();
-            $table->softDeletes();
-            
-        });
+		});
 	}
 
 

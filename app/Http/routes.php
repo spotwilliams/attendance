@@ -66,3 +66,5 @@ Route::resource('diaDisponibles', 'DiaDisponibleController');
 Route::resource('periodos', 'PeriodoController');
 
 Route::resource('presentismos', 'PresentismoController');
+
+Route::resource('baseModels', 'BaseModelController');

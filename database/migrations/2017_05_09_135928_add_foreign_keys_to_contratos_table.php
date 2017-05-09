@@ -14,6 +14,8 @@ class AddForeignKeysToContratosTable extends Migration {
 	{
 		Schema::table('contratos', function(Blueprint $table)
 		{
+			$table->foreign('id_agente', 'contrato_es_de_agente')->references('id')->on('agentes')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_tipo_contrato', 'contrato_es_de_tipo')->references('id')->on('tipo_contratos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_estado_contrato', 'contrato_esta_en_estado')->references('id')->on('estado_contratos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
@@ -28,6 +30,8 @@ class AddForeignKeysToContratosTable extends Migration {
 	{
 		Schema::table('contratos', function(Blueprint $table)
 		{
+			$table->dropForeign('contrato_es_de_agente');
+			$table->dropForeign('contrato_es_de_tipo');
 			$table->dropForeign('contrato_esta_en_estado');
 		});
 	}

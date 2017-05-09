@@ -62,4 +62,9 @@ class TipoPresentismo extends Model
         return $this->hasMany(TipoPresentismo::class, 'id_padre');
     }
     
+    
+    public function diasDisponibles()
+    {
+        return $this->hasMany(DiaDisponible::class, 'id_tipo_presentismo');
+    }
 }

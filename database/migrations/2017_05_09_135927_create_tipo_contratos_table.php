@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateBasesTable extends Migration {
+class CreateTipoContratosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,14 +12,12 @@ class CreateBasesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('bases', function(Blueprint $table)
+		Schema::create('tipo_contratos', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('nombre', 200);
-            $table->timestamps();
-            $table->softDeletes();
-            
-        });
+			$table->string('codigo', 45)->index('codigo_idx');
+			$table->string('descripcion', 45);
+		});
 	}
 
 
@@ -30,7 +28,7 @@ class CreateBasesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('bases');
+		Schema::drop('tipo_contratos');
 	}
 
 }

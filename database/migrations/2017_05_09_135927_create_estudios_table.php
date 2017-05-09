@@ -15,14 +15,12 @@ class CreateEstudiosTable extends Migration {
 		Schema::create('estudios', function(Blueprint $table)
 		{
 			$table->integer('id', true);
+			$table->integer('id_agente')->index('estudio_es_de_agente_idx');
 			$table->string('institucion', 150);
 			$table->string('carrera', 45);
 			$table->enum('estado', array('En carrera','Abandonado','Recibido','Falta tesis'));
 			$table->string('comentario', 200)->nullable();
-            $table->timestamps();
-            $table->softDeletes();
-            
-        });
+		});
 	}
 
 

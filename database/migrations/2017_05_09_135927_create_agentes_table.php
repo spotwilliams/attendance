@@ -22,14 +22,7 @@ class CreateAgentesTable extends Migration {
 			$table->string('cuit', 45)->index('cuit_index');
 			$table->integer('id_base')->index('agente_pertenece_base_idx');
 			$table->integer('id_area')->index('agente_es_de_area_idx');
-			$table->integer('id_domicilio')->index('agente_tiene_domicilio_idx');
-			$table->integer('id_contrato')->index('agente_tiene_contrato_idx');
-			$table->integer('id_dias_disponibles')->index('agente_tiene_dias_diasponibles_idx');
-			$table->integer('id_estudio')->nullable()->index('agente_tiene_estudio_idx');
-            $table->timestamps();
-            $table->softDeletes();
-            
-        });
+		});
 	}
 
 

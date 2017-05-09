@@ -5,13 +5,29 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class DiaDisponible extends Model
+class Base extends Model
 {
 
-    public $table = 'dias_disponibles';
+    public $table = 'bases';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+
+
+
+    public $fillable = [
+        'nombre'
+    ];
+
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @var array
+     */
+    protected $casts = [
+        'id' => 'integer',
+        'nombre' => 'string'
+    ];
 
     /**
      * Validation rules
@@ -23,18 +39,10 @@ class DiaDisponible extends Model
     ];
 
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function tiposPresentismo()
-    {
-        return $this->belongsTo(TipoPresentismo::class,  'id_tipo_presentismo');
-    }
-
-    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function agentes()
     {
-        return $this->belongsTo(Agente::class, 'id_agente');
+        return $this->hasMany(Agente::class, 'id_base');
     }
 }

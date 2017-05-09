@@ -5,81 +5,6 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-/**
- * @SWG\Definition(
- *      definition="Agente",
- *      required={""},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="nombre",
- *          description="nombre",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="apellido",
- *          description="apellido",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="dni",
- *          description="dni",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="fecha_nacimiento",
- *          description="fecha_nacimiento",
- *          type="string",
- *          format="date"
- *      ),
- *      @SWG\Property(
- *          property="cuit",
- *          description="cuit",
- *          type="string"
- *      ),
- *      @SWG\Property(
- *          property="id_base",
- *          description="id_base",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_area",
- *          description="id_area",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_domicilio",
- *          description="id_domicilio",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_contrato",
- *          description="id_contrato",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_dias_disponibles",
- *          description="id_dias_disponibles",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_estudio",
- *          description="id_estudio",
- *          type="integer",
- *          format="int32"
- *      )
- * )
- */
 class Agente extends Model
 {
     
@@ -146,17 +71,17 @@ class Agente extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function basis()
+    public function bases()
     {
-        return $this->belongsTo(\Cat\Models\Basis::class);
+        return $this->belongsTo(Base::class);
     }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function contrato()
+    public function contratos()
     {
-        return $this->belongsTo(Contrato::class);
+        return $this->hasMany(Contrato::class, 'id_agente');
     }
     
     /**
@@ -164,15 +89,15 @@ class Agente extends Model
      **/
     public function diasDisponible()
     {
-        return $this->belongsTo(\Cat\Models\DiasDisponible::class);
+        return $this->hasMany(DiaDisponible::class, 'id_agente');
     }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function domicilio()
+    public function domicilios()
     {
-        return $this->belongsTo(\Cat\Models\Domicilio::class);
+        return $this->hasMany(Domicilio::class, 'id_agente');
     }
     
     /**
@@ -180,7 +105,7 @@ class Agente extends Model
      **/
     public function estudio()
     {
-        return $this->belongsTo(\Cat\Models\Estudio::class);
+        return $this->hasMany(Estudio::class, 'id_agente');
     }
     
     /**
@@ -188,7 +113,7 @@ class Agente extends Model
      **/
     public function presentismos()
     {
-        return $this->hasMany(\Cat\Models\Presentismo::class);
+        return $this->hasMany(Presentismo::class, 'id_agente');
     }
     
     /**

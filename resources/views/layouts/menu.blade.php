@@ -66,3 +66,7 @@
     <a href="{!! route('presentismos.index') !!}"><i class="fa fa-edit"></i><span>Presentismos</span></a>
 </li>
 
+<li class="{{ Request::is('baseModels*') ? 'active' : '' }}">
+    <a href="{!! route('baseModels.index') !!}"><i class="fa fa-edit"></i><span>BaseModels</span></a>
+</li>
+
