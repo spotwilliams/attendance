@@ -2,7 +2,7 @@
 
 use Illuminate\Database\Seeder;
 
-class AgentesSeeder extends Seeder
+class DomicilioSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,6 +11,7 @@ class AgentesSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Cat\Models\Agente::class, 20)->create();
+        factory(\Cat\Models\Domicilio::class, 20)->create();
+    
     }
 }

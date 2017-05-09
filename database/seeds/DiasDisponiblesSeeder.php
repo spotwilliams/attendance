@@ -11,6 +11,6 @@ class DiasDisponiblesSeeder extends Seeder
      */
     public function run()
     {
-        //
+        factory(\Cat\Models\DiaDisponible::class, 20)->create();
     }
 }
