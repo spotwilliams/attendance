@@ -20,6 +20,7 @@ class Ausente extends Rule
         $esInjustificado = $this->tipoAusente->esInjustificado();
         
         if ($esInjustificado) {
+            return true;
             
         } else {
             // Verificar para la categoria de ausentes

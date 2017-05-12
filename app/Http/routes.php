@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
     return redirect('/home');
@@ -32,24 +33,6 @@ Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
 Route::auth();
 
 Route::get('/home', 'HomeController@index');
-
-Route::resource('domicilioModels', 'DomicilioModelController');
-
-Route::resource('agenteModels', 'AgenteModelController');
-
-Route::resource('areasModels', 'AreasModelController');
-
-Route::resource('contratosModels', 'ContratosModelController');
-
-Route::resource('estudioModels', 'EstudioModelController');
-
-Route::resource('periodoModels', 'PeriodoModelController');
-
-Route::resource('presentismoModels', 'PresentismoModelController');
-
-Route::resource('domicilioModels', 'DomicilioModelController');
-
-Route::resource('jornadaLaborables', 'JornadaLaborableController');
 
 Route::resource('agentes', 'AgenteController');
 

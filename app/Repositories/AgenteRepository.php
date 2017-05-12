@@ -1,8 +1,8 @@
 <?php
 
-namespace App\Repositories;
+namespace Cat\Repositories;
 
-use App\Models\Agente;
+use Cat\Models\Agente;
 use InfyOm\Generator\Common\BaseRepository;
 
 class AgenteRepository extends BaseRepository
