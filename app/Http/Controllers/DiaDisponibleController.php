@@ -18,6 +18,7 @@ class DiaDisponibleController extends AppBaseController
 
     public function __construct(DiaDisponibleRepository $diaDisponibleRepo)
     {
+        $this->middleware('auth');
         $this->diaDisponibleRepository = $diaDisponibleRepo;
     }
 

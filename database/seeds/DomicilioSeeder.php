@@ -11,6 +11,21 @@ class DomicilioSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Cat\Models\Domicilio::class, 20)->create();
+        $faker = new \Faker\Generator();
+        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
+        for ($i = 1; $i < DatabaseSeeder::SIZE_AGENTE; $i++) {
+            
+            // Domicilio
+            $domicilio = [
+                'calle'        => 'calle',
+                'numero'       => $faker->numberBetween(1, 100),
+                'departamento' => $faker->numberBetween(1, 15),
+                'piso'         => $faker->numberBetween(1, 4),
+                'barrio'       => 'city',
+                'provincia'    => 'state',
+                'id_agente'    => $i,
+            ];
+            \Cat\Models\Domicilio::create($domicilio);
+        }
     }
 }

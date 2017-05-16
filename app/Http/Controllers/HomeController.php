@@ -4,6 +4,7 @@ namespace Cat\Http\Controllers;
 
 use Cat\Http\Requests;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class HomeController extends Controller
 {

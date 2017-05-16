@@ -5,11 +5,11 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-
 class EstadoContrato extends Model
 {
     
     const ESTADO_ACTIVO = 'ACTIVO';
+    const ESTADO_BAJA   = 'BAJA';
     public $table = 'estado_contratos';
     
     const CREATED_AT = 'created_at';

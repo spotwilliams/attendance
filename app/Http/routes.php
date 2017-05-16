@@ -19,35 +19,37 @@ Route::get('/', function () {
 
 /*
 |--------------------------------------------------------------------------
-| API routes
+| Authentication  routes
 |--------------------------------------------------------------------------
 */
+Route::get('login', '\Cat\Http\Controllers\Auth\AuthController@showLoginForm');
+Route::post('login', '\Cat\Http\Controllers\Auth\AuthController@login');
+Route::get('logout', '\Cat\Http\Controllers\Auth\AuthController@logout');
 
-Route::group(['prefix' => 'api', 'namespace' => 'API'], function () {
-    Route::group(['prefix' => 'v1'], function () {
-        require config('infyom.laravel_generator.path.api_routes');
-    });
-});
+// Registration Routes...
+Route::get('register', '\Cat\Http\Controllers\Auth\AuthController@showRegistrationForm');
+Route::post('register', '\Cat\Http\Controllers\Auth\AuthController@register');
 
+// Password Reset Routes...
+Route::get('password/reset/{token?}', '\Cat\Http\Controllers\Auth\PasswordController@showResetForm');
+Route::post('password/email', '\Cat\Http\Controllers\Auth\PasswordController@sendResetLinkEmail');
+Route::post('password/reset', '\Cat\Http\Controllers\Auth\PasswordController@reset');
 
-Route::auth();
 
 Route::get('/home', 'HomeController@index');
 
 Route::resource('agentes', 'AgenteController');
-
-Route::resource('areas', 'AreasController');
-
-Route::resource('contratos', 'ContratosController');
-
-Route::resource('domicilios', 'DomicilioController');
-
-Route::resource('presentismos', 'PresentismoController');
-
-Route::resource('diaDisponibles', 'DiaDisponibleController');
-
-Route::resource('periodos', 'PeriodoController');
-
-Route::resource('presentismos', 'PresentismoController');
-
-Route::resource('baseModels', 'BaseModelController');
+//
+//Route::resource('areas', 'AreasController');
+//
+//Route::resource('contratos', 'ContratosController');
+//
+//Route::resource('domicilios', 'DomicilioController');
+//
+//
+//Route::resource('diaDisponibles', 'DiaDisponibleController');
+//
+//Route::resource('periodos', 'PeriodoController');
+//
+//
+//Route::resource('baseModels', 'BaseModelController');

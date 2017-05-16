@@ -17,9 +17,7 @@ class PeriodosSeeder extends Seeder
         
         $date  = new DateTime('2017-01-01');
         $date2 = new DateTime('2017-01-15');
-        echo $cantPeriodos . PHP_EOL;
         for ($i = 1; $i <= $cantPeriodos ; $i++) {
-            echo $i . PHP_EOL;
             //
             //
             // creacion periodo
@@ -47,7 +45,7 @@ class PeriodosSeeder extends Seeder
     
     private function crearEstados($idPeriodo, $abierto = false)
     {
-        for ($i = 1; $i <= 20; $i++) {
+        for ($i = 1; $i <= 5; $i++) {
             \Cat\EstadoPeriodo::create(
                 [
                     'id_base'    => $i,

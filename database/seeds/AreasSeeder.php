@@ -11,7 +11,7 @@ class AreasSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Cat\Models\Area::class, 20)->create();
+        factory(\Cat\Models\Area::class, DatabaseSeeder::SIZE_AREAS)->create();
     
     }
 }

@@ -18,6 +18,7 @@ class AreasController extends AppBaseController
 
     public function __construct(AreasRepository $areasRepo)
     {
+        $this->middleware('auth');
         $this->areasRepository = $areasRepo;
     }
 

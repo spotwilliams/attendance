@@ -18,6 +18,7 @@ class ContratosController extends AppBaseController
 
     public function __construct(ContratosRepository $contratosRepo)
     {
+        $this->middleware('auth');
         $this->contratosRepository = $contratosRepo;
     }
 

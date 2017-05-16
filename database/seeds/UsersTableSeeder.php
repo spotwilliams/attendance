@@ -14,6 +14,7 @@ class UsersTableSeeder extends Seeder
 		\Illuminate\Foundation\Auth\User::create([
 			'name'           => 'Admin',
 			'email'          => 'admin@admin.com',
+			'id_base'          => 2,
 			'password'       => bcrypt('123456'),
 			'remember_token' => str_random(10),
 		]);

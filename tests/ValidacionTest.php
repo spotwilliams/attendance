@@ -8,9 +8,7 @@ class ValidacionTest extends TestCase
 {
     public function testContratoInactivo()
     {
-        $estadoContrato = Estado
-        $contrato = new \Cat\Models\Contrato();
-        $contrato->
+
     }
     
     public function testNoEsContratoLocacion()

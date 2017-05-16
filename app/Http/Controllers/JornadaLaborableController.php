@@ -18,6 +18,7 @@ class JornadaLaborableController extends AppBaseController
 
     public function __construct(JornadaLaborableRepository $jornadaLaborableRepo)
     {
+        $this->middleware('auth');
         $this->jornadaLaborableRepository = $jornadaLaborableRepo;
     }
 

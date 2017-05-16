@@ -17,6 +17,7 @@ class AgenteController extends AppBaseController
     
     public function __construct(AgenteRepository $agenteRepo)
     {
+        $this->middleware('auth');
         $this->agenteRepository = $agenteRepo;
     }
     

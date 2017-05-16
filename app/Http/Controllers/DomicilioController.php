@@ -18,6 +18,7 @@ class DomicilioController extends AppBaseController
 
     public function __construct(DomicilioRepository $domicilioRepo)
     {
+        $this->middleware('auth');
         $this->domicilioRepository = $domicilioRepo;
     }
 
