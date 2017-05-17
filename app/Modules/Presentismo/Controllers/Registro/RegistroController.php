@@ -2,15 +2,13 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
-use App\Http\Requests\CreatePresentismoRequest;
-use App\Http\Requests\UpdatePresentismoRequest;
-use Cat\Modules\Validation\Rules\PresentismoRepository;
+use Cat\Models\Agente;
+use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
+use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\User;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Laracasts\Flash\Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Support\Facades\Response;
 
 class RegistroController extends AppBaseController
@@ -33,7 +31,6 @@ class RegistroController extends AppBaseController
      */
     public function index(Request $request, $base)
     {
-        $this->presentismoRepository->pushCriteria(new RequestCriteria($request));
         $presentismos = $this->presentismoRepository->all();
         
         return view('Presentismo::registro.index')
@@ -56,19 +53,21 @@ class RegistroController extends AppBaseController
     /**
      * Store a newly created Presentismo in storage.
      *
-     * @param CreatePresentismoRequest $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function store(CreatePresentismoRequest $request)
+    public function store(Request $request)
     {
-        $input = $request->all();
+        $input           = $request->all();
+        $agente          = Agente::find($input['agente']);
+        $tipoPresentismo = TipoPresentismo::find($input['presentismo']);
+        $fecha           = new \DateTime($input['fecha']);
         
-        $presentismo = $this->presentismoRepository->create($input);
-        
-        Flash::success('Presentismo saved successfully.');
-        
-        return redirect(route('Presentismo::registro.index'));
+            
+            Facilitador::validarDespuesGuardar($agente, $tipoPresentismo, $fecha);
+            return Response::json(session('message'), session('code'));
+            
     }
     
     /**

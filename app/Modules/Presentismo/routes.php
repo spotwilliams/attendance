@@ -14,7 +14,10 @@ use Cat\Modules\Presentismo\Controllers\Registro\RegistroController;
 Route::group(
     ['middleware' => ['web']],
     function () {
-        Route::get('presentismos/base/{base}', RegistroController::class . '@index')
-        ->name('presentismoIndex');
+        Route::get('presentismo/base/{base}', RegistroController::class . '@index')
+            ->name('presentismoIndex');
+        
+        Route::post('presentismo/store', RegistroController::class . '@store')
+            ->name('presentismoStore');
     }
 );

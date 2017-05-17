@@ -1,8 +1,8 @@
 <?php
 
-namespace Cat\Modules\Validation\Rules;
+namespace Cat\Modules\Validation\Repositories;
 
-use Cat\Models\Agente;
+
 use Cat\Models\Contrato;
 use Cat\Models\EstadoContrato;
 use Cat\Models\Presentismo;
@@ -57,10 +57,22 @@ class PresentismoRepository extends BaseRepository
             ->where('agentes.id_base', $idBase);
         
         try {
-//            echo $query->toSql();die;
-            return $query->get();
+            return $query->get(
+                [
+                    'agentes.id as id',
+                    'agentes.nombre as nombre',
+                    'agentes.apellido as apellido',
+                    'agentes.cuit as cuit',
+                ]
+            );
         } catch (\Exception $sqlError) {
             dd($sqlError);
         }
+    }
+    
+    
+    public function create(array $attributes)
+    {
+        return true;
     }
 }

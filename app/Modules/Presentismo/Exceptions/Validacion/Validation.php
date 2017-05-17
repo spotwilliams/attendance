@@ -4,7 +4,7 @@ namespace Cat\Modules\Presentismo\Exceptions\Validacion;
 
 
 use Cat\Models\Agente;
-use Cat\Modules\Validation\Rules\Ausente;
+use Cat\Models\TipoPresentismo;
 
 class Validation extends \Exception
 {
@@ -13,7 +13,7 @@ class Validation extends \Exception
     protected $agente;
     protected $tipoAusencia;
     
-    public function __construct(Agente $agente, Descriptor $errorDescriptor, Ausente $tipoAusencia = null)
+    public function __construct(Agente $agente, Descriptor $errorDescriptor, TipoPresentismo $tipoAusencia = null)
     {
         $this->agente       = $agente;
         $this->tipoAusencia = $tipoAusencia;

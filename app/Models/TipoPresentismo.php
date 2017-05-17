@@ -67,4 +67,13 @@ class TipoPresentismo extends Model
     {
         return $this->hasMany(DiaDisponible::class, 'id_tipo_presentismo');
     }
+    
+    /**
+     * Devuelve el model para el caso Injustificado
+     * @return TipoPresentismo
+     */
+    public static function injusticado()
+    {
+        return TipoPresentismo::where('codigo', '=', TipoPresentismo::INJUSTIFICADO)->first();
+    }
 }

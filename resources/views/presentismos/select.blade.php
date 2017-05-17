@@ -10,19 +10,21 @@ $tiposPresentismo = \Cat\Models\TipoPresentismo::all();
         <label class="col-sm-2 control-label">{{$label}}</label>
     @endif
     <div class="input-group margin">
-        <select class="form-control selectpicker" id="base-select-with-button">
-            <option>Seleccione</option>
+        <select class="{{$classSelector}}"
+                data-width="100px"
+        >
+            <option value="-1">Seleccione</option>
             @foreach ($tiposPresentismo as $tipo)
                 <option
                         value="{{ $tipo->id }}"
-                        data-content="<span class='label' style='background-color: {{$tipo->color}};'>{{$tipo->descripcion}}</span>">
-                    >{!! $tipo->descripcion !!}</option>
+                        data-content="<span class='label' style='background-color: {{$tipo->color}};'>{{$tipo->descripcion}}</span>"
+                >{!! $tipo->descripcion !!}</option>
             @endforeach
         </select>
         <div class="input-group-btn">
-                <button type="button" class="btn btn-success">
-                    <i class="fa fa-commenting"></i>
-                </button>
+            <button type="button" class="btn btn-success">
+                <i class="fa fa-commenting"></i>
+            </button>
             @if(isset($buttons))
                 <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
                         aria-expanded="false">
@@ -44,9 +46,3 @@ $tiposPresentismo = \Cat\Models\TipoPresentismo::all();
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        $('.selectpicker').selectpicker({});
-
-    });
-</script>

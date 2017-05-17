@@ -15,7 +15,7 @@
     {{--<a href="{!! route('domicilios.index') !!}"><i class="fa fa-edit"></i><span>Domicilios</span></a>--}}
 {{--</li>--}}
 
-<li class="{{ Request::is('presentismos*') ? 'active' : '' }}">
+<li class="{{ Request::is('presentismo*') ? 'active' : '' }}">
     <a href="{!! route('presentismoIndex', ['base' => 1]) !!}"><i class="fa fa-edit"></i><span>Presentismos</span></a>
 </li>
 

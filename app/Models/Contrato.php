@@ -5,13 +5,11 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-
 class Contrato extends Model
 {
-     const TIPO_LOCACION = 'LOCACION';
+    const TIPO_LOCACION = 'LOCACION';
     
     public $table = 'contratos';
-    
     
     
     /**
@@ -19,7 +17,7 @@ class Contrato extends Model
      **/
     public function estadoContrato()
     {
-        return $this->belongsTo(EstadoContrato::class, 'id_estado_contrato');
+        return $this->belongsTo(EstadoContrato::class, 'id_estado_contrato')->first();
     }
     
     /**

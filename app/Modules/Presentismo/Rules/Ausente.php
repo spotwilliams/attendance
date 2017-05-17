@@ -9,16 +9,18 @@
 namespace Cat\Modules\Validation\Rules;
 
 
-use Cat\Modules\Validation\Exceptions\Descriptor;
-use Cat\Modules\Validation\Exceptions\Validation;
-
+use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
+use Cat\Models\Ausente as TipoPresentismoAusente;
 class Ausente extends Rule
 {
     protected function validate()
     {
         // Verificar que sea injustificado
-        $esInjustificado = $this->tipoAusente->esInjustificado();
-        
+        /** @var TipoPresentismoAusente $ausente */
+        $ausente = TipoPresentismoAusente::find($this->tipoAusente->id);
+        $esInjustificado = $ausente->esInjustificado();
+
         if ($esInjustificado) {
             return true;
             

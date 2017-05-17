@@ -58,4 +58,13 @@ class Descriptor
         return $this->errorDescription;
     }
     
+    /**
+     * @param $code
+     * @return Descriptor
+     */
+    public static function mySelf($code)
+    {
+        return self::$errorMap[$code];
+    }
+    
 }

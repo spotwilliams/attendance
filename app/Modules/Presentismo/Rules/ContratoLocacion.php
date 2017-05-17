@@ -8,14 +8,16 @@
 
 namespace Cat\Modules\Validation\Rules;
 
-use Cat\Modules\Validation\Exceptions\Descriptor;
-use Cat\Modules\Validation\Exceptions\Validation;
+use Cat\Models\Contrato;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 
 class ContratoLocacion extends Rule
 {
     
     protected function validate()
     {
+        /** @var Contrato $contrato */
         $contrato = $this->agente->contrato();
         
         if($contrato->esLocacion()) {

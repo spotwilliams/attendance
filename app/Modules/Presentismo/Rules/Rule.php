@@ -10,22 +10,25 @@ namespace Cat\Modules\Validation\Rules;
 
 
 use Cat\Models\Agente;
-use Cat\Modules\Validation\Exceptions\Validation;
+use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Models\Ausente;
+use Illuminate\Support\Facades\Log;
+
 abstract class Rule
 {
     
     /** @var  Agente */
     protected $agente;
     
-    /** @var  Ausente */
+    /** @var  TipoPresentismo */
     protected $tipoAusente;
     
     /**
      * Rule constructor.
      * @param Agente $agente
      */
-    public function __construct(Agente $agente, Ausente $tipoAusente)
+    public function __construct(Agente $agente, TipoPresentismo $tipoAusente)
     {
         $this->agente      = $agente;
         $this->tipoAusente = $tipoAusente;
@@ -43,8 +46,9 @@ abstract class Rule
             $this->validate();
         } catch (Validation $notAccomplish) {
             Log::info('Agente No paso validacion: ' . $this->agente->id);
+            throw $notAccomplish;
         }
         
-        return $this;
+        return true;
     }
 }

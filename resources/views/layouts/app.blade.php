@@ -5,21 +5,16 @@
     <title>CAT - Presentismo</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-    <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.5.0/css/font-awesome.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/css/select2.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/css/AdminLTE.min.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/css/skins/_all-skins.min.css">
-    <link rel="stylesheet" href="//cdn.datatables.net/1.10.15/css/jquery.dataTables.min.css">
+    {!! Html::style('plugins/bootstrap/css/bootstrap.min.css') !!}
+    {!! Html::style('plugins/font-awesome/css/font-awesome.min.css') !!}
+    {!! Html::style('plugins/select2/css/select2.min.css') !!}
+    {!! Html::style('plugins/adminLTE/css/AdminLTE.min.css') !!}
+    {!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
     {!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
     {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
+    {!! Html::style('plugins/ionicons/css/ionicons.min.css') !!}
 
-    <!-- Ionicons -->
-    <link rel="stylesheet" href="https://code.ionicframework.com/ionicons/2.0.1/css/ionicons.min.css">
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.0/jquery.min.js"></script>
-    <script src=""></script>
-    {!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
-    {!! Html::script('plugins/bootstrap-select/js/bootstrap-select.min.js') !!}
+<!-- Ionicons -->
     @yield('css')
 </head>
 
@@ -144,14 +139,14 @@
         </div>
     </div>
 @endif
-
-
-<script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.3.6/js/bootstrap.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.2/js/select2.min.js"></script>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/iCheck/1.0.2/icheck.min.js"></script>
-
+{!! Html::script('plugins/jquery/js/jquery.min.js') !!}
+{!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
+{!! Html::script('plugins/bootstrap-select/js/bootstrap-select.min.js') !!}
+{!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
+{!! Html::script('plugins/select2/js/select2.min.js') !!}
+{!! Html::script('plugins/iCheck/js/icheck.min.js') !!}
 <!-- AdminLTE App -->
-<script src="https://cdnjs.cloudflare.com/ajax/libs/admin-lte/2.3.3/js/app.min.js"></script>
+{!! Html::script('plugins/adminLTE/js/app.min.js') !!}
 
 @yield('scripts')
 </body>

@@ -79,9 +79,9 @@ class Agente extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function contratos()
+    public function contrato()
     {
-        return $this->hasMany(Contrato::class, 'id_agente');
+        return $this->hasOne(Contrato::class, 'id_agente')->first();
     }
     
     /**
@@ -122,9 +122,10 @@ class Agente extends Model
      */
     public function getCantDiasDisponibles(TipoPresentismo $ausencia)
     {
-        $diasDisponibles = $this->diasDisponible()
-            ->where('id_tipo_presentismo', '=', $ausencia->id)->get('cant_dias');
+        $diasDisponibles = $this
+            ->diasDisponible()
+            ->where('id_tipo_presentismo', '=', $ausencia->id)->first(['cant_dias']);
         
-        return $diasDisponibles;
+        return $diasDisponibles->cant_dias;
     }
 }

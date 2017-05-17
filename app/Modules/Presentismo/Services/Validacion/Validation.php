@@ -40,12 +40,16 @@ class Validation extends Service
         
     }
     
+    /**
+     * @return bool
+     */
     public function execute()
     {
-        if ($this->rulesExecuter(ContratoActivo::class) and $this->rulesExecuter(ContratoLocacion::class)) {
-            
-            return ($this->rulesExecuter(Presente::class) and $this->rulesExecuter(Ausente::class));
-        }
+        return (
+            $this->rulesExecuter(ContratoActivo::class)
+            and $this->rulesExecuter(ContratoLocacion::class)
+            and $this->rulesExecuter(Ausente::class));
+        
     }
     
     private function rulesExecuter($ruleName)

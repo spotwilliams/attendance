@@ -10,17 +10,20 @@ namespace Cat\Modules\Validation\Rules;
 
 
 use Cat\Models\Agente;
-use Cat\Modules\Validation\Exceptions\Descriptor;
-use Cat\Modules\Validation\Exceptions\Validation;
+use Cat\Models\Contrato;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 
 class ContratoActivo extends Rule
 {
     
     protected function validate()
     {
-        $activo = $this->agente->contrato()->estadoContrato()->esActivo();
-        
-        if($activo) {
+        /** @var Contrato $contrato */
+        $contrato = $this->agente->contrato();
+        $activo   = $contrato->estadoContrato()->esActivo();
+
+        if ($activo) {
             return true;
         } else {
             $error = new Validation($this->agente, Descriptor::contratoInactivo());

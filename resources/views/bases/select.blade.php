@@ -15,12 +15,14 @@
     </div>
 </div>
 
-<script type="text/javascript">
-    $(document).ready(function () {
-        var url = "{{route('presentismoIndex', 'replace')}}";
-        var element = $('#base-select-with-button');
-        $(element).on('change', function () {
-            $('#go-to-base').attr('href', url.replace('replace', element.val()));
-        })
-    });
-</script>
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            var url = "{{route('presentismoIndex', 'replace')}}";
+            var element = $('#base-select-with-button');
+            $(element).on('change', function () {
+                $('#go-to-base').attr('href', url.replace('replace', element.val()));
+            })
+        });
+    </script>
+@append

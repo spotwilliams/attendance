@@ -13,17 +13,6 @@ class Presentismo extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
 
-
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        
-    ];
-
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
