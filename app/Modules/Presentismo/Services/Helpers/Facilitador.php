@@ -8,8 +8,6 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
 use Cat\Modules\Presentismo\Services\Registro\Registro;
 use Cat\Modules\Presentismo\Services\Validacion\Validation;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation as ValidacionNoSuperada;
-use Illuminate\Support\Facades\Session;
-use Laracasts\Flash\Flash;
 
 class Facilitador
 {
@@ -32,14 +30,16 @@ class Facilitador
             if ($e->getCode() === Descriptor::SIN_DIAS_DISPONIBLES) {
                 
                 $tipoPresentismo = TipoPresentismo::injusticado();
-                session()->flash('message', Descriptor::mySelf($e->getCode())->getDescription());
-                session()->flash('code', 500);
             }
-            
+            session()->flash('message', Descriptor::mySelf($e->getCode())->getDescription());
+            session()->flash('code', 500);
+    
         }
         finally {
             $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
             $serviceResigtro->execute();
+            session()->flash('agente', $agente->id);
+            session()->flash('presentismo', $tipoPresentismo->id);
         }
         
     }

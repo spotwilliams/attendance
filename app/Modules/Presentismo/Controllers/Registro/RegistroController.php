@@ -64,10 +64,14 @@ class RegistroController extends AppBaseController
         $tipoPresentismo = TipoPresentismo::find($input['presentismo']);
         $fecha           = new \DateTime($input['fecha']);
         
-            
-            Facilitador::validarDespuesGuardar($agente, $tipoPresentismo, $fecha);
-            return Response::json(session('message'), session('code'));
-            
+        Facilitador::validarDespuesGuardar($agente, $tipoPresentismo, $fecha);
+        
+        return Response::json([
+            'message'     => session('message'),
+            'agente'      => session('agente'),
+            'presentismo' => session('presentismo'),
+        ], session('code'));
+        
     }
     
     /**

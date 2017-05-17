@@ -25,7 +25,7 @@ class Contrato extends Model
      **/
     public function tipoContrato()
     {
-        return $this->belongsTo(TipoContrato::class, 'id_tipo_contrato');
+        return $this->belongsTo(TipoContrato::class, 'id_tipo_contrato')->first();
     }
     
     /**
@@ -43,7 +43,7 @@ class Contrato extends Model
      */
     public function esLocacion()
     {
-        if (strtolower($this->tipo_contrato) === strtolower(Contrato::TIPO_LOCACION)) {
+        if (strtolower($this->tipoContrato()->codigo) === strtolower(Contrato::TIPO_LOCACION)) {
             return true;
         } else {
             return false;
