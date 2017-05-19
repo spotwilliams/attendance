@@ -13,7 +13,7 @@ class TipoPresentismo extends Model
     const CREATED_AT    = 'created_at';
     const UPDATED_AT    = 'updated_at';
     const INJUSTIFICADO = 'INJUSTIFICADO';
-    
+    const PRESENTE      = 'PRESENTE';
     
     /**
      * The attributes that should be casted to native types.
@@ -75,5 +75,10 @@ class TipoPresentismo extends Model
     public static function injusticado()
     {
         return TipoPresentismo::where('codigo', '=', TipoPresentismo::INJUSTIFICADO)->first();
+    }
+    
+    public function esPresente()
+    {
+        return (strtoupper($this->codigo) === TipoPresentismo::PRESENTE);
     }
 }

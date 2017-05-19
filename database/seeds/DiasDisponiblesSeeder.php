@@ -12,7 +12,7 @@ class DiasDisponiblesSeeder extends Seeder
     public function run()
     {
         for ($i = 1; $i < DatabaseSeeder::SIZE_AGENTE; $i++) {
-            for ($j = 1; $j <= 5; $j++) {
+            for ($j = 3; $j <= 5; $j++) {
                 
                 $diasDisponible
                     = [

@@ -5,7 +5,6 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-
 class EstadoPeriodo extends Model
 {
     
@@ -14,7 +13,13 @@ class EstadoPeriodo extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
-
+    protected $fillable
+        = [
+            'id_base',
+            'id_periodo',
+            'abierto',
+        ];
+    
     public function periodo()
     {
         return $this->belongsTo(Periodo::class, 'id_periodo');

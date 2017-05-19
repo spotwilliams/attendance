@@ -28,7 +28,7 @@ class JornadaLaborableRepository extends BaseRepository
     /**
      * @param \DateTime $fecha
      * @param Periodo|null $periodo
-     * @return static
+     * @return JornadaLaborable
      */
     public static function getOrCreate(\DateTime $fecha, Periodo $periodo = null)
     {
@@ -39,11 +39,13 @@ class JornadaLaborableRepository extends BaseRepository
                 $periodo = PeriodoRepository::getOrCreatePeriodoActivo($fecha);
             }
             
-            $fechaLaborable = (new JornadaLaborable())
-                ->save([
+            $fechaLaborable = JornadaLaborable::create(
+                [
                     'fecha'      => $fecha->format('Y-m-d'),
                     'id_periodo' => $periodo->id,
-                ]);
+                ]
+            );
+            
         }
         
         return $fechaLaborable;

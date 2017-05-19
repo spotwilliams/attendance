@@ -13,11 +13,12 @@ class PeriodosSeeder extends Seeder
     {
         
         $cantDías     = 15;
-        $cantPeriodos = round (date('z') / $cantDías);
+//        $cantPeriodos = round(date('z') / $cantDías);
+        $cantPeriodos = 50;
         
         $date  = new DateTime('2017-01-01');
         $date2 = new DateTime('2017-01-15');
-        for ($i = 1; $i <= $cantPeriodos ; $i++) {
+        for ($i = 1; $i <= $cantPeriodos; $i++) {
             //
             //
             // creacion periodo
@@ -63,9 +64,22 @@ class PeriodosSeeder extends Seeder
         $daterange = new DatePeriod($beginPeriodo, $interval, $endPeriodo);
         
         foreach ($daterange as $dateRan) {
-            \Cat\Models\JornadaLaborable::create([
+            $jornada = \Cat\Models\JornadaLaborable::create([
                 'fecha'      => $dateRan->format('Y-m-d'),
                 'id_periodo' => $idPeriodo,
+            ]);
+            $this->crearPresentismo($jornada);
+        }
+    }
+    
+    private function crearPresentismo(\Cat\Models\JornadaLaborable $jornada)
+    {
+        for ($i = 1; $i < DatabaseSeeder::SIZE_AGENTE; $i++) {
+            \Cat\Models\Presentismo::create([
+                'id_tipo_presentismo' => rand(1, 5),
+                'id_agente'           => $i,
+                'id_jornada'          => $jornada->id,
+                'comentario'          => \Faker\Provider\Lorem::paragraphs(3, true),
             ]);
         }
     }

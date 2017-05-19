@@ -147,6 +147,8 @@
 {!! Html::script('plugins/iCheck/js/icheck.min.js') !!}
 <!-- AdminLTE App -->
 {!! Html::script('plugins/adminLTE/js/app.min.js') !!}
+{{-- Notify --}}
+{!! Html::script('plugins/bootstrap-notify/js/notify.min.js') !!}
 
 @yield('scripts')
 </body>

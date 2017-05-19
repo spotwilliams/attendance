@@ -17,6 +17,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => null,
                 'codigo'          => 'PRESENTE',
                 'descripcion'     => 'Presente',
+                'color'           => '#4286f4',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
@@ -24,6 +25,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => null,
                 'codigo'          => 'INJUSTIFICADO',
                 'descripcion'     => 'Ausente injustificado',
+                'color'           => '#ef2809',
                 'dias_permitidos' => 0,
             ],
             [
@@ -31,6 +33,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => 2,
                 'codigo'          => 'MEDICO',
                 'descripcion'     => 'Ausente con permiso medico',
+                'color'           => '#e0930f',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
@@ -38,6 +41,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => 2,
                 'codigo'          => 'ESTUDIO',
                 'descripcion'     => 'Dias de estudio',
+                'color'           => '#0ee031',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
@@ -45,6 +49,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => 2,
                 'codigo'          => 'JUDIO',
                 'descripcion'     => 'Festividad judia',
+                'color'           => '#c7e026',
                 'dias_permitidos' => rand(1, 10),
             ],
         ];

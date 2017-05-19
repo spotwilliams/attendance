@@ -2,9 +2,6 @@
 
 namespace Cat\Models;
 
-use Illuminate\Database\Eloquent\Model;
-
-
 class Ausente extends TipoPresentismo
 {
     

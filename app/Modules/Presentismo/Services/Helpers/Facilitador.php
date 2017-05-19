@@ -21,9 +21,9 @@ class Facilitador
     {
         try {
             // Se realizan las validaciones
-            $serviceValidacion = new Validation($agente, $tipoPresentismo);
+            $serviceValidacion = new Validation($agente, $tipoPresentismo, $fecha);
             $serviceValidacion->execute();
-            session()->flash('message', 'Validaciones correctas');
+            session()->flash('message', 'Se actualizo correctamente');
             session()->flash('code', 200);
             
         } catch (ValidacionNoSuperada $e) {

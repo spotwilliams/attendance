@@ -33,20 +33,6 @@ $diasMesActual = 5;
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            /**
-             *
-             * Creacion Datatables
-             *
-             */
-            var dataTable = $('#presentismos-table').DataTable({
-                "scrollX": true,
-                "columnDefs": [
-                    {
-                        "targets": [0],
-                        "visible": false,
-                    },
-                ]
-            });
 
             /**
              *
@@ -98,14 +84,51 @@ $diasMesActual = 5;
                                 'presentismo': $(this).val(),
                                 'fecha': fecha,
                             },
-                            onSuccess: function () {
-
+                            success: function (xhr, other) {
+                                message(myParent, xhr.message, xhr.presentismo, 'success');
                             },
-                            onError: function () {
-
+                            error: function (xhr, other) {
+                                message(myParent, xhr.message, xhr.presentismo, 'error');
                             }
+
                         });
                     });
+            function message(obj, message, presentismo, type) {
+
+                var ref = $(obj).children('.{{$selector}}').context;
+                $(ref)
+                        .prop('value', presentismo)
+                        .prop('disabled', false)
+                        .selectpicker('refresh');
+                $(obj).children('.overlay').remove();
+
+                $(obj).notify(message,
+                        {
+                            autoHide: true,
+                            // if autoHide, hide after milliseconds
+                            autoHideDelay: 2000,
+                            position: 'top',
+                            showAnimation: 'slideDown',
+                            className: type,
+                        });
+            }
+
+            /**
+             *
+             * Creacion Datatables
+             *
+             */
+            var dataTable = $('#presentismos-table').DataTable({
+                "scrollX": true,
+                "columnDefs": [
+                    {
+                        "targets": [0],
+                        "visible": false,
+                    },
+                ]
+            });
+
         });
+
     </script>
 @append

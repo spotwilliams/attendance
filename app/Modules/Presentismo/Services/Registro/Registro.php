@@ -24,6 +24,8 @@ class Registro extends Service
     /** @var  JornadaLaborable */
     protected $jornadaLaborable;
     
+    /** @var  Presentismo */
+    protected $presentismoPrevio;
     
     public function __construct(Agente $agente, TipoPresentismo $tipoPresentismo, \DateTime $fecha)
     {
@@ -34,38 +36,77 @@ class Registro extends Service
     
     public function execute()
     {
+        /*
+         * Se debe verificar si el presentismo ya fue cargado para ese dia y ese agente
+         * 1) Existe: update de presentismo y dia_disponible
+         * 2) No existe: insert presentismo y update dia_disponible
+         */
         try {
-            DB::beginTransaction();
             
-            $this->savePresentismo();
-            $this->updateDiasDisponibles();
+            DB::beginTransaction();
+            if ($this->presenteYaFueCargado()) {
+                // update en presentismo el id_tipo_presentsimo
+                $this->updatePresentismoPrevio();
+                // recuera el dia
+                $this->updateDiasDisponibles($this->agente->id, $this->presentismoPrevio->id_tipo_presentismo, 1);
+                
+            } else {
+                // Insert en presentismo y update dia disponible
+                $this->savePresentismo();
+            }
+            // se quita el dia pedido
+            $this->updateDiasDisponibles($this->agente->id, $this->tipoPresentismo->id, -1);
             DB::commit();
         } catch (QueryException $e) {
             DB::rollBack();
+            throw $e;
         }
+    }
+    
+    /**
+     * @return bool
+     */
+    private function presenteYaFueCargado()
+    {
+        $this->presentismoPrevio = Presentismo::
+        where('id_agente', '=', $this->agente->id)
+            ->where('id_jornada', '=', $this->jornadaLaborable->id)
+            ->first();
+        
+        return ($this->presentismoPrevio == null) ? false : true;
+    }
+    
+    private function updatePresentismoPrevio()
+    {
+        Presentismo::where('id', '=', $this->presentismoPrevio->id)
+            ->update(
+                [
+                    'id_tipo_presentismo' => $this->tipoPresentismo->id,
+                ]
+            );
     }
     
     private function savePresentismo()
     {
-        $presentismo                      = new Presentismo();
-        $presentismo->id_agente           = $this->agente->id;
-        $presentismo->id_jornada          = $this->jornadaLaborable->id;
-        $presentismo->id_tipo_presentismo = $this->tipoPresentismo->id;
-        
-        $presentismo->save();
+        Presentismo::create([
+            'id_agente'           => $this->agente->id,
+            'id_jornada'          => $this->jornadaLaborable->id,
+            'id_tipo_presentismo' => $this->tipoPresentismo->id,
+        ]);
     }
     
-    private function updateDiasDisponibles()
+    private function updateDiasDisponibles($idAgente, $idTipoPresentismo, $add)
     {
         // Solo verificar que el tipo de presentismo este registrado
+        $diaDisponible = DiaDisponible::where('id_agente', '=', $idAgente)
+            ->where('id_tipo_presentismo', '=', $idTipoPresentismo)
+            ->first();
+        
         // en la tabla de dias disponibles. Las validaciones previas deben poder
         /** @var DiaDisponible $diaDisponible */
-        $diaDisponible = DiaDisponible::where('id_agente', '=', $this->agente->id)
-            ->where('id_tipo_presentismo', '=', $this->tipoPresentismo->id)->first();
-        
         if ($diaDisponible <> null) {
-            $diaDisponible->cant_dias = $diaDisponible->cant_dias - 1;
-            $diaDisponible->save();
+            $diaDisponible->cant_dias = $diaDisponible->cant_dias + $add;
+            $diaDisponible->update();
         }
     }
     

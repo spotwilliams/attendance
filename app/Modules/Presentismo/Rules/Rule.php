@@ -24,14 +24,18 @@ abstract class Rule
     /** @var  TipoPresentismo */
     protected $tipoAusente;
     
+    /** @var  \DateTime */
+    protected $fecha;
+    
     /**
      * Rule constructor.
      * @param Agente $agente
      */
-    public function __construct(Agente $agente, TipoPresentismo $tipoAusente)
+    public function __construct(Agente $agente, TipoPresentismo $tipoAusente, \DateTime $fecha = null)
     {
         $this->agente      = $agente;
         $this->tipoAusente = $tipoAusente;
+        $this->fecha       = $fecha;
     }
     
     /**
@@ -43,12 +47,10 @@ abstract class Rule
     public function check()
     {
         try {
-            $this->validate();
+            return $this->validate();
         } catch (Validation $notAccomplish) {
             Log::info('Agente No paso validacion: ' . $this->agente->id);
             throw $notAccomplish;
         }
-        
-        return true;
     }
 }

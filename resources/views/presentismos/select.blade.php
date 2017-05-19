@@ -10,10 +10,10 @@ $tiposPresentismo = \Cat\Models\TipoPresentismo::all();
         <label class="col-sm-2 control-label">{{$label}}</label>
     @endif
     <div class="input-group margin">
-        <select class="{{$classSelector}}"
-                data-width="100px"
+        <select class="{{$classSelector}} form-control"
+                data-width="80px"
         >
-            <option value="-1">Seleccione</option>
+            <option value="-1">...</option>
             @foreach ($tiposPresentismo as $tipo)
                 <option
                         value="{{ $tipo->id }}"
@@ -26,7 +26,9 @@ $tiposPresentismo = \Cat\Models\TipoPresentismo::all();
                 <i class="fa fa-commenting"></i>
             </button>
             @if(isset($buttons))
-                <button type="button" class="btn btn-primary dropdown-toggle" data-toggle="dropdown"
+                <button type="button"
+                        class="btn btn-primary dropdown-toggle"
+                        data-toggle="dropdown"
                         aria-expanded="false">
                     <span class="caret"></span>
                     <span class="sr-only">Toggle Dropdown</span>

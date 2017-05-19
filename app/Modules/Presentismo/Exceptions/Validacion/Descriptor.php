@@ -7,7 +7,7 @@ class Descriptor
     const CONTRATO_INACTIVO    = 1000;
     const CONTRATO_NO_LOCACION = 2000;
     const SIN_DIAS_DISPONIBLES = 3000;
-    
+    const PERIODO_CERRADO      = 4000;
     private        $errorCode;
     private        $errorDescription;
     private static $errorMap;
@@ -42,12 +42,24 @@ class Descriptor
     {
         if (!isset(self::$errorMap[Descriptor::SIN_DIAS_DISPONIBLES])) {
             self::$errorMap[Descriptor::SIN_DIAS_DISPONIBLES]
-                = new Descriptor(Descriptor::SIN_DIAS_DISPONIBLES, 'No tiene dias disponibles para el tipo de ausencia');
+                = new Descriptor(Descriptor::SIN_DIAS_DISPONIBLES,
+                'No tiene dias disponibles para el tipo de ausencia');
         }
         
         return self::$errorMap[Descriptor::SIN_DIAS_DISPONIBLES];
     }
     
+    public static function periodoCerradoParaBase()
+    {
+        if (!isset(self::$errorMap[Descriptor::PERIODO_CERRADO])) {
+            self::$errorMap[Descriptor::PERIODO_CERRADO]
+                = new Descriptor(Descriptor::PERIODO_CERRADO,
+                'La fecha es de un periodo ya cerrado para esta base');
+        }
+        
+        return self::$errorMap[Descriptor::PERIODO_CERRADO];
+    }
+
     public function getCode()
     {
         return $this->errorCode;

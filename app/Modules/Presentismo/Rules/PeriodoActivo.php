@@ -9,14 +9,21 @@
 namespace Cat\Modules\Validation\Rules;
 
 
-use Cat\Modules\Validation\Exceptions\Descriptor;
-use Cat\Modules\Validation\Exceptions\Validation;
+use Cat\Models\Periodo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 
 class PeriodoActivo extends Rule
 {
     protected function validate()
     {
-        throw new \Exception('Not implemented yet!');
+        $periodo = Periodo::findActivo($this->fecha);
+        
+        if ($periodo !== null and $periodo->estaActivo($this->agente->id_base)) {
+            return true;
+        } else {
+            throw new Validation($this->agente, Descriptor::periodoCerradoParaBase());
+        }
         
     }
     

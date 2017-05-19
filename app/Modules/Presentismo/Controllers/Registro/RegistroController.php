@@ -31,10 +31,8 @@ class RegistroController extends AppBaseController
      */
     public function index(Request $request, $base)
     {
-        $presentismos = $this->presentismoRepository->all();
         
         return view('Presentismo::registro.index')
-            ->with('presentismos', $presentismos)
             ->with('agentes', $this->presentismoRepository
                 ->agentesAptos($base))
             ->with('baseActual', $base);

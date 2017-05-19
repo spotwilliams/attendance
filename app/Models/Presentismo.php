@@ -7,12 +7,20 @@ use Illuminate\Database\Eloquent\Model;
 
 class Presentismo extends Model
 {
-
+    
     public $table = 'presentismos';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-
+    
+    protected $fillable
+        = [
+            
+            'id_agente',
+            'id_jornada',
+            'id_tipo_presentismo',
+        ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -20,15 +28,15 @@ class Presentismo extends Model
     {
         return $this->belongsTo(Agente::class, 'id_agente');
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function tipoPresentismo()
     {
-        return $this->belongsTo(TipoPresentismo::class,  'id_tipo_presentismo');
+        return $this->belongsTo(TipoPresentismo::class, 'id_tipo_presentismo');
     }
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/

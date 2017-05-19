@@ -23,21 +23,19 @@ class Validation extends Service
 {
     protected $agente;
     protected $tipoPresentismo;
-    protected $rulesScheduler
-        = [
-            ContratoActivo::class   => ContratoActivo::class,
-            ContratoLocacion::class => ContratoLocacion::class,
-            Presente::class         => Presente::class,
-            Ausente::class          => Ausente::class,
-            PeriodoActivo::class    => PeriodoActivo::class,
-        
-        ];
+    protected $fecha;
     
-    public function __construct(Agente $agente, TipoPresentismo $tipoPresentismo)
+    /**
+     * Validation constructor.
+     * @param Agente $agente
+     * @param TipoPresentismo $tipoPresentismo Tipo de presentismo a controlar
+     * @param \DateTime $fecha fecha elegida
+     */
+    public function __construct(Agente $agente, TipoPresentismo $tipoPresentismo, \DateTime $fecha)
     {
         $this->agente          = $agente;
         $this->tipoPresentismo = $tipoPresentismo;
-        
+        $this->fecha           = $fecha;
     }
     
     /**
@@ -46,16 +44,28 @@ class Validation extends Service
     public function execute()
     {
         return (
-            $this->rulesExecuter(ContratoActivo::class)
-            and $this->rulesExecuter(ContratoLocacion::class)
-            and $this->rulesExecuter(Ausente::class));
+            // Revision de tipo de contratos y periodo
+            (
+                $this->rulesExecuter(ContratoActivo::class)
+                and $this->rulesExecuter(ContratoLocacion::class)
+                and $this->rulesExecuter(PeriodoActivo::class)
+            )
+            and
+            // Reviso los tipos de Presentismo
+            // Si es un presente no hace falta controlar otra cosa
+            ($this->rulesExecuter(Presente::class)
+                or
+                // Se revisan todos los tipos de ausentes
+                ($this->rulesExecuter(Ausente::class))
+            )
+        );
         
     }
     
     private function rulesExecuter($ruleName)
     {
         /** @var Rule $rule */
-        $rule = new $ruleName ($this->agente, $this->tipoPresentismo);
+        $rule = new $ruleName ($this->agente, $this->tipoPresentismo, $this->fecha);
         
         return $rule->check();
     }
