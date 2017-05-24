@@ -162,6 +162,7 @@ $selector = 'selectpicker';
                         @while( $fechaJson < $fechaToday)
                     {
                         data: function (agente) {
+
                             var presentismo = -1;
                             for (var i = 0; i < agente.presentismos.length; i++) {
                                 if (agente.presentismos[i].fecha === '{{$fechaJson->format('Y-m-d')}}') {
@@ -179,7 +180,6 @@ $selector = 'selectpicker';
 
                 ],
                 initComplete: function () {
-                    configurarSelect();
                     this.api().columns().every(function () {
                         var column = this;
                         var input = document.createElement("input");
@@ -188,6 +188,9 @@ $selector = 'selectpicker';
                                     column.search($(this).val()).draw();
                                 });
                     });
+                },
+                drawCallback: function (settings) {
+                    configurarSelect();
                 }
             });
 

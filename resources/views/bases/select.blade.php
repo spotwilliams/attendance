@@ -2,8 +2,8 @@
 
 <div class="form-horizontal">
     <div class="form-group">
-        <label class="col-sm-2 control-label">{{$label}}</label>
-        <div class="col-sm-8">
+        <label class="col-sm-2 col-xs-2 control-label">{{$label}}</label>
+        <div class="col-sm-6 col-xs-6">
             <select class="form-control" id="base-select-with-button">
 
                 @foreach ($bases as $base)
@@ -11,7 +11,7 @@
                 @endforeach
             </select>
         </div>
-        <a class="btn btn-primary col-sm-1" id="go-to-base">Ver base</a>
+        <a class="btn btn-primary col-sm-2 col-xs-2" id="go-to-base">Ver base</a>
     </div>
 </div>
 

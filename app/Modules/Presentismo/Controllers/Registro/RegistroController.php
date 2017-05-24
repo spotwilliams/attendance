@@ -11,6 +11,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Repositories\PeriodoRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Str;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
 use Yajra\Datatables\Facades\Datatables;
@@ -52,12 +53,28 @@ class RegistroController extends AppBaseController
                 $agentes,
                 $periodo
             );
+        /** @var \Yajra\Datatables\Engines\CollectionEngine $datatable */
+        $datatable = Datatables::of(new Collection($agentesConPresentismo));
         
-        return Datatables::of(new Collection($agentesConPresentismo))
-            ->filterColumn('id', function ($query, $keyword) {
-                $query->whereRaw("CONCAT(agentes.nombre,'-',agentes.apellido) like ?", ["%{$keyword}%"]);
-            })
-            ->make(true);
+        $datatable->filter(function ($instance) use ($request) {
+            /** @var \Yajra\Datatables\Engines\CollectionEngine $query */
+            $params = $request->all();
+            $value  = $params['search']['value'];
+            if (!empty($value)) {
+                $instance->collection = $instance->collection
+                    ->filter(function ($row) use ($value) {
+                        return
+                            (
+                                (Str::contains(strtolower($row->nombre), strtolower($value)) ? true : false)
+                                or (Str::contains(strtolower($row->apellido), strtolower($value) ) ? true : false)
+                                or (Str::contains(strtolower($row->cuit), strtolower($value)) ? true : false)
+                            );
+                    });
+            }
+            
+        });
+        
+        return $datatable->make(true);
     }
     
     /**
