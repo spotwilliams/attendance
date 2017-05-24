@@ -7,8 +7,9 @@ $fecha = new DateTime($periodo->fecha_comienzo);
 $fechaJson = new DateTime($periodo->fecha_comienzo);
 $fechaToday = (new DateTime('now'))->modify('+1day');
 $selector = 'selectpicker';
+$idModal = 'comentarios-modal'
 ?>
-<table class="table table-responsive" id="presentismos-table">
+<table class="display" cellspacing="0" width="100%" id="presentismos-table">
     <thead>
     <th>Id Agente</th>
     <th>Agente</th>
@@ -19,7 +20,7 @@ $selector = 'selectpicker';
     @endwhile
     </thead>
 </table>
-
+@include('parts.modal', ['idModal' => $idModal, 'titleModal' => 'Editar comentarios del presentismo'])
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -28,6 +29,7 @@ $selector = 'selectpicker';
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+
 
             /**
              *
@@ -63,7 +65,7 @@ $selector = 'selectpicker';
                             var dataActual = dataRow.data();
                             var agente = dataActual.id;
 
-                            var tdActual = myParent[0];
+                            var tdActual = myParent.parents('td')[0];
                             var idx = dataTable.cell(tdActual).index().column;
                             var header = dataTable.column(idx).header();
                             var fecha = $(header).data('cat');
@@ -89,7 +91,6 @@ $selector = 'selectpicker';
                         });
             }
 
-
             function message(obj, message, presentismo, type) {
 
                 var ref = $(obj).children('.{{$selector}}').context;
@@ -110,7 +111,7 @@ $selector = 'selectpicker';
                         });
             }
 
-            function createSelect(seleccionado) {
+            function createSelect(seleccionado, comentario) {
                 var tipoPresentismos = {!!  \Cat\Models\TipoPresentismo::all()->toJson()!!};
                 var container = $('<div class="form-group">');
                 container.append($('<div class="input-group margin">'));
@@ -125,7 +126,10 @@ $selector = 'selectpicker';
                             + '<span class=\'label\' style=\'background-color: ' + tipoPresentismos[i].color + ';\'>' + tipoPresentismos[i].descripcion + '</span>">'
                             + tipoPresentismos[i].descripcion + '</option>');
                 }
-                return container.children('div').append(select);
+                container.children('div').append(select);
+                var buttonClass = (comentario !== undefined ) ? 'btn-success' : 'btn-default';
+                container.children('div').append('<button type=\'button\' class=\'btn ' + buttonClass + ' dialog-comentary\'><i class=\'fa fa-comment-o\'/> </button>');
+                return container;
 
             }
 
@@ -140,6 +144,10 @@ $selector = 'selectpicker';
             var dataTable = $('#presentismos-table').DataTable({
                 processing: true,
                 serverSide: true,
+                responsive: true,
+                scrollX: true,
+                scrollY: 500,
+                scrollCollapse: true,
                 ajax: {
                     url: url.replace('replace', baseSelect.val()),
                     method: 'POST'
@@ -169,7 +177,7 @@ $selector = 'selectpicker';
                                     presentismo = agente.presentismos[i].presentismo;
                                 }
                             }
-                            var element = createSelect(presentismo);
+                            var element = createSelect(presentismo, agente.comentario);
                             return element.html();
                         },
                         name: '{{$fechaJson->format('Y-m-d')}}',
@@ -191,9 +199,25 @@ $selector = 'selectpicker';
                 },
                 drawCallback: function (settings) {
                     configurarSelect();
+                    configurarButtons();
                 }
             });
 
+            /**
+             *
+             * Accion para boton de modal
+             *
+             */
+            function configurarButtons() {
+                $('.dialog-comentary').on('click', function () {
+                    var myParent = $(this).parent().parent();
+
+                    var trActual = myParent.parents('tr')[0];
+                    var dataRow = dataTable.row(trActual);
+                    var agente = dataRow.data();
+                    $('#{{$idModal}}').modal();
+                });
+            }
         });
 
     </script>

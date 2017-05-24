@@ -33,7 +33,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => 1,
                 'codigo'          => 'MEDICO_JUSTIFICADO',
                 'descripcion'     => 'Medico justificado',
-                'color'           => '#e0930f',
+                'color'           => '#e1930f',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
@@ -49,7 +49,7 @@ class TiposPresentismoSeeder extends Seeder
                 'id_padre'        => 1,
                 'codigo'          => 'ESTUDIO_JUSTIFICADO',
                 'descripcion'     => 'Estudio justificado',
-                'color'           => '#0ee031',
+                'color'           => '#0ae031',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
