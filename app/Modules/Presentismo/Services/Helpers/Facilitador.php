@@ -23,24 +23,41 @@ class Facilitador
             // Se realizan las validaciones
             $serviceValidacion = new Validation($agente, $tipoPresentismo, $fecha);
             $serviceValidacion->execute();
+            static::goOn($agente, $tipoPresentismo, $fecha);
             session()->flash('message', 'Se actualizo correctamente');
             session()->flash('code', 200);
             
         } catch (ValidacionNoSuperada $e) {
-            if ($e->getCode() === Descriptor::SIN_DIAS_DISPONIBLES) {
-                
-                $tipoPresentismo = TipoPresentismo::injusticado();
-            }
             session()->flash('message', Descriptor::mySelf($e->getCode())->getDescription());
             session()->flash('code', 500);
-    
-        }
-        finally {
-            $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
-            $serviceResigtro->execute();
-            session()->flash('agente', $agente->id);
-            session()->flash('presentismo', $tipoPresentismo->id);
+            
+            switch ($e->getCode()) {
+                case Descriptor::SIN_DIAS_DISPONIBLES : {
+                    $tipoPresentismo = TipoPresentismo::injusticado();
+                    break;
+                }
+                case Descriptor::PERIODO_CERRADO : {
+                    $tipoPresentismo = null;
+                    break;
+                }
+            }
+            static::goOn($agente, $tipoPresentismo, $fecha);
+            
+            
         }
         
+        
+    }
+    
+    private static function goOn(Agente $agente, TipoPresentismo $tipoPresentismo = null, \DateTime $fecha)
+    {
+        if ($tipoPresentismo === null) {
+            session()->flash('presentismo', -1);
+        } else {
+            $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
+            $serviceResigtro->execute();
+            session()->flash('presentismo', $tipoPresentismo->id);
+        }
+        session()->flash('agente', $agente->id);
     }
 }

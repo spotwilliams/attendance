@@ -4,6 +4,7 @@ namespace Cat\Repositories;
 
 use Cat\Models\Base;
 use Cat\Models\EstadoPeriodo;
+use Cat\Models\JornadaLaborable;
 use Cat\Models\Periodo;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
@@ -23,11 +24,12 @@ class PeriodoRepository extends BaseRepository
     public static function getOrCreatePeriodoActivo(\DateTime $fecha)
     {
         $periodo = Periodo::findActivo($fecha);
-    
+
+        
         if ($periodo == null) {
             // Buscar el ultimo periodo creado y crear uno a partir de este
-            $ultimoPeriodo = Periodo::orderBy('fecha_fin', 'DESC')->first();
-            
+            $ultimoPeriodo = Periodo::getUltimoPeriodo();
+
             $fechaInicio = new \DateTime($ultimoPeriodo->fecha_fin);
             $fechaInicio->modify("+1day");
             
@@ -40,6 +42,7 @@ class PeriodoRepository extends BaseRepository
                 'cant_dias'      => $ultimoPeriodo->cant_dias,
             ]);
             static::activarPeriodoEnBases($periodo);
+            static::generarJornadasToPeriodo($periodo);
         }
         
         return $periodo;
@@ -55,7 +58,7 @@ class PeriodoRepository extends BaseRepository
         try {
             $bases = ($base == null) ? Base::all(['id']) : [$base];
             foreach ($bases as $b) {
-                $inserts  = [
+                $inserts = [
                     'id_base'    => $b->id,
                     'id_periodo' => $periodo->id,
                     'abierto'    => 1,
@@ -64,6 +67,27 @@ class PeriodoRepository extends BaseRepository
             }
         } catch (QueryException $error) {
             Log::error($error);
+        }
+    }
+    
+    /**
+     * Genera las jornadas laborables para ese periodo
+     * @param Periodo $periodo
+     */
+    public static function generarJornadasToPeriodo(Periodo $periodo)
+    {
+        $start = new \DateTime($periodo->fecha_comienzo);
+        
+        for ($day = 1; $day <= $periodo->cant_dias; $day++) {
+            try {
+                JornadaLaborable::create([
+                    'fecha'      => $start->format('Y-m-d'),
+                    'id_periodo' => $periodo->id,
+                ]);
+                $start->modify("+1day");
+            } catch (QueryException $jornadaYaExiste) {
+                Log::error($jornadaYaExiste);
+            }
         }
     }
 }

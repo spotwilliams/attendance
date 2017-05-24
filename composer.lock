@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "4d2a163b90bdae7bdfcddca27e0ace5c",
+    "content-hash": "ed75708a5e61a724b7eedc175f264b0a",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -3042,7 +3042,7 @@
         },
         {
             "name": "yajra/laravel-datatables-oracle",
-            "version": "v6.28.1",
+            "version": "6.0.x-dev",
             "source": {
                 "type": "git",
                 "url": "https://github.com/yajra/laravel-datatables.git",
@@ -3102,7 +3102,7 @@
                 "laravel4",
                 "laravel5"
             ],
-            "time": "2017-05-05T06:58:45+00:00"
+            "time": "2017-05-05 06:58:45"
         },
         {
             "name": "zircote/swagger-php",
@@ -4600,6 +4600,7 @@
     "aliases": [],
     "minimum-stability": "stable",
     "stability-flags": {
+        "yajra/laravel-datatables-oracle": 20,
         "infyomlabs/laravel-generator": 20,
         "infyomlabs/adminlte-templates": 20,
         "infyomlabs/swagger-generator": 20,

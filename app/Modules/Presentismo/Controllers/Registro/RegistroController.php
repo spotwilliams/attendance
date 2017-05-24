@@ -3,13 +3,17 @@
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
 use Cat\Models\Agente;
+use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
+use Cat\Repositories\PeriodoRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
+use Yajra\Datatables\Facades\Datatables;
 
 class RegistroController extends AppBaseController
 {
@@ -33,9 +37,27 @@ class RegistroController extends AppBaseController
     {
         
         return view('Presentismo::registro.index')
-            ->with('agentes', $this->presentismoRepository
-                ->agentesAptos($base))
+            ->with('periodo', PeriodoRepository::getOrCreatePeriodoActivo(new \DateTime('now')))
             ->with('baseActual', $base);
+    }
+    
+    public function table(Request $request, $base)
+    {
+        $agentes = $this->presentismoRepository->agentesAptos($base);
+        $periodo = PeriodoRepository::getOrCreatePeriodoActivo(new \DateTime('now'));
+        
+        $agentesConPresentismo = $this
+            ->presentismoRepository
+            ->addPresentismosForAgentes(
+                $agentes,
+                $periodo
+            );
+        
+        return Datatables::of(new Collection($agentesConPresentismo))
+            ->filterColumn('id', function ($query, $keyword) {
+                $query->whereRaw("CONCAT(agentes.nombre,'-',agentes.apellido) like ?", ["%{$keyword}%"]);
+            })
+            ->make(true);
     }
     
     /**

@@ -3,6 +3,7 @@
 $tiposPresentismo = \Cat\Models\TipoPresentismo::all();
 
 /** @var  string $label Param del include de la vista */
+
 ?>
 
 <div class="form-group">

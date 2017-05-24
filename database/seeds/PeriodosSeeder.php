@@ -13,8 +13,8 @@ class PeriodosSeeder extends Seeder
     {
         
         $cantDías     = 15;
-//        $cantPeriodos = round(date('z') / $cantDías);
-        $cantPeriodos = 50;
+        $cantPeriodos = round(date('z') / $cantDías);
+//        $cantPeriodos = 50;
         
         $date  = new DateTime('2017-01-01');
         $date2 = new DateTime('2017-01-15');

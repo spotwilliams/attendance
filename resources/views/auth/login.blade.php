@@ -31,14 +31,14 @@
     <![endif]-->
 
 </head>
-<body class="hold-transition login-page">
+<body class="hold-transition login-page" style="background-color: rgba(243, 156, 18, 0.73)!important;">
 <div class="login-box">
     <div class="login-logo">
         <a href="{{ url('/home') }}"><b>CAT </b>Presentismo</a>
     </div>
 
     <!-- /.login-logo -->
-    <div class="login-box-body">
+    <div class="login-box-body" style="border-radius: 15px">
         <p class="login-box-msg">Inicio de sesi&oacute;n</p>
 
         <form method="post" action="{{ url('/login') }}">

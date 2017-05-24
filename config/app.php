@@ -167,6 +167,8 @@ return [
         Way\Generators\GeneratorsServiceProvider::class,
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
         Cat\Modules\ModuleServiceProvider::class,
+        Yajra\Datatables\DatatablesServiceProvider::class,
+
 
     ],
 

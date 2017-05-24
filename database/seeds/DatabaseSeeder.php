@@ -4,7 +4,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 5000;
+    const SIZE_AGENTE = 200;
     const SIZE_AREAS  = 5;
     
     /**
@@ -28,7 +28,7 @@ class DatabaseSeeder extends Seeder
             $this->call(ContratosSeeder::class);
             $this->call(DiasDisponiblesSeeder::class);
             
-            $this->call(PeriodosSeeder::class);
+//            $this->call(PeriodosSeeder::class);
         try {
         } catch (\Exception $error) {
             echo $error->getTraceAsString();
