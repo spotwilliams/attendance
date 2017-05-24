@@ -14,8 +14,8 @@ class ContratosSeeder extends Seeder
         $faker = new \Faker\Generator();
         for ($i = 1; $i < DatabaseSeeder::SIZE_AGENTE; $i++) {
             $contrato = [
-                'id_tipo_contrato'   => rand(1, 3),//rand(1, 7),
-                'id_estado_contrato' => rand(1, 3),//rand(1, 7),
+                'id_tipo_contrato'   => rand(1, 7),//rand(1, 7),
+                'id_estado_contrato' => rand(1, 7),//rand(1, 7),
                 'id_agente'          => $i,
                 'fecha_firma'        => date('Y-m-d'),
                 'fecha_comienzo'     => date('Y-m-d'),

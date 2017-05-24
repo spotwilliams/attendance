@@ -30,28 +30,45 @@ class TiposPresentismoSeeder extends Seeder
             ],
             [
                 'id'              => 3,
-                'id_padre'        => 2,
-                'codigo'          => 'MEDICO',
-                'descripcion'     => 'Ausente con permiso medico',
+                'id_padre'        => 1,
+                'codigo'          => 'MEDICO_JUSTIFICADO',
+                'descripcion'     => 'Medico justificado',
                 'color'           => '#e0930f',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
                 'id'              => 4,
                 'id_padre'        => 2,
-                'codigo'          => 'ESTUDIO',
-                'descripcion'     => 'Dias de estudio',
-                'color'           => '#0ee031',
+                'codigo'          => 'MEDICO_INJUSTIFICADO',
+                'descripcion'     => 'Medico injustificado',
+                'color'           => '#e0950f',
                 'dias_permitidos' => rand(1, 10),
             ],
             [
                 'id'              => 5,
+                'id_padre'        => 1,
+                'codigo'          => 'ESTUDIO_JUSTIFICADO',
+                'descripcion'     => 'Estudio justificado',
+                'color'           => '#0ee031',
+                'dias_permitidos' => rand(1, 10),
+            ],
+            [
+                'id'              => 6,
                 'id_padre'        => 2,
-                'codigo'          => 'JUDIO',
+                'codigo'          => 'ESTUDIO_INJUSTIFICADO',
+                'descripcion'     => 'Estudio injustificado',
+                'color'           => '#0ee131',
+                'dias_permitidos' => rand(1, 10),
+            ],
+            [
+                'id'              => 7,
+                'id_padre'        => 1,
+                'codigo'          => 'JUDIO_JUSTIFICADO',
                 'descripcion'     => 'Festividad judia',
                 'color'           => '#c7e026',
                 'dias_permitidos' => rand(1, 10),
             ],
+            
         ];
         
         foreach ($tipos as $nuevo) {
