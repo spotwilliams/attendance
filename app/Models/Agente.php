@@ -125,7 +125,7 @@ class Agente extends Model
         $diasDisponibles = $this
             ->diasDisponible()
             ->where('id_tipo_presentismo', '=', $ausencia->id)->first(['cant_dias']);
-//        dd($diasDisponibles);
+
         return $diasDisponibles->cant_dias;
     }
 }

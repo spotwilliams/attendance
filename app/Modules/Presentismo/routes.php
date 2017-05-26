@@ -22,5 +22,8 @@ Route::group(
     
         Route::post('presentismo/table/base/{base}', RegistroController::class . '@table')
             ->name('presentismoTable');
+
+        Route::post('presentismo/store/comentario', RegistroController::class . '@comentario')
+            ->name('presentismoComment');
     }
 );

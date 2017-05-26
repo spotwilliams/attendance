@@ -19,8 +19,15 @@ class Ausente extends TipoPresentismo
      */
     public function esInjustificado()
     {
-        return (strtoupper($this->codigo) === parent::INJUSTIFICADO);
+        
+        if (strtoupper($this->codigo) === parent::INJUSTIFICADO) {
+            return true;
+        } else {
+            $padre = $this->padre()->first();
+
+            return strtoupper($padre->codigo) === parent::INJUSTIFICADO;
+        }
     }
     
-
+    
 }

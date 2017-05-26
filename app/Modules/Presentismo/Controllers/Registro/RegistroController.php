@@ -8,7 +8,9 @@ use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
+use Cat\Models\Presentismo;
 use Cat\Repositories\PeriodoRepository;
+use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
@@ -66,7 +68,7 @@ class RegistroController extends AppBaseController
                         return
                             (
                                 (Str::contains(strtolower($row->nombre), strtolower($value)) ? true : false)
-                                or (Str::contains(strtolower($row->apellido), strtolower($value) ) ? true : false)
+                                or (Str::contains(strtolower($row->apellido), strtolower($value)) ? true : false)
                                 or (Str::contains(strtolower($row->cuit), strtolower($value)) ? true : false)
                             );
                     });
@@ -107,6 +109,27 @@ class RegistroController extends AppBaseController
             'message'     => session('message'),
             'agente'      => session('agente'),
             'presentismo' => session('presentismo'),
+        ], session('code'));
+        
+    }
+    
+    public function comentario(Request $request)
+    {
+        $input = $request->all();
+        $this->validate($request, ['comentario' => 'required|max:255',]);
+        $presentismo             = Presentismo::find($input['presentismo']);
+        $presentismo->comentario = $input['comentario'];
+        try {
+            $presentismo->save();
+            session()->flash('message', 'Guardado correctamente');
+            session()->flash('code', 200);
+        } catch (QueryException $e) {
+            session()->flash('message', $e->getMessage());
+            session()->flash('code', 500);
+        }
+        
+        return Response::json([
+            'message' => session('message'),
         ], session('code'));
         
     }

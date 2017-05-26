@@ -150,6 +150,9 @@
 {{-- Notify --}}
 {!! Html::script('plugins/bootstrap-notify/js/notify.min.js') !!}
 
+{{-- Helper Cat --}}
+{!! Html::script('js/helpers.js') !!}
+
 @yield('scripts')
 </body>
 </html>

@@ -85,7 +85,8 @@ class PresentismoRepository extends BaseRepository
                 $agentes[$index]->presentismos = $presentismos->get([
                     'jornadas_laborables.fecha as fecha',
                     'presentismos.id_tipo_presentismo as presentismo',
-                    'presentismos.comentario as comentario'
+                    'presentismos.comentario as comentario',
+                    'presentismos.id as id_presentismo'
                 ]);
             } catch (\Exception $error) {
             }

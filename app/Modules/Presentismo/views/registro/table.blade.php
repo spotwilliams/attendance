@@ -20,7 +20,7 @@ $idModal = 'comentarios-modal'
     @endwhile
     </thead>
 </table>
-@include('parts.modal', ['idModal' => $idModal, 'titleModal' => 'Editar comentarios del presentismo'])
+@include('parts.modal', ['idModal' => $idModal, 'titleModal' => 'Comentarios para la fecha'])
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -60,15 +60,9 @@ $idModal = 'comentarios-modal'
                              *
                              *
                              */
-                            var trActual = myParent.parents('tr')[0];
-                            var dataRow = dataTable.row(trActual);
-                            var dataActual = dataRow.data();
+                            var dataActual = datatableCellValue(myParent, dataTable);
                             var agente = dataActual.id;
-
-                            var tdActual = myParent.parents('td')[0];
-                            var idx = dataTable.cell(tdActual).index().column;
-                            var header = dataTable.column(idx).header();
-                            var fecha = $(header).data('cat');
+                            var fecha = datatableColumnHeaderValue(myParent, dataTable);//$(header).data('cat');
 
 
                             $.ajax({
@@ -82,9 +76,15 @@ $idModal = 'comentarios-modal'
                                 },
                                 success: function (xhr, other) {
                                     message(myParent, xhr.message, xhr.presentismo, 'success');
+                                    var btnComment = $(myParent).children()[1];
+                                    $(btnComment)
+                                            .addClass('btn-success')
+                                            .removeAttr('disabled')
+                                            .removeClass('btn-default');
+
                                 },
                                 error: function (xhr, other) {
-                                    message(myParent, xhr.message, xhr.presentismo, 'error');
+                                    message(myParent, xhr.responseJSON.message, xhr.presentismo, 'error');
                                 }
 
                             });
@@ -94,17 +94,20 @@ $idModal = 'comentarios-modal'
             function message(obj, message, presentismo, type) {
 
                 var ref = $(obj).children('.{{$selector}}').context;
+                var wait = 2000;
                 $(ref)
                         .prop('value', presentismo)
                         .prop('disabled', false)
                         .selectpicker('refresh');
                 $(obj).children('.overlay').remove();
 
-                $(ref).notify(message,
+                $(ref).hide();
+                var messenger = $(ref).parents('.input-group.margin')[0];
+                $(messenger).notify(message,
                         {
                             autoHide: true,
                             // if autoHide, hide after milliseconds
-                            autoHideDelay: 2000,
+                            autoHideDelay: wait,
                             position: 'top',
                             showAnimation: 'slideDown',
                             className: type,
@@ -112,6 +115,7 @@ $idModal = 'comentarios-modal'
             }
 
             function createSelect(seleccionado, comentario) {
+
                 var tipoPresentismos = {!!  \Cat\Models\TipoPresentismo::all()->toJson()!!};
                 var container = $('<div class="form-group">');
                 container.append($('<div class="input-group margin">'));
@@ -128,7 +132,8 @@ $idModal = 'comentarios-modal'
                 }
                 container.children('div').append(select);
                 var buttonClass = (comentario !== undefined ) ? 'btn-success' : 'btn-default';
-                container.children('div').append('<button type=\'button\' class=\'btn ' + buttonClass + ' dialog-comentary\'><i class=\'fa fa-comment-o\'/> </button>');
+                var buttonDisabled = (seleccionado === -1) ? ' disabled ' : '';
+                container.children('div').append('<button type=\'button\' class=\' btn ' + buttonClass + ' dialog-comentary\' ' + buttonDisabled + '><i class=\'fa fa-comment-o\'/> </button>');
                 return container;
 
             }
@@ -146,8 +151,15 @@ $idModal = 'comentarios-modal'
                 serverSide: true,
                 responsive: true,
                 scrollX: true,
-                scrollY: 500,
-                scrollCollapse: true,
+//                scrollY: 500,
+//                scrollCollapse: true,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        visible: false,
+                        searchable: false
+                    },
+                ],
                 ajax: {
                     url: url.replace('replace', baseSelect.val()),
                     method: 'POST'
@@ -172,12 +184,14 @@ $idModal = 'comentarios-modal'
                         data: function (agente) {
 
                             var presentismo = -1;
+                            var comentario = undefined;
                             for (var i = 0; i < agente.presentismos.length; i++) {
                                 if (agente.presentismos[i].fecha === '{{$fechaJson->format('Y-m-d')}}') {
                                     presentismo = agente.presentismos[i].presentismo;
+                                    comentario = agente.presentismos[i].comentario;
                                 }
                             }
-                            var element = createSelect(presentismo, agente.comentario);
+                            var element = createSelect(presentismo, comentario);
                             return element.html();
                         },
                         name: '{{$fechaJson->format('Y-m-d')}}',
@@ -210,12 +224,67 @@ $idModal = 'comentarios-modal'
              */
             function configurarButtons() {
                 $('.dialog-comentary').on('click', function () {
-                    var myParent = $(this).parent().parent();
 
-                    var trActual = myParent.parents('tr')[0];
-                    var dataRow = dataTable.row(trActual);
-                    var agente = dataRow.data();
+                    var myParent = $(this).parent().parent();
+                    var fecha = datatableColumnHeaderValue(myParent, dataTable);
+                    var agente = datatableCellValue(myParent, dataTable);
+                    var presentismoParent = $(myParent).children().children();//myParent.children('.{{$selector}}');//.val();
+                    var presentismoSelected = $(presentismoParent[0]).children('select');
+                    var presentismo = -1;
+                    var comentario = undefined;
+
+                    for (var i = 0; i < agente.presentismos.length; i++) {
+                        if (agente.presentismos[i].fecha === fecha) {
+                            presentismo = agente.presentismos[i].id_presentismo;
+                            comentario = agente.presentismos[i].comentario;
+                            break;
+                        }
+                    }
+
+
+                    $('.modal-agente').html(agente.apellido + ', ' + agente.nombre);
+                    $('.modal-cuit').html(agente.cuit);
+                    $('.modal-fecha').html(fecha);
+                    $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
+                    $('.modal-comentario').val(comentario);
                     $('#{{$idModal}}').modal();
+
+                    $('.modal-save').on('click', function () {
+                        var data = {
+                            'presentismo': presentismo,
+                            'comentario': $('.modal-comentario').val(),
+                        };
+                        $.ajax({
+                            url: '{{route('presentismoComment')}}',
+                            type: 'POST',
+                            data: data,
+                            success: function (xhr, other) {
+                                $('.modal-save').notify(xhr.message,
+                                        {
+                                            autoHide: true,
+                                            // if autoHide, hide after milliseconds
+                                            autoHideDelay: 2000,
+                                            position: 'top',
+                                            showAnimation: 'slideDown',
+                                            className: 'success'
+                                        });
+                            },
+                            error: function (xhr, other) {
+//                                console.log(xhr)
+                                var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;
+                                $('.modal-save').notify(message,
+                                        {
+                                            autoHide: true,
+                                            // if autoHide, hide after milliseconds
+                                            autoHideDelay: 2000,
+                                            position: 'top',
+                                            showAnimation: 'slideDown',
+                                            className: 'error'
+                                        });
+                            }
+                        });
+
+                    });
                 });
             }
         });
