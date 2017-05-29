@@ -39,6 +39,7 @@ $idModal = 'comentarios-modal'
             function configurarSelect() {
                 $('.{{$selector}}')
                         .selectpicker({})
+                        .off('change')
                         .on('change', function (event) {
                             /**
                              *
@@ -77,10 +78,7 @@ $idModal = 'comentarios-modal'
                                 success: function (xhr, other) {
                                     message(myParent, xhr.message, xhr.presentismo, 'success');
                                     var btnComment = $(myParent).children()[1];
-                                    $(btnComment)
-                                            .addClass('btn-success')
-                                            .removeAttr('disabled')
-                                            .removeClass('btn-default');
+                                    $(btnComment).removeAttr('disabled');
 
                                 },
                                 error: function (xhr, other) {
@@ -131,7 +129,7 @@ $idModal = 'comentarios-modal'
                             + tipoPresentismos[i].descripcion + '</option>');
                 }
                 container.children('div').append(select);
-                var buttonClass = (comentario !== undefined ) ? 'btn-success' : 'btn-default';
+                var buttonClass = ((comentario !== undefined) && (comentario !== null) ) ? 'btn-success' : 'btn-default';
                 var buttonDisabled = (seleccionado === -1) ? ' disabled ' : '';
                 container.children('div').append('<button type=\'button\' class=\' btn ' + buttonClass + ' dialog-comentary\' ' + buttonDisabled + '><i class=\'fa fa-comment-o\'/> </button>');
                 return container;
@@ -206,6 +204,7 @@ $idModal = 'comentarios-modal'
                         var column = this;
                         var input = document.createElement("input");
                         $(input).appendTo($(column.footer()).empty())
+                        //                                .off('change')
                                 .on('change', function () {
                                     column.search($(this).val()).draw();
                                 });
@@ -223,69 +222,84 @@ $idModal = 'comentarios-modal'
              *
              */
             function configurarButtons() {
-                $('.dialog-comentary').on('click', function () {
+                $('.dialog-comentary')
+                        .off('click')
+                        .on('click', function () {
 
-                    var myParent = $(this).parent().parent();
-                    var fecha = datatableColumnHeaderValue(myParent, dataTable);
-                    var agente = datatableCellValue(myParent, dataTable);
-                    var presentismoParent = $(myParent).children().children();//myParent.children('.{{$selector}}');//.val();
-                    var presentismoSelected = $(presentismoParent[0]).children('select');
-                    var presentismo = -1;
-                    var comentario = undefined;
+                            var myParent = $(this).parent().parent();
+                            var fecha = datatableColumnHeaderValue(myParent, dataTable);
+                            var agente = datatableCellValue(myParent, dataTable);
+                            var presentismoParent = $(myParent).children().children();
+                            var presentismoSelected = $(presentismoParent[2]).children('select');
+                            var comentario = undefined;
 
-                    for (var i = 0; i < agente.presentismos.length; i++) {
-                        if (agente.presentismos[i].fecha === fecha) {
-                            presentismo = agente.presentismos[i].id_presentismo;
-                            comentario = agente.presentismos[i].comentario;
-                            break;
-                        }
-                    }
-
-
-                    $('.modal-agente').html(agente.apellido + ', ' + agente.nombre);
-                    $('.modal-cuit').html(agente.cuit);
-                    $('.modal-fecha').html(fecha);
-                    $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
-                    $('.modal-comentario').val(comentario);
-                    $('#{{$idModal}}').modal();
-
-                    $('.modal-save').on('click', function () {
-                        var data = {
-                            'presentismo': presentismo,
-                            'comentario': $('.modal-comentario').val(),
-                        };
-                        $.ajax({
-                            url: '{{route('presentismoComment')}}',
-                            type: 'POST',
-                            data: data,
-                            success: function (xhr, other) {
-                                $('.modal-save').notify(xhr.message,
-                                        {
-                                            autoHide: true,
-                                            // if autoHide, hide after milliseconds
-                                            autoHideDelay: 2000,
-                                            position: 'top',
-                                            showAnimation: 'slideDown',
-                                            className: 'success'
-                                        });
-                            },
-                            error: function (xhr, other) {
-//                                console.log(xhr)
-                                var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;
-                                $('.modal-save').notify(message,
-                                        {
-                                            autoHide: true,
-                                            // if autoHide, hide after milliseconds
-                                            autoHideDelay: 2000,
-                                            position: 'top',
-                                            showAnimation: 'slideDown',
-                                            className: 'error'
-                                        });
+                            // Para buscar los posibles comentarios anteriores
+                            for (var i = 0; i < agente.presentismos.length; i++) {
+                                if (agente.presentismos[i].fecha === fecha) {
+                                    comentario = agente.presentismos[i].comentario;
+                                    break;
+                                }
                             }
+
+                            // Parte visible
+                            $('.modal-agente').html(agente.apellido + ', ' + agente.nombre);
+                            $('.modal-cuit').html(agente.cuit);
+                            $('.modal-fecha').html(fecha);
+                            $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
+                            $('.modal-comentario').val(comentario);
+                            // Hidden para ajax
+                            $('.modal-id-agente').val(agente.id);
+                            $('.modal-id-tipo-presentismo').val($(presentismoSelected).val());
+
+                            $('#{{$idModal}}').modal();
+
+
                         });
 
-                    });
-                });
+                $('.modal-save')
+                        .off('click')
+                        .on('click', function () {
+                            var fecha = $('.modal-fecha').html();
+                            var idTipoPresentismo = $('.modal-id-tipo-presentismo').val();
+                            var idAgente = $('.modal-id-agente').val();
+
+                            var data = {
+                                'id_tipo_presentismo': idTipoPresentismo,
+                                'id_agente': idAgente,
+                                'fecha': fecha,
+                                'comentario': $('.modal-comentario').val(),
+                            };
+                            $.ajax({
+                                url: '{{route('presentismoComment')}}',
+                                type: 'POST',
+                                data: data,
+                                success: function (xhr, other) {
+                                    $('.modal-save').notify(xhr.message,
+                                            {
+                                                autoHide: true,
+                                                // if autoHide, hide after milliseconds
+                                                autoHideDelay: 2000,
+                                                position: 'top',
+                                                showAnimation: 'slideDown',
+                                                className: 'success'
+                                            });
+                                },
+                                error: function (xhr, other) {
+//                                console.log(xhr)
+                                    var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;
+                                    $('.modal-save').notify(message,
+                                            {
+                                                autoHide: true,
+                                                // if autoHide, hide after milliseconds
+                                                autoHideDelay: 2000,
+                                                position: 'top',
+                                                showAnimation: 'slideDown',
+                                                className: 'error'
+                                            });
+                                }
+                            });
+
+                        });
             }
         });
 

@@ -32,6 +32,8 @@
                     <textarea class="form-control modal-comentario" rows="3" placeholder="Enter ..."></textarea>
                 </div>
             </div>
+            <input type="hidden" class="modal-id-agente"/>
+            <input type="hidden" class="modal-id-tipo-presentismo"/>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary modal-save">Save changes</button>

@@ -152,6 +152,7 @@
 
 {{-- Helper Cat --}}
 {!! Html::script('js/helpers.js') !!}
+{!! Html::script('js/defaults.js') !!}
 
 @yield('scripts')
 </body>

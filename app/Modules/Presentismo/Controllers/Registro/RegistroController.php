@@ -3,12 +3,14 @@
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
 use Cat\Models\Agente;
+use Cat\Models\JornadaLaborable;
 use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
+use Cat\Repositories\JornadaLaborableRepository;
 use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -23,9 +25,13 @@ class RegistroController extends AppBaseController
     /** @var  PresentismoRepository */
     private $presentismoRepository;
     
-    public function __construct(PresentismoRepository $presentismoRepo)
+    /** @var  JornadaLaborableRepository */
+    private $jornadaRepository;
+    
+    public function __construct(PresentismoRepository $presentismoRepo, JornadaLaborableRepository $jornadaRepo)
     {
         $this->presentismoRepository = $presentismoRepo;
+        $this->jornadaRepository     = $jornadaRepo;
         $this->middleware('auth');
         
     }
@@ -115,12 +121,20 @@ class RegistroController extends AppBaseController
     
     public function comentario(Request $request)
     {
-        $input = $request->all();
         $this->validate($request, ['comentario' => 'required|max:255',]);
-        $presentismo             = Presentismo::find($input['presentismo']);
-        $presentismo->comentario = $input['comentario'];
+        
+        $input   = $request->all();
+        $jornada = $this->jornadaRepository->getOrCreate(new \DateTime($input['fecha']));
+        
+        $presentismo = Presentismo::where('id_agente', '=', $input['id_agente'])
+            ->where('id_jornada', '=', $jornada->id)
+            ->where('id_tipo_presentismo', '=', $input['id_tipo_presentismo'])
+            ->first();
+    
         try {
+            $presentismo->comentario = $input['comentario'];
             $presentismo->save();
+            
             session()->flash('message', 'Guardado correctamente');
             session()->flash('code', 200);
         } catch (QueryException $e) {
