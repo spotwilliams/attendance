@@ -1,5 +1,7 @@
 <?php
+namespace Cat\Database\Presentismos;
 
+use Cat\Database\Seeds\DatabaseSeeder;
 use Illuminate\Database\Seeder;
 
 class PeriodosSeeder extends Seeder
@@ -16,8 +18,8 @@ class PeriodosSeeder extends Seeder
         $cantPeriodos = round(date('z') / $cantDías);
 //        $cantPeriodos = 50;
         
-        $date  = new DateTime('2017-01-01');
-        $date2 = new DateTime('2017-01-15');
+        $date  = new \DateTime('2017-01-01');
+        $date2 = new \DateTime('2017-01-15');
         for ($i = 1; $i <= $cantPeriodos; $i++) {
             //
             //
@@ -60,8 +62,8 @@ class PeriodosSeeder extends Seeder
     
     private function crearJornadas($beginPeriodo, $endPeriodo, $idPeriodo)
     {
-        $interval  = new DateInterval('P1D');
-        $daterange = new DatePeriod($beginPeriodo, $interval, $endPeriodo);
+        $interval  = new \DateInterval('P1D');
+        $daterange = new \DatePeriod($beginPeriodo, $interval, $endPeriodo);
         
         foreach ($daterange as $dateRan) {
             $jornada = \Cat\Models\JornadaLaborable::create([

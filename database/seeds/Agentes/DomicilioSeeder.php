@@ -1,4 +1,5 @@
 <?php
+namespace Cat\Database\Seeds\Agentes;
 
 use Illuminate\Database\Seeder;
 

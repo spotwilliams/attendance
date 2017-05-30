@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "content-hash": "ed75708a5e61a724b7eedc175f264b0a",
+    "content-hash": "a3b0073cecc30094ea41312b12603b59",
     "packages": [
         {
             "name": "barryvdh/laravel-ide-helper",
@@ -3039,6 +3039,69 @@
                 "environment"
             ],
             "time": "2016-09-01T10:05:43+00:00"
+        },
+        {
+            "name": "winternight/laravel-error-handler",
+            "version": "1.7",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/darkwinternight/laravel-error-handler.git",
+                "reference": "5e270e46c7c15bc47d78c6e9172237e8bc040ea1"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/darkwinternight/laravel-error-handler/zipball/5e270e46c7c15bc47d78c6e9172237e8bc040ea1",
+                "reference": "5e270e46c7c15bc47d78c6e9172237e8bc040ea1",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/contracts": "5.2.*|5.3.*",
+                "illuminate/support": "5.2.*|5.3.*",
+                "php": ">=5.6.0",
+                "psr/log": "^1.0",
+                "symfony/debug": "^2.7|^3.0",
+                "symfony/http-foundation": "^2.7|^3.0"
+            },
+            "require-dev": {
+                "filp/whoops": "^2.1"
+            },
+            "suggest": {
+                "filp/whoops": "Enables use of the debug displayer."
+            },
+            "type": "library",
+            "extra": {
+                "branch-alias": {
+                    "dev-master": "1.x-dev"
+                }
+            },
+            "autoload": {
+                "psr-4": {
+                    "Winternight\\LaravelErrorHandler\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Alexander Graf",
+                    "email": "a.graf@aetherworld.org"
+                }
+            ],
+            "description": "Error handler package for the Laravel 5 framework",
+            "homepage": "https://github.com/darkwinternight/laravel-error-handler",
+            "keywords": [
+                "ajax",
+                "debug",
+                "error",
+                "errorhandler",
+                "exception",
+                "laravel",
+                "laravel 5",
+                "whoops"
+            ],
+            "time": "2016-10-02T16:48:52+00:00"
         },
         {
             "name": "yajra/laravel-datatables-oracle",

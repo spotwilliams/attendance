@@ -1,8 +1,9 @@
 <?php
+namespace Cat\Database\Seeds\Agentes;
 
 use Illuminate\Database\Seeder;
 
-class BasesSeeder extends Seeder
+class AreasSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -11,7 +12,7 @@ class BasesSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Cat\Models\Base::class, DatabaseSeeder::SIZE_AREAS)->create();
+        factory(\Cat\Models\Area::class, \DatabaseSeeder::SIZE_AREAS)->create();
     
     }
 }

@@ -1,4 +1,5 @@
 <?php
+namespace Cat\Database\Presentismos;
 
 use Illuminate\Database\Seeder;
 

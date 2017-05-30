@@ -1,5 +1,7 @@
 <?php
+namespace Cat\Database\Presentismos;
 
+use Cat\Database\Seeds\DatabaseSeeder;
 use Illuminate\Database\Seeder;
 
 class DiasDisponiblesSeeder extends Seeder
