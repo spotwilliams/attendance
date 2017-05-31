@@ -8,13 +8,13 @@
    </section>
    <div class="content">
        @include('adminlte-templates::common.errors')
-       <div class="box box-primary">
+       <div class="box box-warning">
            <div class="box-body">
                <div class="row">
-                   {!! Form::model($agente, ['route' => ['agentes.update', $agente->id], 'method' => 'patch']) !!}
-
-                        @include('agentes.fields')
-
+                   {!! Form::model($agente, ['route' => ['agentesEdit', $agente->id], 'method' => 'post']) !!}
+{{----}}
+                        {{--@include('agentes.fields')--}}
+{{----}}
                    {!! Form::close() !!}
                </div>
            </div>

@@ -37,9 +37,11 @@ class DatabaseSeeder extends Seeder
             $this->call(Funciones::class);
             $this->call(Horarios::class);
             $this->call(Turnos::class);
-                
-            
-//            $this->call(AgentesSeeder::class);
+    
+//        $this->call(AgentesSeeder::class);
+//        $this->call(\Cat\Database\Seeds\Agentes\OperativosSeeder::class);
+
+
 //            $this->call(DomicilioSeeder::class);
 //            $this->call(ContratosSeeder::class);
 //            $this->call(DiasDisponiblesSeeder::class);

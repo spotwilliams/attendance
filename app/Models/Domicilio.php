@@ -22,6 +22,7 @@ class Domicilio extends Model
             'barrio',
             'provincia',
             'libre',
+            'id_agente'
         ];
     
     /**

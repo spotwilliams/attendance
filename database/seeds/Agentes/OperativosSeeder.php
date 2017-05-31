@@ -4,7 +4,7 @@ namespace Cat\Database\Seeds\Agentes;
 
 use Illuminate\Database\Seeder;
 
-class AgentesSeeder extends Seeder
+class OperativosSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -24,14 +24,14 @@ class AgentesSeeder extends Seeder
         for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
             
             $agente = [
-                'nombre'           => $faker->name(),
-                'apellido'         => $faker->lastName(),
-                'dni'              => rand(3000000, 50000000),
-                'fecha_nacimiento' => date('Y-m-d'),
-                'cuit'             => $faker->uuid(),
-                'estado_civil'          => 'CASADO',
+                'id_agente'  => $i,
+                'id_base'    => rand(1, \DatabaseSeeder::SIZE_AREAS),
+                'id_area'    => rand(1, \DatabaseSeeder::SIZE_AREAS),
+                'id_turno'   => rand(1, 11),
+                'id_horario' => rand(1, 44),
+                'id_funcion' => rand(1, 111),
             ];
-            \Cat\Models\Agente::create($agente);
+            \Cat\Models\Operativo::create($agente);
         }
     }
 }

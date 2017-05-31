@@ -38,7 +38,6 @@ Route::post('password/reset', '\Cat\Http\Controllers\Auth\PasswordController@res
 
 Route::get('/home', 'HomeController@index');
 
-Route::resource('agentes', 'AgenteController');
 //
 //Route::resource('areas', 'AreasController');
 //

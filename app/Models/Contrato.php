@@ -11,6 +11,16 @@ class Contrato extends Model
     
     public $table = 'contratos';
     
+    protected $fillable
+        = [
+            
+            'fecha_comienzo',
+            'id_tipo_contrato',
+            'id_estado_contrato',
+            'id_agente',
+            'id_sial',
+            'ficha',
+        ];
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

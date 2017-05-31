@@ -65,7 +65,7 @@ return [
     |
     */
     
-    'locale' => 'en',
+    'locale' => 'es',
     
     /*
     |--------------------------------------------------------------------------
@@ -168,7 +168,6 @@ return [
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
         Cat\Modules\ModuleServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
-        Winternight\LaravelErrorHandler\ServiceProvider::class,
     
     ],
     

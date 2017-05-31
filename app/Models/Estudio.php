@@ -13,6 +13,14 @@ class Estudio extends Model
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
+    protected $fillable
+        = [
+            'carrera',
+            'institucion',
+            'estado',
+            'nivel',
+            'id_agente',
+        ];
     
     /**
      * Validation rules
