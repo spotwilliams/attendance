@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateFuncionesTable extends Migration {
+class CreateGerenciasTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,13 +12,13 @@ class CreateFuncionesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('funciones', function(Blueprint $table)
+		Schema::create('gerencias', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->integer('id_padre')->nullable()->index('funcion_especifica_es_de_funcion_idx');
-			$table->string('nombre', 200);
-            $table->timestamps();
-        });
+			$table->integer('id_padre')->nullable()->index('subgerencia_es_de_gerencia_idx');
+			$table->string('nombre', 200)->index('nombre');
+			$table->timestamps();
+		});
 	}
 
 
@@ -29,7 +29,7 @@ class CreateFuncionesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('funciones');
+		Schema::drop('gerencias');
 	}
 
 }

@@ -15,31 +15,10 @@ class Area extends Model
 
 
     public $fillable = [
-        'direccion',
-        'gerencia',
-        'subgerencia'
+        'nombre',
     ];
 
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts = [
-        'id' => 'integer',
-        'direccion' => 'string',
-        'gerencia' => 'string',
-        'subgerencia' => 'string'
-    ];
-
-    /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules = [
-        
-    ];
+    
 
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany

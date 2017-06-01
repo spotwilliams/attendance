@@ -15,9 +15,7 @@ class CreateAreasTable extends Migration {
 		Schema::create('areas', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->string('direccion', 200);
-			$table->string('gerencia', 200);
-			$table->string('subgerencia', 200);
+			$table->string('nombre', 80)->index('nombre');
             $table->timestamps();
 		});
 	}

@@ -14,7 +14,7 @@ class AddForeignKeysToFuncionesTable extends Migration {
 	{
 		Schema::table('funciones', function(Blueprint $table)
 		{
-			$table->foreign('id_funcion_padre', 'funcion_especifica_es_de_funcion')->references('id')->on('funciones')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_padre', 'funcion_especifica_es_de_funcion')->references('id')->on('funciones')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 

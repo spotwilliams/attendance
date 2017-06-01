@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateFuncionesTable extends Migration {
+class CreateCargosTable extends Migration {
 
 	/**
 	 * Run the migrations.
@@ -12,12 +12,12 @@ class CreateFuncionesTable extends Migration {
 	 */
 	public function up()
 	{
-		Schema::create('funciones', function(Blueprint $table)
+		Schema::create('cargos', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->integer('id_padre')->nullable()->index('funcion_especifica_es_de_funcion_idx');
-			$table->string('nombre', 200);
+			$table->string('nombre', 80);
             $table->timestamps();
+            
         });
 	}
 
@@ -29,7 +29,7 @@ class CreateFuncionesTable extends Migration {
 	 */
 	public function down()
 	{
-		Schema::drop('funciones');
+		Schema::drop('cargos');
 	}
 
 }

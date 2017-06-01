@@ -17,6 +17,8 @@ class AddForeignKeysToOperativosTable extends Migration {
 			$table->foreign('id_agente', 'operativo_pertenece_agente')->references('id')->on('agentes')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_area', 'operativo_pertenece_area')->references('id')->on('areas')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_base', 'operativo_pertenece_base')->references('id')->on('bases')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_gerencia', 'operativo_pertenece_gerencia')->references('id')->on('gerencias')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_cargo', 'operativo_tiene_cargo')->references('id')->on('cargos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_funcion', 'operativo_tiene_funcion')->references('id')->on('funciones')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_horario', 'operativo_tiene_horario')->references('id')->on('horarios')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_turno', 'operativo_tiene_turno')->references('id')->on('turnos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
@@ -36,6 +38,8 @@ class AddForeignKeysToOperativosTable extends Migration {
 			$table->dropForeign('operativo_pertenece_agente');
 			$table->dropForeign('operativo_pertenece_area');
 			$table->dropForeign('operativo_pertenece_base');
+			$table->dropForeign('operativo_pertenece_gerencia');
+			$table->dropForeign('operativo_tiene_cargo');
 			$table->dropForeign('operativo_tiene_funcion');
 			$table->dropForeign('operativo_tiene_horario');
 			$table->dropForeign('operativo_tiene_turno');

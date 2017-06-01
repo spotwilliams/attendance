@@ -75,4 +75,21 @@ class RegistroController extends AppBaseController
         
         return $datatable->make(true);
     }
+    
+    public function show($id)
+    {
+        try {
+            $agente = Agente::findOrFail($id);
+            
+            return view('Agentes::registro.show')
+                ->with('agente', $agente);
+        } catch (\Exception $e) {
+            session()->flash('flash_notification.message', 'Se inten&oacute; acceder a informaci&oacute;n inexistente o no permitida');
+            session()->flash('flash_notification.level', 'warning');
+    
+            return view('Agentes::registro.index', ['base' => 1])->with('baseActual', 1);
+            
+        }
+        
+    }
 }

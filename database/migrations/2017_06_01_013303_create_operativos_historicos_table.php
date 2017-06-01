@@ -17,14 +17,14 @@ class CreateOperativosHistoricosTable extends Migration {
 			$table->integer('id', true);
 			$table->integer('id_agente')->nullable();
 			$table->integer('id_base')->nullable();
-			$table->integer('id_area')->nullable();
+			$table->integer('id_gerencia')->nullable();
 			$table->integer('id_turno')->nullable();
 			$table->integer('id_horario')->nullable();
-			$table->string('cargo', 60)->nullable();
 			$table->integer('id_funcion')->nullable();
+			$table->integer('id_area')->nullable();
+			$table->integer('id_cargo')->nullable();
 			$table->integer('id_user')->nullable();
-            $table->timestamps();
-        });
+		});
 	}
 
 

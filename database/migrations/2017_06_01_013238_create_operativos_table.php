@@ -15,13 +15,14 @@ class CreateOperativosTable extends Migration {
 		Schema::create('operativos', function(Blueprint $table)
 		{
 			$table->integer('id', true);
-			$table->integer('id_agente')->index('operativo_es_de_agente_idx');
+			$table->integer('id_agente')->unique('operativo_es_de_agente_idx');
 			$table->integer('id_base')->index('operativo_pertenece_base_idx');
-			$table->integer('id_area')->nullable()->index('operativo_pertenece_area_idx');
+			$table->integer('id_gerencia')->nullable()->index('operativo_pertenece_area_idx');
 			$table->integer('id_turno')->index('operativo_tiene_turno_idx');
 			$table->integer('id_horario')->index('operativo_tiene_horario_idx');
 			$table->integer('id_funcion')->index('operativo_tiene_funcion_idx');
-			$table->string('cargo', 60)->nullable();
+			$table->integer('id_area')->nullable()->index('operativo_pertenece_area_idx1');
+			$table->integer('id_cargo')->nullable()->index('operativo_tiene_cargo_idx');
             $table->timestamps();
             
         });

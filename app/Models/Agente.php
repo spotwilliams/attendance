@@ -71,9 +71,17 @@ class Agente extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function bases()
+    public function base()
     {
-        return $this->belongsTo(Base::class);
+        /** @var Operativo $operativo */
+        $operativo = $this->operativo()->first();
+        
+        return $operativo->base()->first();
+    }
+    
+    public function operativo()
+    {
+        return $this->hasOne(Operativo::class, 'id_agente');
     }
     
     /**
@@ -125,7 +133,7 @@ class Agente extends Model
         $diasDisponibles = $this
             ->diasDisponible()
             ->where('id_tipo_presentismo', '=', $ausencia->id)->first(['cant_dias']);
-
+        
         return $diasDisponibles->cant_dias;
     }
 }

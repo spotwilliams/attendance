@@ -7,6 +7,7 @@ use Cat\Models\Agente;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Laborales;
+use Cat\Modules\Agentes\Services\Registro\Operativos;
 use Cat\Modules\Agentes\Services\Registro\Personales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -50,24 +51,33 @@ class OperativosController extends AppBaseController
      */
     public function store(Request $request)
     {
+        
+        $rules = [
+            'funcion' => 'not_in:-1',
+            'base'    => 'not_in:-1',
+            'turno'   => 'not_in:-1',
+            'horario' => 'not_in:-1',
+        ];
+        
+        $this->validate($request, $rules);
+        
         $input = $request->all();
         
-        
         try {
-            $agente  = Agente::find($input['agente']);
-            $service = new Laborales($agente, $input);
+            
+            $service = new Operativos($input);
             
             $service->execute();
             
-            return redirect(route('agentesCreateOperativos', ['id' => $agente->id]));
+            return redirect(route('agentesShow', ['id' => $input['agente']]));
         } catch (\Exception $e) {
-            
+
             $validator = Validator::make(['operacion' => null], ['operation |required']);
             $validator->after(function ($validator) use ($e) {
                 $validator->errors()->add('operacion', Error::getRespuestaAdecuada($e, 'agente'));
             });
             
-            return redirect(route('agentesCreateLaborales', ['id' => $agente->id]))
+            return redirect(route('agentesCreateOperativos', ['id' => $input['agente']]))
                 ->withErrors($validator)
                 ->withInput();
         }

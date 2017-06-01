@@ -53,5 +53,13 @@ Route::group(
         
         Route::get('agentes/delete/id/{id}', RegistroController::class . '@delete')
             ->name('agentesDelete');
+        
+        
+        /**
+         * Show
+         */
+        Route::get('agentes/show/id/{id}', RegistroController::class . '@show')
+            ->name('agentesShow');
+    
     }
 );

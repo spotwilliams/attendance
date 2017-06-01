@@ -4,16 +4,23 @@ namespace Cat\Modules\Agentes\Services\Registro;
 
 
 use Cat\Models\Agente;
+use Cat\Models\Area;
+use Cat\Models\Base;
+use Cat\Models\Cargo;
 use Cat\Models\Contrato;
 use Cat\Models\DiaDisponible;
 use Cat\Models\Domicilio;
 use Cat\Models\EstadoContrato;
 use Cat\Models\Estudio;
+use Cat\Models\Funcion;
+use Cat\Models\Gerencia;
+use Cat\Models\Horario;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Operativo;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
+use Cat\Models\Turno;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\QueryException;
@@ -24,47 +31,55 @@ class Operativos extends Service
     /** @var Agente */
     protected $agente;
     
-    /** @var  string */
-    protected $ficha;
+    /** @var  Gerencia */
+    protected $gerencia;
     
-    /** @var  \DateTime */
-    protected $fecha;
+    /** @var  Area */
+    protected $area;
     
-    /** @var  EstadoContrato */
-    protected $estado;
+    /** @var  Cargo */
+    protected $cargo;
     
-    /** @var  TipoContrato */
-    protected $tipo;
+    /** @var  Funcion */
+    protected $funcion;
     
-    protected $id_sial;
+    /** @var  Base */
+    protected $base;
+    
+    /** @var  Turno */
+    protected $turno;
+    
+    /** @var  Horario */
+    protected $horario;
     
     
-    public function __construct(Agente $agente, $input)
+    public function __construct($input)
     {
-        
-        $this->agente  = $agente;
-        $this->id_sial = $input['id_sial'];
-        $this->ficha   = $input['ficha'];
-        $this->fecha   = new \DateTime($input['fecha_contrato']);
-        $this->estado  = EstadoContrato::findOrFail($input['estado_contrato']);
-        $this->tipo    = TipoContrato::findOrFail($input['tipo_contrato']);
+        $this->agente   = Agente::findOrFail($input['agente']);
+        $this->gerencia = $this->getMockModelWhenNull(Gerencia::class, $input['gerencia']);
+        $this->area     = $this->getMockModelWhenNull(Area::class, $input['area']);
+        $this->cargo    = $this->getMockModelWhenNull(Cargo::class, $input['cargo']);
+        $this->funcion  = Funcion::findOrFail($input['funcion']);
+        $this->base     = Base::findOrFail($input['base']);
+        $this->turno    = Turno::findOrFail($input['turno']);
+        $this->horario  = Horario::findOrFail($input['horario']);
     }
     
     public function execute()
     {
         
         try {
-            
             DB::beginTransaction();
-            $this->agente->save();
-            
-            Contrato::create([
-                'fecha_comienzo'     => $this->fecha->format('Y-m-d'),
-                'id_tipo_contrato'   => $this->tipo->id,
-                'id_estado_contrato' => $this->estado->id,
-                'id_agente'          => $this->agente->id,
-                'id_sial'            => $this->id_sial,
-                'ficha'              => $this->ficha,
+
+            Operativo::create([
+                'id_agente'   => $this->agente->id,
+                'id_gerencia' => $this->gerencia->id,
+                'id_base'     => $this->base->id,
+                'id_area'     => $this->area->id,
+                'id_cargo'    => $this->cargo->id,
+                'id_funcion'  => $this->funcion->id,
+                'id_turno'    => $this->turno->id,
+                'id_horario'  => $this->horario->id,
             ]);
             
             DB::commit();

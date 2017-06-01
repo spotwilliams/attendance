@@ -1,6 +1,7 @@
 <?php
 namespace Cat\Database\Seeds\Agentes;
 
+use Cat\Models\Base;
 use Illuminate\Database\Seeder;
 
 class BasesSeeder extends Seeder
@@ -12,7 +13,29 @@ class BasesSeeder extends Seeder
      */
     public function run()
     {
-        factory(\Cat\Models\Base::class, \DatabaseSeeder::SIZE_AREAS)->create();
-    
+        $bases = [
+            'Aeroparque',
+            'Araoz de la Madrid',
+            'BRD',
+            'BRD Sarmiento',
+            'BRD Tacuarí',
+            'Chacabuco',
+            'Cochabamba',
+            'Cucc',
+            'Dakota',
+            'Las Heras',
+            'Obelisco',
+            'P. Madero',
+            'Parque Vial',
+            'Piedras',
+            'Piedras',
+            'Río Cuarto',
+            'T. Obelisco',
+        ];
+        
+        foreach ($bases as $b) {
+            Base::create(['nombre' => $b]);
+        }
+        
     }
 }

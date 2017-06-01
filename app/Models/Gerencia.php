@@ -4,30 +4,27 @@ namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
-class Funcion extends Model
+class Gerencia extends Model
 {
     
-    public $table = 'funciones';
+    public $table = 'gerencias';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    
     
     public $fillable
         = [
             'nombre',
             'id_padre',
         ];
-    
-    
     public function hijas()
     {
-        return $this->hasMany(Funcion::class, 'id_padre', 'id');
+        return $this->hasMany(Gerencia::class, 'id_padre', 'id');
     }
     
     public function padre()
     {
-        return $this->belongsTo(Funcion::class, 'id_padre', 'id');
+        return $this->belongsTo(Gerencia::class, 'id_padre', 'id');
+    
     }
 }
