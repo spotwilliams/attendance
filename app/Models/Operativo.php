@@ -26,6 +26,13 @@ class Operativo extends Model
             'id_horario',
         ];
     
+    public static $rules
+        = [
+            'id_funcion' => 'not_in:-1',
+            'id_base'    => 'not_in:-1',
+            'id_turno'   => 'not_in:-1',
+            'id_horario' => 'not_in:-1',
+        ];
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -69,7 +76,7 @@ class Operativo extends Model
     {
         return $this->belongsTo(Horario::class, 'id_horario');
     }
-
+    
     public function turno()
     {
         return $this->belongsTo(Turno::class, 'id_turno');

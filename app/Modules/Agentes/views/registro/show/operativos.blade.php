@@ -4,22 +4,25 @@
 /** @var \Cat\Models\Agente $agente */
 $operativo = $agente->operativo()->first();
 
+
 /** @var \Cat\Models\Gerencia $gerencia */
-$gerencia      = $operativo->gerencia()->first();
-$gerenciaPadre = $gerencia->padre()->first();
+$gerencia       = $operativo->gerencia()->first();
+$nombreGerencia = $NombreSubgerencia = 'No posee';
+if ($gerencia !== null) {
+    $gerenciaPadre = $gerencia->padre()->first();
 
-$nombreGerencia    = $NombreSubgerencia = 'No posee';
 
-if ($gerenciaPadre !== null) {
+    if ($gerenciaPadre !== null) {
 
-    $nombreGerencia    = $gerenciaPadre->nombre;
-    $NombreSubgerencia = $gerencia->nombre;
-} else {
-
-    if (str_contains(strtolower($gerencia->nombre), 'subgerencia')) {
+        $nombreGerencia    = $gerenciaPadre->nombre;
         $NombreSubgerencia = $gerencia->nombre;
     } else {
-        $nombreGerencia    = $gerencia->nombre;
+
+        if (str_contains(strtolower($gerencia->nombre), 'subgerencia')) {
+            $NombreSubgerencia = $gerencia->nombre;
+        } else {
+            $nombreGerencia = $gerencia->nombre;
+        }
     }
 }
 
@@ -58,19 +61,20 @@ $turno = $operativo->turno()->first();
         </tr>
         <tr>
             <th>Area:</th>
-            <td>{{$area->nombre}}</td>
+            <td>{{isset($area->nombre)?$area->nombre:'No posee'}}</td>
         </tr>
         <tr>
             <th>Cargo:</th>
-            <td>{{$cargo->nombre}}</td>
+            <td>{{isset($cargo->nombre)?$cargo->nombre:'No posee'}}</td>
         </tr>
         <tr>
             <th>Funci&oacute;n:</th>
-            <td>{{$funcionPadre->nombre}}</td>
+            <td>{{isset($funcionPadre->nombre)?$funcionPadre->nombre:'No posee'}}</td>
         </tr>
         <tr>
             <th>Funci&oacute;n espec&iacute;fica:</th>
-            <td>{{$funcion->nombre}}</td>
+            <td>{{isset($funcion->nombre)?$funcion->nombre:'No posee'}}</td>
+
         </tr>
 
         <tr>

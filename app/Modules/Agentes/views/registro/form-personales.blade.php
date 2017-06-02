@@ -1,4 +1,4 @@
-{!! Form::open(['route' => 'agentesStorePersonales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+{!! Form::hidden('id', null, ['class' => 'form-control']) !!}
 
 <div class="form-group">
     <div class="progress-group col-sm-8 col-sm-offset-2">
@@ -74,50 +74,92 @@
     </div>
 </div>
 
+<div class="form-group @if($errors->has('telefono')) has-error @endif">
+    {!! Form::label('telefono', 'Telefono de contacto', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono'))
+            <span class="help-block">{{$errors->first('telefono')}}</span>
+        @endif
+    </div>
+</div>
 
+
+<div class="form-group @if($errors->has('estado_civil')) has-error @endif">
+    {!! Form::label('estado_civil', 'Estado Civil', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::select('estado_civil',
+         ['CASADO'=> 'Casado',
+         'SOLTERO' => 'Soltero',
+          'VIUDO' => 'Viudo',
+          'DIVORCIADO' => 'Divorciado'], null, ['class' => 'form-control']) !!}
+    </div>
+</div>
 {{-- Estudios --}}
+<?php
+$data = [];
+if (isset($agente)) {
+    $data = [
+            'model' => $agente,
+    ];
+}
+if (!empty(session()->getOldInput())) {
+    $data = [
+            'session' => session()->getOldInput(),
+    ];
+}
+$estudios = \Cat\Helpers\HtmlCustoms::getEstudiosArray($data);
+$control = 0;
+?>
 <div class="form-group">
     {!! Form::label('estudios', 'Estudios', ['class' => 'col-sm-2 control-label']) !!}
 
     <div class="panel panel-default col-sm-8">
-        <div class="panel-body estudiosWrapper">
-            <div class="form-group estudiosTemplate" id="estudiosTemplate">
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="Carrera" name="estudio[carrera][]">
-                </div>
-                <div class="col-sm-3">
-                    <input type="text" class="form-control" placeholder="Instituci&oacute;n" name="estudio[institucion][]">
+        @foreach($estudios  as $est)
 
-                </div>
+            <?php $control++;?>
+                <input type="hidden" class="form-control" value="{{$est['id']}}" placeholder="Carrera" name="estudio[id][]">
 
-                <div class="col-sm-2">
-                    <select name="estudio[nivelestudio][]" class="form-control">
-                        <option value="SECUNDARIO">Secundario</option>
-                        <option value="TERCIARIO">Terciario</option>
-                        <option value="UNIVERSITARIO">Universitario</option>
-                        <option value="POSGRADO">Posgrado</option>
-                        <option value="MASTER">Master</option>
-                        <option value="DOCTORADO">Doctorado</option>
-                        <option value="OTRO">Otro</option>
-                    </select>
-                </div>
-                <div class="col-sm-2">
-                    <select name="estudio[estado][]" class="form-control">
-                        <option value="CURSANDO">Cursando</option>
-                        <option value="ABANDONADO">Dej&oacute;</option>
-                        <option value="RECIBIDO">Recibido</option>
-                    </select>
-                </div>
-                <div class="col-xs-2">
-                    <button type="button" class="btn btn-success addButton">
-                        <i class="fa fa-plus"></i>
-                    </button>
-                    <button type="button" class="btn btn-danger removeButton hidden">
-                        <i class="fa fa-remove"></i>
-                    </button>
+            <div class="panel-body estudiosWrapper">
+                <div class="form-group estudiosTemplate" id="estudiosTemplate">
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="Carrera" name="estudio[carrera][]">
+                    </div>
+                    <div class="col-sm-3">
+                        <input type="text" class="form-control" value="{{$est['institucion']}}" placeholder="Instituci&oacute;n"
+                               name="estudio[institucion][]">
+
+                    </div>
+
+                    <div class="col-sm-2">
+                        <select name="estudio[nivelestudio][]" class="form-control">
+                            <option value="SECUNDARIO" {{$est['nivel']=='SECUNDARIO'? 'selected': ''}}>Secundario</option>
+                            <option value="TERCIARIO" {{$est['nivel']=='TERCIARIO'? 'selected': ''}}>Terciario</option>
+                            <option value="UNIVERSITARIO" {{$est['nivel']=='UNIVERSITARIO'? 'selected': ''}}>Universitario</option>
+                            <option value="POSGRADO" {{$est['nivel']=='POSGRADO'? 'selected': ''}}>Posgrado</option>
+                            <option value="MASTER" {{$est['nivel']=='MASTER'? 'selected': ''}}>Master</option>
+                            <option value="DOCTORADO" {{$est['nivel']=='DOCTORADO'? 'selected': ''}}>Doctorado</option>
+                            <option value="OTRO" {{$est['nivel']=='OTRO'? 'selected': ''}}>Otro</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <select name="estudio[estado][]" class="form-control">
+                            <option value="CURSANDO">Cursando</option>
+                            <option value="ABANDONADO">Dej&oacute;</option>
+                            <option value="RECIBIDO">Recibido</option>
+                        </select>
+                    </div>
+                    <div class="col-sm-2">
+                        <button type="button" class="btn btn-success addButton {{$control == 1? '' : 'hidden'}}">
+                            <i class="fa fa-plus"></i>
+                        </button>
+                        <button type="button" class="btn btn-danger removeButton {{$control == 1? 'hidden':''}}">
+                            <i class="fa fa-remove"></i>
+                        </button>
+                    </div>
                 </div>
             </div>
-        </div>
+        @endforeach
     </div>
 
 </div>
@@ -126,53 +168,92 @@
 {{-- Domicilios --}}
 <div class="form-group">
     {!! Form::label('domicilio', 'Domicilio', ['class' => 'col-sm-2 control-label']) !!}
-
+    {{--{!! dd() !!}--}}
+    <?php
+    $data = [];
+    if (isset($agente)) {
+        $data = [
+                'model' => $agente,
+        ];
+    }
+    if (!empty(session()->getOldInput())) {
+        $data = [
+                'session' => session()->getOldInput(),
+        ];
+    }
+    $domicilios = \Cat\Helpers\HtmlCustoms::getDomiciliosArray($data);
+    $control = 0;
+    ?>
     <div class="panel panel-default col-sm-8">
-        <div class="panel-body domiciliosWrapper">
-            <div class="domiciliosTemplate" id="domiciliosTemplate">
-                <div class="form-group">
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Calle" name="domicilio[calle][]">
+        @foreach($domicilios as $dom)
+            <?php $control++;?>
+                <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera" name="domicilio[id][]">
+
+                <div class="panel-body domiciliosWrapper">
+                <div class="domiciliosTemplate" id="domiciliosTemplate">
+                    <div class="form-group">
+                        <div class="col-sm-6">
+                            <input type="text" class="form-control" value="{{$dom['calle']}}" placeholder="Calle"
+                                   name="domicilio[calle][]">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="{{$dom['numero']}}"
+                                   placeholder="N&uacute;mero"
+                                   name="domicilio[numero][]">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="{{$dom['departamento']}}"
+                                   placeholder="Departamento"
+                                   name="domicilio[departamento][]">
+                        </div>
+                        <div class="col-sm-2">
+                            <input type="text" class="form-control" value="{{$dom['piso']}}" placeholder="Piso"
+                                   name="domicilio[piso][]">
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="N&uacute;mero" name="domicilio[numero][]">
+
+                    <div class="form-group">
+
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" value="{{$dom['barrio']}}" placeholder="Barrio"
+                                   name="domicilio[barrio][]">
+                        </div>
+
+                        <div class="col-sm-5">
+                            <input type="text" class="form-control" value="{{$dom['provincia']}}"
+                                   placeholder="Provincia"
+                                   name="domicilio[provincia][]">
+                        </div>
+
+
+                        <div class="col-sm-2">
+                            <select name="domicilio[constituido][]" class="form-control">
+                                <option value="1" {{$dom['constituido']==1? 'selected': ''}}>Constituido</option>
+                                <option value="0" {{$dom['constituido']==0? 'selected': ''}}>Nominal</option>
+                            </select>
+                        </div>
+
+
                     </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Departamento" name="domicilio[departamento][]">
+                    <div class="row">
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" value="{{$dom['libre']}}" placeholder="Otro"
+                                   name="domicilio[libre][]">
+                        </div>
+                        <div class="col-sm-2">
+                            <button type="button" class="btn btn-success addButton {{$control == 1? '' : 'hidden'}}">
+                                <i class="fa fa-plus"></i>
+                            </button>
+                            <button type="button" class="btn btn-danger removeButton {{$control == 1? 'hidden':''}}">
+                                <i class="fa fa-remove"></i>
+                            </button>
+                        </div>
                     </div>
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Piso" name="domicilio[piso][]">
-                    </div>
+                    <hr>
                 </div>
-
-                <div class="form-group">
-
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Barrio" name="domicilio[barrio][]">
-                    </div>
-
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Provincia" name="domicilio[provincia][]">
-                    </div>
-
-                    <div class="col-sm-3">
-                        <input type="text" class="form-control" placeholder="Otro" name="domicilio[otro][]">
-                    </div>
-
-                    <div class="col-sm-3">
-                        <button type="button" class="btn btn-success addButton">
-                            <i class="fa fa-plus"></i>
-                        </button>
-                        <button type="button" class="btn btn-danger removeButton hidden">
-                            <i class="fa fa-remove"></i>
-                        </button>
-                    </div>
-                </div>
-                <hr>
             </div>
-        </div>
+        @endforeach
     </div>
-
 </div>
 
 
@@ -181,7 +262,7 @@
         {!! Form::submit('Siguiente', ['class' => 'btn btn-primary']) !!}
     </div>
 </div>
-{!! Form::close() !!}
+
 
 
 

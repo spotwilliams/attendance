@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Agentes\Services\Registro;
+namespace Cat\Modules\Agentes\Services\Registro\Update;
 
 
 use Cat\Models\Agente;
@@ -53,16 +53,17 @@ class Operativos extends Service
     protected $horario;
     
     
-    public function __construct($input)
+    public function __construct($agente, $input)
     {
+        
         $this->agente   = Agente::findOrFail($input['agente']);
-        $this->gerencia = $this->getMockModelWhenNull(Gerencia::class, $input['gerencia']);
-        $this->area     = $this->getMockModelWhenNull(Area::class, $input['area']);
-        $this->cargo    = $this->getMockModelWhenNull(Cargo::class, $input['cargo']);
-        $this->funcion  = Funcion::findOrFail($input['funcion']);
-        $this->base     = Base::findOrFail($input['base']);
-        $this->turno    = Turno::findOrFail($input['turno']);
-        $this->horario  = Horario::findOrFail($input['horario']);
+        $this->gerencia = $this->getMockModelWhenNull(Gerencia::class, $input['id_gerencia']);
+        $this->area     = $this->getMockModelWhenNull(Area::class, $input['id_area']);
+        $this->cargo    = $this->getMockModelWhenNull(Cargo::class, $input['id_cargo']);
+        $this->funcion  = Funcion::findOrFail($input['id_funcion']);
+        $this->base     = Base::findOrFail($input['id_base']);
+        $this->turno    = Turno::findOrFail($input['id_turno']);
+        $this->horario  = Horario::findOrFail($input['id_horario']);
     }
     
     public function execute()
@@ -70,17 +71,19 @@ class Operativos extends Service
         
         try {
             DB::beginTransaction();
-
-            Operativo::create([
-                'id_agente'   => $this->agente->id,
-                'id_gerencia' => $this->gerencia->id,
-                'id_base'     => $this->base->id,
-                'id_area'     => $this->area->id,
-                'id_cargo'    => $this->cargo->id,
-                'id_funcion'  => $this->funcion->id,
-                'id_turno'    => $this->turno->id,
-                'id_horario'  => $this->horario->id,
-            ]);
+            
+            $this->agente
+                ->operativo()
+                ->first()
+                ->update([
+                    'id_gerencia' => $this->gerencia->id,
+                    'id_base'     => $this->base->id,
+                    'id_area'     => $this->area->id,
+                    'id_cargo'    => $this->cargo->id,
+                    'id_funcion'  => $this->funcion->id,
+                    'id_turno'    => $this->turno->id,
+                    'id_horario'  => $this->horario->id,
+                ]);
             
             DB::commit();
             

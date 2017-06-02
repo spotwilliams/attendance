@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Agentes\Repositories;
 
+use Cat\Models\Agente;
 use Cat\Models\Base;
 use InfyOm\Generator\Common\BaseRepository;
 
@@ -9,14 +10,14 @@ class AgenteRepository extends BaseRepository
 {
     public function model()
     {
-        return Base::class;
+        return Agente::class;
     }
     
     
     public function getAgentesByBase($idBase)
     {
         /** @var Base $base */
-        $base    = Base::find($idBase)->first();
+        $base    = Base::find($idBase);
         $agentes = [];
         
         if ($base !== null) {

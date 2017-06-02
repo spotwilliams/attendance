@@ -66,11 +66,13 @@ class RegistroController extends AppBaseController
         });
         
         $datatable->addColumn('action', function ($agente) {
-            $edit   = route('agentesEdit', ['id' => $agente->id]);
-            $delete = route('agentesDelete', ['id' => $agente->id]);
+            $edit   = route('agentesEditPersonales', ['id' => $agente->id]);
+            $delete = route('agentesDeletePersonales', ['id' => $agente->id]);
+            $show   = route('agentesShow', ['id' => $agente->id]);
             
             return "<a href=\"$edit\" class=\"btn btn-primary\"><i class=\"fa fa-edit\"></i></a>
-            <a href=\"$delete\" class=\"btn btn-danger\"><i class=\"fa fa-eraser\"></i></a>";
+<!--            <a href=\"$delete\" class=\"btn btn-danger\"><i class=\"fa fa-eraser\"></i></a> -->
+            <a href=\"$show\" class=\"btn btn-success\"><i class=\"fa fa-eye\"></i></a>";
         });
         
         return $datatable->make(true);
@@ -84,9 +86,10 @@ class RegistroController extends AppBaseController
             return view('Agentes::registro.show')
                 ->with('agente', $agente);
         } catch (\Exception $e) {
-            session()->flash('flash_notification.message', 'Se inten&oacute; acceder a informaci&oacute;n inexistente o no permitida');
+            session()->flash('flash_notification.message',
+                'Se inten&oacute; acceder a informaci&oacute;n inexistente o no permitida');
             session()->flash('flash_notification.level', 'warning');
-    
+            
             return view('Agentes::registro.index', ['base' => 1])->with('baseActual', 1);
             
         }

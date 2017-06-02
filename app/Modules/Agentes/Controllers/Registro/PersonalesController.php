@@ -6,7 +6,8 @@ use Cat\Handlers\Error;
 use Cat\Models\Agente;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Modules\Agentes\Services\Registro\Personales;
+use Cat\Modules\Agentes\Services\Registro\Store\Personales as Store;
+use Cat\Modules\Agentes\Services\Registro\Update\Personales as Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
@@ -48,38 +49,22 @@ class PersonalesController extends AppBaseController
     public function store(Request $request)
     {
         $input = $request->all();
-        $rules = [
-            'nombre'           => 'required|max:255',
-            'apellido'         => 'required|max:255',
-            'fecha_nacimiento' => 'required',
-            'cuit'             => 'required',
-            'dni'              => 'required',
-            'email'            => 'required|email',
+        $this->validate($request, Agente::$rules);
         
-        ];
-        $this->validate($request, $rules);
-        
-        
-        $agente  = new Agente($input);
-        $service = new Personales($agente, $input['domicilio'], $input['estudio']);
+        $agente = new Agente($input);
         
         try {
+            $service = new Store($agente, $input['domicilio'], $input['estudio']);
             $service->execute();
             
             return redirect(route('agentesCreateLaborales', ['id' => $agente->id]));
         } catch (\Exception $e) {
-            
-            $validator = Validator::make(['operacion' => null], ['operation |required']);
-            $validator->after(function ($validator) use ($e) {
-                $validator->errors()->add('operacion', Error::getRespuestaAdecuada($e, 'agente'));
-            });
 
-
-//            $validator->errors->add('operacion', Error::getRespuestaAdecuada($e));
-            
+            Flash::error('No se pudo guadar los datos personales: ' . $e->getMessage());
+    
             return redirect(route('agentesCreatePersonales'))
-                ->withErrors($validator)
                 ->withInput();
+            
         }
         
         
@@ -97,39 +82,54 @@ class PersonalesController extends AppBaseController
     {
         $agente = Agente::find($id);
         
-        
         if (empty($agente)) {
             Flash::error('Agente no encontrado');
             
-            return redirect(route('Agentes::registro.index'));
+            return redirect(route('agentesCreatePersonales'));
         }
         
-        return view('Agentes::registro.edit')->with('agente', $agente);
+        return view('Agentes::registro.edit')
+            ->with('agente', $agente)
+            ->with('tab', 'personales');
     }
     
     /**
      * Update the specified Presentismo in storage.
      *
-     * @param  int $id
-     * @param UpdatePresentismoRequest $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function update($id, UpdatePresentismoRequest $request)
+    public function update(Request $request)
     {
-        $presentismo = $this->agenteRepository->findWithoutFail($id);
+        $this->validate($request, Agente::$rules);
+        $input  = $request->all();
+        $agente = Agente::find($input['id']);
         
-        if (empty($presentismo)) {
-            Flash::error('Presentismo not found');
+        if (empty($agente)) {
+            Flash::error('Agente no encontrado');
             
-            return redirect(route('Presentismo::registro.index'));
+            return redirect(route('agentesIndex', ['base', 1]));
         }
         
-        $presentismo = $this->agenteRepository->update($request->all(), $id);
+        try {
+
+            $service = new Update($agente, $input);
+            $service->execute();
+            Flash::success('Datos personales actualizados correctamente.');
+            
+            return redirect(route('agentesEditLaborales', ['id' => $agente->id]));
+            
+            
+        } catch (\Exception $e) {
+            
+            Flash::error('No se pudo actualizar los datos personales: ' . $e->getMessage());
+            
+            return redirect(route('agentesEditPersonales', ['id' => $agente->id]));
+            
+        }
         
-        Flash::success('Presentismo updated successfully.');
         
-        return redirect(route('Presentismo::registro.index'));
     }
     
     /**

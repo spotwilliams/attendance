@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Agentes\Services\Registro;
+namespace Cat\Modules\Agentes\Services\Registro\Store;
 
 
 use Cat\Models\Agente;
@@ -44,11 +44,13 @@ class Personales extends Service
             for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
                 Domicilio::create([
                     'calle'        => $this->domicilios['calle'][$i],
+                    'libre'        => $this->domicilios['libre'][$i],
                     'numero'       => $this->domicilios['numero'][$i],
                     'departamento' => $this->domicilios['departamento'][$i],
                     'piso'         => $this->domicilios['piso'][$i],
                     'barrio'       => $this->domicilios['barrio'][$i],
                     'provincia'    => $this->domicilios['provincia'][$i],
+                    'constituido'    => $this->domicilios['constituido'][$i],
                     'id_agente'    => $this->agente->id,
                 ]);
             }

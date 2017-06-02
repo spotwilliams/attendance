@@ -15,6 +15,8 @@
 
             --}}
             <div class="box-body">
+                @include('flash::message')
+
                 <div class="nav-tabs-custom">
                     <ul class="nav nav-tabs">
                         @if($tab === 'personales')
@@ -63,19 +65,25 @@
 
                         @if($tab === 'personales')
                             <div class="tab-pane  active" id="personales">
-                                @include('Agentes::registro.form-personales')
+                                {!! Form::open(['route' => 'agentesStorePersonales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                                    @include('Agentes::registro.form-personales')
+                                {!! Form::close() !!}
                             </div>
                         @endif
                         {{-- LABORALES --}}
                         @if($tab === 'laborales')
                             <div class="tab-pane active" id="laborales">
-                                @include('Agentes::registro.form-laborales')
+                                {!! Form::open(['route' => 'agentesStoreLaborales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                                    @include('Agentes::registro.form-laborales')
+                                {!! Form::close() !!}
                             </div>
                         @endif
                         {{-- OPERATIVOS --}}
                         @if($tab === 'operativos')
                             <div class="tab-pane active" id="operativos">
-                                @include('Agentes::registro.form-operativos')
+                                {!! Form::open(['route' => 'agentesStoreOperativos', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                                    @include('Agentes::registro.form-operativos')
+                                {!! Form::close() !!}
                             </div>
                         @endif
                     </div>

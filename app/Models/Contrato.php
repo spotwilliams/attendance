@@ -13,13 +13,23 @@ class Contrato extends Model
     
     protected $fillable
         = [
-            
-            'fecha_comienzo',
+            'fecha_ingreso',
             'id_tipo_contrato',
             'id_estado_contrato',
             'id_agente',
             'id_sial',
             'ficha',
+        ];
+    
+    public static $rules
+        = [
+            'fecha_ingreso'      => 'required|date',
+            'id_tipo_contrato'   => 'not_in:-1',
+            'id_estado_contrato' => 'not_in:-1',
+            //            'id_agente'          => 'required',
+            //            'id_sial'            => 'required',
+            //            'ficha'              => 'required',
+        
         ];
     
     /**

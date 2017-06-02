@@ -1,0 +1,94 @@
+<?php
+
+namespace Cat\Modules\Agentes\Services\Registro\Store;
+
+
+use Cat\Models\Agente;
+use Cat\Models\Area;
+use Cat\Models\Base;
+use Cat\Models\Cargo;
+use Cat\Models\Contrato;
+use Cat\Models\DiaDisponible;
+use Cat\Models\Domicilio;
+use Cat\Models\EstadoContrato;
+use Cat\Models\Estudio;
+use Cat\Models\Funcion;
+use Cat\Models\Gerencia;
+use Cat\Models\Horario;
+use Cat\Models\JornadaLaborable;
+use Cat\Models\Operativo;
+use Cat\Models\Presentismo;
+use Cat\Models\TipoContrato;
+use Cat\Models\TipoPresentismo;
+use Cat\Models\Turno;
+use Cat\Modules\Service;
+use Cat\Repositories\JornadaLaborableRepository;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+
+class Operativos extends Service
+{
+    /** @var Agente */
+    protected $agente;
+    
+    /** @var  Gerencia */
+    protected $gerencia;
+    
+    /** @var  Area */
+    protected $area;
+    
+    /** @var  Cargo */
+    protected $cargo;
+    
+    /** @var  Funcion */
+    protected $funcion;
+    
+    /** @var  Base */
+    protected $base;
+    
+    /** @var  Turno */
+    protected $turno;
+    
+    /** @var  Horario */
+    protected $horario;
+    
+    
+    public function __construct($input)
+    {
+        $this->agente   = Agente::findOrFail($input['agente']);
+        $this->gerencia = $this->getMockModelWhenNull(Gerencia::class, $input['id_gerencia']);
+        $this->area     = $this->getMockModelWhenNull(Area::class, $input['id_area']);
+        $this->cargo    = $this->getMockModelWhenNull(Cargo::class, $input['id_cargo']);
+        $this->funcion  = Funcion::findOrFail($input['id_funcion']);
+        $this->base     = Base::findOrFail($input['id_base']);
+        $this->turno    = Turno::findOrFail($input['id_turno']);
+        $this->horario  = Horario::findOrFail($input['id_horario']);
+    }
+    
+    public function execute()
+    {
+        
+        try {
+            DB::beginTransaction();
+
+            Operativo::create([
+                'id_agente'   => $this->agente->id,
+                'id_gerencia' => $this->gerencia->id,
+                'id_base'     => $this->base->id,
+                'id_area'     => $this->area->id,
+                'id_cargo'    => $this->cargo->id,
+                'id_funcion'  => $this->funcion->id,
+                'id_turno'    => $this->turno->id,
+                'id_horario'  => $this->horario->id,
+            ]);
+            
+            DB::commit();
+            
+            return $this->agente;
+        } catch (QueryException $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+    
+}

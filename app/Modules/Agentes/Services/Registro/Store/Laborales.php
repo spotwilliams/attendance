@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Agentes\Services\Registro;
+namespace Cat\Modules\Agentes\Services\Registro\Store;
 
 
 use Cat\Models\Agente;
@@ -45,9 +45,9 @@ class Laborales extends Service
         $this->agente  = $agente;
         $this->id_sial = $input['id_sial'];
         $this->ficha   = $input['ficha'];
-        $this->fecha   = new \DateTime($input['fecha_contrato']);
-        $this->estado  = EstadoContrato::findOrFail($input['estado_contrato']);
-        $this->tipo    = TipoContrato::findOrFail($input['tipo_contrato']);
+        $this->fecha   = new \DateTime($input['fecha_ingreso']);
+        $this->estado  = EstadoContrato::findOrFail($input['id_estado_contrato']);
+        $this->tipo    = TipoContrato::findOrFail($input['id_tipo_contrato']);
     }
     
     public function execute()
@@ -59,7 +59,7 @@ class Laborales extends Service
             $this->agente->save();
             
             Contrato::create([
-                'fecha_comienzo'     => $this->fecha->format('Y-m-d'),
+                'fecha_ingreso'      => $this->fecha->format('Y-m-d'),
                 'id_tipo_contrato'   => $this->tipo->id,
                 'id_estado_contrato' => $this->estado->id,
                 'id_agente'          => $this->agente->id,

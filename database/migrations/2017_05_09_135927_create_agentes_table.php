@@ -21,11 +21,11 @@ class CreateAgentesTable extends Migration
             $table->string('dni', 60)->unique('dni_index');
             $table->date('fecha_nacimiento');
             $table->string('email', 100);
+            $table->string('telefono', 100);
             $table->string('cuit', 45)->unique('cuit_index');
     
             // Nullables
             $table->enum('estado_civil', ['CASADO', 'SOLTERO', 'DIVORCIADO', 'VIUDO'])->nullable();
-            $table->string('celular')->nullable();
             
             $table->timestamps();
         });

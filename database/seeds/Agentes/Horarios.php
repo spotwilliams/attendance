@@ -58,7 +58,6 @@ class Horarios extends Seeder
             ['hora_entrada' => '23:00', 'hora_salida' => '06:00'],
             ['hora_entrada' => 'EXIMIDO', 'hora_salida' => 'EXIMIDO'],
             ['hora_entrada' => 'ROTATIVO', 'hora_salida' => 'ROTATIVO'],
-            ['hora_entrada' => '', 'hora_salida' => ''],
         ];
         
         foreach ($horarios as $h) {

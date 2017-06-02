@@ -1,4 +1,5 @@
-{!! Form::open(['route' => 'agentesStoreLaborales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+{!! Form::hidden('id', null, ['class' => 'form-control']) !!}
+
 <div class="form-group">
     <div class="progress-group col-sm-8 col-sm-offset-2">
         <span class="progress-text">Paso 2</span>
@@ -24,33 +25,49 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label class="col-sm-2 control-label">Fecha de comienzo</label>
+<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
+    <label class="col-sm-2 control-label">Fecha de ingreso</label>
     <div class="col-sm-8">
-        {!! Form::date('fecha_contrato', null, ['class' => 'form-control']) !!}
+        {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
+        @if($errors->has('fecha_ingreso'))
+            <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
+        @endif
+    </div>
+</div>
+
+<?php
+$tipos[-1] = 'Seleccione';
+foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est) {
+    $tipos[$est['id']] = $est['descripcion'];
+}
+?>
+
+<div class="form-group @if($errors->has('id_tipo_contrato')) has-error @endif">
+    <label class="col-sm-2 control-label">Modalidad contractual</label>
+    <div class="col-sm-8">
+        {!! Form::select('id_tipo_contrato',  $tipos, null, ['class' => 'form-control']) !!}
+        @if($errors->has('id_tipo_contrato'))
+            <span class="help-block">{{$errors->first('id_tipo_contrato')}}</span>
+        @endif
     </div>
 </div>
 
 
-<div class="form-group">
-    <label class="col-sm-2 control-label">Tipo de contrato</label>
-    <div class="col-sm-8">
-        <select name="tipo_contrato" class="form-control">
-            @foreach(\Cat\Models\TipoContrato::all() as $tContrato)
-                <option value="{{$tContrato->id}}">{{$tContrato->descripcion}}</option>
-            @endforeach
-        </select>
-    </div>
-</div>
+<?php
+$estados[-1] = 'Seleccione';
+foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $est) {
+$estados[$est['id']] = $est['descripcion'];
+}
+?>
 
-<div class="form-group">
+
+<div class="form-group @if($errors->has('id_estado_contrato')) has-error @endif">
     <label class="col-sm-2 control-label">Estado de contrato</label>
     <div class="col-sm-8">
-        <select name="estado_contrato" class="form-control">
-            @foreach(\Cat\Models\EstadoContrato::all() as $eContrato)
-                <option value="{{$eContrato->id}}">{{$eContrato->descripcion}}</option>
-            @endforeach
-        </select>
+        {!! Form::select('id_estado_contrato',  $estados, null, ['class' => 'form-control']) !!}
+        @if($errors->has('id_estado_contrato'))
+            <span class="help-block">{{$errors->first('id_estado_contrato')}}</span>
+        @endif
     </div>
 </div>
 <div class="form-group">
@@ -58,8 +75,6 @@
         {!! Form::submit('Siguiente', ['class' => 'btn btn-primary']) !!}
     </div>
 </div>
-
-{!! Form::close() !!}
 
 @section('scripts')
     <script type="text/javascript">

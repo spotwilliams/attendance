@@ -1,5 +1,4 @@
-{!! Form::open(['route' => 'agentesStoreOperativos', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-
+{!! Form::hidden('id', null, ['class' => 'form-control']) !!}
 <div class="form-group">
     <div class="progress-group col-sm-8 col-sm-offset-2">
         <div class="progress-group">
@@ -15,119 +14,141 @@
 
 <input type="hidden" name="agente" value="{{$agente}}">
 
-<?php $gerencia = \Cat\Models\Gerencia::whereNull('id_padre')->get();?>
+<?php
+$gerencias = [-1 => 'Seleccione...'];
+
+foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $geren) {
+    /** @var \Cat\Models\Gerencia $geren */
+    /** @var \Cat\Models\Gerencia $subgerencia */
+    $gerencias[$geren->nombre] = [
+            $geren->id => $geren->nombre
+    ];
+
+    foreach ($geren->hijas()->get(['id', 'nombre']) as $subgerencia) {
+        $gerencias[$geren->nombre] [$subgerencia->id] = $subgerencia->nombre;
+    }
+}
+
+?>
 
 <div class="form-group">
     <label class="col-sm-2 control-label">Gerencia/Subgerencia</label>
     <div class="col-sm-8">
-        <select name="gerencia" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
-            @foreach($gerencia as $g)
-                <optgroup label="{{$g->nombre}}">
-                    <option value="{{$g->id}}">{{$g->nombre}}</option>
-                    @foreach($g->hijas()->get() as $subgerencia)
-                        <option value="{{$subgerencia->id}}">{{$subgerencia->nombre}}</option>
-                    @endforeach
-                </optgroup>
-            @endforeach
-        </select>
+        {!! Form::select('id_gerencia',  $gerencias, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
     </div>
 </div>
+
+<?php
+$areas = [-1 => 'Seleccione...'];
+
+foreach (\Cat\Models\Area::all() as $a) {
+    /** @var \Cat\Models\Area $a */
+    $areas[$a->id] = $a->nombre;
+}
+
+?>
 
 
 <div class="form-group">
     <label class="col-sm-2 control-label">&Aacute;rea</label>
     <div class="col-sm-8">
-        <select name="area" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
-            @foreach(\Cat\Models\Area::all() as $a)
-                <option value="{{$a->id}}">{{$a->nombre}}</option>
-            @endforeach
-        </select>
+        {!! Form::select('id_area',  $areas, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+
     </div>
 </div>
 
+<?php
+$cargos = [-1 => 'Seleccione...'];
+
+foreach (\Cat\Models\Cargo::all() as $c) {
+    /** @var \Cat\Models\Area $a */
+    $cargos[$c->id] = $c->nombre;
+}
+
+?>
 
 <div class="form-group">
     <label class="col-sm-2 control-label">Cargo</label>
     <div class="col-sm-8">
-        <select name="cargo" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
-            @foreach(\Cat\Models\Cargo::all() as $c)
-                <option value="{{$c->id}}">{{$c->nombre}}</option>
-            @endforeach
-        </select>
+        {!! Form::select('id_cargo',  $cargos, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
     </div>
 </div>
 
+<?php
+$funciones = [-1 => 'Seleccione...'];
 
-<?php $funcion = \Cat\Models\Funcion::whereNull('id_padre')->get();?>
+foreach (\Cat\Models\Funcion::whereNull('id_padre')->get(['id', 'nombre']) as $funcion) {
 
-<div class="form-group @if($errors->has('funcion')) has-error @endif">
+    foreach ($funcion->hijas()->get(['id', 'nombre']) as $f) {
+        $funciones[$funcion->nombre] [$f->id] = $f->nombre;
+    }
+}
+
+?>
+
+<div class="form-group @if($errors->has('id_funcion')) has-error @endif">
     <label class="col-sm-2 control-label">Funci&oacute;n*</label>
     <div class="col-sm-8">
-        <select name="funcion" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
+        {!! Form::select('id_funcion',  $funciones, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
 
-            @foreach($funcion as $f)
-                <optgroup label="{{$f->nombre}}">
-                    @foreach($f->hijas()->get() as $especifica)
-                        <option value="{{$especifica->id}}">{{$especifica->nombre}}</option>
-                    @endforeach
-                </optgroup>
-            @endforeach
-        </select>
-        @if($errors->has('funcion'))
-            <span class="help-block">{{$errors->first('funcion')}}</span>
+        @if($errors->has('id_funcion'))
+            <span class="help-block">{{$errors->first('id_funcion')}}</span>
         @endif
     </div>
 </div>
 
 
-<div class="form-group @if($errors->has('base')) has-error @endif">
+<?php
+$bases = [-1 => 'Seleccione...'];
+
+foreach (\Cat\Models\Base::all() as $b) {
+    /** @var \Cat\Models\Area $a */
+    $bases[$b->id] = $b->nombre;
+}
+?>
+<div class="form-group @if($errors->has('id_base')) has-error @endif">
     <label class="col-sm-2 control-label">Base*</label>
     <div class="col-sm-8">
-        <select name="base" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
+        {!! Form::select('id_base',  $bases, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
 
-            @foreach(\Cat\Models\Base::all() as $b)
-                <option value="{{$b->id}}">{{$b->nombre}}</option>
-            @endforeach
-        </select>
-        @if($errors->has('base'))
-            <span class="help-block">{{$errors->first('base')}}</span>
+        @if($errors->has('id_base'))
+            <span class="help-block">{{$errors->first('id_base')}}</span>
         @endif
     </div>
 </div>
 
-<div class="form-group @if($errors->has('turno')) has-error @endif">
+<?php
+$turnos = [-1 => 'Seleccione...'];
+
+foreach (\Cat\Models\Turno::all() as $t) {
+    /** @var \Cat\Models\Area $a */
+    $turnos[$t->id] = $t->codigo;
+}
+?>
+<div class="form-group @if($errors->has('id_turno')) has-error @endif">
     <label class="col-sm-2 control-label">Turno*</label>
     <div class="col-sm-8">
-        <select name="turno" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
-
-            @foreach(\Cat\Models\Turno::all() as $t)
-                <option value="{{$t->id}}">{{$t->codigo}}</option>
-            @endforeach
-        </select>
-        @if($errors->has('turno'))
-            <span class="help-block">{{$errors->first('turno')}}</span>
+        {!! Form::select('id_turno',  $turnos, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        @if($errors->has('id_turno'))
+            <span class="help-block">{{$errors->first('id_turno')}}</span>
         @endif
     </div>
 </div>
+<?php
+$horarios = [-1 => 'Seleccione...'];
 
-<div class="form-group @if($errors->has('horario')) has-error @endif">
+foreach (\Cat\Models\Horario::all() as $h) {
+    /** @var \Cat\Models\Area $a */
+    $horarios[$h->id] = $h->hora_entrada . ' a ' . $h->hora_salida;
+}
+?>
+<div class="form-group @if($errors->has('id_horario')) has-error @endif">
     <label class="col-sm-2 control-label">Horario*</label>
     <div class="col-sm-8">
-        <select name="horario" class="form-control" data-live-search="true">
-            <option value="-1">Seleccione...</option>
+        {!! Form::select('id_horario',  $horarios, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
 
-            @foreach(\Cat\Models\Horario::all() as $h)
-                <option value="{{$h->id}}">{{$h->hora_entrada}} a {{$h->hora_salida}}</option>
-            @endforeach
-        </select>
-        @if($errors->has('horario'))
-            <span class="help-block">{{$errors->first('horario')}}</span>
+        @if($errors->has('id_horario'))
+            <span class="help-block">{{$errors->first('id_horario')}}</span>
         @endif
     </div>
 </div>
@@ -138,8 +159,6 @@
         {!! Form::submit('Finalizar', ['class' => 'btn btn-primary']) !!}
     </div>
 </div>
-
-{!! Form::close() !!}
 
 @section('scripts')
     <script type="text/javascript">

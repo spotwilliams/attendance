@@ -4,11 +4,11 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
 use Cat\Models\Agente;
+use Cat\Models\Operativo;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Modules\Agentes\Services\Registro\Laborales;
-use Cat\Modules\Agentes\Services\Registro\Operativos;
-use Cat\Modules\Agentes\Services\Registro\Personales;
+use Cat\Modules\Agentes\Services\Registro\Store\Operativos as Store;
+use Cat\Modules\Agentes\Services\Registro\Update\Operativos as Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
@@ -35,6 +35,13 @@ class OperativosController extends AppBaseController
      */
     public function create($id)
     {
+        $agente = Agente::find($id);
+        
+        if (empty($agente)) {
+            Flash::error('Agente no encontrado');
+            
+            return redirect(route('agentesCreatePersonales'));
+        }
         
         return view('Agentes::registro.create')
             ->with('tab', 'operativos')
@@ -52,26 +59,19 @@ class OperativosController extends AppBaseController
     public function store(Request $request)
     {
         
-        $rules = [
-            'funcion' => 'not_in:-1',
-            'base'    => 'not_in:-1',
-            'turno'   => 'not_in:-1',
-            'horario' => 'not_in:-1',
-        ];
-        
-        $this->validate($request, $rules);
+        $this->validate($request, Operativo::$rules);
         
         $input = $request->all();
         
         try {
             
-            $service = new Operativos($input);
+            $service = new Store($input);
             
             $service->execute();
             
             return redirect(route('agentesShow', ['id' => $input['agente']]));
         } catch (\Exception $e) {
-
+            
             $validator = Validator::make(['operacion' => null], ['operation |required']);
             $validator->after(function ($validator) use ($e) {
                 $validator->errors()->add('operacion', Error::getRespuestaAdecuada($e, 'agente'));
@@ -95,41 +95,57 @@ class OperativosController extends AppBaseController
      */
     public function edit($id)
     {
+        /** @var Agente $agente */
         $agente = Agente::find($id);
-        
         
         if (empty($agente)) {
             Flash::error('Agente no encontrado');
             
-            return redirect(route('Agentes::registro.index'));
+            return redirect(route('agentesIndex', ['base' => 1]));
         }
         
-        return view('Agentes::registro.edit')->with('agente', $agente);
+        return view('Agentes::registro.edit')
+            ->with('agente', $agente->id)
+            ->with('operativo', $agente->operativo()->first())
+            ->with('tab', 'operativos');
     }
     
     /**
      * Update the specified Presentismo in storage.
      *
-     * @param  int $id
-     * @param UpdatePresentismoRequest $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function update($id, UpdatePresentismoRequest $request)
+    public function update(Request $request)
     {
-        $presentismo = $this->agenteRepository->findWithoutFail($id);
+        $this->validate($request, Operativo::$rules);
+    
+        $input  = $request->all();
+        $agente = Agente::find($input['id']);
+    
+        if (empty($agente)) {
+            Flash::error('Agente no encontrado');
         
-        if (empty($presentismo)) {
-            Flash::error('Presentismo not found');
-            
-            return redirect(route('Presentismo::registro.index'));
+            return redirect(route('agentesIndex', ['base', 1]));
         }
+    
+        try {
         
-        $presentismo = $this->agenteRepository->update($request->all(), $id);
+            $service = new Update($agente, $input);
+            $service->execute();
+            Flash::success('Datos operativos actualizados correctamente.');
+    
+            return redirect(route('agentesShow', ['id' => $agente->id]));
         
-        Flash::success('Presentismo updated successfully.');
         
-        return redirect(route('Presentismo::registro.index'));
+        } catch (\Exception $e) {
+        
+            Flash::error('No se pudo actualizar los datos operativos: ' . $e->getMessage());
+        
+            return redirect(route('agentesEditOperativos', ['id' => $agente->id]));
+        
+        }
     }
     
     /**

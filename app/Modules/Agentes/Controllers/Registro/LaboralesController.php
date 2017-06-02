@@ -4,10 +4,11 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
 use Cat\Models\Agente;
+use Cat\Models\Contrato;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Modules\Agentes\Services\Registro\Laborales;
-use Cat\Modules\Agentes\Services\Registro\Personales;
+use Cat\Modules\Agentes\Services\Registro\Store\Laborales as Store;
+use Cat\Modules\Agentes\Services\Registro\Update\Laborales as Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
@@ -34,6 +35,13 @@ class LaboralesController extends AppBaseController
      */
     public function create($id)
     {
+        $agente = Agente::find($id);
+        
+        if (empty($agente)) {
+            Flash::error('Agente no encontrado');
+            
+            return redirect(route('agentesCreatePersonales'));
+        }
         
         return view('Agentes::registro.create')
             ->with('tab', 'laborales')
@@ -52,10 +60,12 @@ class LaboralesController extends AppBaseController
     {
         $input = $request->all();
         
+        $this->validate($request, Contrato::$rules);
+        
         
         try {
             $agente  = Agente::find($input['agente']);
-            $service = new Laborales($agente, $input);
+            $service = new Store($agente, $input);
             
             $service->execute();
             
@@ -85,8 +95,8 @@ class LaboralesController extends AppBaseController
      */
     public function edit($id)
     {
+        /** @var Agente $agente */
         $agente = Agente::find($id);
-        
         
         if (empty($agente)) {
             Flash::error('Agente no encontrado');
@@ -94,32 +104,48 @@ class LaboralesController extends AppBaseController
             return redirect(route('Agentes::registro.index'));
         }
         
-        return view('Agentes::registro.edit')->with('agente', $agente);
+        return view('Agentes::registro.edit')
+            ->with('agente', $agente->id)
+            ->with('contrato', $agente->contrato()->first())
+            ->with('tab', 'laborales');
     }
     
     /**
      * Update the specified Presentismo in storage.
      *
-     * @param  int $id
-     * @param UpdatePresentismoRequest $request
+     * @param Request $request
      *
      * @return Response
      */
-    public function update($id, UpdatePresentismoRequest $request)
+    public function update(Request $request)
     {
-        $presentismo = $this->agenteRepository->findWithoutFail($id);
+        $this->validate($request, Contrato::$rules);
         
-        if (empty($presentismo)) {
-            Flash::error('Presentismo not found');
+        $input  = $request->all();
+        $agente = Agente::find($input['id']);
+        
+        if (empty($agente)) {
+            Flash::error('Agente no encontrado');
             
-            return redirect(route('Presentismo::registro.index'));
+            return redirect(route('agentesIndex', ['base', 1]));
         }
         
-        $presentismo = $this->agenteRepository->update($request->all(), $id);
-        
-        Flash::success('Presentismo updated successfully.');
-        
-        return redirect(route('Presentismo::registro.index'));
+        try {
+            
+            $service = new Update($agente, $input);
+            $service->execute();
+            Flash::success('Datos laborales actualizados correctamente.');
+            
+            return redirect(route('agentesEditOperativos', ['id' => $agente->id]));
+            
+            
+        } catch (\Exception $e) {
+            
+            Flash::error('No se pudo actualizar los datos laborales: ' . $e->getMessage());
+            
+            return redirect(route('agentesEditLaborales', ['id' => $agente->id]));
+            
+        }
     }
     
     /**

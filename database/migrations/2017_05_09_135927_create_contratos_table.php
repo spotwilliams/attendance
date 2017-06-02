@@ -16,7 +16,7 @@ class CreateContratosTable extends Migration {
 		{
 			$table->integer('id', true);
             // Obligatorios
-            $table->date('fecha_comienzo');
+            $table->date('fecha_ingreso');
             
             // Relations
             $table->integer('id_tipo_contrato')->index('contrato_es_de_tipo_idx');
@@ -26,7 +26,7 @@ class CreateContratosTable extends Migration {
             // Opcionales
             $table->string('id_sial', 100)->nullable();
             $table->string('ficha', 100)->nullable();
-//			$table->date('fecha_firma');
+
             $table->timestamps();
             
         });

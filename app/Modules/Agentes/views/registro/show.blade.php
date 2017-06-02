@@ -34,7 +34,7 @@
                                 <b>DNI</b> <a class="pull-right">{{$agente->dni}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Telefono</b> <a class="pull-right">{{$agente->celular}}</a>
+                                <b>Telefono</b> <a class="pull-right">{{$agente->telefono}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>Email</b> <a class="pull-right">{{$agente->email}}</a>

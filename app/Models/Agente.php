@@ -21,6 +21,9 @@ class Agente extends Model
             'dni',
             'fecha_nacimiento',
             'cuit',
+            'telefono',
+            'email',
+            'estado_civil',
             'id_base',
             'id_area',
             'id_domicilio',
@@ -34,21 +37,6 @@ class Agente extends Model
      *
      * @var array
      */
-    protected $casts
-        = [
-            'id'                  => 'integer',
-            'nombre'              => 'string',
-            'apellido'            => 'string',
-            'dni'                 => 'integer',
-            'fecha_nacimiento'    => 'date',
-            'cuit'                => 'string',
-            'id_base'             => 'integer',
-            'id_area'             => 'integer',
-            'id_domicilio'        => 'integer',
-            'id_contrato'         => 'integer',
-            'id_dias_disponibles' => 'integer',
-            'id_estudio'          => 'integer',
-        ];
     
     /**
      * Validation rules
@@ -57,6 +45,14 @@ class Agente extends Model
      */
     public static $rules
         = [
+            'nombre'           => 'required|max:255',
+            'apellido'         => 'required|max:255',
+            'fecha_nacimiento' => 'required',
+            'cuit'             => 'required',
+            'dni'              => 'required',
+            'telefono'         => 'required',
+            'email'            => 'required|email',
+        
         
         ];
     

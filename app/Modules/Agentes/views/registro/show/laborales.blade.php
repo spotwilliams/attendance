@@ -24,7 +24,7 @@ $estadoContrato = $contrato->estadoContrato()->first();
         </tr>
         <tr>
             <th>Fecha comienzo:</th>
-            <td>{{$contrato->fecha_comienzo}}</td>
+            <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
         </tr>
         <tr>
             <th>Tipo contrato:</th>

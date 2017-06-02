@@ -18,8 +18,7 @@ class ContratosSeeder extends Seeder
                 'id_tipo_contrato'   => rand(1, 7),//rand(1, 7),
                 'id_estado_contrato' => rand(1, 7),//rand(1, 7),
                 'id_agente'          => $i,
-                'fecha_firma'        => date('Y-m-d'),
-                'fecha_comienzo'     => date('Y-m-d'),
+                'fecha_ingreso'     => date('Y-m-d'),
             
             ];
             \Cat\Models\Contrato::create($contrato);
