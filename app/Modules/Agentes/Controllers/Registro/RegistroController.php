@@ -3,14 +3,11 @@
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Models\Agente;
-use Cat\Models\TipoPresentismo;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Modules\Agentes\Services\Registro\Personales;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
-use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
 use Yajra\Datatables\Facades\Datatables;
 

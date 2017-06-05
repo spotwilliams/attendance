@@ -1,10 +1,34 @@
+<li class="dropdown {{ Request::is('agentes*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-user-secret"></i>
 
-<li class="{{ Request::is('agentes*') ? 'active' : '' }}">
-    <a href="{!! route('agentesIndex', ['base' => 1]) !!}"><i class="fa fa-user-secret"></i><span> Agentes</span></a>
+        <span>Agentes</span>
+        <span class="caret"></span></a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{!! route('agentesIndex', ['base' => 1]) !!}">
+                <i class="fa fa-edit"></i>
+                <span>Individual</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('agentesMasivoIndex', ['base' => 1]) !!}">
+                <i class="fa fa-file-excel-o"></i>
+                <span>Alta Masiva</span>
+            </a>
+        </li>
+    </ul>
 </li>
 
 <li class="{{ Request::is('presentismo*') ? 'active' : '' }}">
-    <a href="{!! route('presentismoIndex', ['base' => 1]) !!}"><i class="fa fa-calendar"></i><span> Presentismos</span></a>
+    <a href="{!! route('presentismoIndex', ['base' => 1]) !!}">
+        <i class="fa fa-calendar"></i>
+        <span>Presentismos</span>
+    </a>
 </li>
 {{--<li class="{{ Request::is('areas*') ? 'active' : '' }}">--}}
 {{--<a href="{!! route('areas.index') !!}"><i class="fa fa-edit"></i><span>Areas</span></a>--}}
