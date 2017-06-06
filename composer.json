@@ -17,7 +17,9 @@
     "infyomlabs/adminlte-templates": "5.2.x-dev",
     "infyomlabs/swagger-generator": "dev-master",
     "jlapp/swaggervel": "dev-master",
-    "doctrine/dbal": "~2.3"
+    "doctrine/dbal": "~2.3",
+    "maatwebsite/excel": "2.1.17",
+    "edvinaskrucas/notification": "5.1.1"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

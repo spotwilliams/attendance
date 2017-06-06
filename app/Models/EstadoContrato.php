@@ -9,8 +9,12 @@ class EstadoContrato extends Model
 {
     
     const ESTADO_ACTIVO = 'ACTIVO';
+    
     const ESTADO_BAJA   = 'BAJA';
-    public $table = 'estado_contratos';
+    
+    public $table           = 'estado_contratos';
+    
+    public $notFoundMessage = 'El estado de contrato especificado es incorrecto.';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';

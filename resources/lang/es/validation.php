@@ -50,7 +50,7 @@ return [
         'string'  => 'El :attribute may not be greater than :max characters.',
         'array'   => 'El :attribute may not have more than :max items.',
     ],
-    'mimes'                => 'El :attribute debe ser a file of type: :values.',
+    'mimes'                => 'El :attribute debe ser un archivo del tipo :values.',
     'min'                  => [
         'numeric' => 'El :attribute debe ser at least :min.',
         'file'    => 'El :attribute debe ser at least :min kilobytes.',

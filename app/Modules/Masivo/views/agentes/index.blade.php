@@ -2,7 +2,7 @@
 
 @section('content')
     <section class="content-header">
-        <h3 class="box-title">Lista de agentes</h3>
+        <h3 class="box-title">Carga de agentes masiva</h3>
     </section>
     <div class="content">
 
@@ -13,16 +13,33 @@
         <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header with-border">
-                @include('bases.select' , ['routeName'=>'agentesIndex', 'label'=> 'Base actual', 'baseSeleccionada' => $baseActual])
-                <a href="{{route('agentesCreatePersonales')}}" class="btn btn-success"><i class="fa fa-plus-circle"></i> Agregar Agente</a>
             </div>
             <div class="box-body">
-                <div class="form-group">
-                    <label for="exampleInputFile">File input</label>
-                    <input type="file" id="exampleInputFile">
+                <div class="row">
+                    {!! Form::open(['route' => 'agentesMasivoUpload', 'method' => 'POST', 'files' => true]) !!}
+                    @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => $baseActual])
+                    <div class="col-sm-offset-1 col-sm-11">
 
-                    <p class="help-block">Example block-level help text here.</p>
+                        <div class="form-group @if($errors->has('archivo')) has-error @endif">
+                            <label for="archivo" class="col-sm-2">Seleccione el archivo</label>
+                            {{--<input type="file" id="archivo" name="archivo" class="col-sm-6">--}}
+                            {!! Form::file('archivo')!!}
+                            @if($errors->has('archivo'))
+                                <span class="help-block col-sm-12">{{$errors->first('archivo')}}</span>
+                            @endif
+
+                        </div>
+                        <div class="form-group">
+                            <div class="col-sm-12">
+                                {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary']) !!}
+                                <p class="help-block">Ingrese un archivo CSV acorde al formato permitido. <a
+                                            href="#">Ver archivo ejemplo</a></p>
+                            </div>
+                        </div>
+                    </div>
+                    {!! Form::close() !!}
                 </div>
+
             </div>
         </div>
     </div>

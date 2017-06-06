@@ -5,7 +5,6 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-
 class TipoContrato extends Model
 {
     
@@ -13,6 +12,8 @@ class TipoContrato extends Model
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
+    
+    public $notFoundMessage = 'El tipo de contrato especificado es incorrecto.';
     
     public function contratos()
     {

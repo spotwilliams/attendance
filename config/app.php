@@ -168,6 +168,8 @@ return [
         Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
         Cat\Modules\ModuleServiceProvider::class,
         Yajra\Datatables\DatatablesServiceProvider::class,
+        Maatwebsite\Excel\ExcelServiceProvider::class,
+        Krucas\Notification\NotificationServiceProvider::class,
     
     ],
     
@@ -217,6 +219,8 @@ return [
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
+        'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
+    
     ],
 
 ];

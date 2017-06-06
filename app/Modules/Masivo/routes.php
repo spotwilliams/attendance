@@ -17,7 +17,11 @@ Route::group(
         
         Route::get('agentes/masivo/base/{base}', RegistroMasivoController::class . '@index')
             ->name('agentesMasivoIndex');
-        
-        
+    
+        Route::post('agentes/masivo/upload', RegistroMasivoController::class . '@upload')
+            ->name('agentesMasivoUpload');
+    
+        Route::post('agentes/masivo/download/errores', RegistroMasivoController::class . '@downloadErrores')
+            ->name('agentesMasivoDownload');
     }
 );
