@@ -69,4 +69,28 @@ class Contrato extends Model
             return false;
         }
     }
+    
+    
+    public function mesIngreso()
+    {
+        return strtoupper((new \DateTime($this->fecha_ingreso))->format('F'));
+    }
+    
+    public function mesIngresoProporcional()
+    {
+        $meses = array(
+            'JULY',
+            'AUGUST',
+            'SEPTEMBER',
+            'OCTOBER',
+            'NOVEMBER',
+            'DECEMBER',
+        );
+        $mes   = $this->mesIngreso();
+        if (in_array($mes, $meses)) {
+            return $mes;
+        } else {
+            return array_first($meses);
+        }
+    }
 }

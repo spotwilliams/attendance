@@ -11,7 +11,7 @@ class Ausente extends TipoPresentismo
      */
     public function getInjustificado()
     {
-        return TipoPresentismo::where('tipo', '=', TipoPresentismo::INJUSTIFICADO)->first();
+        return TipoPresentismo::where('codigo', '=', TipoPresentismo::INJUSTIFICADO)->first();
     }
     
     /**
@@ -19,14 +19,7 @@ class Ausente extends TipoPresentismo
      */
     public function esInjustificado()
     {
-        
-        if (strtoupper($this->codigo) === parent::INJUSTIFICADO) {
-            return true;
-        } else {
-            $padre = $this->padre()->first();
-
-            return strtoupper($padre->codigo) === parent::INJUSTIFICADO;
-        }
+        return (strtoupper($this->codigo) === parent::INJUSTIFICADO);
     }
     
     

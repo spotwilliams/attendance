@@ -19,7 +19,7 @@ class PeriodoActivo extends Rule
     {
         $periodo = Periodo::findActivo($this->fecha);
         
-        if ($periodo !== null and $periodo->estaActivo($this->agente->id_base)) {
+        if ($periodo !== null and $periodo->estaActivo($this->agente->base())) {
             return true;
         } else {
             throw new Validation($this->agente, Descriptor::periodoCerradoParaBase());

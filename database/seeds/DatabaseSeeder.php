@@ -27,19 +27,21 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-            $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
-            
-            $this->call(AreasSeeder::class);
-            $this->call(BasesSeeder::class);
-            $this->call(EstadosContratoSeeder::class);
-            $this->call(TiposPresentismoSeeder::class);
-            $this->call(TiposContratoSeeder::class);
-            $this->call(Funciones::class);
-            $this->call(Horarios::class);
-            $this->call(Turnos::class);
-            $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
-            $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
-    
+        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
+        
+        $this->call(AreasSeeder::class);
+        $this->call(BasesSeeder::class);
+        $this->call(EstadosContratoSeeder::class);
+        $this->call(TiposPresentismoSeeder::class);
+        $this->call(TiposContratoSeeder::class);
+        $this->call(Funciones::class);
+        $this->call(Horarios::class);
+        $this->call(Turnos::class);
+        $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
+        $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
+
+        $this->call(\Cat\Database\Presentismos\ProporcionalesSeeder::class);
+        $this->call(\Cat\Database\Presentismos\DiasPermitidosSeeder::class);
 //        $this->call(AgentesSeeder::class);
 //        $this->call(\Cat\Database\Seeds\Agentes\OperativosSeeder::class);
 
@@ -47,7 +49,7 @@ class DatabaseSeeder extends Seeder
 //            $this->call(DomicilioSeeder::class);
 //            $this->call(ContratosSeeder::class);
 //            $this->call(DiasDisponiblesSeeder::class);
-            
+
 //            $this->call(PeriodosSeeder::class);
         try {
         } catch (\Exception $error) {

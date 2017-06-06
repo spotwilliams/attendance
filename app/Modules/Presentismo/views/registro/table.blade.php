@@ -118,7 +118,7 @@ $idModal = 'comentarios-modal'
                 var container = $('<div class="form-group">');
                 container.append($('<div class="input-group margin">'));
 
-                var select = $('<select class="{{$selector}} form-control" data-width="80px">')
+                var select = $('<select class="{{$selector}} form-control" data-live-search="true" data-width="80px">')
                 select.append('<option value="-1">...</option>');
                 for (var i = 0; i < tipoPresentismos.length; i++) {
                     select.append(

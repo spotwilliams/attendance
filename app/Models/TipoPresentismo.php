@@ -45,27 +45,9 @@ class TipoPresentismo extends Model
         return $this->hasMany(Presentismo::class, 'id_tipo_presentismo', 'id');
     }
     
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function padre()
+    public function diasPermitidos()
     {
-        return $this->belongsTo(TipoPresentismo::class, 'id_padre');
-    }
-    
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function hijos()
-    {
-        return $this->hasMany(TipoPresentismo::class, 'id_padre');
-    }
-    
-    
-    public function diasDisponibles()
-    {
-        return $this->hasMany(DiaDisponible::class, 'id_tipo_presentismo');
+        return $this->hasMany(DiaPermitido::class, 'id_tipo_presentismo');
     }
     
     /**

@@ -23,7 +23,8 @@ class Facilitador
             // Se realizan las validaciones
             $serviceValidacion = new Validation($agente, $tipoPresentismo, $fecha);
             $serviceValidacion->execute();
-            static::goOn($agente, $tipoPresentismo, $fecha);
+            $tipoPresentismo->injustificado = 0;
+            
             session()->flash('message', 'Se actualizo correctamente');
             session()->flash('code', 200);
             
@@ -33,7 +34,7 @@ class Facilitador
             
             switch ($e->getCode()) {
                 case Descriptor::SIN_DIAS_DISPONIBLES : {
-                    $tipoPresentismo = TipoPresentismo::injusticado();
+                    $tipoPresentismo->injustificado = 1;
                     break;
                 }
                 case Descriptor::PERIODO_CERRADO : {
@@ -41,10 +42,8 @@ class Facilitador
                     break;
                 }
             }
-            static::goOn($agente, $tipoPresentismo, $fecha);
-            
-            
         }
+        static::goOn($agente, $tipoPresentismo, $fecha);
         
         
     }

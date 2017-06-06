@@ -88,13 +88,6 @@ class Agente extends Model
         return $this->hasOne(Contrato::class, 'id_agente')->first();
     }
     
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
-    public function diasDisponible()
-    {
-        return $this->hasMany(DiaDisponible::class, 'id_agente');
-    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -124,12 +117,38 @@ class Agente extends Model
      * @param TipoPresentismo $ausencia
      * @return integer
      */
-    public function getCantDiasDisponibles(TipoPresentismo $ausencia)
+    public function getCantDiasDisponibles(TipoPresentismo $ausencia, \DateTime $fecha)
     {
-        $diasDisponibles = $this
-            ->diasDisponible()
-            ->where('id_tipo_presentismo', '=', $ausencia->id)->first(['cant_dias']);
+        /** @var Contrato $contrato */
+        $contrato = $this->contrato()->first();
         
-        return $diasDisponibles->cant_dias;
+        /** @var string $mesProporcional */
+        $mesProporcional = $contrato->mesIngresoProporcional();
+        
+        /** @var DiaPermitido $diasPermitidos */
+        $diasPermitidos = $ausencia->diasPermitidos()
+            ->where('mes_ingreso', '=', $mesProporcional)
+            ->first();
+        
+        /** @var int $cantDiasPermitidos */
+        $cantDiasPermitidos = $diasPermitidos->getCantidadDias($fecha);
+        
+        /** @var int $cantDiasConsumidos */
+        $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);
+
+        return $cantDiasPermitidos - $cantDiasConsumidos;
+    }
+    
+    
+    public function getCantidadDiasConsumidos(TipoPresentismo $tipoPresentismo)
+    {
+        $dias = $this->presentismos()
+            ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
+            ->where('injustificado', '=', 0)
+            ->whereDate('created_at', '>=', date('Y-01-01'))
+            ->whereDate('created_at', '<=', date('Y-m-d'))
+            ->count();
+        
+        return $dias;
     }
 }

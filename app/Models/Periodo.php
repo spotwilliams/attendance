@@ -2,7 +2,6 @@
 
 namespace Cat\Models;
 
-use Cat\EstadoPeriodo;
 use Illuminate\Database\Eloquent\Model;
 
 class Periodo extends Model
@@ -56,9 +55,9 @@ class Periodo extends Model
      * @param $idBase
      * @return bool
      */
-    public function estaActivo($idBase)
+    public function estaActivo(Base $base)
     {
-        $estado = $this->estados()->where('id_base', '=', $idBase)->first();
+        $estado = $this->estados()->where('id_base', '=', $base->id)->first();
         
         if ($estado === null) {
             return false;

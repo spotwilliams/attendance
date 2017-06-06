@@ -8,10 +8,10 @@
 
 namespace Cat\Modules\Validation\Rules;
 
-
 use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Models\Ausente as TipoPresentismoAusente;
+
 class Ausente extends Rule
 {
     protected function validate()
@@ -19,15 +19,13 @@ class Ausente extends Rule
         // Verificar que sea injustificado
         /** @var TipoPresentismoAusente $ausente */
         $ausente = TipoPresentismoAusente::find($this->tipoAusente->id);
-        $esInjustificado = $ausente->esInjustificado();
-
-        if ($esInjustificado) {
+        
+        if ($ausente->esInjustificado()) {
             return true;
-            
         } else {
             // Verificar para la categoria de ausentes
             // que el agente tenga dias disponibles
-            $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente);
+            $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente, $this->fecha);
             
             if ($diasDisponibles > 0) {
                 return true;

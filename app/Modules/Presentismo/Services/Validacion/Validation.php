@@ -8,7 +8,6 @@
 
 namespace Cat\Modules\Presentismo\Services\Validacion;
 
-
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Service;
