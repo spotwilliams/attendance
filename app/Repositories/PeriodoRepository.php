@@ -24,12 +24,12 @@ class PeriodoRepository extends BaseRepository
     public static function getOrCreatePeriodoActivo(\DateTime $fecha)
     {
         $periodo = Periodo::findActivo($fecha);
-
+        
         
         if ($periodo == null) {
             // Buscar el ultimo periodo creado y crear uno a partir de este
             $ultimoPeriodo = Periodo::getUltimoPeriodo();
-
+            
             $fechaInicio = new \DateTime($ultimoPeriodo->fecha_fin);
             $fechaInicio->modify("+1day");
             
@@ -42,7 +42,7 @@ class PeriodoRepository extends BaseRepository
                 'cant_dias'      => $ultimoPeriodo->cant_dias,
             ]);
             static::activarPeriodoEnBases($periodo);
-            static::generarJornadasToPeriodo($periodo);
+            
         }
         
         return $periodo;
@@ -70,24 +70,4 @@ class PeriodoRepository extends BaseRepository
         }
     }
     
-    /**
-     * Genera las jornadas laborables para ese periodo
-     * @param Periodo $periodo
-     */
-    public static function generarJornadasToPeriodo(Periodo $periodo)
-    {
-        $start = new \DateTime($periodo->fecha_comienzo);
-        
-        for ($day = 1; $day <= $periodo->cant_dias; $day++) {
-            try {
-                JornadaLaborable::create([
-                    'fecha'      => $start->format('Y-m-d'),
-                    'id_periodo' => $periodo->id,
-                ]);
-                $start->modify("+1day");
-            } catch (QueryException $jornadaYaExiste) {
-                Log::error($jornadaYaExiste);
-            }
-        }
-    }
 }

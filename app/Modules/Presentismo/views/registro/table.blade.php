@@ -185,7 +185,7 @@ $idModal = 'comentarios-modal'
                             var comentario = undefined;
                             for (var i = 0; i < agente.presentismos.length; i++) {
                                 if (agente.presentismos[i].fecha === '{{$fechaJson->format('Y-m-d')}}') {
-                                    presentismo = agente.presentismos[i].presentismo;
+                                    presentismo = agente.presentismos[i].id_tipo_presentismo;
                                     comentario = agente.presentismos[i].comentario;
                                 }
                             }

@@ -15,10 +15,11 @@ class Presentismo extends Model
     
     protected $fillable
         = [
-            
             'id_agente',
-            'id_jornada',
+            'id_periodo',
+            'fecha',
             'id_tipo_presentismo',
+            'injustificado',
         ];
     
     /**

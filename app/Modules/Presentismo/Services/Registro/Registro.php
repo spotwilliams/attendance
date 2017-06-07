@@ -2,14 +2,11 @@
 
 namespace Cat\Modules\Presentismo\Services\Registro;
 
-
 use Cat\Models\Agente;
-use Cat\Models\DiaDisponible;
-use Cat\Models\JornadaLaborable;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Service;
-use Cat\Repositories\JornadaLaborableRepository;
+use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
@@ -27,11 +24,14 @@ class Registro extends Service
     /** @var  Presentismo */
     protected $presentismoPrevio;
     
+    protected $periodo;
+    
     public function __construct(Agente $agente, TipoPresentismo $tipoPresentismo, \DateTime $fecha)
     {
         $this->agente           = $agente;
         $this->tipoPresentismo  = $tipoPresentismo;
-        $this->jornadaLaborable = JornadaLaborableRepository::getOrCreate($fecha);
+        $this->jornadaLaborable = $fecha;
+        $this->periodo          = PeriodoRepository::getOrCreatePeriodoActivo($fecha);
     }
     
     public function execute()
@@ -50,9 +50,10 @@ class Registro extends Service
             $presentismo = Presentismo::firstOrNew(
                 [
                     'id_agente'  => $this->agente->id,
-                    'id_jornada' => $this->jornadaLaborable->id,
+                    'fecha'      => $this->jornadaLaborable->format('Y-m-d'),
+                    'id_periodo' => $this->periodo->id,
                 ]);
-            
+
             // Guardo el tipo de asistencia
             $presentismo->id_tipo_presentismo = $this->tipoPresentismo->id;
             

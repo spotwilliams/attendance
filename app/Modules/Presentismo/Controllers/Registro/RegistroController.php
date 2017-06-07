@@ -25,13 +25,9 @@ class RegistroController extends AppBaseController
     /** @var  PresentismoRepository */
     private $presentismoRepository;
     
-    /** @var  JornadaLaborableRepository */
-    private $jornadaRepository;
-    
-    public function __construct(PresentismoRepository $presentismoRepo, JornadaLaborableRepository $jornadaRepo)
+    public function __construct(PresentismoRepository $presentismoRepo)
     {
         $this->presentismoRepository = $presentismoRepo;
-        $this->jornadaRepository     = $jornadaRepo;
         $this->middleware('auth');
         
     }
@@ -53,16 +49,10 @@ class RegistroController extends AppBaseController
     public function table(Request $request, $base)
     {
         $periodo = PeriodoRepository::getOrCreatePeriodoActivo(new \DateTime('now'));
-        return $agentes = $this->presentismoRepository->agentesAptos($base, $periodo);
+        $agentes = $this->presentismoRepository->agentesAptos($base, $periodo);
         
-        $agentesConPresentismo = $this
-            ->presentismoRepository
-            ->addPresentismosForAgentes(
-                $agentes,
-                $periodo
-            );
         /** @var \Yajra\Datatables\Engines\CollectionEngine $datatable */
-        $datatable = Datatables::of(new Collection($agentesConPresentismo));
+        $datatable = Datatables::of(new Collection($agentes));
         
         $datatable->filter(function ($instance) use ($request) {
             /** @var \Yajra\Datatables\Engines\CollectionEngine $query */
@@ -130,7 +120,7 @@ class RegistroController extends AppBaseController
             ->where('id_jornada', '=', $jornada->id)
             ->where('id_tipo_presentismo', '=', $input['id_tipo_presentismo'])
             ->first();
-    
+        
         try {
             $presentismo->comentario = $input['comentario'];
             $presentismo->save();

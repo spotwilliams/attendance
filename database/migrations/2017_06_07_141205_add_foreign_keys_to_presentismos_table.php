@@ -15,8 +15,8 @@ class AddForeignKeysToPresentismosTable extends Migration {
 		Schema::table('presentismos', function(Blueprint $table)
 		{
 			$table->foreign('id_agente', 'presente_es_de_agente')->references('id')->on('agentes')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_periodo', 'presente_es_de_periodo')->references('id')->on('periodos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_tipo_presentismo', 'presente_es_de_tipo')->references('id')->on('tipos_presentismos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
-			$table->foreign('id_jornada', 'presente_es_en_jornada')->references('id')->on('jornadas_laborables')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 
@@ -31,8 +31,8 @@ class AddForeignKeysToPresentismosTable extends Migration {
 		Schema::table('presentismos', function(Blueprint $table)
 		{
 			$table->dropForeign('presente_es_de_agente');
+			$table->dropForeign('presente_es_de_periodo');
 			$table->dropForeign('presente_es_de_tipo');
-			$table->dropForeign('presente_es_en_jornada');
 		});
 	}
 

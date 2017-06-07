@@ -47,23 +47,21 @@ class PresentismoRepository extends BaseRepository
     {
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
         $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
-        
-        return Agente::with([
-            'presentismos' => function ($presentismos) use ($periodo) {
+        $date         = new \DateTime('tomorrow');
+        $eloquent     = Agente::with([
+            'presentismos' => function ($presentismos) use ($periodo, $date) {
                 $presentismos
-//                    ->select([
-//                        'jornadas_laborables.fecha as fecha',
-//                        'presentismos.id_tipo_presentismo as presentismo',
-//                        'presentismos.comentario as comentario',
-//                        'presentismos.id as id_presentismo',
-//                    ])
-                    ->join('jornadas_laborables', 'presentismos.id_jornada', '=', 'jornadas_laborables.id')
-                    ->where('jornadas_laborables.id_periodo', '=', $periodo->id)
-                    ->whereDate('jornadas_laborables.fecha ', '<=', date('Y-m-d'))
-                    ;
+                    ->where('id_periodo', '=', $periodo->id)
+                    ->whereDate('fecha', '<=', $date->format('Y-m-d'));
             },
-        ])
-            ->get(
+        ])->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
+            ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
+            ->where('operativos.id_base', $idBase)
+            ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
+            ->where('contratos.id_estado_contrato', '=', $activo->id);
+        
+        try {
+            return $eloquent->get(
                 [
                     'agentes.id as id',
                     'agentes.nombre as nombre',
@@ -71,56 +69,11 @@ class PresentismoRepository extends BaseRepository
                     'agentes.cuit as cuit',
                 ]
             );
-        
-        
-        $eloquent = DB::table('agentes')
-            ->select([
-                'agentes.id as id',
-                'agentes.nombre as nombre',
-                'agentes.apellido as apellido',
-                'agentes.cuit as cuit',
-            ])
-            ->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
-            ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
-            ->where('operativos.id_base', $idBase)
-            ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
-            ->where('contratos.id_estado_contrato', '=', $activo->id);
-        
-        try {
-            return $eloquent->get();
         } catch (QueryException $e) {
             Log::error($e);
             
             return [];
         }
         
-    }
-    
-    
-    public function addPresentismosForAgentes($agentes = [], Periodo $periodo)
-    {
-        foreach ($agentes as $index => $actual) {
-            $agente = Agente::find($actual->id);
-            
-            /** @var Agente $agente */
-            $presentismos = $agente->presentismos()
-                ->join('jornadas_laborables', 'presentismos.id_jornada', '=', 'jornadas_laborables.id')
-                ->where('jornadas_laborables.id_periodo', '=', $periodo->id);
-            
-            try {
-                
-                $agentes[$index]->presentismos = $presentismos->get([
-                    'jornadas_laborables.fecha as fecha',
-                    'presentismos.id_tipo_presentismo as presentismo',
-                    'presentismos.comentario as comentario',
-                    'presentismos.id as id_presentismo',
-                ]);
-            } catch (\Exception $error) {
-                $agentes[$index]->presentismos = [
-                ];
-            }
-        }
-        
-        return $agentes;
     }
 }

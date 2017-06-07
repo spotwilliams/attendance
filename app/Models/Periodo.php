@@ -19,14 +19,6 @@ class Periodo extends Model
             'cant_dias',
         ];
     
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
-     **/
-    public function jornadasLaborables()
-    {
-        return $this->hasMany(JornadaLaborable::class, 'id_periodo');
-    }
-    
     
     public function estados()
     {
