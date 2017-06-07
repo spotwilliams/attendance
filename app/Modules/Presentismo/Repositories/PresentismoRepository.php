@@ -45,10 +45,15 @@ class PresentismoRepository extends BaseRepository
      */
     public function agentesAptos($idBase)
     {
-        
-        
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
         $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
+        
+//        return Agente::operativo()
+//            ->with('presentismos.jornadaLaborable')
+//            ->paginate(10);
+        
+        
+        
         
         $eloquent = DB::table('agentes')
             ->select([
@@ -93,9 +98,8 @@ class PresentismoRepository extends BaseRepository
                     'presentismos.id as id_presentismo',
                 ]);
             } catch (\Exception $error) {
-                
-//                $agentes[$index]->presentismos = [
-//                ];
+                $agentes[$index]->presentismos = [
+                ];
             }
         }
         

@@ -1,19 +1,16 @@
 <?php
 
-namespace Cat\Masivo\Controllers\Agentes;
+namespace Cat\Masivo\Controllers\Presentismos;
 
 
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Masivo\Services\Agentes\Procesador;
+use Cat\Masivo\Services\Presentismos\Procesador;
 use Cat\Models\Base;
-use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Http\Request;
-use Krucas\Notification\Facades\Notification;
 use Laracasts\Flash\Flash;
 
 class Registro extends AppBaseController
 {
-    /** @var  AgenteRepository */
     
     public function __construct()
     {
@@ -30,7 +27,7 @@ class Registro extends AppBaseController
     public function index(Request $request, $base)
     {
         
-        return view('Masivo::agentes.index')
+        return view('Masivo::presentismos.index')
             ->with('baseActual', $base);
     }
     
@@ -54,7 +51,7 @@ class Registro extends AppBaseController
             Flash::error($e->getMessage());
         }
         
-        return view('Masivo::agentes.end-process');
+        return view('Masivo::presentismos.end-process');
     }
     
     public function downloadErrores(Request $request)

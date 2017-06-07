@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Masivo\Especificadores\Agentes;
+namespace Cat\Masivo\Especificadores;
 
 use Cat\Models\Base;
 use Illuminate\Foundation\Application;
