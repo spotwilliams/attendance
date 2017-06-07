@@ -1,9 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h3 class="box-title">Carga de presentismo</h3>
-    </section>
+
     <div class="content">
         <div class="clearfix"></div>
 
@@ -12,10 +10,11 @@
         <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header with-border">
-                @include('bases.select' ,['routeName'=>'presentismoIndex', 'label'=> 'Base actual', 'baseSeleccionada' => $baseActual])
-
+                <h3 class="box-title">Carga de presentismo</h3>
             </div>
             <div class="box-body">
+                @include('bases.select' ,['routeName'=>'presentismoIndex', 'label'=> 'Base actual', 'baseSeleccionada' => $baseActual])
+                <hr>
                 @include('Presentismo::registro.table')
             </div>
         </div>

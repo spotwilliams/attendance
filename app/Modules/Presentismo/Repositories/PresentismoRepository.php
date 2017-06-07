@@ -43,16 +43,34 @@ class PresentismoRepository extends BaseRepository
      * @param $idBase
      * @return mixed
      */
-    public function agentesAptos($idBase)
+    public function agentesAptos($idBase, Periodo $periodo)
     {
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
         $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
         
-//        return Agente::operativo()
-//            ->with('presentismos.jornadaLaborable')
-//            ->paginate(10);
-        
-        
+        return Agente::with([
+            'presentismos' => function ($presentismos) use ($periodo) {
+                $presentismos
+//                    ->select([
+//                        'jornadas_laborables.fecha as fecha',
+//                        'presentismos.id_tipo_presentismo as presentismo',
+//                        'presentismos.comentario as comentario',
+//                        'presentismos.id as id_presentismo',
+//                    ])
+                    ->join('jornadas_laborables', 'presentismos.id_jornada', '=', 'jornadas_laborables.id')
+                    ->where('jornadas_laborables.id_periodo', '=', $periodo->id)
+                    ->whereDate('jornadas_laborables.fecha ', '<=', date('Y-m-d'))
+                    ;
+            },
+        ])
+            ->get(
+                [
+                    'agentes.id as id',
+                    'agentes.nombre as nombre',
+                    'agentes.apellido as apellido',
+                    'agentes.cuit as cuit',
+                ]
+            );
         
         
         $eloquent = DB::table('agentes')

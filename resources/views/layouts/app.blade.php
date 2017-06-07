@@ -5,14 +5,14 @@
     <title>CAT - Presentismo</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-    {!! Html::style('plugins/bootstrap/css/bootstrap.min.css') !!}
-    {!! Html::style('plugins/font-awesome/css/font-awesome.min.css') !!}
-    {!! Html::style('plugins/select2/css/select2.min.css') !!}
-    {!! Html::style('plugins/adminLTE/css/AdminLTE.min.css') !!}
-    {!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
-    {!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
-    {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
-    {!! Html::style('plugins/ionicons/css/ionicons.min.css') !!}
+{!! Html::style('plugins/bootstrap/css/bootstrap.min.css') !!}
+{!! Html::style('plugins/font-awesome/css/font-awesome.min.css') !!}
+{!! Html::style('plugins/select2/css/select2.min.css') !!}
+{!! Html::style('plugins/adminLTE/css/AdminLTE.min.css') !!}
+{!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
+{!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
+{!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
+{!! Html::style('plugins/ionicons/css/ionicons.min.css') !!}
 
 <!-- Ionicons -->
     @yield('css')
@@ -84,6 +84,12 @@
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
+            {{--<section class="content-header" style="min-height: 50px!important;">--}}
+                {{--<ul class="breadcrumb">--}}
+                    {{--<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>--}}
+                    {{--<li class="active">Dashboard</li>--}}
+                {{--</ul>--}}
+            {{--</section>--}}
             @yield('content')
         </div>
 

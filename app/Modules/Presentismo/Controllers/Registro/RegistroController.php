@@ -52,8 +52,8 @@ class RegistroController extends AppBaseController
     
     public function table(Request $request, $base)
     {
-        $agentes = $this->presentismoRepository->agentesAptos($base);
         $periodo = PeriodoRepository::getOrCreatePeriodoActivo(new \DateTime('now'));
+        return $agentes = $this->presentismoRepository->agentesAptos($base, $periodo);
         
         $agentesConPresentismo = $this
             ->presentismoRepository
