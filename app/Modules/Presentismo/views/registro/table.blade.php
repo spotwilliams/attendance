@@ -15,7 +15,7 @@ $idModal = 'comentarios-modal'
     <th>Agente</th>
     <th>CUIT</th>
     @while( $fecha < $fechaToday)
-        <th data-cat="{{$fecha->format('Y-m-d')}}">{{$fecha->format('m/d')}}</th>
+        <th data-cat="{{$fecha->format('Y-m-d')}}">{{$fecha->format('d/m')}}</th>
         <?php $fecha->modify('+1day'); ?>
     @endwhile
     </thead>

@@ -12,9 +12,9 @@
             <div class="box-body">
                 @include('flash::message')
                 <p class="help-block">Por favor revise el archivo generado con las filas que no se pudieron guardar.</p>
-                {!! Form::open(['route' => 'agentesMasivoDownload', 'method' => 'POST']) !!}
+                {!! Form::open(['route' => 'presentismosMasivoDownload', 'method' => 'POST']) !!}
 
-                {!! Form::hidden('file', session('new_file')) !!}
+                {!! Form::hidden('file', session('presentismos_new_file')) !!}
 
                 {!! Form::submit('Descargar archivo de errores', ['class' => 'btn btn-primary']) !!}
 

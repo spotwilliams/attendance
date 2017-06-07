@@ -14,7 +14,7 @@
                 <p class="help-block">Por favor revise el archivo generado con las filas que no se pudieron guardar.</p>
                 {!! Form::open(['route' => 'agentesMasivoDownload', 'method' => 'POST']) !!}
 
-                {!! Form::hidden('file', session('new_file')) !!}
+                {!! Form::hidden('file', session('agentes_new_file')) !!}
 
                 {!! Form::submit('Descargar archivo de errores', ['class' => 'btn btn-primary']) !!}
 

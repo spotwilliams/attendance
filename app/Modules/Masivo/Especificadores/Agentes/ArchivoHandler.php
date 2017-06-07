@@ -29,7 +29,7 @@ class ArchivoHandler extends ExcelHandler
         $base = $file->getBase();
         
         /** @var LaravelExcelWriter $fileErrores */
-        $fileErrores = $this->generateOutFile($file->getFileName());
+        $fileErrores = $this->generateOutFile($file->getFileName(), 'agentes');
         
         $file->each(function ($row) use ($base, &$listaErrores) {
             try {

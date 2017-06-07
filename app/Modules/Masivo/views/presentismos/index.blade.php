@@ -16,7 +16,7 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'agentesMasivoUpload', 'method' => 'POST', 'files' => true]) !!}
+                    {!! Form::open(['route' => 'presentismosMasivoUpload', 'method' => 'POST', 'files' => true]) !!}
                     @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => $baseActual])
                     <div class="col-sm-offset-1 col-sm-11">
 

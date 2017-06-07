@@ -20,11 +20,15 @@ abstract class ExcelHandler implements ImportHandler
         $this->location = $locationStorage;
     }
     
-    
-    protected function generateOutFile($inputFileName)
+    /**
+     * @param $inputFileName
+     * @param $prefix Prefijo para guardar en sesion
+     * @return mixed
+     */
+    protected function generateOutFile($inputFileName, $prefix)
     {
         $name = str_replace('.csv', '', $inputFileName) . '_errores';
-        session()->flash('new_file', $this->location . $name . '.xls');
+        session()->flash($prefix . '_new_file', $this->location . $name . '.xls');
         
         return Excel::create($name);
         
