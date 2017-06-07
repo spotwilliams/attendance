@@ -27,6 +27,9 @@ Route::group(
     
         Route::post('agentes/masivo/download/errores', AgentesMasivoController::class . '@downloadErrores')
             ->name('agentesMasivoDownload');
+
+        Route::get('agentes/masivo/download/template', AgentesMasivoController::class . '@downloadTemplate')
+            ->name('agentesMasivoTemplate');
     
         /**
          * Presentismos
@@ -39,5 +42,8 @@ Route::group(
     
         Route::post('presentismo/masivo/download/errores', PresentismosMasivoController::class . '@downloadErrores')
             ->name('presentismosMasivoDownload');
+    
+        Route::get('presentismo/masivo/download/template', PresentismosMasivoController::class . '@downloadTemplate')
+            ->name('presentismosMasivoTemplate');
     }
 );

@@ -8,6 +8,7 @@ use Cat\Masivo\Services\Agentes\Procesador;
 use Cat\Models\Base;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Krucas\Notification\Facades\Notification;
 use Laracasts\Flash\Flash;
 
@@ -60,6 +61,12 @@ class Registro extends AppBaseController
     public function downloadErrores(Request $request)
     {
         return response()->download($request->input('file'));
+    }
+    
+    
+    public function downloadTemplate(Request $request)
+    {
+        return response()->download(Storage::disk('masivos_template')->getDriver()->getAdapter()->getPathPrefix() . 'agentes_masivo.csv');
     }
     
 }

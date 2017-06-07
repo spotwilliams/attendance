@@ -150,6 +150,9 @@
 {{-- Notify --}}
 {!! Html::script('plugins/bootstrap-notify/js/notify.min.js') !!}
 
+{{-- Input file --}}
+{!! Html::script('plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js') !!}
+
 {{-- Helper Cat --}}
 {!! Html::script('js/helpers.js') !!}
 {!! Html::script('js/defaults.js') !!}

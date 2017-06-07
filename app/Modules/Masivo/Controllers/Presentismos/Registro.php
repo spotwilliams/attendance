@@ -59,4 +59,10 @@ class Registro extends AppBaseController
         return response()->download($request->input('file'));
     }
     
+    public function downloadTemplate(Request $request)
+    {
+        
+        return response()->download(Storage::disk('masivos_template')->getDriver()->getAdapter()->getPathPrefix() . 'presentismos_masivo.csv');
+    }
+    
 }
