@@ -1,10 +1,11 @@
 <?php
+
 namespace Cat\Helpers;
 
 use Cat\Models\Agente;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoPresentismo;
-use Illuminate\Support\Facades\Cache;
+use Illuminate\Support\Collection;
 
 class HtmlCustoms
 {
@@ -126,30 +127,48 @@ class HtmlCustoms
      * @param $tiposPresentismosRefence
      * @return string
      */
-    public static function getProperHtmlForTipoPresentismo(Presentismo $p = null)
+    public static function getSelectForTipoPresentismo(Presentismo $p = null, $selector = 'selectpicker')
     {
         /** @var array $tiposPresentismos AGREGAR CACHE!!! */
-        $key               = 'tipo_presentismos_html_key_by';
-        $tiposPresentismos = Cache::get($key);
-        $color             = 'black';
-        $label             = 'Injustificado';
         
-        if ($tiposPresentismos == null) {
-            $tiposPresentismos = TipoPresentismo::all()->keyBy('id')->toArray();
-            Cache::put($key, $tiposPresentismos, 1440);
-        }
+        /** @var Collection $tiposPresentismos */
+        $tiposPresentismos = Cache::get(
+            'tipo_presentismos_html_key_by',
+            function () {
+                return TipoPresentismo::all();
+            });
         
-        if ($p == null) {
-            // Color injustificado
-            $color = $tiposPresentismos[2]['color'];
-        } else {
-            if (isset($tiposPresentismos[$p->id_tipo_presentismo])) {
-                $color = $tiposPresentismos[$p->id_tipo_presentismo]['color'];
-                $label = $tiposPresentismos[$p->id_tipo_presentismo]['descripcion'];
-            }
-            
+        $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\">";
+        $option = "<option value=\"-1\">...</option>";
+        
+        $select .= $option;
+        /** @var TipoPresentismo $tp */
+        foreach ($tiposPresentismos as $tp) {
+            // Option
+            $seleccionado = ($tp->id === ($p == null ? -1 : $p->id_tipo_presentismo));
+            $option       = "<option value=\"$tp->id\"";
+            $option       .= $seleccionado ? ' selected' : '';
+            $option       .= " data-content=\"<span class='label' style='background-color: $tp->color;'>$tp->descripcion</span>\"";
+            $option       .= ">$tp->descripcion</option>";
+            $select       .= $option;
         }
-        $html = "<span class=\"badge\" style=\"background-color: $color !important;\">$label</span>";
+        $btnDisabled = ($p !== null ? '' : ' disabled');
+        $comentario = ($p !== null ? $p->comentario : null);
+        
+        $btnClass    = (($p !== null) && !empty($p->comentario) ? 'btn-success' : 'btn-default');
+        $select      .= '</select>';
+        $button      = "<button type='button' data-comentario='$comentario' class='btn $btnClass dialog-comentary' $btnDisabled><i class='fa fa-comment-o'></i></button>";
+        $select      .= $button;
+        
+        $html = "<div class=\"form-group\">";
+        
+        $html .= $select
+            .= "</div>";
+        
+        /*
+         * 'data-content="'
+                        + '<span class=\'label\' style=\'background-color: ' + tipoPresentismos[i].color + ';\'>' + tipoPresentismos[i].descripcion + '</span>">'
+         */
         
         return $html;
     }

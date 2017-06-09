@@ -1,0 +1,13 @@
+.overlay > .overlay-td {
+    position: relative;
+    border: 1px solid #000;
+    background-color: #CCC;
+    width: 73px;
+    padding: 5px;
+
+}
+
+i.overlay-td {
+    position: relative;
+    z-index: 999;
+}

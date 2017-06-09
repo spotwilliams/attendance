@@ -6,7 +6,7 @@
  * Time: 11:19
  */
 
-namespace Cat\Modules\Presentismo\Services\Validacion;
+namespace Cat\Modules\Haberes\Services\Validacion;
 
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;

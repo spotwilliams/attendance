@@ -20,8 +20,11 @@ Route::group(
         Route::post('presentismo/store', RegistroController::class . '@store')
             ->name('presentismoStore');
     
-        Route::post('presentismo/table/base/{base}', RegistroController::class . '@table')
-            ->name('presentismoTable');
+        Route::post('presentismo/lista/agentes/', RegistroController::class . '@prepareListaAgentes')
+            ->name('presentismoPrepareListaAgentes');
+
+        Route::get('presentismo/lista/agentes/base/{base}', RegistroController::class . '@listaAgentes')
+            ->name('presentismoListaAgentes');
 
         Route::post('presentismo/store/comentario', RegistroController::class . '@comentario')
             ->name('presentismoComment');

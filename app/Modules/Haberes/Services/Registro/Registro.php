@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Presentismo\Services\Registro;
+namespace Cat\Modules\Haberes\Services\Registro;
 
 use Cat\Models\Agente;
 use Cat\Models\Presentismo;

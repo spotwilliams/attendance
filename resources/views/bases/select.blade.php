@@ -1,4 +1,4 @@
-<?php $bases = \Cat\Models\Base::all(); ?>
+<?php $bases = \Cat\Repositories\BaseRepository::getAll() ?>
 
 <div class="form-horizontal">
     <div class="form-group">

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Presentismo\Exceptions\Validacion;
+namespace Cat\Modules\Haberes\Exceptions\Validacion;
 
 
 use Cat\Models\Agente;

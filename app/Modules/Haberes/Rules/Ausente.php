@@ -6,7 +6,7 @@
  * Time: 09:18
  */
 
-namespace Cat\Modules\Validation\Rules;
+namespace Cat\Modules\Haberes\Rules;
 
 use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;

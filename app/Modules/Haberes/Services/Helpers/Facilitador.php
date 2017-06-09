@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Presentismo\Services\Helpers;
+namespace Cat\Modules\Haberes\Services\Helpers;
 
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;

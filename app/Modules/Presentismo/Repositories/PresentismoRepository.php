@@ -64,7 +64,14 @@ class PresentismoRepository extends BaseRepository
         
     }
     
-    private function getEloquentAgentes($idBase, Periodo $periodo, \DateTime $fechaFin)
+    /**
+     * Genera eloquent de agentes con eager de presentismos
+     * @param $idBase
+     * @param Periodo $periodo
+     * @param \DateTime|null $fechaFin Fecha hasta considerar presentismos. En caso de null, se considera tomorrow
+     * @return mixed
+     */
+    public function getEloquentAgentes($idBase, Periodo $periodo, \DateTime $fechaFin = null)
     {
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
         $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
@@ -85,9 +92,18 @@ class PresentismoRepository extends BaseRepository
         return $eloquent;
     }
     
-    public function agentesAptosPaginate(Base $base, Periodo $periodo, \DateTime $fechaFin)
+    /**
+     * Entrega lista de agentes con presentismos paginando
+     * @param Base $base
+     * @param Periodo $periodo
+     * @param \DateTime|null $fechaFin En caso de null se toma la fecha del cierre del periodo
+     * @return array
+     */
+    public function agentesAptosPaginate(Base $base, Periodo $periodo, \DateTime $fechaFin = null)
     {
-        
+        if ($fechaFin === null) {
+            $fechaFin = new \DateTime($periodo->fecha_fin);
+        }
         $eloquent = $this->getEloquentAgentes($base->id, $periodo, $fechaFin);
         
         try {

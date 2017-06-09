@@ -5,6 +5,7 @@
     <title>CAT - Presentismo</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
+{!! Html::style('plugins/pace/css/pace.css') !!}
 {!! Html::style('plugins/bootstrap/css/bootstrap.min.css') !!}
 {!! Html::style('plugins/font-awesome/css/font-awesome.min.css') !!}
 {!! Html::style('plugins/select2/css/select2.min.css') !!}
@@ -12,7 +13,7 @@
 {!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
 {!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
 {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
-{!! Html::style('plugins/ionicons/css/ionicons.min.css') !!}
+{!! Html::style('css/style.css') !!}
 
 <!-- Ionicons -->
     @yield('css')
@@ -145,6 +146,8 @@
         </div>
     </div>
 @endif
+{!! Html::script('plugins/pace/js/pace.min.js') !!}
+
 {!! Html::script('plugins/jquery/js/jquery.min.js') !!}
 {!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
 {!! Html::script('plugins/bootstrap-select/js/bootstrap-select.min.js') !!}

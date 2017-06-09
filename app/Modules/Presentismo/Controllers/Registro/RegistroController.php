@@ -3,6 +3,7 @@
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
 use Cat\Models\Agente;
+use Cat\Models\Base;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
@@ -12,6 +13,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
 use Cat\Repositories\JornadaLaborableRepository;
 use Cat\Repositories\PeriodoRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -40,39 +42,39 @@ class RegistroController extends AppBaseController
      */
     public function index(Request $request, $base)
     {
-        
         return view('Presentismo::registro.index')
-            ->with('periodo', PeriodoRepository::getOrCreatePeriodoActivo(new \DateTime('now')))
             ->with('baseActual', $base);
     }
     
-    public function table(Request $request, $base)
+    public function prepareListaAgentes(Request $request)
     {
-        $periodo = PeriodoRepository::getOrCreatePeriodoActivo(new \DateTime('now'));
-        $agentes = $this->presentismoRepository->agentesAptos($base, $periodo);
+        $this->validate($request, ['base' => 'required|not_in:-1']);
         
-        /** @var \Yajra\Datatables\Engines\CollectionEngine $datatable */
-        $datatable = Datatables::of(new Collection($agentes));
+        $input = $request->all();
         
-        $datatable->filter(function ($instance) use ($request) {
-            /** @var \Yajra\Datatables\Engines\CollectionEngine $query */
-            $params = $request->all();
-            $value  = $params['search']['value'];
-            if (!empty($value)) {
-                $instance->collection = $instance->collection
-                    ->filter(function ($row) use ($value) {
-                        return
-                            (
-                                (Str::contains(strtolower($row->nombre), strtolower($value)) ? true : false)
-                                or (Str::contains(strtolower($row->apellido), strtolower($value)) ? true : false)
-                                or (Str::contains(strtolower($row->cuit), strtolower($value)) ? true : false)
-                            );
-                    });
-            }
+        return redirect(route('presentismoListaAgentes', ['base' => $input['base']]));
+        
+    }
+    
+    public function listaAgentes(Request $request, $base)
+    {
+        
+        $today    = new \DateTime('now');
+        $periodo  = PeriodoRepository::getOrCreatePeriodoActivo($today);
+        $tomorrow = $today->modify('+1day');
+        try {
+            $base    = Base::findOrFail($base);
+            $agentes = $this->presentismoRepository->agentesAptosPaginate($base, $periodo, $tomorrow);
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Se ha seleccionado una base inexistente');
             
-        });
+            return redirect(route('presentismoIndex', ['base' => 1]));
+        }
         
-        return $datatable->make(true);
+        return view('Presentismo::registro.lista')
+            ->with('periodo', $periodo)
+            ->with('baseActual', $base->id)
+            ->with('agentes', $agentes);
     }
     
     /**
@@ -114,10 +116,10 @@ class RegistroController extends AppBaseController
         $this->validate($request, ['comentario' => 'required|max:255',]);
         
         $input   = $request->all();
-        $jornada = $this->jornadaRepository->getOrCreate(new \DateTime($input['fecha']));
+        $jornada = new \DateTime($input['fecha']);
         
         $presentismo = Presentismo::where('id_agente', '=', $input['id_agente'])
-            ->where('id_jornada', '=', $jornada->id)
+            ->whereDate('fecha', '=', $jornada->format('Y-m-d'))
             ->where('id_tipo_presentismo', '=', $input['id_tipo_presentismo'])
             ->first();
         
