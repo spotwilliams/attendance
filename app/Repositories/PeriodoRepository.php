@@ -6,7 +6,9 @@ use Cat\Models\Base;
 use Cat\Models\EstadoPeriodo;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Periodo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use InfyOm\Generator\Common\BaseRepository;
@@ -42,7 +44,6 @@ class PeriodoRepository extends BaseRepository
                 'cant_dias'      => $ultimoPeriodo->cant_dias,
             ]);
             static::activarPeriodoEnBases($periodo);
-            
         }
         
         return $periodo;
@@ -55,18 +56,35 @@ class PeriodoRepository extends BaseRepository
      */
     public static function activarPeriodoEnBases(Periodo $periodo, Base $base = null)
     {
-        try {
-            $bases = ($base == null) ? Base::all(['id']) : [$base];
-            foreach ($bases as $b) {
+        
+        $bases = ($base == null) ? Base::all(['id']) : [$base];
+        foreach ($bases as $b) {
+            try {
                 $inserts = [
                     'id_base'    => $b->id,
                     'id_periodo' => $periodo->id,
                     'abierto'    => 1,
                 ];
                 EstadoPeriodo::create($inserts);
+            } catch (QueryException $error) {
+                Log::error($error);
             }
-        } catch (QueryException $error) {
-            Log::error($error);
+        }
+        
+    }
+    
+    
+    public static function getPeriodosActivosParaBase($idBase)
+    {
+        try {
+            
+            return Base::findOrFail($idBase)
+                ->periodos()
+                ->wherePivot('abierto', 1)
+                ->get();
+            
+        } catch (ModelNotFoundException $e) {
+            return new Collection();
         }
     }
     

@@ -63,15 +63,15 @@ class Periodo extends Model
         $previo = Periodo::orderBy('fecha_fin', 'DESC')->first();
         if ($previo === null) {
             // En caso que el periodo previo no exista se simula uno
-            $fecha  = new \DateTime('now');
+            $fecha = new \DateTime('now');
             // El periodo anterior cerro ayer
             $fecha->modify('-1day');
-            $fin    = $fecha->format('Y-m-d');
-    
+            $fin = $fecha->format('Y-m-d');
+            
             // El periodo anterior duro 15 dias
             $fecha->modify('-' . self::CANT_DIAS_DEFAULT . 'day');
             $inicio = $fecha->format('Y-m-d');
-    
+            
             $previo = new Periodo([
                 'id'             => -1,
                 'fecha_comienzo' => $inicio,
@@ -82,4 +82,11 @@ class Periodo extends Model
         
         return $previo;
     }
+    
+    
+    public function bases()
+    {
+        return $this->belongsToMany(Base::class, 'estado_periodos', 'id_periodo', 'id_base')->withPivot(['abierto']);
+    }
+    
 }

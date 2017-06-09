@@ -2,9 +2,6 @@
 
 
 @section('content')
-    <section class="content-header">
-        <h3 class="box-title">Carga de presentismos masiva</h3>
-    </section>
     <div class="content">
 
         <div class="clearfix"></div>
@@ -13,31 +10,31 @@
 
         <div class="clearfix"></div>
         <div class="box box-warning">
+            <div class="box-header">
+                <h3 class="box-title">Carga de presentismos masiva</h3>
+            </div>
 
-            {!! Form::open(['route' => 'presentismosMasivoUpload', 'method' => 'POST', 'files' => true]) !!}
+            {!! Form::open(['route' => 'presentismosMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
             <div class="box-body">
-                <div class="row">
-                    <div class="form-horizontal">
-                        @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => $baseActual])
+                <div class="form-group">
+                    @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => $baseActual])
+                </div>
 
-                        <div class="form-group @if($errors->has('archivo')) has-error @endif">
-                            <label for="archivo" class="col-sm-3 col-xs-3 control-label">Seleccione el archivo</label>
-                            {{--<input type="file" id="archivo" name="archivo" class="col-sm-6">--}}
-                            <div class="col-sm-8 col-xs-8">
-                                {!! Form::file('archivo', ['class'=>'filestyle' ,'data-buttonName'=>'btn-primary'])!!}
-                                @if($errors->has('archivo'))
-                                    <span class="help-block col-sm-12">{{$errors->first('archivo')}}</span>
-                                @endif
-                            </div>
-                        </div>
+                <div class="form-group @if($errors->has('archivo')) has-error @endif">
+                    <label for="archivo" class="col-sm-3 col-xs-3 control-label">Seleccione el archivo</label>
+                    <div class="col-sm-9 col-xs-9">
+                        {!! Form::file('archivo', ['class'=>'filestyle' ,'data-buttonName'=>'btn-primary'])!!}
+                        @if($errors->has('archivo'))
+                            <span class="help-block col-sm-12 col-xs-12">{{$errors->first('archivo')}}</span>
+                        @endif
                     </div>
                 </div>
             </div>
             <div class="box-footer">
-                {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
                 <p class="help-block pull-left">Ingrese un archivo CSV acorde al formato permitido.
                     <a class="btn btn-default btn-xs">Ver instrucciones</a>
                 </p>
+                {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
             </div>
             {!! Form::close() !!}
         </div>

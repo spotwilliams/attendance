@@ -2,6 +2,9 @@
 namespace Cat\Helpers;
 
 use Cat\Models\Agente;
+use Cat\Models\Presentismo;
+use Cat\Models\TipoPresentismo;
+use Illuminate\Support\Facades\Cache;
 
 class HtmlCustoms
 {
@@ -115,5 +118,39 @@ class HtmlCustoms
     private static function getMultiDomicilioFromModel(Agente $model)
     {
         return $model->domicilios()->get()->toArray();
+    }
+    
+    
+    /**
+     * @param Presentismo $p
+     * @param $tiposPresentismosRefence
+     * @return string
+     */
+    public static function getProperHtmlForTipoPresentismo(Presentismo $p = null)
+    {
+        /** @var array $tiposPresentismos AGREGAR CACHE!!! */
+        $key               = 'tipo_presentismos_html_key_by';
+        $tiposPresentismos = Cache::get($key);
+        $color             = 'black';
+        $label             = 'Injustificado';
+        
+        if ($tiposPresentismos == null) {
+            $tiposPresentismos = TipoPresentismo::all()->keyBy('id')->toArray();
+            Cache::put($key, $tiposPresentismos, 1440);
+        }
+        
+        if ($p == null) {
+            // Color injustificado
+            $color = $tiposPresentismos[2]['color'];
+        } else {
+            if (isset($tiposPresentismos[$p->id_tipo_presentismo])) {
+                $color = $tiposPresentismos[$p->id_tipo_presentismo]['color'];
+                $label = $tiposPresentismos[$p->id_tipo_presentismo]['descripcion'];
+            }
+            
+        }
+        $html = "<span class=\"badge\" style=\"background-color: $color !important;\">$label</span>";
+        
+        return $html;
     }
 }

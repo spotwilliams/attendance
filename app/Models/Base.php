@@ -45,12 +45,8 @@ class Base extends Model
      **/
     public function agentes()
     {
-//        return $this->hasMany(Agente::class, 'id_base');
-//        return $this->join(Operativo::class);
         return $this->operativos()
-            ->join('agentes', 'agentes.id', '=', 'operativos.id_agente')
-            ;
-        
+            ->join('agentes', 'agentes.id', '=', 'operativos.id_agente');
     }
     
     
@@ -59,5 +55,11 @@ class Base extends Model
         return $this->hasMany(Operativo::class, 'id_base');
         
     }
+    
+    public function periodos()
+    {
+        return $this->belongsToMany(Periodo::class, 'estado_periodos', 'id_base', 'id_periodo')->withPivot(['abierto']);
+    }
+    
     
 }

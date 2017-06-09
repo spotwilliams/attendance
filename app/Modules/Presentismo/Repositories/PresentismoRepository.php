@@ -4,6 +4,7 @@ namespace Cat\Modules\Validation\Repositories;
 
 
 use Cat\Models\Agente;
+use Cat\Models\Base;
 use Cat\Models\Contrato;
 use Cat\Models\EstadoContrato;
 use Cat\Models\Periodo;
@@ -45,21 +46,7 @@ class PresentismoRepository extends BaseRepository
      */
     public function agentesAptos($idBase, Periodo $periodo)
     {
-        $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
-        $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
-        $date         = new \DateTime('tomorrow');
-        $eloquent     = Agente::with([
-            'presentismos' => function ($presentismos) use ($periodo, $date) {
-                $presentismos
-                    ->where('id_periodo', '=', $periodo->id)
-                    ->whereDate('fecha', '<=', $date->format('Y-m-d'));
-            },
-        ])->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
-            ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
-            ->where('operativos.id_base', $idBase)
-            ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
-            ->where('contratos.id_estado_contrato', '=', $activo->id);
-        
+        $eloquent = $this->getEloquentAgentes($idBase, $periodo);
         try {
             return $eloquent->get(
                 [
@@ -69,6 +56,43 @@ class PresentismoRepository extends BaseRepository
                     'agentes.cuit as cuit',
                 ]
             );
+        } catch (QueryException $e) {
+            Log::error($e);
+            
+            return [];
+        }
+        
+    }
+    
+    private function getEloquentAgentes($idBase, Periodo $periodo, \DateTime $fechaFin)
+    {
+        $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
+        $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
+        $date         = ($fechaFin === null) ? new \DateTime('tomorrow') : $fechaFin;
+        $eloquent     = Agente::with([
+            'presentismos' => function ($presentismos) use ($periodo, $date) {
+                $presentismos
+                    ->where('id_periodo', '=', $periodo->id)
+                    ->whereDate('fecha', '<=', $date->format('Y-m-d'));
+            },
+        ])
+            ->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
+            ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
+            ->where('operativos.id_base', $idBase)
+            ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
+            ->where('contratos.id_estado_contrato', '=', $activo->id);
+        
+        return $eloquent;
+    }
+    
+    public function agentesAptosPaginate(Base $base, Periodo $periodo, \DateTime $fechaFin)
+    {
+        
+        $eloquent = $this->getEloquentAgentes($base->id, $periodo, $fechaFin);
+        
+        try {
+            return $eloquent->paginate(25);
+            
         } catch (QueryException $e) {
             Log::error($e);
             

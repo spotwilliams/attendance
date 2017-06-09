@@ -52,6 +52,26 @@
 
     </ul>
 </li>
+
+<li class="dropdown {{ Request::is('administracion*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-edit"></i>
+        <span>Administraci&oacute;n</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{!! route('haberesIndex', ['base' => 1]) !!}">
+                <i class="fa fa-money"></i>
+                <span>C&aacute;lculo de haberes</span>
+            </a>
+        </li>
+    </ul>
+</li>
 {{--<li class="{{ Request::is('areas*') ? 'active' : '' }}">--}}
 {{--<a href="{!! route('areas.index') !!}"><i class="fa fa-edit"></i><span>Areas</span></a>--}}
 {{--</li>--}}

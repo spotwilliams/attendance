@@ -4,5 +4,6 @@ return  [
         'Presentismo',
         'Agentes',
         'Masivo',
+        'Haberes',
     ]
 ];
