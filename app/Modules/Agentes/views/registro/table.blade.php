@@ -14,6 +14,7 @@ $idModal = 'modal-agentes';
         <tr>
             <td>{{$agente->id}}</td>
             <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
+            <td>{{$agente->cuit}}</td>
             <td>
                 <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
                    class="btn btn-primary"><i class="fa fa-edit"></i></a>

@@ -19,6 +19,13 @@
             <div class="box-body">
                 @include('Agentes::registro.table')
             </div>
+            <div class="box-footer">
+                <div class="col-md-6 col-md-offset-3">
+
+                    {{$agentes->links()}}
+                </div>
+
+            </div>
         </div>
     </div>
 @endsection
