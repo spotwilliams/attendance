@@ -3,18 +3,18 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateContratosTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
-	{
-		Schema::create('contratos', function(Blueprint $table)
-		{
-			$table->integer('id', true);
+class CreateContratosTable extends Migration
+{
+    
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
+    {
+        Schema::create('contratos', function (Blueprint $table) {
+            $table->integer('id', true);
             // Obligatorios
             $table->date('fecha_ingreso');
             
@@ -26,21 +26,22 @@ class CreateContratosTable extends Migration {
             // Opcionales
             $table->string('id_sial', 100)->nullable();
             $table->string('ficha', 100)->nullable();
-
+            
             $table->timestamps();
+            $table->softDeletes();
             
         });
-	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
-	{
-		Schema::drop('contratos');
-	}
-
+    }
+    
+    
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
+    {
+        Schema::drop('contratos');
+    }
+    
 }

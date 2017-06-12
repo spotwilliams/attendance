@@ -3,18 +3,20 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Estudio extends Model
 {
+    use SoftDeletes;
     
     public $table = 'estudios';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    
+    protected $dates = ['deleted_at'];
     protected $fillable
-        = [
+                     = [
             'carrera',
             'institucion',
             'estado',

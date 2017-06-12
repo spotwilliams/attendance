@@ -28,6 +28,7 @@ class CreateAgentesTable extends Migration
             $table->enum('estado_civil', ['CASADO', 'SOLTERO', 'DIVORCIADO', 'VIUDO'])->nullable();
             
             $table->timestamps();
+            $table->softDeletes();
         });
     }
     

@@ -3,22 +3,23 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class EstadoContrato extends Model
 {
-    
+    use SoftDeletes;
     const ESTADO_ACTIVO = 'ACTIVO';
     
-    const ESTADO_BAJA   = 'BAJA';
+    const ESTADO_BAJA = 'BAJA';
     
-    public $table           = 'estado_contratos';
+    public $table = 'estado_contratos';
     
     public $notFoundMessage = 'El estado de contrato especificado es incorrecto.';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    
+    protected $dates = ['deleted_at'];
     
     /**
      * Validation rules

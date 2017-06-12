@@ -3,11 +3,12 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Agente extends Model
 {
-    
+    use SoftDeletes;
     public $table = 'agentes';
     
     const CREATED_AT = 'created_at';
@@ -37,7 +38,7 @@ class Agente extends Model
      *
      * @var array
      */
-    
+    protected $dates = ['deleted_at'];
     /**
      * Validation rules
      *
@@ -135,7 +136,7 @@ class Agente extends Model
         
         /** @var int $cantDiasConsumidos */
         $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);
-
+        
         return $cantDiasPermitidos - $cantDiasConsumidos;
     }
     

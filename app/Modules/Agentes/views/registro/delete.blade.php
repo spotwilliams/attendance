@@ -2,9 +2,9 @@
 
 @section('content')
     <?php
-
+    
     /** @var \Cat\Models\Agente $agente */
-
+    
     $base = $agente->base();
     ?>
     <section class="content-header">
@@ -56,12 +56,59 @@
             </div>
             <!-- /.col -->
             <div class="col-md-9">
-                @include('Agentes::registro.show.tabs')
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="box box-danger box-body">
+                            <p class="help-block">
+                                Para continuar, click en el bot&oacute;n.
+                            </p>
+                            {!! Form::open(['route' => 'agentesDestroy', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                            {!! Form::hidden('agente', $agente->id) !!}
+                            <a class="btn btn-app bg-red"><i class="fa fa-trash"></i>Eliminar datos agente</a>
+                            {!! Form::close() !!}
+                        </div>
+                    </div>
+                </div>
+            @include('Agentes::registro.show.tabs')
 
-                <!-- /.nav-tabs-custom -->
+            <!-- /.nav-tabs-custom -->
             </div>
             <!-- /.col -->
         </div>
     </section>
-
+    <div class="modal modal-warning fade" id="modal-warning">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                        <span aria-hidden="true">×</span></button>
+                    <h4 class="modal-title">Cuidado</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Est&aacute;s a punto de elimiar la informaci&oacute;n de un agente. Esto provocar&aacute; que los datos
+                    del mismo ya no sean accesibles.</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Salir</button>
+                    <button type="button" id="okToGo" class="btn btn-danger"><i class="fa fa-trash-o"></i> Borrar</button>
+                </div>
+            </div>
+            <!-- /.modal-content -->
+        </div>
+        <!-- /.modal-dialog -->
+    </div>
 @endsection
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('.btn.btn-app.bg-red').on('click', function (obj, event) {
+                $('#modal-warning').modal({});
+            });
+
+            $('#okToGo').on('click', function () {
+                $('form').submit();
+            })
+        })
+    </script>
+@append

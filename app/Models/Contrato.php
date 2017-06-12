@@ -3,16 +3,18 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Contrato extends Model
 {
+    use SoftDeletes;
     const TIPO_LOCACION = 'LOCACION';
     
     public $table = 'contratos';
     
-    protected $fillable
-        = [
+    protected     $fillable
+                         = [
             'fecha_ingreso',
             'id_tipo_contrato',
             'id_estado_contrato',
@@ -20,9 +22,9 @@ class Contrato extends Model
             'id_sial',
             'ficha',
         ];
-    
+    protected     $dates = ['deleted_at'];
     public static $rules
-        = [
+                         = [
             'fecha_ingreso'      => 'required|date',
             'id_tipo_contrato'   => 'not_in:-1',
             'id_estado_contrato' => 'not_in:-1',

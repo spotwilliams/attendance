@@ -14,6 +14,7 @@
 {!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
 {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
 {!! Html::style('css/style.css') !!}
+{!! Html::script('plugins/pace/js/pace.min.js') !!}
 
 <!-- Ionicons -->
     @yield('css')
@@ -146,7 +147,6 @@
         </div>
     </div>
 @endif
-{!! Html::script('plugins/pace/js/pace.min.js') !!}
 
 {!! Html::script('plugins/jquery/js/jquery.min.js') !!}
 {!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}

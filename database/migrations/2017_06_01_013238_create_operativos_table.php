@@ -24,6 +24,7 @@ class CreateOperativosTable extends Migration {
 			$table->integer('id_area')->nullable()->index('operativo_pertenece_area_idx1');
 			$table->integer('id_cargo')->nullable()->index('operativo_tiene_cargo_idx');
             $table->timestamps();
+            $table->softDeletes();
             
         });
 	}

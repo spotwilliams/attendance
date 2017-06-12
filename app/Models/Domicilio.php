@@ -3,15 +3,17 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Domicilio extends Model
 {
-    
+    use SoftDeletes;
     public $table = 'domicilios';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
     
+    protected $dates = ['deleted_at'];
     
     public $fillable
         = [
@@ -22,7 +24,7 @@ class Domicilio extends Model
             'barrio',
             'provincia',
             'libre',
-            'id_agente'
+            'id_agente',
         ];
     
     /**

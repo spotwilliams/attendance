@@ -4,6 +4,7 @@ namespace Cat\Modules\Agentes\Repositories;
 
 use Cat\Models\Agente;
 use Cat\Models\Base;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use InfyOm\Generator\Common\BaseRepository;
 
 class AgenteRepository extends BaseRepository
@@ -16,16 +17,17 @@ class AgenteRepository extends BaseRepository
     
     public function getAgentesByBase($idBase)
     {
-        /** @var Base $base */
-        $base    = Base::find($idBase);
-        $agentes = [];
         
-        if ($base !== null) {
-            
-            return $base->agentes()->get();
-        } else {
-            return $agentes;
+        $agentes = [];
+        try {
+            /** @var Base $base */
+            $base    = Base::findOrFail($idBase);
+            $agentes = $base->agentes()->paginate(50);
+        } catch (ModelNotFoundException $e) {
+        
         }
+        
+        return $agentes;
         
     }
     

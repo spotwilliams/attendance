@@ -30,6 +30,7 @@ class CreateEstudiosTable extends Migration
             ));
             $table->string('comentario', 200)->nullable();
             $table->timestamps();
+            $table->softDeletes();
             
         });
     }

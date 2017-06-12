@@ -25,6 +25,7 @@ class CreateDomiciliosTable extends Migration
             $table->boolean('constituido')->default(true);
             $table->string('libre', 500)->nullable();
             $table->timestamps();
+            $table->softDeletes();
             
         });
     }
