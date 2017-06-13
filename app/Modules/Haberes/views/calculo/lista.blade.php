@@ -31,15 +31,17 @@ while ($fecha < $fechaToday) {
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
-                    {!! Form::open(['route' => 'haberesConfirmarLote']) !!}
-                    @foreach($agentes->getCollection()->keyBy('id')->keys()->all() as $age)
-                        {!! Form::hidden('agentes[]', $age) !!}
-                    @endforeach
-                    {!! Form::hidden('periodo', $periodo->id) !!}
-                    {!! Form::hidden('base', $base->id) !!}
-                    {!! Form::hidden('page', $agentes->currentPage())!!}
-                    <input type="submit" class="btn btn-primary" value='Confimar esta hoja'/>
-                    {!! Form::close() !!}
+                    @if(!$agentes->isEmpty())
+                        {!! Form::open(['route' => 'haberesConfirmarLote']) !!}
+                        @foreach($agentes->getCollection()->keyBy('id')->keys()->all() as $age)
+                            {!! Form::hidden('agentes[]', $age) !!}
+                        @endforeach
+                        {!! Form::hidden('periodo', $periodo->id) !!}
+                        {!! Form::hidden('base', $base->id) !!}
+                        {!! Form::hidden('page', $agentes->currentPage())!!}
+                        <input type="submit" class="btn btn-primary" value='Confimar esta hoja'/>
+                        {!! Form::close() !!}
+                    @endif
                 </div>
 
             </div>
@@ -56,6 +58,13 @@ while ($fecha < $fechaToday) {
                     <th>Confirmar</th>
                     </thead>
                     <tbody>
+                    @if($agentes->isEmpty())
+                        <tr>
+                            <td colspan="10">
+                                <p class="help-block">No se encontraron presentismos cargados para esta base.</p>
+                            </td>
+                        </tr>
+                    @endif
                     @foreach($agentes as $a)
                         <tr>
                             <td class="details-control">

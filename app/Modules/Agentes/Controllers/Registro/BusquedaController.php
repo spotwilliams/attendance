@@ -41,24 +41,20 @@ class BusquedaController extends AppBaseController
     {
         $input = Input::get('search');
         
-        $posts = Agente::where('nombre', 'LIKE', $input)
-            ->orWhere('apellido', 'LIKE', $input)
-            ->orWhere('dni', 'LIKE', $input)
-            ->orWhere('cuit', 'LIKE', $input)
-            ->paginate(25);
+        $agentesEloquent = Agente::where('nombre', 'LIKE', "%$input%")
+            ->orWhere('apellido', 'LIKE', "%$input%")
+            ->orWhere('dni', 'LIKE', "%$input%")
+            ->orWhere('cuit', 'LIKE', "%$input%")
+            ->with('operativo.base');
         
-        if ($request->ajax()) {
-            return view::make('Agentes::registro.search.rows')
-                ->withAgentes($posts);
-        }
+        
+        $return = $agentesEloquent
+            ->paginate(25)
+            ->appends(['search' => $input]);
         
         return View::make('Agentes::registro.search.index')
-            ->withAgentes($posts);
-
-//        $agentes = $this->agenteRepository->findBy();
-//
-//        return view('Agentes::registro.search.index')
-//            ->with('agentes', $agentes);
+            ->withAgentes($return);
+        
     }
     
     

@@ -62,7 +62,7 @@ class Agente extends Model
      **/
     public function area()
     {
-        return $this->belongsTo(\Cat\Models\Area::class);
+        return $this->belongsTo(Area::class);
     }
     
     /**
@@ -74,6 +74,11 @@ class Agente extends Model
         $operativo = $this->operativo()->first();
         
         return $operativo->base()->first();
+    }
+    
+    public function baseEloquent()
+    {
+        return $this->operativo->base();
     }
     
     public function operativo()
