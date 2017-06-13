@@ -101,7 +101,7 @@ class LaboralesController extends AppBaseController
         if (empty($agente)) {
             Flash::error('Agente no encontrado');
             
-            return redirect(route('Agentes::registro.index'));
+            return redirect(route('agentesIndex', ['base' => 1]));
         }
         
         return view('Agentes::registro.edit')
@@ -122,7 +122,7 @@ class LaboralesController extends AppBaseController
         $this->validate($request, Contrato::$rules);
         
         $input  = $request->all();
-        $agente = Agente::find($input['id']);
+        $agente = Agente::find($input['agente']);
         
         if (empty($agente)) {
             Flash::error('Agente no encontrado');

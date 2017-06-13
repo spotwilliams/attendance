@@ -28,7 +28,12 @@ class AgenteRepository extends BaseRepository
         }
         
         return $agentes;
-        
+    }
+    
+    public function findBy($criteria = [])
+    {
+        return Agente::with('area')
+            ->paginate(25);
     }
     
     

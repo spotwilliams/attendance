@@ -91,7 +91,7 @@ class Agente extends Model
     
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function domicilios()
     {
@@ -99,7 +99,7 @@ class Agente extends Model
     }
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function estudio()
     {
@@ -112,6 +112,15 @@ class Agente extends Model
     public function presentismos()
     {
         return $this->hasMany(Presentismo::class, 'id_agente');
+    }
+    
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function haberes()
+    {
+        return $this->hasMany(Haber::class, 'id_agente');
     }
     
     /**

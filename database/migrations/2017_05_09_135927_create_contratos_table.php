@@ -26,6 +26,7 @@ class CreateContratosTable extends Migration
             // Opcionales
             $table->string('id_sial', 100)->nullable();
             $table->string('ficha', 100)->nullable();
+            $table->decimal('monto', 10, 2)->default(0);
             
             $table->timestamps();
             $table->softDeletes();

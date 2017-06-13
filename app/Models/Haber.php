@@ -5,10 +5,10 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 
-class Presentismo extends Model
+class Haber extends Model
 {
     
-    public $table = 'presentismos';
+    public $table = 'haberes';
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -17,9 +17,8 @@ class Presentismo extends Model
         = [
             'id_agente',
             'id_periodo',
-            'fecha',
-            'id_tipo_presentismo',
-            'injustificado',
+            'monto_facturado',
+            'monto_contrato',
         ];
     
     /**
@@ -33,9 +32,9 @@ class Presentismo extends Model
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
-    public function tipoPresentismo()
+    public function periodo()
     {
-        return $this->belongsTo(TipoPresentismo::class, 'id_tipo_presentismo');
+        return $this->belongsTo(Periodo::class, 'id_periodo');
     }
     
 }

@@ -11,15 +11,21 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
+            <a href="{!! route('agentesSearchIndex') !!}">
+                <i class="fa fa-search"></i>
+                <span>B&uacute;squeda de agentes</span>
+            </a>
+        </li>
+        <li>
             <a href="{!! route('agentesIndex', ['base' => 1]) !!}">
                 <i class="fa fa-edit"></i>
-                <span>Individual</span>
+                <span>Alta individual</span>
             </a>
         </li>
         <li>
             <a href="{!! route('agentesMasivoIndex', ['base' => 1]) !!}">
                 <i class="fa fa-file-excel-o"></i>
-                <span>Alta Masiva</span>
+                <span>Alta masiva</span>
             </a>
         </li>
     </ul>
@@ -65,7 +71,7 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{!! route('haberesIndex', ['base' => 1]) !!}">
+            <a href="{!! route('haberesSelectBase', ['base' => 1]) !!}">
                 <i class="fa fa-money"></i>
                 <span>C&aacute;lculo de haberes</span>
             </a>

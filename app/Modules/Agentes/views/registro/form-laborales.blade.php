@@ -34,6 +34,12 @@
         @endif
     </div>
 </div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Monto</label>
+    <div class="col-sm-8">
+        {!! Form::text('monto', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
 
 <?php
 $tipos[-1] = 'Seleccione';

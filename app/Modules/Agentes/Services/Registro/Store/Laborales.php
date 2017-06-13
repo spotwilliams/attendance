@@ -30,6 +30,9 @@ class Laborales extends Service
     /** @var  \DateTime */
     protected $fecha;
     
+    /** @var  string Casting before save */
+    protected $monto;
+    
     /** @var  EstadoContrato */
     protected $estado;
     
@@ -45,6 +48,7 @@ class Laborales extends Service
         $this->agente  = $agente;
         $this->id_sial = $input['id_sial'];
         $this->ficha   = $input['ficha'];
+        $this->monto   = $input['monto'];
         $this->fecha   = new \DateTime($input['fecha_ingreso']);
         $this->estado  = EstadoContrato::findOrFail($input['id_estado_contrato']);
         $this->tipo    = TipoContrato::findOrFail($input['id_tipo_contrato']);
@@ -65,6 +69,7 @@ class Laborales extends Service
                 'id_agente'          => $this->agente->id,
                 'id_sial'            => $this->id_sial,
                 'ficha'              => $this->ficha,
+                'monto'              => floatval($this->monto),
             ]);
             
             DB::commit();

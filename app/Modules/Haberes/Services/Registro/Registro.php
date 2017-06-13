@@ -3,8 +3,11 @@
 namespace Cat\Modules\Haberes\Services\Registro;
 
 use Cat\Models\Agente;
+use Cat\Models\Haber;
+use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Haberes\Services\Calculo\Calculador;
 use Cat\Modules\Service;
 use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\QueryException;
@@ -15,23 +18,26 @@ class Registro extends Service
     /** @var Agente */
     protected $agente;
     
-    /** @var TipoPresentismo */
-    protected $tipoPresentismo;
-    
-    /** @var  JornadaLaborable */
-    protected $jornadaLaborable;
-    
-    /** @var  Presentismo */
-    protected $presentismoPrevio;
-    
+    /** @var Periodo */
     protected $periodo;
     
-    public function __construct(Agente $agente, TipoPresentismo $tipoPresentismo, \DateTime $fecha)
+    /** @var  Calculador */
+    protected $supportService;
+    
+    public function __construct(Agente $agente, Periodo $periodo)
     {
-        $this->agente           = $agente;
-        $this->tipoPresentismo  = $tipoPresentismo;
-        $this->jornadaLaborable = $fecha;
-        $this->periodo          = PeriodoRepository::getOrCreatePeriodoActivo($fecha);
+        $this->agente         = $agente;
+        $this->periodo        = $periodo;
+        $this->supportService = new Calculador($this->agente, $this->periodo);
+    }
+    
+    public function reset(Agente $agente, Periodo $periodo)
+    {
+        $this->agente  = $agente;
+        $this->periodo = $periodo;
+        $this->supportService->reset($this->agente, $this->periodo);
+        
+        return $this;
     }
     
     public function execute()
@@ -45,22 +51,15 @@ class Registro extends Service
             
             DB::beginTransaction();
             
-            // Busco o creo la asistencia
-            /** @var Presentismo $presentismo */
-            $presentismo = Presentismo::firstOrNew(
-                [
-                    'id_agente'  => $this->agente->id,
-                    'fecha'      => $this->jornadaLaborable->format('Y-m-d'),
-                    'id_periodo' => $this->periodo->id,
-                ]);
-
-            // Guardo el tipo de asistencia
-            $presentismo->id_tipo_presentismo = $this->tipoPresentismo->id;
+            $montoContrato = $this->supportService->getMontoContrato();
+            $montoPagar    = $this->supportService->getMontoPagar();
+            Haber::create([
+                'id_agente'       => $this->agente->id,
+                'id_periodo'      => $this->periodo->id,
+                'monto_facturado' => $montoPagar,
+                'monto_contrato'  => $montoContrato,
+            ]);
             
-            // Justifico o no la misma
-            $presentismo->injustificado = $this->tipoPresentismo->injustificado;
-            
-            $presentismo->save();
             DB::commit();
         } catch (QueryException $e) {
             DB::rollBack();

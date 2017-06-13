@@ -25,6 +25,11 @@ class Periodo extends Model
         return $this->hasMany(EstadoPeriodo::class, 'id_periodo');
     }
     
+    public function haberes()
+    {
+        return $this->hasMany(Haber::class, 'id_periodo');
+    }
+    
     /**
      * @param \DateTime|null $fecha
      * @return Periodo

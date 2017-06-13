@@ -9,25 +9,35 @@
 |
 */
 use Illuminate\Support\Facades\Route;
-use Cat\Modules\Haberes\Controllers\Registro\RegistroController;
-
+use Cat\Modules\Haberes\Controllers\Registro\GeneralController;
+use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
 Route::group(
     ['middleware' => ['web'], 'prefix' => 'administracion'],
     
     function () {
-        Route::get('haberes/base/{base}', RegistroController::class . '@index')
-            ->name('haberesIndex');
+        /**
+         * Generales
+         */
+        Route::get('haberes/select/base/{base}', GeneralController::class . '@selectBase')
+            ->name('haberesSelectBase');
         
-        Route::post('haberes/lista/agentes', RegistroController::class . '@prepareListaAgentes')
+        Route::post('haberes/select/periodo', GeneralController::class . '@selectPeriodo')
+            ->name('haberesSelectPeriodo');
+        
+        Route::post('haberes/lista/agentes', GeneralController::class . '@prepareListaAgentes')
             ->name('haberesPrepareListaAgentes');
         
-        Route::get('haberes/lista/agentes/base/{base}/periodo/{periodo}', RegistroController::class . '@listaAgentes')
+        Route::get('haberes/lista/agentes/base/{base}/periodo/{periodo}', GeneralController::class . '@listaAgentes')
             ->name('haberesListaAgentes');
+
+        /**
+         * Confirmaciones
+         */
+        Route::post('haberes/confirmar/single', ConfirmarController::class . '@single')
+            ->name('haberesConfirmarSingle');
+
+        Route::post('haberes/confirmar/lote', ConfirmarController::class . '@batch')
+            ->name('haberesConfirmarLote');
         
-        Route::post('haberes/table/base/{base}', RegistroController::class . '@table')
-            ->name('haberesTable');
-        
-        Route::post('haberes/store/comentario', RegistroController::class . '@comentario')
-            ->name('haberesComment');
     }
 );

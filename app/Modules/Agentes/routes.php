@@ -13,6 +13,7 @@ use Cat\Modules\Agentes\Controllers\Registro\RegistroController;
 use Cat\Modules\Agentes\Controllers\Registro\PersonalesController;
 use Cat\Modules\Agentes\Controllers\Registro\LaboralesController;
 use Cat\Modules\Agentes\Controllers\Registro\OperativosController;
+use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
 
 Route::group(
     ['middleware' => ['web']],
@@ -20,6 +21,7 @@ Route::group(
         /**
          * Generales
          */
+
         Route::get('agentes/base/{base}', RegistroController::class . '@index')
             ->name('agentesIndex');
         
@@ -87,6 +89,11 @@ Route::group(
         Route::post('agentes/destroy/', RegistroController::class . '@destroy')
             ->name('agentesDestroy');
         
-        
+        /**
+         * Busquedas
+         */
+        Route::get('agentes/buscar/', BusquedaController::class . '@search')
+            ->name('agentesSearchIndex');
+    
     }
 );

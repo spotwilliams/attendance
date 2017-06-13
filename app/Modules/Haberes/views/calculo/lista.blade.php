@@ -1,10 +1,11 @@
 <?php
 use Cat\Models\TipoPresentismo;
 use Cat\Helpers\HtmlCustoms;
+use Cat\Repositories\TipoPresentismosRepository;
 
 /** @var \DateTime $fecha */
 /** @var \Cat\Models\Periodo $periodo */
-$fecha = new DateTime($periodo->fecha_comienzo);
+$fecha      = new DateTime($periodo->fecha_comienzo);
 $fechaToday = (new DateTime($periodo->fecha_fin));
 
 $fechasToShow = [];
@@ -13,11 +14,13 @@ while ($fecha < $fechaToday) {
     $fechasToShow[] = ['data' => $fecha->format('Y-m-d'), 'show' => $fecha->format('d/m')];
     $fecha->modify('+1day');
 }
+
 ?>
 
 @extends('layouts.app')
 
 @section('content')
+
     <div class="content">
         <div class="clearfix"></div>
         @include('flash::message')
@@ -27,20 +30,30 @@ while ($fecha < $fechaToday) {
         <div class="box box-warning">
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
+                <div class="box-tools pull-right">
+                    {!! Form::open(['route' => 'haberesConfirmarLote']) !!}
+                    @foreach($agentes->getCollection()->keyBy('id')->keys()->all() as $age)
+                        {!! Form::hidden('agentes[]', $age) !!}
+                    @endforeach
+                    {!! Form::hidden('periodo', $periodo->id) !!}
+                    {!! Form::hidden('base', $base->id) !!}
+                    {!! Form::hidden('page', $agentes->currentPage())!!}
+                    <input type="submit" class="btn btn-primary" value='Confimar esta hoja'/>
+                    {!! Form::close() !!}
+                </div>
+
             </div>
 
             <div class="box-body">
 
                 <table class="table table-hover" id="haberes-table">
                     <thead>
-                    <th>Detalle</th>
-                    <th>Id Agente</th>
+                    <th>Detalles</th>
                     <th>Agente</th>
+                    <th>DNI</th>
                     <th>CUIT</th>
                     <th>Monto</th>
-                    {{--                    @foreach($fechasToShow as $fecha) --}}
-                    {{-- <th data-cat="{{$fecha['data']}}">{{$fecha['show']}}</th> --}}
-                    {{-- @endforeach --}}
+                    <th>Confirmar</th>
                     </thead>
                     <tbody>
                     @foreach($agentes as $a)
@@ -48,31 +61,35 @@ while ($fecha < $fechaToday) {
                             <td class="details-control">
                                 <a class="btn btn-success"><i class="fa fa-plus-circle"></i></a>
                             </td>
-                            <td>{{$a->id}}</td>
+
                             <td>{{$a->apellido}}, {{$a->nombre}}</td>
+                            <td>{{$a->dni}}</td>
                             <td>{{$a->cuit}}</td>
-                            <td>hola</td>
+                            <td>
+                                $ {{money_format('%i', (new \Cat\Modules\Haberes\Services\Calculo\Calculador($a, $periodo))->execute())}}</td>
+                            <td>
+                                @if($a->haberes->isEmpty())
+                                    {!! Form::open(['route' => 'haberesConfirmarSingle']) !!}
+                                    {!! Form::hidden('agente', $a->id) !!}
+                                    {!! Form::hidden('periodo', $periodo->id) !!}
+                                    {!! Form::hidden('base', $base->id) !!}
+                                    {!! Form::hidden('page', $agentes->currentPage()) !!}
+                                    <input type="submit" class="btn btn-primary" value='Confimar'></input>
+                                    {!! Form::close() !!}
+
+                                @else
+                                    <h4>
+                                        <span class="label label-success"><i class="fa fa-check-circle-o">&nbsp;Confirmado</i></span>
+                                    </h4>
+                                @endif
+                            </td>
 
                         </tr>
                         <tr class="hidden">
-                            <td colspan="5">
-                                <p class="lead">Resumen</p>
-                                <div class="table-responsive">
-                                    <table class="table">
-                                        <tbody>
-                                        @for($i = 0; $i < count($fechasToShow) ;$i++)
-                                            <tr>
-                                                <td>{{$fechasToShow[$i]['show']}}:</td>
-                                                <td><?php
-
-                                                    $p = (isset($a->presentismos[$i]) ? $a->presentismos[$i] : null);
-                                                    echo HtmlCustoms::getProperHtmlForTipoPresentismo($p)
-                                                    ?></td>
-                                            </tr>
-                                        @endfor
-                                        </tbody>
-                                    </table>
-                                </div>
+                            <input type="hidden" data-presentismos="{{$a->presentismos}}">
+                            <td colspan="10">
+                                <p class="lead">Resumen:</p>
+                                <div class="table-responsive"></div>
                             </td>
                         </tr>
                     @endforeach
@@ -112,6 +129,8 @@ while ($fecha < $fechaToday) {
                     $(icon).removeClass('fa-minus-circle');
 
                 } else {
+                    var cell = $(nextTr).children('td');
+                    var data = $(nextTr).children('input').data('presentismos');
                     $(nextTr).removeClass('hidden');
 
                     $(button).addClass('btn-danger');
@@ -119,10 +138,65 @@ while ($fecha < $fechaToday) {
 
                     $(icon).addClass('fa-minus-circle');
                     $(icon).removeClass('fa-plus-circle');
+                    renderDetails(data, cell);
 
                 }
             });
 
+            /**
+             *
+             * @param data Datos
+             * @param container Celda
+             */
+            function renderDetails(data, container) {
+                var tiposPresentismo = {!! \Cat\Repositories\TipoPresentismosRepository::getAll()->toJson() !!};
+                for (var i = 0; i < data.length; i++) {
+
+                    for (var tpIxd = 0; tpIxd < tiposPresentismo.length; tpIxd++) {
+                        if (tiposPresentismo[tpIxd].cant == undefined) {
+                            tiposPresentismo[tpIxd].cant = 0;
+                        }
+                        if (tiposPresentismo[tpIxd].id == data[i].id_tipo_presentismo) {
+
+                            tiposPresentismo[tpIxd].cant = tiposPresentismo[tpIxd].cant + 1;
+                            break;
+                        }
+                    }
+                }
+                var div = $(container).children('div');
+                if ($(div[0]).children('table').length) {
+                    // En caso que ya exista, salimos
+                    return;
+                }
+                var insidetable = $('<table>')
+                    .addClass('table no-margin');
+
+                for (var tp = 0; tp < tiposPresentismo.length; tp++) {
+                    if (tiposPresentismo[tp].cant != undefined && tiposPresentismo[tp].cant != 0) {
+
+                        var tr = $('<tr>');
+                        var tdIzq = $('<td>');
+                        var tdDer = $('<td>');
+                        var contIzq = $('<span>')
+                            .addClass('label')
+                            .css('background', tiposPresentismo[tp].color)
+                            .text(tiposPresentismo[tp].descripcion);
+//
+                        var contDer = $('<span>')
+                            .text(tiposPresentismo[tp].cant);
+
+                        $(tdIzq).append(contIzq);
+                        $(tdDer).append(contDer);
+
+                        $(tr).append(tdIzq);
+                        $(tr).append(tdDer);
+
+
+                        $(insidetable).append(tr);
+                    }
+                }
+                $(div[0]).append(insidetable);
+            }
         });
 
     </script>

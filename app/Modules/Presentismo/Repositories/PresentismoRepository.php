@@ -2,7 +2,6 @@
 
 namespace Cat\Modules\Validation\Repositories;
 
-
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\Contrato;
@@ -10,9 +9,8 @@ use Cat\Models\EstadoContrato;
 use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
-use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
 use InfyOm\Generator\Common\BaseRepository;
 
