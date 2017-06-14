@@ -120,8 +120,9 @@ class LaboralesController extends AppBaseController
     public function update(Request $request)
     {
         $this->validate($request, Contrato::$rules);
-        
+    
         $input  = $request->all();
+        
         $agente = Agente::find($input['agente']);
         
         if (empty($agente)) {

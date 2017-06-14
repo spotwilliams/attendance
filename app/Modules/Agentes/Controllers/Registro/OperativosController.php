@@ -120,31 +120,31 @@ class OperativosController extends AppBaseController
     public function update(Request $request)
     {
         $this->validate($request, Operativo::$rules);
-    
+        
         $input  = $request->all();
-        $agente = Agente::find($input['id']);
-    
+        $agente = Agente::find($input['agente']);
+        
         if (empty($agente)) {
             Flash::error('Agente no encontrado');
-        
+            
             return redirect(route('agentesIndex', ['base', 1]));
         }
-    
-        try {
         
+        try {
+            
             $service = new Update($agente, $input);
             $service->execute();
             Flash::success('Datos operativos actualizados correctamente.');
-    
+            
             return redirect(route('agentesShow', ['id' => $agente->id]));
-        
-        
+            
+            
         } catch (\Exception $e) {
-        
+            
             Flash::error('No se pudo actualizar los datos operativos: ' . $e->getMessage());
-        
+            
             return redirect(route('agentesEditOperativos', ['id' => $agente->id]));
-        
+            
         }
     }
     

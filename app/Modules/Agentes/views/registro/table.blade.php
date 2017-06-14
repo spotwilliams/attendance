@@ -2,18 +2,18 @@
 $idModal = 'modal-agentes';
 ?>
 
-<table class="display" id="presentismos-table">
+<table class="table table-hover" id="presentismos-table">
     <thead>
-    <th>Id Agente</th>
     <th>Agente</th>
+    <th>DNI</th>
     <th>CUIT</th>
     <th>Operaciones</th>
     </thead>
     <tbody>
     @foreach($agentes as $agente)
         <tr>
-            <td>{{$agente->id}}</td>
             <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
+            <td>{{$agente->dni}}</td>
             <td>{{$agente->cuit}}</td>
             <td>
                 <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
@@ -65,20 +65,20 @@ $idModal = 'modal-agentes';
 
 
 
-            var dataTable = $('#presentismos-table').DataTable({
-                searching: false,
-                bInfo: false,
-                paging: false,
-                scrollY: 500,
-                scrollCollapse: true,
-                columnDefs: [
-                    {
-                        targets: [0],
-                        visible: false,
-                        searchable: false
-                    },
-                ],
-            });
+//            var dataTable = $('#presentismos-table').DataTable({
+//                searching: false,
+//                bInfo: false,
+//                paging: false,
+//                scrollY: 500,
+//                scrollCollapse: true,
+//                columnDefs: [
+//                    {
+//                        targets: [0],
+//                        visible: false,
+//                        searchable: false
+//                    },
+//                ],
+//            });
         });
 
     </script>

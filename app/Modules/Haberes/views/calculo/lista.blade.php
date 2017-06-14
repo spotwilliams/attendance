@@ -47,6 +47,16 @@ while ($fecha < $fechaToday) {
             </div>
 
             <div class="box-body">
+                <div class="form-group">
+                    <div class="progress-group col-sm-8 col-sm-offset-2">
+                        <span class="progress-text">Paso 3</span>
+                        <span class="progress-number"><b>3</b>/3</span>
+
+                        <div class="progress">
+                            <div class="progress-bar progress-bar-yellow" style="width: 100%"></div>
+                        </div>
+                    </div>
+                </div>
 
                 <table class="table table-hover" id="haberes-table">
                     <thead>

@@ -21,6 +21,7 @@ class Contrato extends Model
             'id_agente',
             'id_sial',
             'ficha',
+            'fin_semana',
             'monto',
         ];
     protected     $dates = ['deleted_at'];

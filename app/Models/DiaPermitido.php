@@ -31,12 +31,12 @@ class DiaPermitido extends Model
         
         ];
     
-    public function getCantidadDias(\DateTime $fecha)
+    public function getCantidadDias(Contrato $contrato)
     {
-        if ($fecha->format('N') >= 6) {
-            return $this->cant_semanal;
-        } else {
+        if ($contrato->fin_semana === 1) {
             return $this->cant_fin_semana;
+        } else {
+            return $this->cant_semanal;
         }
     }
 }

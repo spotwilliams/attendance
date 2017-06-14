@@ -146,7 +146,7 @@ class Agente extends Model
             ->first();
         
         /** @var int $cantDiasPermitidos */
-        $cantDiasPermitidos = $diasPermitidos->getCantidadDias($fecha);
+        $cantDiasPermitidos = $diasPermitidos->getCantidadDias($contrato);
         
         /** @var int $cantDiasConsumidos */
         $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);

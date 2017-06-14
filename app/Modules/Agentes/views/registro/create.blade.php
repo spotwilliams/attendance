@@ -66,7 +66,7 @@
                         @if($tab === 'personales')
                             <div class="tab-pane  active" id="personales">
                                 {!! Form::open(['route' => 'agentesStorePersonales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                    @include('Agentes::registro.form-personales')
+                                    @include('Agentes::registro.forms.form-personales')
                                 {!! Form::close() !!}
                             </div>
                         @endif
@@ -74,7 +74,7 @@
                         @if($tab === 'laborales')
                             <div class="tab-pane active" id="laborales">
                                 {!! Form::open(['route' => 'agentesStoreLaborales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                    @include('Agentes::registro.form-laborales')
+                                    @include('Agentes::registro.forms.form-laborales')
                                 {!! Form::close() !!}
                             </div>
                         @endif
@@ -82,7 +82,7 @@
                         @if($tab === 'operativos')
                             <div class="tab-pane active" id="operativos">
                                 {!! Form::open(['route' => 'agentesStoreOperativos', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                                    @include('Agentes::registro.form-operativos')
+                                    @include('Agentes::registro.forms.form-operativos')
                                 {!! Form::close() !!}
                             </div>
                         @endif
