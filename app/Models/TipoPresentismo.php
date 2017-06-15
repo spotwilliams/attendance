@@ -49,4 +49,20 @@ class TipoPresentismo extends Model
     {
         return (strtoupper($this->codigo) === TipoPresentismo::PRESENTE);
     }
+    
+    /**
+     * @return Ausente
+     */
+    public function getInjustificado()
+    {
+        return TipoPresentismo::where('codigo', '=', TipoPresentismo::INJUSTIFICADO)->first();
+    }
+    
+    /**
+     * @return bool
+     */
+    public function esInjustificado()
+    {
+        return (strtoupper($this->codigo) === TipoPresentismo::INJUSTIFICADO);
+    }
 }

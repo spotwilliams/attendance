@@ -8,6 +8,7 @@ use Cat\Models\Base;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
@@ -97,25 +98,46 @@ class RegistroController extends AppBaseController
      */
     public function store(Request $request)
     {
-        $input           = $request->all();
-        $agente          = Agente::find($input['agente']);
-        $tipoPresentismo = TipoPresentismo::find($input['presentismo']);
-        $fecha           = new \DateTime($input['fecha']);
+        $input  = $request->all();
+        $agente = Agente::find($input['agente']);
+        $fecha  = new \DateTime($input['fecha']);
         
-        Facilitador::validarDespuesGuardar($agente, $tipoPresentismo, $fecha);
-        // Obtengo lo que guarde para mostrarlo en el front.
+        try {
+            $tipoPresentismo = TipoPresentismo::findOrFail($input['presentismo']);
+            
+            Facilitador::validarDespuesGuardar($agente, $tipoPresentismo, $fecha);
+            // Obtengo lo que guarde para mostrarlo en el front.
+            
+            $message = session('message');
+            $code    = session('code');
+            
+        } catch (ModelNotFoundException $foundException) {
+            
+            $message = 'Ha elegido un tipo de presentismo no permitido.';
+            $code    = 500;
+        } catch (PeriodoCerrado $e) {
+            
+            $message  = $e->getMessage();
+            $code     = 500;
+            $disabled = true;
+        }
+        try {
+            
+            $presentismo = Presentismo::where('id_agente', '=', $agente->id)
+                ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
+                ->firstOrFail();
+        } catch (ModelNotFoundException $noHayPresentismoCargado) {
+            $presentismo = new Presentismo(['id_tipo_presentismo' => -1, 'injustificado' => 1]);
+        }
         
-        $presentismo = Presentismo::where('id_agente', '=', $agente->id)
-            ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
-            ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
-            ->first();
-
         return Response::json([
-            'message'     => session('message'),
-            'agente'      => session('agente'),
+            'message'     => $message,
+            'agente'      => $agente->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver(($presentismo->injustificado === 1)),
-        ], session('code'));
+            'button'      => HtmlCustoms::getButtonWithPopOver(($presentismo->injustificado === 1),
+                (isset($disabled) ? $disabled : false)),
+        ], $code);
+        
         
     }
     
@@ -131,10 +153,9 @@ class RegistroController extends AppBaseController
             ->first();
         
         try {
-
+            
             $presentismo->comentario = $input['comentario'];
             $presentismo->save();
-            
             session()->flash('message', 'Guardado correctamente');
             session()->flash('code', 200);
         } catch (QueryException $e) {

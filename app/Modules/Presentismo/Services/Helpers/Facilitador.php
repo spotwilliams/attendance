@@ -5,6 +5,7 @@ namespace Cat\Modules\Presentismo\Services\Helpers;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
+use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Services\Registro\Registro;
 use Cat\Modules\Presentismo\Services\Validacion\Validation;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation as ValidacionNoSuperada;
@@ -24,36 +25,20 @@ class Facilitador
             $serviceValidacion = new Validation($agente, $tipoPresentismo, $fecha);
             $serviceValidacion->execute();
             
-            session()->flash('message', 'Se actualizo correctamente');
-            session()->flash('code', 200);
-            
-        } catch (ValidacionNoSuperada $e) {
-            session()->flash('message', Descriptor::mySelf($e->getCode())->getDescription());
+        } catch (SinDiasDisponibles $e) {
+            session()->flash('message', $e->getMessage());
             session()->flash('code', 500);
+            $tipoPresentismo->injustificado = 1;
             
-            switch ($e->getCode()) {
-                case Descriptor::SIN_DIAS_DISPONIBLES : {
-                    $tipoPresentismo->injustificado = 1;
-                    break;
-                }
-                case Descriptor::PERIODO_CERRADO : {
-                    $tipoPresentismo = null;
-                    break;
-                }
-            }
         }
         static::goOn($agente, $tipoPresentismo, $fecha);
     }
     
     private static function goOn(Agente $agente, TipoPresentismo $tipoPresentismo = null, \DateTime $fecha)
     {
-        if ($tipoPresentismo === null) {
-            session()->flash('presentismo', -1);
-        } else {
-            $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
-            $serviceResigtro->execute();
-            session()->flash('presentismo', $tipoPresentismo->id);
-        }
-        session()->flash('agente', $agente->id);
+        $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
+        $serviceResigtro->execute();
+        session()->flash('message', 'Se actualizo correctamente');
+        session()->flash('code', 200);
     }
 }

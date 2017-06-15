@@ -61,7 +61,13 @@ $idModal = 'comentarios-modal'
             function activarPopOver() {
                 $('[data-toggle="popover"]').popover({
                     'html': true,
-                })
+                });
+
+                $('[data-toggle="popover"]')
+                    .off('click')
+                    .on('click', function () {
+                        alert('holaaaa')
+                    });
             }
 
             function message(obj, message, presentismo, type) {
@@ -88,6 +94,19 @@ $idModal = 'comentarios-modal'
                     });
             }
 
+            function renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
+                var contailerToolButtons = myParent.children('.tools-presentismo');
+
+                $(contailerToolButtons).children('[data-toggle="popover"]').remove();
+                $(contailerToolButtons).append(button);
+
+                var btnComment = $(contailerToolButtons).children('.dialog-comentary');
+                $(btnComment).removeAttr('disabled');
+
+                activarPopOver();
+                message(myParent, messageTxt, presentismo.id_tipo_presentismo, level);
+            }
+
             activarPopOver();
             /**
              *
@@ -97,6 +116,7 @@ $idModal = 'comentarios-modal'
             $('.{{$selector}}')
                 .selectpicker({})
                 .on('change', function (event) {
+                    var mySelf = $(this);
                     /**
                      *
                      *
@@ -133,19 +153,20 @@ $idModal = 'comentarios-modal'
                         },
                         success: function (xhr, other) {
 
-                            var contailerToolButtons = myParent.children('.tools-presentismo');
+                            var messageTxt = xhr.message;
+                            var presentismo = xhr.presentismo;
+                            var button = xhr.button;
+                            var level = 'success';
+                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
-                            $(contailerToolButtons).children('[data-toggle="popover"]').remove();
-                            $(contailerToolButtons).append(xhr.button);
-
-                            var btnComment = $(contailerToolButtons).children('.dialog-comentary');
-                            $(btnComment).removeAttr('disabled');
-
-                            activarPopOver();
-                            message(myParent, xhr.message, xhr.presentismo.id_tipo_presentismo, 'success');
                         },
                         error: function (xhr, other) {
-                            message(myParent, xhr.responseJSON.message, xhr.presentismo, 'error');
+                            var messageTxt = xhr.responseJSON.message;
+                            var presentismo = xhr.responseJSON.presentismo;
+                            var button = xhr.responseJSON.button;
+                            var level = 'error';
+                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
                         }
 
                     });
