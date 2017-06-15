@@ -5,7 +5,8 @@ use Cat\Helpers\HtmlCustoms;
 /** @var \DateTime $fechaToday */
 /** @var \Cat\Models\Periodo $periodo */
 $fecha = new DateTime($periodo->fecha_comienzo);
-$fechaToday = (new DateTime('now'))->modify('+1day');
+$fecha->modify('-4day');
+$fechaToday = (new DateTime('now'))->modify('+4day');
 
 $fechasToShow = [];
 
@@ -18,33 +19,37 @@ while ($fecha < $fechaToday) {
 $selector = 'selectpicker';
 $idModal = 'comentarios-modal'
 ?>
+<div class="table-responsive">
+    <table class="table" id="presentismos-table">
+        <thead>
+        <th>Id Agente</th>
+        <th>Agente</th>
+        <th>CUIT</th>
+        @for($i = 0; $i < count($fechasToShow) ;$i++)
+            <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
+        @endfor
+        </thead>
+        <tbody>
+        @foreach($agentes as $age)
+            <tr>
+                <td>{{$age->id}}</td>
+                <td>{{$age->apellido}}, {{$age->nombre}}</td>
+                <td>{{$age->cuit}}</td>
+                <?php $presentismos = $age->presentismos->keyBy('fecha'); ?>
+                @for($i = 0; $i < count($fechasToShow) ;$i++)
 
-<table class="display" cellspacing="0" width="100%" id="presentismos-table">
-    <thead>
-    <th>Id Agente</th>
-    <th>Agente</th>
-    <th>CUIT</th>
-    @for($i = 0; $i < count($fechasToShow) ;$i++)
-        <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
-    @endfor
-    </thead>
-    <tbody>
-    @foreach($agentes as $age)
-        <tr>
-            <td>{{$age->id}}</td>
-            <td>{{$age->apellido}}, {{$age->nombre}}</td>
-            <td>{{$age->cuit}}</td>
-            @for($i = 0; $i < count($fechasToShow) ;$i++)
-                <td><?php
-                    $p = (isset($age->presentismos[$i]) ? $age->presentismos[$i] : null);
-                    echo HtmlCustoms::getSelectForTipoPresentismo($p)
-                    ?></td>
-            @endfor
+                    <td><?php
+                        $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
+                        echo HtmlCustoms::getSelectForTipoPresentismo($p)
+                        ?></td>
+                @endfor
 
-        </tr>
-    @endforeach
-    </tbody>
-</table>
+            </tr>
+        @endforeach
+        </tbody>
+    </table>
+</div>
+
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -140,28 +145,14 @@ $idModal = 'comentarios-modal'
              * Creacion Datatables
              *
              */
-                    {{--var url = "{{route('presentismoTable', 'replace')}}";--}}
-                //            var baseSelect = $('#base-select-with-button');
+            {{--var url = "{{route('presentismoTable', 'replace')}}";--}}
+            //            var baseSelect = $('#base-select-with-button');
 
             var dataTable = $('#presentismos-table').DataTable({
-                    scrollX: true,
-                    scrollY: 500,
-                    scrollCollapse: true,
                     searching: false,
                     ordering: false,
                     paging: false,
                     bInfo: false,
-
-                    columnDefs: [
-                        {
-                            targets: [0],
-                            visible: false,
-                        },
-                        {
-                            targets: [1, 2],
-                            width: '30px',
-                        }
-                    ],
                 });
 
             /**
@@ -171,14 +162,13 @@ $idModal = 'comentarios-modal'
              */
             $('.dialog-comentary')
                 .on('click', function () {
-                    console.log($(this).data('comentario'))
-                    var myParent = $(this).parent().parent();
+
+                    var myParent = $(this).parent();
                     var fecha = datatableColumnHeaderValue(myParent, dataTable);
                     var agente = datatableCellValue(myParent, dataTable);
-                    var presentismoParent = $(myParent).children().children();
+                    var presentismoParent = $(myParent).children('div');
                     var presentismoSelected = $(presentismoParent[0]).children('select');
                     var comentario = $(this).data('comentario');
-
                     // Parte visible
                     $('.modal-agente').html(agente[1]);
                     $('.modal-cuit').html(agente[2]);

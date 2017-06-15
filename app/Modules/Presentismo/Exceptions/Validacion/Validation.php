@@ -8,7 +8,6 @@ use Cat\Models\TipoPresentismo;
 
 class Validation extends \Exception
 {
-    const CONTRATO_INACTIVO = 1000;
     
     protected $agente;
     protected $tipoAusencia;

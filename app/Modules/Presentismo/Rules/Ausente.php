@@ -9,6 +9,7 @@
 namespace Cat\Modules\Validation\Rules;
 
 use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
+use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Models\Ausente as TipoPresentismoAusente;
 
@@ -25,15 +26,20 @@ class Ausente extends Rule
         } else {
             // Verificar para la categoria de ausentes
             // que el agente tenga dias disponibles
-            $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente, $this->fecha);
-            
-            if ($diasDisponibles > 0) {
+            try {
+                // Verificar la cantidad de dia
+                $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente, $this->fecha);
+                
+                if ($diasDisponibles > 0) {
+                    return true;
+                } else {
+                    $error = new Validation($this->agente, Descriptor::noTieneDiasDisponibles(), $this->tipoAusente);
+                    throw $error;
+                }
+            } catch (SinTopeONoEstablecido $e) {
                 return true;
-            } else {
-                $error = new Validation($this->agente, Descriptor::noTieneDiasDisponibles(), $this->tipoAusente);
-                throw $error;
             }
-            // Verificar la cantidad de dia
+            
             
         }
         

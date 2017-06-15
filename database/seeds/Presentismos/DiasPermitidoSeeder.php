@@ -5,7 +5,7 @@ use Cat\Models\DiaPermitido;
 use Cat\Models\TipoPresentismo;
 use Illuminate\Database\Seeder;
 
-class DiasPermitidosSeeder extends Seeder
+class DiasPermitidoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -17,7 +17,7 @@ class DiasPermitidosSeeder extends Seeder
         
         
         $tPre = [
-            'MEDICO'                 => [
+            'MJ'                 => [
                 'cant_semanal'    => [
                     'JULY'      => 45,
                     'AUGUST'    => 19,
@@ -35,7 +35,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 1,
                 ],
             ],
-            'EXAMEN'                 => [
+            'X'                 => [
                 'cant_semanal'    => [
                     'JULY'      => 18,
                     'AUGUST'    => 8,
@@ -71,7 +71,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 0,
                 ],
             ],
-            'MATRIMONIO'             => [
+            'MA'             => [
                 'cant_semanal'    => [
                     'JULY'      => 10,
                     'AUGUST'    => 10,
@@ -89,7 +89,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 10,
                 ],
             ],
-            'DONACION_SANGRE'        => [
+            'D'        => [
                 'cant_semanal'    => [
                     'JULY'      => 1,
                     'AUGUST'    => 1,
@@ -107,7 +107,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 1,
                 ],
             ],
-            'FALLECIMIENTO_FAMILIAR' => [
+            'L' => [
                 'cant_semanal'    => [
                     'JULY'      => 5,
                     'AUGUST'    => 5,
@@ -125,7 +125,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 5,
                 ],
             ],
-            'PREVENCION'             => [
+            'F/G'             => [
                 'cant_semanal'    => [
                     'JULY'      => 1,
                     'AUGUST'    => 1,
@@ -143,7 +143,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 1,
                 ],
             ],
-            'VIOLENCIA_GENERO'       => [
+            'VG'       => [
                 'cant_semanal'    => [
                     'JULY'      => 20,
                     'AUGUST'    => 20,
@@ -161,7 +161,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 20,
                 ],
             ],
-            'MATERNIDAD'             => [
+            'N'             => [
                 'cant_semanal'    => [
                     'JULY'      => 105,
                     'AUGUST'    => 105,
@@ -179,7 +179,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 105,
                 ],
             ],
-            'MATERNIDAD_SIN_GOCE'    => [
+            'EXMA'    => [
                 'cant_semanal'    => [
                     'JULY'      => 120,
                     'AUGUST'    => 120,
@@ -197,7 +197,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 120,
                 ],
             ],
-            'ESCOLAR'                => [
+            'AE'                => [
                 'cant_semanal'    => [
                     'JULY'      => 4,
                     'AUGUST'    => 4,
@@ -215,7 +215,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 4,
                 ],
             ],
-            'PATERNIDAD'             => [
+            'PA'             => [
                 'cant_semanal'    => [
                     'JULY'      => 10,
                     'AUGUST'    => 10,
@@ -233,7 +233,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 10,
                 ],
             ],
-            'MUDANZA'                => [
+            'F/M'                => [
                 'cant_semanal'    => [
                     'JULY'      => 1,
                     'AUGUST'    => 1,
@@ -251,7 +251,7 @@ class DiasPermitidosSeeder extends Seeder
                     'DECEMBER'  => 1,
                 ],
             ],
-            'ACCIDENTE'              => [
+            'AT'              => [
                 'cant_semanal'    => [
                     'JULY'      => -1,
                     'AUGUST'    => -1,

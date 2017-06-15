@@ -40,29 +40,35 @@ class Personales extends Service
             
             DB::beginTransaction();
             $this->agente->save();
-
-            for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
-                Domicilio::create([
-                    'calle'        => $this->domicilios['calle'][$i],
-                    'libre'        => $this->domicilios['libre'][$i],
-                    'numero'       => $this->domicilios['numero'][$i],
-                    'departamento' => $this->domicilios['departamento'][$i],
-                    'piso'         => $this->domicilios['piso'][$i],
-                    'barrio'       => $this->domicilios['barrio'][$i],
-                    'provincia'    => $this->domicilios['provincia'][$i],
-                    'constituido'    => $this->domicilios['constituido'][$i],
-                    'id_agente'    => $this->agente->id,
-                ]);
+            
+            if (isset($this->domicilios['calle'])) {
+                
+                for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
+                    Domicilio::create([
+                        'calle'        => $this->domicilios['calle'][$i],
+                        'libre'        => $this->domicilios['libre'][$i],
+                        'numero'       => $this->domicilios['numero'][$i],
+                        'departamento' => $this->domicilios['departamento'][$i],
+                        'piso'         => $this->domicilios['piso'][$i],
+                        'barrio'       => $this->domicilios['barrio'][$i],
+                        'provincia'    => $this->domicilios['provincia'][$i],
+                        'constituido'  => $this->domicilios['constituido'][$i],
+                        'id_agente'    => $this->agente->id,
+                    ]);
+                }
             }
-            for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
-                Estudio::create([
-                    'carrera'     => $this->estudios['carrera'][$i],
-                    'institucion' => $this->estudios['institucion'][$i],
-                    'estado'      => $this->estudios['estado'][$i],
-                    'nivel'       => $this->estudios['nivelestudio'][$i],
-                    'id_agente'   => $this->agente->id,
-                ]);
+            if (isset($this->domicilios['carrera'])) {
+                for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
+                    Estudio::create([
+                        'carrera'     => $this->estudios['carrera'][$i],
+                        'institucion' => $this->estudios['institucion'][$i],
+                        'estado'      => $this->estudios['estado'][$i],
+                        'nivel'       => $this->estudios['nivelestudio'][$i],
+                        'id_agente'   => $this->agente->id,
+                    ]);
+                }
             }
+            
             
             DB::commit();
             

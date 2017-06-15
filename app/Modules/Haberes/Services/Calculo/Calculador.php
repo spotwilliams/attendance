@@ -69,8 +69,14 @@ class Calculador extends Service
      */
     public function execute()
     {
+        /** @var float $montoDescontable Monto de referencia para descontar */
         $montoDescontable = floatval($this->montoContrato / Calculador::FACTOR_DIVISION);
-        $diasADescontar   = $this->agente
+        
+        /** @var TipoPresentismo $tipoInjustficado codigo de los injustifados */
+        $tipoInjustficado = TipoPresentismo::injusticado();
+        
+        /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
+        $diasADescontar = $this->agente
             ->presentismos()
             ->where('id_periodo', '=', $this->periodo->id)
             ->where('injustificado', '=', 1)

@@ -17,7 +17,13 @@ $idModal = 'comentarios-modal'
 
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">C&aacute;lculo de haberes</h3>
+                <h3 class="box-title">Agentes de la base <span class="label label-info">{{$baseActual->nombre}}</span></h3>
+                <div class="box-tools pull-right">
+                    <h4 class="box-title">
+
+                        Periodo actual: <span class="label label-success">{{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}</span> hasta  <span class="label label-success">{{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
+                    </h4>
+                </div>
             </div>
 
             <div class="box-body">

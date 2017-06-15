@@ -2,7 +2,9 @@
 
 namespace Cat\Models;
 
+use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
@@ -91,7 +93,7 @@ class Agente extends Model
      **/
     public function contrato()
     {
-        return $this->hasOne(Contrato::class, 'id_agente')->first();
+        return $this->hasOne(Contrato::class, 'id_agente');
     }
     
     
@@ -132,7 +134,7 @@ class Agente extends Model
      * @param TipoPresentismo $ausencia
      * @return integer
      */
-    public function getCantDiasDisponibles(TipoPresentismo $ausencia, \DateTime $fecha)
+    public function getCantDiasDisponibles(TipoPresentismo $ausencia)
     {
         /** @var Contrato $contrato */
         $contrato = $this->contrato()->first();
@@ -140,18 +142,23 @@ class Agente extends Model
         /** @var string $mesProporcional */
         $mesProporcional = $contrato->mesIngresoProporcional();
         
-        /** @var DiaPermitido $diasPermitidos */
-        $diasPermitidos = $ausencia->diasPermitidos()
-            ->where('mes_ingreso', '=', $mesProporcional)
-            ->first();
-        
-        /** @var int $cantDiasPermitidos */
-        $cantDiasPermitidos = $diasPermitidos->getCantidadDias($contrato);
-        
-        /** @var int $cantDiasConsumidos */
-        $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);
-        
-        return $cantDiasPermitidos - $cantDiasConsumidos;
+        try {
+            
+            /** @var DiaPermitido $diasPermitidos */
+            $diasPermitidos = $ausencia->diasPermitidos()
+                ->where('mes_ingreso', '=', $mesProporcional)
+                ->firstOrFail();
+            
+            /** @var int $cantDiasPermitidos */
+            $cantDiasPermitidos = $diasPermitidos->getCantidadDias($contrato);
+            
+            /** @var int $cantDiasConsumidos */
+            $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);
+            
+            return $cantDiasPermitidos - $cantDiasConsumidos;
+        } catch (ModelNotFoundException $diaPermitidoNoCargado) {
+            throw new SinTopeONoEstablecido($ausencia);
+        }
     }
     
     

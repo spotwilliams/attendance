@@ -11,7 +11,7 @@ class Periodo extends Model
     
     const CREATED_AT        = 'created_at';
     const UPDATED_AT        = 'updated_at';
-    const CANT_DIAS_DEFAULT = 15;
+    const CANT_DIAS_DEFAULT = 30;
     protected $fillable
         = [
             'fecha_comienzo',

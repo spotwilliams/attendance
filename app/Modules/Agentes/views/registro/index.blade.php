@@ -30,3 +30,12 @@
     </div>
 @endsection
 
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+
+            $('select').attr('data-live-search', true).selectpicker({});
+        })
+    </script>
+@append
+

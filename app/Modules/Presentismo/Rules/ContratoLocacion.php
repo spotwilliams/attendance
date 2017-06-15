@@ -18,7 +18,7 @@ class ContratoLocacion extends Rule
     protected function validate()
     {
         /** @var Contrato $contrato */
-        $contrato = $this->agente->contrato();
+        $contrato = $this->agente->contrato()->first();
         
         if($contrato->esLocacion()) {
             return true;

@@ -73,7 +73,7 @@ class RegistroController extends AppBaseController
         
         return view('Presentismo::registro.lista')
             ->with('periodo', $periodo)
-            ->with('baseActual', $base->id)
+            ->with('baseActual', $base)
             ->with('agentes', $agentes);
     }
     
@@ -102,11 +102,17 @@ class RegistroController extends AppBaseController
         $fecha           = new \DateTime($input['fecha']);
         
         Facilitador::validarDespuesGuardar($agente, $tipoPresentismo, $fecha);
+        // Obtengo lo que guarde para mostrarlo en el front.
+        
+        $presentismo = Presentismo::where('id_agente', '=', $agente->id)
+            ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
+            ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
+            ->first();
         
         return Response::json([
             'message'     => session('message'),
             'agente'      => session('agente'),
-            'presentismo' => session('presentismo'),
+            'presentismo' => $presentismo->toJson(),
         ], session('code'));
         
     }
@@ -114,7 +120,6 @@ class RegistroController extends AppBaseController
     public function comentario(Request $request)
     {
         $this->validate($request, ['comentario' => 'required|max:255',]);
-        
         $input   = $request->all();
         $jornada = new \DateTime($input['fecha']);
         
@@ -124,6 +129,7 @@ class RegistroController extends AppBaseController
             ->first();
         
         try {
+            
             $presentismo->comentario = $input['comentario'];
             $presentismo->save();
             

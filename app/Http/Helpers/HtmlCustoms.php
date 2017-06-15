@@ -138,7 +138,7 @@ class HtmlCustoms
                 return TipoPresentismo::all();
             });
         
-        $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\">";
+        $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
         $option = "<option value=\"-1\">...</option>";
         
         $select .= $option;

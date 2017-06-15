@@ -2,12 +2,15 @@
 
 namespace Cat\Modules\Presentismo\Exceptions\Validacion;
 
+use Cat\Models\TipoPresentismo;
+
 class Descriptor
 {
-    const CONTRATO_INACTIVO    = 1000;
-    const CONTRATO_NO_LOCACION = 2000;
-    const SIN_DIAS_DISPONIBLES = 3000;
-    const PERIODO_CERRADO      = 4000;
+    const CONTRATO_INACTIVO                  = 1000;
+    const CONTRATO_NO_LOCACION               = 2000;
+    const SIN_DIAS_DISPONIBLES               = 3000;
+    const PERIODO_CERRADO                    = 4000;
+    const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     private        $errorCode;
     private        $errorDescription;
     private static $errorMap;
@@ -49,6 +52,17 @@ class Descriptor
         return self::$errorMap[Descriptor::SIN_DIAS_DISPONIBLES];
     }
     
+    public static function presentismoSinDiasConfigurados(TipoPresentismo $tipoPresentismo)
+    {
+        if (!isset(self::$errorMap[Descriptor::TIPO_PRESENTISMO_SIN_DIAS_CARGADOS])) {
+            self::$errorMap[Descriptor::TIPO_PRESENTISMO_SIN_DIAS_CARGADOS]
+                = new Descriptor(Descriptor::TIPO_PRESENTISMO_SIN_DIAS_CARGADOS,
+                'EL tipo de presentismo "' . $tipoPresentismo->codigo . '" no tiene dias disponibles configurados');
+        }
+        
+        return self::$errorMap[Descriptor::TIPO_PRESENTISMO_SIN_DIAS_CARGADOS];
+    }
+    
     public static function periodoCerradoParaBase()
     {
         if (!isset(self::$errorMap[Descriptor::PERIODO_CERRADO])) {
@@ -59,7 +73,7 @@ class Descriptor
         
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
     }
-
+    
     public function getCode()
     {
         return $this->errorCode;

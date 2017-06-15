@@ -20,8 +20,8 @@ class ContratoActivo extends Rule
     protected function validate()
     {
         /** @var Contrato $contrato */
-        $contrato = $this->agente->contrato();
-        $activo   = $contrato->estadoContrato()->esActivo();
+        $contrato = $this->agente->contrato()->first();
+        $activo   = $contrato->estadoContrato()->first()->esActivo();
 
         if ($activo) {
             return true;

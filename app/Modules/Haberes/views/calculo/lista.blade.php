@@ -64,7 +64,8 @@ while ($fecha < $fechaToday) {
                     <th>Agente</th>
                     <th>DNI</th>
                     <th>CUIT</th>
-                    <th>Monto</th>
+                    <th>Monto contrato</th>
+                    <th>Monto a facturar</th>
                     <th>Confirmar</th>
                     </thead>
                     <tbody>
@@ -84,8 +85,13 @@ while ($fecha < $fechaToday) {
                             <td>{{$a->apellido}}, {{$a->nombre}}</td>
                             <td>{{$a->dni}}</td>
                             <td>{{$a->cuit}}</td>
+                            <td>$ {{$a->contrato->monto}}</td>
                             <td>
-                                $ {{money_format('%i', (new \Cat\Modules\Haberes\Services\Calculo\Calculador($a, $periodo))->execute())}}</td>
+                                @if(!$a->haberes->isEmpty())
+                                    $ {{$a->haberes->first()->monto_facturado}}
+                                @else
+                                    $ {{money_format('%i', (new \Cat\Modules\Haberes\Services\Calculo\Calculador($a, $periodo))->execute())}}</td>
+                            @endif
                             <td>
                                 @if($a->haberes->isEmpty())
                                     {!! Form::open(['route' => 'haberesConfirmarSingle']) !!}

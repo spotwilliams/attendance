@@ -70,7 +70,8 @@ class GeneralController extends AppBaseController
                     'haberes' => function ($haberBuilder) use ($periodo) {
                         $haberBuilder->where('id_periodo', '=', $periodo->id);
                     },
-                ]);
+                ])
+                ->with('contrato');
 //                ->whereNotIn('agentes.id', function ($query) use ($periodo) {
 //                    /** @var Builder */
 //                    $query->from('haberes')

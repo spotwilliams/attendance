@@ -40,8 +40,8 @@ class DatabaseSeeder extends Seeder
         $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
         $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
 
-        $this->call(\Cat\Database\Presentismos\DiasPermitidosSeeder::class);
-//        $this->call(AgentesSeeder::class);
+        $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
+        $this->call(AgentesSeeder::class);
 //        $this->call(\Cat\Database\Seeds\Agentes\OperativosSeeder::class);
 
 

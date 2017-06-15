@@ -12,33 +12,19 @@ class TipoPresentismo extends Model
     
     const CREATED_AT    = 'created_at';
     const UPDATED_AT    = 'updated_at';
-    const INJUSTIFICADO = 'INJUSTIFICADO';
-    const PRESENTE      = 'PRESENTE';
+    const INJUSTIFICADO = 'A';
+    const PRESENTE      = 'P';
     
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
+    protected $fillable
         = [
-            'id'              => 'integer',
-            'dias_permitidos' => 'integer',
-            'id_padre'        => 'integer',
+            'codigo',
+            'descripcion',
+            'color',
+            'injustificado',
         ];
     
     /**
-     * Validation rules
-     *
-     * @var array
-     */
-    public static $rules
-        = [
-        
-        ];
-    
-    /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function presentismos()
     {

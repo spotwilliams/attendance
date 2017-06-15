@@ -34,3 +34,11 @@
 
 @endsection
 
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('select').selectpicker({});
+        })
+    </script>
+@append
+

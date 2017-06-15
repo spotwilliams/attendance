@@ -41,7 +41,7 @@ class Contrato extends Model
      **/
     public function estadoContrato()
     {
-        return $this->belongsTo(EstadoContrato::class, 'id_estado_contrato')->first();
+        return $this->belongsTo(EstadoContrato::class, 'id_estado_contrato', 'id');
     }
     
     /**
@@ -49,7 +49,7 @@ class Contrato extends Model
      **/
     public function tipoContrato()
     {
-        return $this->belongsTo(TipoContrato::class, 'id_tipo_contrato')->first();
+        return $this->belongsTo(TipoContrato::class, 'id_tipo_contrato');
     }
     
     /**
@@ -67,7 +67,7 @@ class Contrato extends Model
      */
     public function esLocacion()
     {
-        if (strtolower($this->tipoContrato()->codigo) === strtolower(Contrato::TIPO_LOCACION)) {
+        if (strtolower($this->tipoContrato()->first()->codigo) === strtolower(Contrato::TIPO_LOCACION)) {
             return true;
         } else {
             return false;

@@ -23,7 +23,6 @@ class Facilitador
             // Se realizan las validaciones
             $serviceValidacion = new Validation($agente, $tipoPresentismo, $fecha);
             $serviceValidacion->execute();
-            $tipoPresentismo->injustificado = 0;
             
             session()->flash('message', 'Se actualizo correctamente');
             session()->flash('code', 200);
@@ -44,8 +43,6 @@ class Facilitador
             }
         }
         static::goOn($agente, $tipoPresentismo, $fecha);
-        
-        
     }
     
     private static function goOn(Agente $agente, TipoPresentismo $tipoPresentismo = null, \DateTime $fecha)

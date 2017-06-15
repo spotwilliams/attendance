@@ -18,6 +18,7 @@ class CreateTiposPresentismosTable extends Migration {
 			$table->string('codigo', 50)->index('tipo_index');
 			$table->string('descripcion', 100);
 			$table->string('color', 10);
+			$table->boolean('injustificado')->default(0);
             $table->boolean('corridos');
             $table->timestamps();
 		});
