@@ -16,7 +16,7 @@ class HtmlCustoms
             'model'   => [],
         ]
     ) {
-        $return
+        $original = $return
             = [
             [
                 'id'           => '',
@@ -40,7 +40,7 @@ class HtmlCustoms
             $return = self::getMultiDomicilioFromModel($input['model']);
         }
         
-        return $return;
+        return empty($return) ? $original : $return;
     }
     
     public static function getEstudiosArray(
@@ -50,7 +50,7 @@ class HtmlCustoms
             'model'   => [],
         ]
     ) {
-        $return
+        $original = $return
             = [
             [
                 'carrera'     => '',
@@ -66,8 +66,8 @@ class HtmlCustoms
         (isset($input['model'])) {
             $return = self::getMultiEstudiosFromModel($input['model']);
         }
-        
-        return $return;
+    
+        return empty($return) ? $original : $return;
     }
     
     private static function getMultiEstudiosFromSession($input)

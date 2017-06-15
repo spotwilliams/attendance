@@ -50,7 +50,7 @@
                 </div>
                 <div class="box-body">
                     <a href="{!! route('agentesIndex', ['base' => $base->id]) !!}"
-                       class="btn btn-primary">Back</a>
+                       class="btn btn-primary">Volver</a>
                 </div>
                 <!-- /.box -->
             </div>

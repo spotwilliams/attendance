@@ -15,15 +15,8 @@ $idModal = 'modal-agentes';
             <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
             <td>{{$agente->dni}}</td>
             <td>{{$agente->cuit}}</td>
-            <td>
-                <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
-                   class="btn btn-primary"><i class="fa fa-edit"></i></a>
-                <a href="{{route('agentesDelete', ['id' => $agente->id])}}" class="btn btn-danger"><i
-                            class="fa fa-trash-o"></i></a>
-                <a href="{{route('agentesShow', ['id' => $agente->id])}}" class="btn btn-success"><i
-                            class="fa fa-eye"></i></a>
+            @include('Agentes::registro.commons.operaciones-celda')
 
-            </td>
         </tr>
     @endforeach
     </tbody>

@@ -15,7 +15,7 @@
             <div class="box-body">
 
                 <div class="row">
-                    <div class="col-md-12 col-xs-12">
+                    <div class="col-md-10 col-xs-10">
                         {{ Form::open(['route' => 'agentesSearchIndex', 'method' => 'GET'])}}
                         <div class="input-group input-group-sm">
                             {{--<input type="text" class="form-control">--}}
@@ -27,14 +27,11 @@
                         </div>
                         {{ Form::close() }}
                     </div>
+                    <div class="col-md-2 col-xs-2">
+                        @include('Agentes::registro.commons.nuevo-btn')
+
+                    </div>
                     <hr/>
-                    {{--<div class="col-md-2 col-xs-2">--}}
-                        {{--<div>--}}
-{{----}}
-                            {{--@include('Agentes::registro.search.filter')--}}
-                        {{--</div>--}}
-{{----}}
-                    {{--</div>--}}
                     <div class="col-md-12 col-xs-12">
 
                         <table class="table table-hover">
@@ -44,6 +41,7 @@
                             <th>DNI</th>
                             <th>CUIT</th>
                             <th>Base</th>
+                            <th>Operaciones</th>
                             </thead>
                             <tbody>
                             @include('Agentes::registro.search.rows')

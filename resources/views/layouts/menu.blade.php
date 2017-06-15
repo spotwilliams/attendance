@@ -18,6 +18,13 @@
         </li>
         <li>
             <a href="{!! route('agentesIndex', ['base' => 1]) !!}">
+                <i class="fa fa-list"></i>
+                <span>Lista agentes por base</span>
+            </a>
+        </li>
+        <li>
+
+            <a href="{{route('agentesCreatePersonales')}}">
                 <i class="fa fa-edit"></i>
                 <span>Alta individual</span>
             </a>

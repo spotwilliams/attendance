@@ -2,7 +2,7 @@
 /** @var \Cat\Models\Contrato $contrato */
 
 /** @var \Cat\Models\Agente $agente */
-$contrato = $agente->contrato();
+$contrato = $agente->contrato()->first();
 
 /** @var \Cat\Models\TipoContrato $tipoContrato */
 $tipoContrato = $contrato->tipoContrato()->first();
