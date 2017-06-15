@@ -20,7 +20,7 @@ $selector = 'selectpicker';
 $idModal = 'comentarios-modal'
 ?>
 <div class="table-responsive">
-    <table class="table" id="presentismos-table">
+    <table class="table hover" id="presentismos-table">
         <thead>
         <th>Id Agente</th>
         <th>Agente</th>
@@ -58,8 +58,37 @@ $idModal = 'comentarios-modal'
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+            function activarPopOver() {
+                $('[data-toggle="popover"]').popover({
+                    'html': true,
+                })
+            }
 
+            function message(obj, message, presentismo, type) {
 
+                var ref = $(obj).children('.{{$selector}}').context;
+                var wait = 2000;
+
+                $(ref)
+                    .prop('value', presentismo)
+                    .prop('disabled', false)
+                    .selectpicker('refresh');
+                $(obj).children('.overlay-td').remove();
+
+                $(ref).hide();
+                var messenger = $(ref).parents('.input-group.margin')[0];
+                $(obj).notify(message,
+                    {
+                        autoHide: true,
+                        // if autoHide, hide after milliseconds
+                        autoHideDelay: wait,
+                        position: 'top',
+                        showAnimation: 'slideDown',
+                        className: type,
+                    });
+            }
+
+            activarPopOver();
             /**
              *
              * Select picker
@@ -103,10 +132,17 @@ $idModal = 'comentarios-modal'
                             'fecha': fecha,
                         },
                         success: function (xhr, other) {
-                            message(myParent, xhr.message, xhr.presentismo, 'success');
-                            var btnComment = $(myParent).children()[1];
+
+                            var contailerToolButtons = myParent.children('.tools-presentismo');
+
+                            $(contailerToolButtons).children('[data-toggle="popover"]').remove();
+                            $(contailerToolButtons).append(xhr.button);
+
+                            var btnComment = $(contailerToolButtons).children('.dialog-comentary');
                             $(btnComment).removeAttr('disabled');
 
+                            activarPopOver();
+                            message(myParent, xhr.message, xhr.presentismo.id_tipo_presentismo, 'success');
                         },
                         error: function (xhr, other) {
                             message(myParent, xhr.responseJSON.message, xhr.presentismo, 'error');
@@ -115,38 +151,13 @@ $idModal = 'comentarios-modal'
                     });
                 });
 
-            function message(obj, message, presentismo, type) {
-
-                var ref = $(obj).children('.{{$selector}}').context;
-                var wait = 2000;
-
-                $(ref)
-                    .prop('value', presentismo)
-                    .prop('disabled', false)
-                    .selectpicker('refresh');
-                $(obj).children('.overlay-td').remove();
-
-                $(ref).hide();
-                var messenger = $(ref).parents('.input-group.margin')[0];
-                $(obj).notify(message,
-                    {
-                        autoHide: true,
-                        // if autoHide, hide after milliseconds
-                        autoHideDelay: wait,
-                        position: 'top',
-                        showAnimation: 'slideDown',
-                        className: type,
-                    });
-            }
-
-
             /**
              *
              * Creacion Datatables
              *
              */
-            {{--var url = "{{route('presentismoTable', 'replace')}}";--}}
-            //            var baseSelect = $('#base-select-with-button');
+                    {{--var url = "{{route('presentismoTable', 'replace')}}";--}}
+                //            var baseSelect = $('#base-select-with-button');
 
             var dataTable = $('#presentismos-table').DataTable({
                     searching: false,
@@ -163,7 +174,8 @@ $idModal = 'comentarios-modal'
             $('.dialog-comentary')
                 .on('click', function () {
 
-                    var myParent = $(this).parent();
+                    var myParent = $(this).parent().parent();
+                    console.log(myParent)
                     var fecha = datatableColumnHeaderValue(myParent, dataTable);
                     var agente = datatableCellValue(myParent, dataTable);
                     var presentismoParent = $(myParent).children('div');
@@ -213,7 +225,6 @@ $idModal = 'comentarios-modal'
                                 });
                         },
                         error: function (xhr, other) {
-//                                console.log(xhr)
                             var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;
                             $('.modal-save').notify(message,
                                 {
@@ -228,6 +239,7 @@ $idModal = 'comentarios-modal'
                     });
 
                 });
+
         });
 
     </script>

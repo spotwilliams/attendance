@@ -152,24 +152,47 @@ class HtmlCustoms
             $option       .= ">$tp->descripcion</option>";
             $select       .= $option;
         }
-        $btnDisabled = ($p !== null ? '' : ' disabled');
-        $comentario = ($p !== null ? $p->comentario : null);
         
-        $btnClass    = (($p !== null) && !empty($p->comentario) ? 'btn-success' : 'btn-default');
-        $select      .= '</select>';
-        $button      = "<button type='button' data-comentario='$comentario' class='btn $btnClass dialog-comentary' $btnDisabled><i class='fa fa-comment-o'></i></button>";
-        $select      .= $button;
+        if ($p !== null) {
+            $btnDisabled   = '';
+            $comentario    = $p->comentario;
+            $buttonJustice = ($p->injustificado === 1 ?
+                self::getButtonWithPopOver(true) :
+                self::getButtonWithPopOver(false));
+            $btnClass      = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');
+        } else {
+            $comentario    = null;
+            $btnDisabled   = 'disabled';
+            $btnClass      = 'btn-default';
+            $buttonJustice = self::getButtonWithPopOver(false, true);
+        }
         
-        $html = "<div class=\"form-group\">";
+        $select        .= '</select>';
+        $buttonComment = "<button type='button' data-comentario='$comentario' class='btn $btnClass dialog-comentary' $btnDisabled><i class='fa fa-comment-o'></i></button>";
+        $buttonGroup   = "<div class=\"btn-group tools-presentismo\">$buttonComment$buttonJustice</div>";
+        $select        .= $buttonGroup;
+        
+        $html = '<div class="form-group">';
         
         $html .= $select
-            .= "</div>";
-        
-        /*
-         * 'data-content="'
-                        + '<span class=\'label\' style=\'background-color: ' + tipoPresentismos[i].color + ';\'>' + tipoPresentismos[i].descripcion + '</span>">'
-         */
+            .= '</div>';
         
         return $html;
+    }
+    
+    public static function getButtonWithPopOver($injustificado = false, $disabled = false)
+    {
+        $title       = ($injustificado ? '<label class="label label-danger"> Injustificado</label>' : '<label class="label label-info"> Justificado</label>');
+        $label       = ($injustificado ? 'Justificado' : 'Injustificado');
+        $classToggle = ($injustificado ? 'label-info' : 'label-danger');
+        $message     = "Click para marcar el presentismo como <label class=\"label $classToggle\">$label</label>";
+        $icon        = '<i class=\'fa fa-check-square-o\'></i>';
+        $toggles     = 'data-toggle=\'popover\' data-trigger=\'hover\'';
+        
+        $classButton = ($injustificado ? 'bg-gray-active' : 'btn-default');
+        $disabled    = ($disabled ? 'disabled' : '');
+        $button      = "<button type='button' class='btn $classButton' $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
+        
+        return $button;
     }
 }

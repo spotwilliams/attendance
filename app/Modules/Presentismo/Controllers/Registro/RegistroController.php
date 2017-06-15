@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
+use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\JornadaLaborable;
@@ -108,11 +109,12 @@ class RegistroController extends AppBaseController
             ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
             ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
             ->first();
-        
+
         return Response::json([
             'message'     => session('message'),
             'agente'      => session('agente'),
-            'presentismo' => $presentismo->toJson(),
+            'presentismo' => $presentismo,
+            'button'      => HtmlCustoms::getButtonWithPopOver(($presentismo->injustificado === 1)),
         ], session('code'));
         
     }
@@ -129,7 +131,7 @@ class RegistroController extends AppBaseController
             ->first();
         
         try {
-            
+
             $presentismo->comentario = $input['comentario'];
             $presentismo->save();
             
