@@ -20,6 +20,6 @@ class SinDiasDisponibles extends Validation
     
     public function __construct(Agente $agente, TipoPresentismo $tipoPresentismo)
     {
-        parent::__construct($agente, Descriptor::periodoCerradoParaBase(), $tipoPresentismo);
+        parent::__construct($agente, Descriptor::noTieneDiasDisponibles(), $tipoPresentismo);
     }
 }

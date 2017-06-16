@@ -99,7 +99,6 @@
                     opens: 'center',
                 },
                 function (start, end, label) {
-                    console.log(start)
                     $('#desde').val(start.format('Y-MM-DD'));
                     $('#hasta').val(end.format('Y-MM-DD'));
                 });

@@ -1,0 +1,59 @@
+<?php
+
+namespace Cat\Modules\Presentismo\Services\Registro;
+
+use Cat\Models\Agente;
+use Cat\Models\Presentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
+use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
+use Cat\Modules\Service;
+use Cat\Modules\Validation\Rules\Ausente;
+use Cat\Modules\Validation\Rules\PeriodoActivo;
+use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
+
+class Justificar extends Service
+{
+    /** @var Presentismo */
+    protected $presentismo;
+    
+    /** @var  Agente */
+    protected $agente;
+    
+    /** @var  Ausente */
+    protected $ruleAusente;
+    
+    /** @var  PeriodoActivo */
+    protected $rulePeriodoActivo;
+    
+    public function __construct(Presentismo $presentismo)
+    {
+        $this->presentismo       = $presentismo;
+        $this->agente            = $presentismo->agente()->first();
+        $this->ruleAusente       = new Ausente($this->agente, $this->presentismo->tipoPresentismo()->first());
+        $this->rulePeriodoActivo = new PeriodoActivo($this->agente, $this->presentismo->tipoPresentismo()->first());
+        
+    }
+    
+    public function execute()
+    {
+        $this->rulePeriodoActivo->check();
+        $this->ruleAusente->check();
+        $this->save();
+    }
+    
+    private function save()
+    {
+        try {
+            
+            DB::beginTransaction();
+            $this->presentismo->injustificado = 0;
+            $this->presentismo->save();
+            DB::commit();
+        } catch (QueryException $e) {
+            DB::rollBack();
+            throw $e;
+        }
+    }
+    
+}

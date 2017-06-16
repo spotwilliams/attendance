@@ -21,27 +21,16 @@ class Ausente extends Rule
         /** @var TipoPresentismo $ausente */
         $ausente = TipoPresentismo::find($this->tipoAusente->id);
         
-        if ($ausente->esInjustificado()) {
+        // Verificar para la categoria de ausentes
+        // que el agente tenga dias disponibles
+        // Verificar la cantidad de dia
+        $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente);
+        
+        if ($diasDisponibles > 0) {
             return true;
         } else {
-            // Verificar para la categoria de ausentes
-            // que el agente tenga dias disponibles
-            try {
-                // Verificar la cantidad de dia
-                $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente);
-                
-                if ($diasDisponibles > 0) {
-                    return true;
-                } else {
-                    throw new SinDiasDisponibles($this->agente, $this->tipoAusente);
-                }
-            } catch (SinTopeONoEstablecido $e) {
-                return true;
-            }
-            
-            
+            throw new SinDiasDisponibles($this->agente, $this->tipoAusente);
         }
-        
     }
     
 }

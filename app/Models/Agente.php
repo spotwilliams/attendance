@@ -132,7 +132,8 @@ class Agente extends Model
     
     /**
      * @param TipoPresentismo $ausencia
-     * @return integer
+     * @return int
+     * @throws SinTopeONoEstablecido
      */
     public function getCantDiasDisponibles(TipoPresentismo $ausencia)
     {

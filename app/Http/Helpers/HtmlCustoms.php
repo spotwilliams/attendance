@@ -66,7 +66,7 @@ class HtmlCustoms
         (isset($input['model'])) {
             $return = self::getMultiEstudiosFromModel($input['model']);
         }
-    
+        
         return empty($return) ? $original : $return;
     }
     
@@ -157,14 +157,14 @@ class HtmlCustoms
             $btnDisabled   = '';
             $comentario    = $p->comentario;
             $buttonJustice = ($p->injustificado === 1 ?
-                self::getButtonWithPopOver(true) :
-                self::getButtonWithPopOver(false));
+                self::getButtonWithPopOver($p, true) :
+                self::getButtonWithPopOver($p, false));
             $btnClass      = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');
         } else {
             $comentario    = null;
             $btnDisabled   = 'disabled';
             $btnClass      = 'btn-default';
-            $buttonJustice = self::getButtonWithPopOver(false, true);
+            $buttonJustice = self::getButtonWithPopOver($p, false, true);
         }
         
         $select        .= '</select>';
@@ -180,7 +180,7 @@ class HtmlCustoms
         return $html;
     }
     
-    public static function getButtonWithPopOver($injustificado = false, $disabled = false)
+    public static function getButtonWithPopOver(Presentismo $p = null, $injustificado = false, $disabled = false)
     {
         $title       = ($injustificado ? '<label class="label label-danger"> Injustificado</label>' : '<label class="label label-info"> Justificado</label>');
         $label       = ($injustificado ? 'Justificado' : 'Injustificado');
@@ -191,7 +191,8 @@ class HtmlCustoms
         
         $classButton = ($injustificado ? 'bg-gray-active' : 'btn-default');
         $disabled    = ($disabled ? 'disabled' : '');
-        $button      = "<button type='button' class='btn $classButton' $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
+        $data        = 'data-presentismo=\'' . (($p === null or $disabled) ? '' : $p->toJson()) . '\'';
+        $button      = "<button type='button' class='btn $classButton' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
         
         return $button;
     }

@@ -63,6 +63,6 @@ class TipoPresentismo extends Model
      */
     public function esInjustificado()
     {
-        return (strtoupper($this->codigo) === TipoPresentismo::INJUSTIFICADO);
+        return ((strtoupper($this->codigo) === TipoPresentismo::INJUSTIFICADO) or ($this->injustificado === 1));
     }
 }

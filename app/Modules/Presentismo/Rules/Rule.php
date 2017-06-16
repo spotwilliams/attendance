@@ -49,7 +49,6 @@ abstract class Rule
         try {
             return $this->validate();
         } catch (Validation $notAccomplish) {
-            Log::info('Agente No paso validacion: ' . $this->agente->id);
             throw $notAccomplish;
         }
     }

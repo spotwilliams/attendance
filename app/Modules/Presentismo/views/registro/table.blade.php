@@ -58,14 +58,47 @@ $idModal = 'comentarios-modal'
                 }
             });
             function activarPopOver() {
-                $('[data-toggle="popover"]').popover({
-                    'html': true,
-                });
-
                 $('[data-toggle="popover"]')
+                    .popover({
+                        'html': true,
+
+                    })
                     .off('click')
                     .on('click', function () {
-                        alert('holaaaa')
+                        $('[data-toggle="popover"]').popover('hide');
+                        var myParent = $(this).parent().parent();
+                        var data = $(this).data('presentismo');
+                        var url = null;
+
+                        if (data.injustificado === 1) {
+                            url = '{{route('presentismoJustificar')}}';
+                        } else {
+                            url = '{{route('presentismoInjustificar')}}';
+
+                        }
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: data,
+                            success: function (xhr, other) {
+
+                                var messageTxt = xhr.message;
+                                var presentismo = xhr.presentismo;
+                                var button = xhr.button;
+                                var level = 'success';
+                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
+                            },
+                            error: function (xhr, other) {
+                                var messageTxt = xhr.responseJSON.message;
+                                var presentismo = xhr.responseJSON.presentismo;
+                                var button = xhr.responseJSON.button;
+                                var level = 'error';
+                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
+                            }
+
+                        });
                     });
             }
 
@@ -176,15 +209,13 @@ $idModal = 'comentarios-modal'
              * Creacion Datatables
              *
              */
-                    {{--var url = "{{route('presentismoTable', 'replace')}}";--}}
-                //            var baseSelect = $('#base-select-with-button');
 
             var dataTable = $('#presentismos-table').DataTable({
-                    searching: false,
-                    ordering: false,
-                    paging: false,
-                    bInfo: false,
-                });
+                searching: false,
+                ordering: false,
+                paging: false,
+                bInfo: false,
+            });
 
             /**
              *
