@@ -135,7 +135,7 @@ class HtmlCustoms
         $tiposPresentismos = Cache::get(
             'tipo_presentismos_html_key_by',
             function () {
-                return TipoPresentismo::all();
+                return TipoPresentismo::all()->limit(5);
             });
         
         $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";

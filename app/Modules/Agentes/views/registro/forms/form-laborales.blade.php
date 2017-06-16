@@ -41,23 +41,6 @@
     </div>
 </div>
 
-<div class="form-group">
-    <label class="col-sm-2 control-label">Fin de semana</label>
-    <div class="col-sm-8">
-        <div class="radio">
-            <label>
-                {!! Form::radio('fin_semana', '1', null) !!}
-                SI&nbsp;
-            </label>
-        </div>
-        <div class="radio">
-            <label>
-                {!! Form::radio('fin_semana', '0', null) !!}
-                NO&nbsp;
-            </label>
-        </div>
-    </div>
-</div>
 
 <?php
 $tipos[-1] = 'Seleccione';

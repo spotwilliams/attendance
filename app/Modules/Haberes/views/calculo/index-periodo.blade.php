@@ -1,7 +1,9 @@
 <?php
 use Cat\Repositories\PeriodoRepository;
+use Cat\Repositories\TurnosRepository;
 
-$periodos = PeriodoRepository::getPeriodosActivosParaBase($baseActual);
+$periodos = PeriodoRepository::getPeriodosActivosParaBase($base->id);
+$turnos = TurnosRepository::getAll();
 ?>
 @extends('layouts.app')
 
@@ -20,32 +22,55 @@ $periodos = PeriodoRepository::getPeriodosActivosParaBase($baseActual);
             </div>
             {!! Form::open(['route' => 'haberesPrepareListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 
-            {!! Form::hidden('base', $baseActual) !!}
+            {!! Form::hidden('base', $base->id) !!}
             <div class="box-body">
-                <div class="form-group">
-                    <div class="progress-group col-sm-8 col-sm-offset-2">
-                        <span class="progress-text">Paso 2</span>
-                        <span class="progress-number"><b>2</b>/3</span>
+                <div class="col-md-offset-2 col-md-8">
 
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-yellow" style="width: 66%"></div>
+                    <div class="form-group">
+                        <div class="progress-group">
+                            <span class="progress-text">Paso 2</span>
+                            <span class="progress-number"><b>2</b>/3</span>
+
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-yellow" style="width: 66%"></div>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="form-group @if($errors->has('periodo')) has-error @endif">
-                    <label class="col-sm-3 col-xs-3 control-label">Seleccione el periodo a calcular</label>
-                    <div class="col-sm-9 col-xs-9">
-                        <select class="form-control" name="periodo">
-                            <option value="-1">...</option>
-                            @foreach ($periodos as $periodo)
-                                <option value="{{ $periodo->id }}">
-                                    Del {{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}
-                                    hasta {{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</option>
-                            @endforeach
-                        </select>
-                        @if($errors->has('periodo'))
-                            <span class="help-block">{{$errors->first('periodo')}}</span>
-                        @endif
+                    <div class="form-group">
+                        <label class="col-sm-3 col-xs-3 control-label">Base seleccionada</label>
+                        <div class="col-sm-9 col-xs-9">
+                            <span class="label label-info">{{$base->nombre}}</span>
+                        </div>
+                    </div>
+                    <div class="form-group @if($errors->has('periodo')) has-error @endif">
+                        <label class="col-sm-3 col-xs-3 control-label">Seleccione el periodo</label>
+                        <div class="col-sm-9 col-xs-9">
+                            <select class="form-control" name="periodo">
+                                <option value="-1">...</option>
+                                @foreach ($periodos as $periodo)
+                                    <option value="{{ $periodo->id }}">
+                                        Del {{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}
+                                        hasta {{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('periodo'))
+                                <span class="help-block">{{$errors->first('periodo')}}</span>
+                            @endif
+                        </div>
+                    </div>
+                    <div class="form-group @if($errors->has('turno')) has-error @endif">
+                        <label class="col-sm-3 col-xs-3 control-label">Seleccione el turno</label>
+                        <div class="col-sm-9 col-xs-9">
+                            <select class="form-control" name="turno">
+                                <option value="-1">...</option>
+                                @foreach ($turnos as $t)
+                                    <option value="{{ $t->id }}">{{$t->codigo}} ({{$t->descripcion}})</option>
+                                @endforeach
+                            </select>
+                            @if($errors->has('turno'))
+                                <span class="help-block">{{$errors->first('turno')}}</span>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

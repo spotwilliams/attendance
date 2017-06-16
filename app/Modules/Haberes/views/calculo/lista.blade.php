@@ -48,6 +48,14 @@ while ($fecha < $fechaToday) {
 
             <div class="box-body">
                 <div class="form-group">
+                    <h4 class="col-sm-8 col-sm-offset-2">
+                        Base <span class="label label-info">{{$base->nombre}}</span>
+                        Periodo <span
+                                class="label label-success">{{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}</span>
+                        hasta <span
+                                class="label label-success">{{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
+                        Turno <span class="label label-info">{{$turno->codigo}}</span>
+                    </h4>
                     <div class="progress-group col-sm-8 col-sm-offset-2">
                         <span class="progress-text">Paso 3</span>
                         <span class="progress-number"><b>3</b>/3</span>
@@ -64,34 +72,37 @@ while ($fecha < $fechaToday) {
                     <th>Agente</th>
                     <th>DNI</th>
                     <th>CUIT</th>
-                    <th>Monto contrato</th>
-                    <th>Monto a facturar</th>
-                    <th>Confirmar</th>
+                    {{--<th>Confirmar</th>--}}
                     </thead>
                     <tbody>
                     @if($agentes->isEmpty())
                         <tr>
                             <td colspan="10">
-                                <p class="help-block">No se encontraron presentismos cargados para esta base.</p>
+                                <p class="help-block">Los presentismos para esta base y turno ya han sido cerrados.</p>
                             </td>
                         </tr>
                     @endif
                     @foreach($agentes as $a)
                         <tr>
                             <td class="details-control">
-                                <a class="btn btn-success"><i class="fa fa-plus-circle"></i></a>
+                                @if($a->presentismos->isEmpty() or !$a->haberes->isEmpty())
+                                    <a class="btn btn-default details-control"><i class="fa fa-plus-circle"></i></a>
+                                @else
+                                    <a class="btn btn-success details-control"><i class="fa fa-plus-circle"></i></a>
+                                @endif
                             </td>
 
                             <td>{{$a->apellido}}, {{$a->nombre}}</td>
                             <td>{{$a->dni}}</td>
                             <td>{{$a->cuit}}</td>
-                            <td>$ {{$a->contrato->monto}}</td>
-                            <td>
-                                @if(!$a->haberes->isEmpty())
-                                    $ {{$a->haberes->first()->monto_facturado}}
-                                @else
-                                    $ {{money_format('%i', (new \Cat\Modules\Haberes\Services\Calculo\Calculador($a, $periodo))->execute())}}</td>
-                            @endif
+                            {{--<td>$ {{$a->contrato->monto}}</td>--}}
+                            {{--<td>--}}
+                            {{--@if(!$a->haberes->isEmpty())--}}
+                            {{--$ {{$a->haberes->first()->monto_facturado}}--}}
+                            {{--@else--}}
+                            {{--$ {{money_format('%i', (new \Cat\Modules\Haberes\Services\Calculo\Calculador($a, $periodo))->execute())}}--}}
+                            {{--@endif--}}
+                            {{--</td>--}}
                             <td>
                                 @if($a->haberes->isEmpty())
                                     {!! Form::open(['route' => 'haberesConfirmarSingle']) !!}
@@ -108,15 +119,36 @@ while ($fecha < $fechaToday) {
                                     </h4>
                                 @endif
                             </td>
-
+                            {{--@if($a->haberes->isEmpty())--}}
+                            {{--hola--}}
+                            {{--@endif--}}
                         </tr>
                         <tr class="hidden">
+                        {{--<tr class="@if($a->presentismos->isEmpty() or !$a->haberes->isEmpty()) hidden @endif">--}}
                             <input type="hidden" data-presentismos="{{$a->presentismos}}">
                             <td colspan="10">
-                                <p class="lead">Resumen:</p>
-                                <div class="table-responsive"></div>
+                                @if($a->haberes->isEmpty())
+                                    @if($a->presentismos->isEmpty())
+                                        <p class="help-block">No se registraron faltas injustificadas en el periodo.</p>
+                                    @else
+                                        <div class="row">
+                                            @foreach($a->presentismos as $p)
+                                                <div class="col-xs-2">
+                                                    <label>{{$p->fecha}}</label>
+                                                    {!! HtmlCustoms::getSelectForTipoPresentismo($p) !!}
+
+                                                </div>
+                                            @endforeach
+                                        </div>
+
+                                    @endif
+                                @else
+                                    <p class="help-block">Ya no es posible realizar cambios en el presentismo.</p>
+                                @endif
+
                             </td>
                         </tr>
+
                     @endforeach
                     </tbody>
                 </table>
@@ -137,32 +169,37 @@ while ($fecha < $fechaToday) {
 
             var detailRows = [];
 
-            $('table tbody').on('click', 'tr td.details-control', function () {
+            $('table tbody').on('click', 'tr > td > a.details-control', function () {
                 var tr = $(this).closest('tr');
                 var nextTr = $(tr).next('tr');
-                var button = $(this).children('a');
-                var icon = $(this).children('a').children('i');
+                var button = $(this);//.children('a');
+                var icon = $(this).children('i');
                 // Si es visible lo tengo que esconder
                 if ($(nextTr).is(':visible')) {
 
                     $(nextTr).addClass('hidden');
 
-                    $(button).addClass('btn-success');
-                    $(button).removeClass('btn-danger');
+                    if (!$(button).hasClass('btn-default')) {
+                        $(button).addClass('btn-success');
+                        $(button).removeClass('btn-danger');
 
+                    }
                     $(icon).addClass('fa-plus-circle');
                     $(icon).removeClass('fa-minus-circle');
+
 
                 } else {
                     var cell = $(nextTr).children('td');
                     var data = $(nextTr).children('input').data('presentismos');
                     $(nextTr).removeClass('hidden');
+                    if (!$(button).hasClass('btn-default')) {
 
-                    $(button).addClass('btn-danger');
-                    $(button).removeClass('btn-success');
+                        $(button).addClass('btn-danger');
+                        $(button).removeClass('btn-success');
 
-                    $(icon).addClass('fa-minus-circle');
-                    $(icon).removeClass('fa-plus-circle');
+                    }
+                        $(icon).addClass('fa-minus-circle');
+                        $(icon).removeClass('fa-plus-circle');
                     renderDetails(data, cell);
 
                 }

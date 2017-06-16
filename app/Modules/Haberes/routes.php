@@ -18,7 +18,7 @@ Route::group(
         /**
          * Generales
          */
-        Route::get('haberes/select/base/{base}', GeneralController::class . '@selectBase')
+        Route::get('haberes/select/base', GeneralController::class . '@selectBase')
             ->name('haberesSelectBase');
         
         Route::post('haberes/select/periodo', GeneralController::class . '@selectPeriodo')
@@ -27,7 +27,7 @@ Route::group(
         Route::post('haberes/lista/agentes', GeneralController::class . '@prepareListaAgentes')
             ->name('haberesPrepareListaAgentes');
         
-        Route::get('haberes/lista/agentes/base/{base}/periodo/{periodo}', GeneralController::class . '@listaAgentes')
+        Route::get('haberes/lista/agentes/base/{base}/periodo/{periodo}/turno/{turno}', GeneralController::class . '@listaAgentes')
             ->name('haberesListaAgentes');
 
         /**

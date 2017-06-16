@@ -24,7 +24,7 @@ Route::group(
         Route::post('presentismo/lista/agentes/', GeneralController::class . '@prepareListaAgentes')
             ->name('presentismoPrepareListaAgentes');
         
-        Route::get('presentismo/lista/agentes/base/{base}/desde/{desde}/hasta/{hasta}',
+        Route::get('presentismo/lista/agentes/base/{base}/desde/{desde}/hasta/{hasta}/turno/{turno}',
             GeneralController::class . '@listaAgentes')
             ->name('presentismoListaAgentes');
         

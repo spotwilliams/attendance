@@ -89,7 +89,7 @@ class Agente extends Model
     }
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
      **/
     public function contrato()
     {
@@ -150,9 +150,11 @@ class Agente extends Model
                 ->where('mes_ingreso', '=', $mesProporcional)
                 ->firstOrFail();
             
+            /**  */
+            $turno = $this->operativo()->first()->turno()->first();
             /** @var int $cantDiasPermitidos */
-            $cantDiasPermitidos = $diasPermitidos->getCantidadDias($contrato);
-            
+            $cantDiasPermitidos = $diasPermitidos->getCantidadDias($turno);
+
             /** @var int $cantDiasConsumidos */
             $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);
             

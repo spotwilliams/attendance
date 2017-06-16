@@ -40,7 +40,6 @@ class Laborales extends Service
     protected $tipo;
     
     protected $id_sial;
-    protected $fin_semana;
     
     
     public function __construct(Agente $agente, $input)
@@ -50,7 +49,6 @@ class Laborales extends Service
         $this->id_sial    = $input['id_sial'];
         $this->ficha      = $input['ficha'];
         $this->monto      = $input['monto'];
-        $this->fin_semana = $input['fin_semana'];
         $this->fecha      = new \DateTime($input['fecha_ingreso']);
         $this->estado     = EstadoContrato::findOrFail($input['id_estado_contrato']);
         $this->tipo       = TipoContrato::findOrFail($input['id_tipo_contrato']);
@@ -70,7 +68,6 @@ class Laborales extends Service
                 'id_estado_contrato' => $this->estado->id,
                 'id_agente'          => $this->agente->id,
                 'id_sial'            => $this->id_sial,
-                'fin_semana'         => $this->fin_semana,
                 'ficha'              => $this->ficha,
                 'monto'              => floatval($this->monto),
             ]);

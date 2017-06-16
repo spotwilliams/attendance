@@ -27,7 +27,7 @@ class PeriodoRepository extends BaseRepository
      * @param \DateTime $fecha
      * @return Periodo
      */
-    public static function getOrCreatePeriodoActivo(\DateTime $fecha)
+    public static function getOrCreatePeriodoActivo(\DateTime $fecha = null)
     {
         $periodo = Periodo::findActivo($fecha);
         

@@ -3,8 +3,11 @@
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
 use Cat\Models\Base;
+use Cat\Models\Periodo;
+use Cat\Models\Turno;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
+use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
@@ -31,38 +34,42 @@ class GeneralController extends AppBaseController
      */
     public function index(Request $request)
     {
+        // Se ejecuta para generar un periodo en caso que no exista
+        PeriodoRepository::getOrCreatePeriodoActivo();
+        
         return view('Presentismo::registro.index');
     }
     
     public function prepareListaAgentes(Request $request)
     {
-        $this->validate($request, ['base' => 'required|not_in:-1']);
+        $this->validate($request, [
+            'base'  => 'required|not_in:-1',
+            'turno' => 'not_in:-1',
+        ]);
         
         $input = $request->all();
         
-        return redirect(route('presentismoListaAgentes',
-            ['base' => $input['base'], 'desde' => $input['desde'], 'hasta' => $input['hasta']]));
+        return redirect(
+            route(
+                'presentismoListaAgentes',
+                [
+                    'base'  => $input['base'],
+                    'desde' => $input['desde'],
+                    'hasta' => $input['hasta'],
+                    'turno' => $input['turno'],
+                ]
+            )
+        );
         
     }
     
-    public function listaAgentes(Request $request, $base, $desde, $hasta)
+    public function listaAgentes(Request $request, $base, $desde, $hasta, $turno)
     {
-        $input = ['desde' => $desde, 'hasta' => $hasta];
-        /** @var \Illuminate\Validation\Validator $validator */
-        $validator = Validator::make($input, [
-            'hasta' => 'required|date_format:Y-m-d',
-            'desde' => 'date_format:Y-m-d',
-        ]);
         
-        if ($validator->fails()) {
-            dd($validator->errors());
-            
-            return redirect(route('presentismoIndex'));
-        }
-
         try {
             
             $base    = Base::findOrFail($base);
+            $turno   = Turno::findOrFail($turno);
             $desde   = new \DateTime($desde);
             $hasta   = new \DateTime($hasta);
             $agentes = $this->presentismoRepository
@@ -70,7 +77,8 @@ class GeneralController extends AppBaseController
                     $base,
                     $desde,
                     $hasta
-                );
+                )
+                ->where('operativos.id_turno', '=', $turno->id);
             
         } catch (ModelNotFoundException $e) {
             Flash::error('Se ha seleccionado una base inexistente');
@@ -81,6 +89,7 @@ class GeneralController extends AppBaseController
         return view('Presentismo::registro.lista')
             ->with('desde', $desde)
             ->with('hasta', $hasta)
+            ->with('turno', $turno)
             ->with('baseActual', $base)
             ->with('agentes', $agentes->paginate(25));
     }

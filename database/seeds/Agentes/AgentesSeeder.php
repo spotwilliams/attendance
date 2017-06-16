@@ -42,7 +42,6 @@ class AgentesSeeder extends Seeder
                 'id_sial'            => rand(1, 100),
                 'ficha'              => rand(1, 100),
                 'monto'              => rand(10000, 90000),
-                'fin_semana'         => rand(0, 1),
                 'fecha_ingreso'      => date('Y-m-d'),
                 'id_estado_contrato' => 1,
                 'id_tipo_contrato'   => 3,
@@ -55,7 +54,7 @@ class AgentesSeeder extends Seeder
                 'id_cargo'    => 1,
                 'id_funcion'  => 1,
                 'id_base'     => rand(1, 17),
-                'id_turno'    => 1,
+                'id_turno'    => rand(1, 11),
                 'id_horario'  => 1,
             ];
             (new Operativos($operativos))->execute();

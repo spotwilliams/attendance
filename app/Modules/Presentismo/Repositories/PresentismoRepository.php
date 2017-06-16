@@ -9,7 +9,6 @@ use Cat\Models\EstadoContrato;
 use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use InfyOm\Generator\Common\BaseRepository;
@@ -72,7 +71,6 @@ class PresentismoRepository extends BaseRepository
     public function getEloquentAgentes($idBase, Periodo $periodo, \DateTime $fechaFin = null)
     {
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
-        $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
         $date         = ($fechaFin === null) ? new \DateTime('tomorrow') : $fechaFin;
         $eloquent     = Agente::with([
             'presentismos' => function ($presentismos) use ($periodo, $date) {
@@ -84,7 +82,6 @@ class PresentismoRepository extends BaseRepository
             ->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
             ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
             ->where('operativos.id_base', $idBase)
-            ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
             ->where('contratos.id_estado_contrato', '=', $activo->id)
             ->orderBy('apellido', 'asc');
         

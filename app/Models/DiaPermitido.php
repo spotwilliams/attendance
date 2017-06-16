@@ -31,9 +31,9 @@ class DiaPermitido extends Model
         
         ];
     
-    public function getCantidadDias(Contrato $contrato)
+    public function getCantidadDias(Turno $turno)
     {
-        if ($contrato->fin_semana === 1) {
+        if ($turno->esFinDeSemana()) {
             return $this->cant_fin_semana;
         } else {
             return $this->cant_semanal;

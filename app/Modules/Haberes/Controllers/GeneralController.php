@@ -3,11 +3,15 @@
 namespace Cat\Modules\Haberes\Controllers\Registro;
 
 use Cat\Models\Base;
+use Cat\Models\Contrato;
 use Cat\Models\Periodo;
+use Cat\Models\TipoContrato;
+use Cat\Models\Turno;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
 
@@ -29,38 +33,53 @@ class GeneralController extends AppBaseController
      * @param Request $request
      * @return Response
      */
-    public function selectBase(Request $request, $base)
+    public function selectBase(Request $request)
     {
-        return view('Haberes::calculo.index-base')
-            ->with('baseActual', $base);
+        return view('Haberes::calculo.index-base');
     }
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return View
      */
     public function selectPeriodo(Request $request)
     {
+        $this->validate($request, ['base' => 'not_in:-1']);
+        
+        $base = Base::find($request->input('base'));
+        
         return view('Haberes::calculo.index-periodo')
-            ->with('baseActual', $request->input('base'));
+            ->with('base', $base);
     }
     
     public function prepareListaAgentes(Request $request)
     {
+        $this->validate(
+            $request,
+            ['turno' => 'not_in:-1', 'periodo' => 'not_in:-1']
+        );
         
-        $input = $request->all();
+        $input  = $request->all();
+        $params = [
+            'base'    => $input['base'],
+            'periodo' => $input['periodo'],
+            'turno'   => $input['turno'],
+        ];
         
-        return redirect(route('haberesListaAgentes', ['base' => $input['base'], 'periodo' => $input['periodo']]));
+        return redirect(route('haberesListaAgentes', $params));
         
     }
     
-    public function listaAgentes(Request $request, $base, $periodo)
+    public function listaAgentes(Request $request, $base, $periodo, $turno)
     {
         try {
-            $periodo = Periodo::findOrFail($periodo);
-            $base    = Base::findOrFail($base);
+            $periodo      = Periodo::findOrFail($periodo);
+            $base         = Base::findOrFail($base);
+            $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
+            $turno        = Turno::findOrFail($turno);
+            $desde        = new \DateTime($periodo->fecha_comienzo);
+            $hasta        = new \DateTime($periodo->fecha_fin);
+            
             $agentes = $this
                 ->presentismoRepository
                 ->getEloquentAgentes($base->id, $periodo);
@@ -71,19 +90,24 @@ class GeneralController extends AppBaseController
                         $haberBuilder->where('id_periodo', '=', $periodo->id);
                     },
                 ])
-                ->with('contrato');
-//                ->whereNotIn('agentes.id', function ($query) use ($periodo) {
-//                    /** @var Builder */
-//                    $query->from('haberes')
-//                        ->select('id_agente as id')
-//                        ->where('id_periodo', '=', $periodo->id);
-//                });
-            
+                // Override the condition
+                ->with([
+                    'presentismos' => function ($presentismos) use ($desde, $hasta) {
+                        $presentismos
+                            ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
+                            ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))
+                            ->where('injustificado', '=', 1);
+                    },
+                ])
+                ->with('contrato')
+                ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
+                ->where('operativos.id_turno', '=', $turno->id);
             
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)
-                ->with('periodo', $periodo);
+                ->with('periodo', $periodo)
+                ->with('turno', $turno);
         } catch (ModelNotFoundException $e) {
             Flash::error('No se ha podido continuar. Intente nuevamente');
             
