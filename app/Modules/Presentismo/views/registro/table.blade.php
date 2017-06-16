@@ -4,13 +4,12 @@ use Cat\Helpers\HtmlCustoms;
 /** @var \DateTime $fechaJson */
 /** @var \DateTime $fechaToday */
 /** @var \Cat\Models\Periodo $periodo */
-$fecha = new DateTime($periodo->fecha_comienzo);
-$fecha->modify('-4day');
-$fechaToday = (new DateTime('now'))->modify('+4day');
+$fecha = new DateTime($desde->format('Y-m-d'));
+$fechaToday = new DateTime($hasta->format('Y-m-d'));
 
 $fechasToShow = [];
 
-while ($fecha < $fechaToday) {
+while ($fecha <= $fechaToday) {
     $fechasToShow[] = ['data' => $fecha->format('Y-m-d'), 'show' => $fecha->format('d/m')];
     $fecha->modify('+1day');
 }

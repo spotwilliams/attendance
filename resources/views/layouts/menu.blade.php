@@ -51,7 +51,7 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{!! route('presentismoIndex', ['base' => 1]) !!}">
+            <a href="{!! route('presentismoIndex') !!}">
                 <i class="fa fa-edit"></i>
                 <span>Registro manual</span>
             </a>

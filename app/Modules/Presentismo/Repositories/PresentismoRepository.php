@@ -92,6 +92,35 @@ class PresentismoRepository extends BaseRepository
     }
     
     /**
+     * Genera el eloquent de agentes y presentismos entre dos fechas distintas
+     * @param Base $base
+     * @param \DateTime $desde
+     * @param \DateTime $hasta
+     * @return mixed
+     */
+    public function getEloquentAgentesBetweenDates(Base $base, \DateTime $desde, \DateTime $hasta)
+    {
+        $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
+        $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
+        $eloquent     = Agente::with([
+            'presentismos' => function ($presentismos) use ($desde, $hasta) {
+                $presentismos
+                    ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
+                    ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))
+                ;
+            },
+        ])
+            ->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
+            ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
+            ->where('operativos.id_base', $base->id)
+            ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
+            ->where('contratos.id_estado_contrato', '=', $activo->id)
+            ->orderBy('apellido', 'asc');
+        
+        return $eloquent;
+    }
+    
+    /**
      * Entrega lista de agentes con presentismos paginando
      * @param Base $base
      * @param Periodo $periodo

@@ -19,6 +19,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Str;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
@@ -42,10 +43,9 @@ class RegistroController extends AppBaseController
      * @param Request $request
      * @return Response
      */
-    public function index(Request $request, $base)
+    public function index(Request $request)
     {
-        return view('Presentismo::registro.index')
-            ->with('baseActual', $base);
+        return view('Presentismo::registro.index');
     }
     
     public function prepareListaAgentes(Request $request)
@@ -54,29 +54,52 @@ class RegistroController extends AppBaseController
         
         $input = $request->all();
         
-        return redirect(route('presentismoListaAgentes', ['base' => $input['base']]));
+        return redirect(route('presentismoListaAgentes',
+            ['base' => $input['base'], 'desde' => $input['desde'], 'hasta' => $input['hasta']]));
         
     }
     
-    public function listaAgentes(Request $request, $base)
+    public function listaAgentes(Request $request, $base, $desde, $hasta)
     {
+        $input = ['desde' => $desde, 'hasta' => $hasta];
+        /** @var \Illuminate\Validation\Validator $validator */
+        $validator = Validator::make($input, [
+            'hasta' => 'required|date_format:Y-m-d',
+            'desde' => 'date_format:Y-m-d',
+        ]);
         
-        $today    = new \DateTime('now');
-        $periodo  = PeriodoRepository::getOrCreatePeriodoActivo($today);
-        $tomorrow = $today->modify('+1day');
+        if ($validator->fails()) {
+            dd($validator->errors());
+            
+            return redirect(route('presentismoIndex'));
+        }
+
+//        $today    = new \DateTime('now');
+//        $periodo  = PeriodoRepository::getOrCreatePeriodoActivo($today);
+//        $tomorrow = $today->modify('+1day');
         try {
+            
             $base    = Base::findOrFail($base);
-            $agentes = $this->presentismoRepository->agentesAptosPaginate($base, $periodo, $tomorrow);
+            $desde   = new \DateTime($desde);
+            $hasta   = new \DateTime($hasta);
+            $agentes = $this->presentismoRepository
+                ->getEloquentAgentesBetweenDates(
+                    $base,
+                    $desde,
+                    $hasta
+                );
+//            $agentes->paginate(25);
         } catch (ModelNotFoundException $e) {
             Flash::error('Se ha seleccionado una base inexistente');
             
-            return redirect(route('presentismoIndex', ['base' => 1]));
+            return redirect(route('presentismoIndex'));
         }
         
         return view('Presentismo::registro.lista')
-            ->with('periodo', $periodo)
+            ->with('desde', $desde)
+            ->with('hasta', $hasta)
             ->with('baseActual', $base)
-            ->with('agentes', $agentes);
+            ->with('agentes', $agentes->paginate(25));
     }
     
     /**
