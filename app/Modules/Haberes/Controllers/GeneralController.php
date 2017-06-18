@@ -4,6 +4,7 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 
 use Cat\Models\Base;
 use Cat\Models\Contrato;
+use Cat\Models\Haber;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
@@ -73,33 +74,36 @@ class GeneralController extends AppBaseController
     public function listaAgentes(Request $request, $base, $periodo, $turno)
     {
         try {
-            $periodo      = Periodo::findOrFail($periodo);
-            $base         = Base::findOrFail($base);
-            $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
-            $turno        = Turno::findOrFail($turno);
-            $desde        = new \DateTime($periodo->fecha_comienzo);
-            $hasta        = new \DateTime($periodo->fecha_fin);
+            $periodo              = Periodo::findOrFail($periodo);
+            $base                 = Base::findOrFail($base);
+            $tipoLocacion         = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
+            $turno                = Turno::findOrFail($turno);
+            $agentesYaConfirmados = Haber::where('id_periodo', '=', $periodo->id)
+                ->get(['id_agente'])->toArray();
+            $desde                = new \DateTime($periodo->fecha_comienzo);
+            $hasta                = new \DateTime($periodo->fecha_fin);
             
             $agentes = $this
                 ->presentismoRepository
                 ->getEloquentAgentes($base->id, $periodo);
             
             $agentes
-                ->with([
-                    'haberes' => function ($haberBuilder) use ($periodo) {
-                        $haberBuilder->where('id_periodo', '=', $periodo->id);
-                    },
-                ])
+//                ->with([
+//                    'haberes' => function ($haberBuilder) use ($periodo) {
+//                        $haberBuilder->where('id_periodo', '=', $periodo->id);
+//                    },
+//                ])
                 // Override the condition
                 ->with([
                     'presentismos' => function ($presentismos) use ($desde, $hasta) {
                         $presentismos
                             ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
                             ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))
-                            ->where('injustificado', '=', 1);
+                            ->where('injustificado', '=', 1)
+                            ->orderBy('fecha', 'ASC');
                     },
                 ])
-                ->with('contrato')
+                ->whereNotIn('agentes.id', $agentesYaConfirmados)
                 ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
                 ->where('operativos.id_turno', '=', $turno->id);
             

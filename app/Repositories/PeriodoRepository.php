@@ -6,6 +6,7 @@ use Cat\Models\Base;
 use Cat\Models\EstadoPeriodo;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Periodo;
+use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
@@ -31,7 +32,7 @@ class PeriodoRepository extends BaseRepository
     {
         $periodo = Periodo::findActivo($fecha);
         
-        
+
         if ($periodo == null) {
             // Buscar el ultimo periodo creado y crear uno a partir de este
             $ultimoPeriodo = Periodo::getUltimoPeriodo();
@@ -47,7 +48,7 @@ class PeriodoRepository extends BaseRepository
                 'fecha_fin'      => $fechaFin->format('Y-m-d'),
                 'cant_dias'      => $ultimoPeriodo->cant_dias,
             ]);
-            static::activarPeriodoEnBases($periodo);
+            static::activarPeriodoEnBasesYTurnos($periodo);
         }
         
         return $periodo;
@@ -58,20 +59,25 @@ class PeriodoRepository extends BaseRepository
      * @param Periodo $periodo
      * @param Base|null $base si es null activa el periodo para todas las bases
      */
-    public static function activarPeriodoEnBases(Periodo $periodo, Base $base = null)
+    public static function activarPeriodoEnBasesYTurnos(Periodo $periodo, Base $base = null, Turno $turno = null)
     {
         
-        $bases = ($base == null) ? Base::all(['id']) : [$base];
+        $bases  = ($base == null) ? Base::all(['id']) : [$base];
+        $turnos = ($turno == null) ? Turno::all(['id']) : [$turno];
         foreach ($bases as $b) {
-            try {
-                $inserts = [
-                    'id_base'    => $b->id,
-                    'id_periodo' => $periodo->id,
-                    'abierto'    => 1,
-                ];
-                EstadoPeriodo::create($inserts);
-            } catch (QueryException $error) {
-                Log::error($error);
+            foreach ($turnos as $t) {
+                try {
+                    $inserts = [
+                        'id_base'    => $b->id,
+                        'id_periodo' => $periodo->id,
+                        'id_turno'   => $t->id,
+                        'abierto'    => 1,
+                    ];
+                    EstadoPeriodo::create($inserts);
+                } catch (QueryException $error) {
+
+                    Log::error($error);
+                }
             }
         }
         
@@ -85,6 +91,7 @@ class PeriodoRepository extends BaseRepository
             return Base::findOrFail($idBase)
                 ->periodos()
                 ->wherePivot('abierto', 1)
+                ->distinct('id_periodo')
                 ->get();
             
         } catch (ModelNotFoundException $e) {

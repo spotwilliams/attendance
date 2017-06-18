@@ -30,7 +30,7 @@ class AgentesSeeder extends Seeder
                 'id'               => $i,
                 'nombre'           => $faker->name(),
                 'apellido'         => $faker->lastName(),
-                'dni'              => rand(3000000, 50000000) + rand(0, 9999),
+                'dni'              => rand(3000000, 50000000) + rand(0, 999999),
                 'fecha_nacimiento' => date('Y-m-d'),
                 'cuit'             => $faker->uuid(),
                 'estado_civil'     => 'CASADO',

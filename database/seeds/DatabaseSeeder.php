@@ -17,7 +17,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 5000;
+    const SIZE_AGENTE = 10000;
     const SIZE_AREAS  = 10;
     
     /**

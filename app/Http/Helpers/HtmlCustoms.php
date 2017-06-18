@@ -3,8 +3,11 @@
 namespace Cat\Helpers;
 
 use Cat\Models\Agente;
+use Cat\Models\Contrato;
 use Cat\Models\Presentismo;
+use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
+use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Support\Collection;
 
 class HtmlCustoms
@@ -123,20 +126,19 @@ class HtmlCustoms
     
     
     /**
-     * @param Presentismo $p
-     * @param $tiposPresentismosRefence
+     * @param Presentismo|null $p
+     * @param string $selector
      * @return string
      */
-    public static function getSelectForTipoPresentismo(Presentismo $p = null, $selector = 'selectpicker')
-    {
+    public static function getSelectForTipoPresentismo(
+        Presentismo $p = null,
+        TipoContrato $tipoContrato,
+        $selector = 'selectpicker'
+    ) {
         /** @var array $tiposPresentismos AGREGAR CACHE!!! */
         
         /** @var Collection $tiposPresentismos */
-        $tiposPresentismos = Cache::get(
-            'tipo_presentismos_html_key_by',
-            function () {
-                return TipoPresentismo::all()->limit(5);
-            });
+        $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
         
         $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
         $option = "<option value=\"-1\">...</option>";

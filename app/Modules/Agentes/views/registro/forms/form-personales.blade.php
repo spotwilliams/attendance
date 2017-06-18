@@ -168,7 +168,6 @@ $control = 0;
 {{-- Domicilios --}}
 <div class="form-group">
     {!! Form::label('domicilio', 'Domicilio', ['class' => 'col-sm-2 control-label']) !!}
-    {{--{!! dd() !!}--}}
     <?php
     $data = [];
     if (isset($agente)) {

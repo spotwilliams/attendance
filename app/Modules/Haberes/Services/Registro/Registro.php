@@ -5,11 +5,8 @@ namespace Cat\Modules\Haberes\Services\Registro;
 use Cat\Models\Agente;
 use Cat\Models\Haber;
 use Cat\Models\Periodo;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoPresentismo;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
 use Cat\Modules\Service;
-use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
@@ -61,11 +58,13 @@ class Registro extends Service
             ]);
             
             DB::commit();
+            
+            return true;
         } catch (QueryException $e) {
             DB::rollBack();
+            
             throw $e;
         }
     }
-    
     
 }

@@ -78,6 +78,7 @@ class GeneralController extends AppBaseController
                     $desde,
                     $hasta
                 )
+                ->with('contrato.tipoContrato')
                 ->where('operativos.id_turno', '=', $turno->id);
             
         } catch (ModelNotFoundException $e) {

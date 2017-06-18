@@ -29,10 +29,10 @@ $turnos = TurnosRepository::getAll();
                     <div class="form-group">
                         <div class="progress-group">
                             <span class="progress-text">Paso 2</span>
-                            <span class="progress-number"><b>2</b>/3</span>
+                            <span class="progress-number"><b>2</b>/4</span>
 
                             <div class="progress">
-                                <div class="progress-bar progress-bar-yellow" style="width: 66%"></div>
+                                <div class="progress-bar progress-bar-yellow" style="width: 50%"></div>
                             </div>
                         </div>
                     </div>

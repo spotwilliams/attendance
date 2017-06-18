@@ -3,6 +3,7 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Periodo extends Model
 {
@@ -39,28 +40,34 @@ class Periodo extends Model
         if ($fecha == null) {
             $fecha = new \DateTime('now');
         }
-        $fecha = $fecha->format('Y-m-d');
         
         /** @var Periodo $periodoActual */
-        $periodoActual = Periodo::where('fecha_comienzo', '<=', $fecha)
-            ->where('fecha_fin', '>=', $fecha)->first();
+        $periodoActual = Periodo::whereDate('fecha_comienzo', '<=', $fecha)
+            ->whereDate('fecha_fin', '>=', $fecha)
+            ->first();
         
         return $periodoActual;
     }
     
     /**
-     * @param $idBase
+     * @param Base $base
+     * @param Turno $turno
      * @return bool
      */
-    public function estaActivo(Base $base)
+    public function estaActivo(Base $base, Turno $turno)
     {
-        $estado = $this->estados()->where('id_base', '=', $base->id)->first();
-        
-        if ($estado === null) {
-            return false;
-        } else {
+        try {
+            $estado = $this->estados()
+                ->where('id_base', '=', $base->id)
+                ->where('id_turno', '=', $turno->id)
+                ->firstOrFail();
+            
             return ($estado->abierto === 1);
+            
+        } catch (ModelNotFoundException $e) {
+            return false;
         }
+        
     }
     
     public static function getUltimoPeriodo()

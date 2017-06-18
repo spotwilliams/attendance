@@ -24,6 +24,7 @@ $idModal = 'comentarios-modal'
         <th>Id Agente</th>
         <th>Agente</th>
         <th>CUIT</th>
+        <th>Mod. Contratacion</th>
         @for($i = 0; $i < count($fechasToShow) ;$i++)
             <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
         @endfor
@@ -34,12 +35,13 @@ $idModal = 'comentarios-modal'
                 <td>{{$age->id}}</td>
                 <td>{{$age->apellido}}, {{$age->nombre}}</td>
                 <td>{{$age->cuit}}</td>
+                <td>{{$age->contrato->tipoContrato->descripcion}}</td>
                 <?php $presentismos = $age->presentismos->keyBy('fecha'); ?>
                 @for($i = 0; $i < count($fechasToShow) ;$i++)
 
                     <td><?php
                         $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
-                        echo HtmlCustoms::getSelectForTipoPresentismo($p)
+                        echo HtmlCustoms::getSelectForTipoPresentismo($p, $age->contrato->first()->tipoContrato->first())
                         ?></td>
                 @endfor
 

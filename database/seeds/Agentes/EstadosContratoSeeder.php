@@ -16,43 +16,46 @@ class EstadosContratoSeeder extends Seeder
             [
                 'id'          => 1,
                 'estado'      => 'ACTIVO',
-                'descripcion' => 'Contrato activo',
+                'descripcion' => 'ACTIVO',
                 'id_padre'    => null,
             ],
             [
                 'id'          => 2,
                 'estado'      => 'BAJA',
-                'descripcion' => 'Contrato inactivo',
+                'descripcion' => 'BAJA',
                 'id_padre'    => null,
             ],
+           
+            // SUB DE ACTIVO
             [
                 'id'          => 3,
                 'estado'      => 'COMISION',
-                'descripcion' => 'Contrato inactivo por comision',
-                'id_padre'    => 2,
+                'descripcion' => 'EN COMISION',
+                'id_padre'    => 1,
             ],
+            // SUB DE BAJA
             [
                 'id'          => 4,
                 'estado'      => 'FALLECIMIENTO',
-                'descripcion' => 'Contrato inactivo por fallecimiento',
+                'descripcion' => 'FALLECIMIENTO',
                 'id_padre'    => 2,
             ],
             [
                 'id'          => 5,
                 'estado'      => 'JUBILACION',
-                'descripcion' => 'Contrato inactivo por jubilacion',
+                'descripcion' => 'JUBILACION',
                 'id_padre'    => 2,
             ],
             [
                 'id'          => 6,
                 'estado'      => 'RENUNCIA',
-                'descripcion' => 'Contrato inactivo por renuncia',
+                'descripcion' => 'RENUNCIA',
                 'id_padre'    => 2,
             ],
             [
                 'id'          => 7,
                 'estado'      => 'TRANSFERENCIA',
-                'descripcion' => 'Contrato inactivo por transferencia',
+                'descripcion' => 'TRANSFERENCIA',
                 'id_padre'    => 2,
             ],
         ];

@@ -33,8 +33,8 @@ Route::group(
         /**
          * Confirmaciones
          */
-        Route::post('haberes/confirmar/single', ConfirmarController::class . '@single')
-            ->name('haberesConfirmarSingle');
+        Route::post('haberes/confirmar/disclaimer', ConfirmarController::class . '@disclaimer')
+            ->name('haberesConfirmarDisclaimer');
 
         Route::post('haberes/confirmar/lote', ConfirmarController::class . '@batch')
             ->name('haberesConfirmarLote');

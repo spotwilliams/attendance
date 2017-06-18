@@ -18,9 +18,12 @@ class PeriodoActivo extends Rule
 {
     protected function validate()
     {
-        $periodo = Periodo::findActivo($this->fecha);
         
-        if ($periodo !== null and $periodo->estaActivo($this->agente->base())) {
+        $periodo = Periodo::findActivo($this->fecha);
+        $base    = $this->agente->base();
+        $turno   = $this->agente->operativo()->first()->turno()->first();
+        
+        if ($periodo !== null and $periodo->estaActivo($base, $turno)) {
             return true;
         } else {
             throw new PeriodoCerrado($this->agente, $this->fecha);

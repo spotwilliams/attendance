@@ -17,6 +17,7 @@ class EstadoPeriodo extends Model
         = [
             'id_base',
             'id_periodo',
+            'id_turno',
             'abierto',
         ];
     

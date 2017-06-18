@@ -21,9 +21,9 @@ $idModal = 'comentarios-modal'
             <div class="box-header with-border">
                 <h4 class="box-title">
                     Agentes de la base <span class="label label-info">{{$baseActual->nombre}}</span>
-                    Periodo actual: <span class="label label-success">{{$desde->format('d/m/Y')}}</span> hasta <span
-                            class="label label-success">{{$hasta->format('d/m/Y')}}</span>
-                    Turno <span class="label label-info">{{$turno->codigo}}</span>
+{{--                    Periodo actual: <span class="label label-success">{{$desde->format('d/m/Y')}}</span> hasta <span--}}
+                            {{--class="label label-success">{{$hasta->format('d/m/Y')}}</span>--}}
+                    Turno <span class="label label-success">{{$turno->codigo}}</span>
 
                 </h4>
             </div>

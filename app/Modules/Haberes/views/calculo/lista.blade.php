@@ -32,14 +32,13 @@ while ($fecha < $fechaToday) {
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
                     @if(!$agentes->isEmpty())
-                        {!! Form::open(['route' => 'haberesConfirmarLote']) !!}
-                        @foreach($agentes->getCollection()->keyBy('id')->keys()->all() as $age)
-                            {!! Form::hidden('agentes[]', $age) !!}
-                        @endforeach
+                        {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}
                         {!! Form::hidden('periodo', $periodo->id) !!}
                         {!! Form::hidden('base', $base->id) !!}
-                        {!! Form::hidden('page', $agentes->currentPage())!!}
-                        <input type="submit" class="btn btn-primary" value='Confimar esta hoja'/>
+                        {!! Form::hidden('turno', $turno->id) !!}
+                        <input type="submit"
+                               class="btn btn-primary"
+                               value='Confimar presentismos'/>
                         {!! Form::close() !!}
                     @endif
                 </div>
@@ -58,10 +57,10 @@ while ($fecha < $fechaToday) {
                     </h4>
                     <div class="progress-group col-sm-8 col-sm-offset-2">
                         <span class="progress-text">Paso 3</span>
-                        <span class="progress-number"><b>3</b>/3</span>
+                        <span class="progress-number"><b>3</b>/4</span>
 
                         <div class="progress">
-                            <div class="progress-bar progress-bar-yellow" style="width: 100%"></div>
+                            <div class="progress-bar progress-bar-yellow" style="width: 75%"></div>
                         </div>
                     </div>
                 </div>
@@ -79,13 +78,14 @@ while ($fecha < $fechaToday) {
                         <tr>
                             <td colspan="10">
                                 <p class="help-block">Los presentismos para esta base y turno ya han sido cerrados.</p>
+                                <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
                             </td>
                         </tr>
                     @endif
                     @foreach($agentes as $a)
                         <tr>
                             <td class="details-control">
-                                @if($a->presentismos->isEmpty() or !$a->haberes->isEmpty())
+                                @if($a->presentismos->isEmpty())
                                     <a class="btn btn-default details-control"><i class="fa fa-plus-circle"></i></a>
                                 @else
                                     <a class="btn btn-success details-control"><i class="fa fa-plus-circle"></i></a>
@@ -95,56 +95,26 @@ while ($fecha < $fechaToday) {
                             <td>{{$a->apellido}}, {{$a->nombre}}</td>
                             <td>{{$a->dni}}</td>
                             <td>{{$a->cuit}}</td>
-                            {{--<td>$ {{$a->contrato->monto}}</td>--}}
-                            {{--<td>--}}
-                            {{--@if(!$a->haberes->isEmpty())--}}
-                            {{--$ {{$a->haberes->first()->monto_facturado}}--}}
-                            {{--@else--}}
-                            {{--$ {{money_format('%i', (new \Cat\Modules\Haberes\Services\Calculo\Calculador($a, $periodo))->execute())}}--}}
-                            {{--@endif--}}
-                            {{--</td>--}}
-                            <td>
-                                @if($a->haberes->isEmpty())
-                                    {!! Form::open(['route' => 'haberesConfirmarSingle']) !!}
-                                    {!! Form::hidden('agente', $a->id) !!}
-                                    {!! Form::hidden('periodo', $periodo->id) !!}
-                                    {!! Form::hidden('base', $base->id) !!}
-                                    {!! Form::hidden('page', $agentes->currentPage()) !!}
-                                    <input type="submit" class="btn btn-primary" value='Confimar'></input>
-                                    {!! Form::close() !!}
-
-                                @else
-                                    <h4>
-                                        <span class="label label-success"><i class="fa fa-check-circle-o">&nbsp;Confirmado</i></span>
-                                    </h4>
-                                @endif
-                            </td>
-                            {{--@if($a->haberes->isEmpty())--}}
-                            {{--hola--}}
-                            {{--@endif--}}
                         </tr>
                         <tr class="hidden">
-                        {{--<tr class="@if($a->presentismos->isEmpty() or !$a->haberes->isEmpty()) hidden @endif">--}}
                             <input type="hidden" data-presentismos="{{$a->presentismos}}">
                             <td colspan="10">
-                                @if($a->haberes->isEmpty())
-                                    @if($a->presentismos->isEmpty())
-                                        <p class="help-block">No se registraron faltas injustificadas en el periodo.</p>
-                                    @else
-                                        <div class="row">
-                                            @foreach($a->presentismos as $p)
-                                                <div class="col-xs-2">
-                                                    <label>{{$p->fecha}}</label>
-                                                    {!! HtmlCustoms::getSelectForTipoPresentismo($p) !!}
-
-                                                </div>
-                                            @endforeach
-                                        </div>
-
-                                    @endif
+                                @if($a->presentismos->isEmpty())
+                                    <p class="help-block">No se registraron faltas injustificadas en el periodo.</p>
                                 @else
-                                    <p class="help-block">Ya no es posible realizar cambios en el presentismo.</p>
+                                    <div class="row">
+                                        @foreach($a->presentismos as $p)
+                                            <div class="col-xs-2">
+                                                <label>{{(new DateTime($p->fecha))->format('d/m')}}</label>
+                                                <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
+                                                {!! HtmlCustoms::getSelectForTipoPresentismo($p) !!}
+
+                                            </div>
+                                        @endforeach
+                                    </div>
+
                                 @endif
+
 
                             </td>
                         </tr>
@@ -162,12 +132,12 @@ while ($fecha < $fechaToday) {
             </div>
         </div>
     </div>
+    @include('parts.modal', ['idModal' => 'comentarios-modal', 'titleModal' => 'Comentarios para la fecha'])
+
 @endsection
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-
-            var detailRows = [];
 
             $('table tbody').on('click', 'tr > td > a.details-control', function () {
                 var tr = $(this).closest('tr');
@@ -198,67 +168,248 @@ while ($fecha < $fechaToday) {
                         $(button).removeClass('btn-success');
 
                     }
-                        $(icon).addClass('fa-minus-circle');
-                        $(icon).removeClass('fa-plus-circle');
-                    renderDetails(data, cell);
+                    $(icon).addClass('fa-minus-circle');
+                    $(icon).removeClass('fa-plus-circle');
 
                 }
             });
 
+            $.ajaxSetup({
+                headers: {
+                    'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                }
+            });
+            function activarPopOver() {
+                $('[data-toggle="popover"]')
+                    .popover({
+                        'html': true,
+
+                    })
+                    .off('click')
+                    .on('click', function () {
+                        $('[data-toggle="popover"]').popover('hide');
+                        var myParent = $(this).parent().parent();
+                        var data = $(this).data('presentismo');
+                        var url = null;
+
+                        if (data.injustificado === 1) {
+                            url = '{{route('presentismoJustificar')}}';
+                        } else {
+                            url = '{{route('presentismoInjustificar')}}';
+
+                        }
+                        $.ajax({
+                            url: url,
+                            type: 'POST',
+                            data: data,
+                            success: function (xhr, other) {
+
+                                var messageTxt = xhr.message;
+                                var presentismo = xhr.presentismo;
+                                var button = xhr.button;
+                                var level = 'success';
+                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
+                            },
+                            error: function (xhr, other) {
+                                var messageTxt = xhr.responseJSON.message;
+                                var presentismo = xhr.responseJSON.presentismo;
+                                var button = xhr.responseJSON.button;
+                                var level = 'error';
+                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
+                            }
+
+                        });
+                    });
+            }
+
+            function message(obj, message, presentismo, type) {
+
+                var ref = $(obj).children('.selectpicker').context;
+                var wait = 2000;
+
+                $(ref)
+                    .prop('value', presentismo)
+                    .prop('disabled', false)
+                    .selectpicker('refresh');
+                $(obj).children('.overlay').remove();
+
+                $(ref).hide();
+                var messenger = $(ref).parents('.input-group.margin')[0];
+                $(obj).notify(message,
+                    {
+                        autoHide: true,
+                        // if autoHide, hide after milliseconds
+                        autoHideDelay: wait,
+                        position: 'top',
+                        showAnimation: 'slideDown',
+                        className: type,
+                    });
+            }
+
+            function renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
+                var contailerToolButtons = myParent.children('.tools-presentismo');
+
+                $(contailerToolButtons).children('[data-toggle="popover"]').remove();
+                $(contailerToolButtons).append(button);
+
+                var btnComment = $(contailerToolButtons).children('.dialog-comentary');
+                $(btnComment).removeAttr('disabled');
+
+                activarPopOver();
+                message(myParent, messageTxt, presentismo.id_tipo_presentismo, level);
+            }
+
+            activarPopOver();
             /**
              *
-             * @param data Datos
-             * @param container Celda
+             * Select picker
+             *
              */
-            function renderDetails(data, container) {
-                var tiposPresentismo = {!! \Cat\Repositories\TipoPresentismosRepository::getAll()->toJson() !!};
-                for (var i = 0; i < data.length; i++) {
+            $('.selectpicker')
+                .selectpicker({})
+                .on('change', function (event) {
+                    var mySelf = $(this);
+                    /**
+                     *
+                     *
+                     * Efecto after select
+                     *
+                     *
+                     *
+                     */
+                    var overlay = '<div class=\'overlay\'><i class=\'fa fa-refresh fa-spin\'></i></div>';
+                    var myParent = $(this).parent().parent();
+                    $(this).prop('disabled', true).selectpicker('refresh');
+                    $(myParent[0]).append(overlay);
+                    /**
+                     *
+                     *
+                     * Ajax Reaction
+                     *
+                     *
+                     *
+                     */
+                    var agenteData = $(this).parents().closest('.col-xs-2').children('input');
+                    var agente = $(agenteData).data('agente');
+                    var presentismoData = $(this).parents().closest('.form-group').children('.tools-presentismo').children('[data-toggle="popover"]');
+                    var presentismo = $(presentismoData).data('presentismo');
 
-                    for (var tpIxd = 0; tpIxd < tiposPresentismo.length; tpIxd++) {
-                        if (tiposPresentismo[tpIxd].cant == undefined) {
-                            tiposPresentismo[tpIxd].cant = 0;
+                    $.ajax({
+                        url: '{{route('presentismoStore')}}',
+                        type: 'POST',
+                        data: {
+                            'agente': agente.id,
+                            'presentismo': $(this).val(),
+                            'fecha': presentismo.fecha,
+                        },
+                        success: function (xhr, other) {
+
+                            var messageTxt = xhr.message;
+                            var presentismo = xhr.presentismo;
+                            var button = xhr.button;
+                            var level = 'success';
+                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
+                        },
+                        error: function (xhr, other) {
+                            var messageTxt = xhr.responseJSON.message;
+                            var presentismo = xhr.responseJSON.presentismo;
+                            var button = xhr.responseJSON.button;
+                            var level = 'error';
+                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+
                         }
-                        if (tiposPresentismo[tpIxd].id == data[i].id_tipo_presentismo) {
 
-                            tiposPresentismo[tpIxd].cant = tiposPresentismo[tpIxd].cant + 1;
-                            break;
+                    });
+                });
+
+            /**
+             *
+             * Creacion Datatables
+             *
+             */
+
+            /**
+             *
+             * Accion para boton de modal
+             *
+             */
+            $('.dialog-comentary')
+                .on('click', function () {
+
+                    var bro = $(this)
+                        .parent()
+                        .children('[data-toggle="popover"]');
+
+                    var presentismo = $(bro)
+                        .data('presentismo');
+
+                    var agenteData = $(this).parents().closest('.col-xs-2').children('input');
+                    var agente = $(agenteData).data('agente');
+
+                    var presentismoSelect = $(this).parents().closest('.form-group').children('.bootstrap-select').children('select');
+                    var tipoPresentismo = $(presentismoSelect).find(':selected').data('content');
+                    // Parte visible
+                    $('.modal-agente').html(agente.apellido + ',' + agente.nombre);
+                    $('.modal-cuit').html(agente.cuit);
+                    $('.modal-fecha').html(presentismo.fecha);
+                    $('.modal-presentismo').html(tipoPresentismo);
+                    $('.modal-comentario').val($(this).data('comentario'));
+                    // Hidden para ajax
+                    $('.modal-id-agente').val(presentismo.id_agente);
+                    $('.modal-id-tipo-presentismo').val(presentismo.id_tipo_presentismo);
+
+                    $('#comentarios-modal').modal();
+
+
+                });
+
+            $('.modal-save')
+                .off('click')
+                .on('click', function () {
+                    var fecha = $('.modal-fecha').html();
+                    var idTipoPresentismo = $('.modal-id-tipo-presentismo').val();
+                    var idAgente = $('.modal-id-agente').val();
+
+                    var data = {
+                        'id_tipo_presentismo': idTipoPresentismo,
+                        'id_agente': idAgente,
+                        'fecha': fecha,
+                        'comentario': $('.modal-comentario').val(),
+                    };
+                    $.ajax({
+                        url: '{{route('presentismoComment')}}',
+                        type: 'POST',
+                        data: data,
+                        success: function (xhr, other) {
+                            $('.modal-save').notify(xhr.message,
+                                {
+                                    autoHide: true,
+                                    // if autoHide, hide after milliseconds
+                                    autoHideDelay: 2000,
+                                    position: 'top',
+                                    showAnimation: 'slideDown',
+                                    className: 'success'
+                                });
+                        },
+                        error: function (xhr, other) {
+                            var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;
+                            $('.modal-save').notify(message,
+                                {
+                                    autoHide: true,
+                                    // if autoHide, hide after milliseconds
+                                    autoHideDelay: 2000,
+                                    position: 'top',
+                                    showAnimation: 'slideDown',
+                                    className: 'error'
+                                });
                         }
-                    }
-                }
-                var div = $(container).children('div');
-                if ($(div[0]).children('table').length) {
-                    // En caso que ya exista, salimos
-                    return;
-                }
-                var insidetable = $('<table>')
-                    .addClass('table no-margin');
+                    });
 
-                for (var tp = 0; tp < tiposPresentismo.length; tp++) {
-                    if (tiposPresentismo[tp].cant != undefined && tiposPresentismo[tp].cant != 0) {
+                });
 
-                        var tr = $('<tr>');
-                        var tdIzq = $('<td>');
-                        var tdDer = $('<td>');
-                        var contIzq = $('<span>')
-                            .addClass('label')
-                            .css('background', tiposPresentismo[tp].color)
-                            .text(tiposPresentismo[tp].descripcion);
-//
-                        var contDer = $('<span>')
-                            .text(tiposPresentismo[tp].cant);
-
-                        $(tdIzq).append(contIzq);
-                        $(tdDer).append(contDer);
-
-                        $(tr).append(tdIzq);
-                        $(tr).append(tdDer);
-
-
-                        $(insidetable).append(tr);
-                    }
-                }
-                $(div[0]).append(insidetable);
-            }
         });
 
     </script>

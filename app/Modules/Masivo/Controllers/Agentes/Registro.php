@@ -9,6 +9,7 @@ use Cat\Models\Base;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\View\View;
 use Krucas\Notification\Facades\Notification;
 use Laracasts\Flash\Flash;
 
@@ -26,7 +27,7 @@ class Registro extends AppBaseController
      * Display a listing of the Presentismo.
      *
      * @param Request $request
-     * @return Response
+     * @return View
      */
     public function index(Request $request, $base)
     {

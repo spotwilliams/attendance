@@ -13,6 +13,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
+use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Yajra\Datatables\Facades\Datatables;
 
@@ -33,7 +34,7 @@ class RegistroController extends AppBaseController
      * Display a listing of the Presentismo.
      *
      * @param Request $request
-     * @return Response
+     * @return View
      */
     public function index(Request $request, $base)
     {

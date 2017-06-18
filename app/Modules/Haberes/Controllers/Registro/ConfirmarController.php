@@ -5,6 +5,7 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\Periodo;
+use Cat\Models\Turno;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
@@ -24,52 +25,50 @@ class ConfirmarController extends AppBaseController
         
     }
     
-    
-    public function single(Request $request)
+    public function disclaimer(Request $request)
     {
-        
         try {
             $input = $request->all();
             
-            $agente  = Agente::findOrFail($input['agente']);
             $periodo = Periodo::findOrFail($input['periodo']);
-            $base    = Base::find($input['base']);
+            $base    = Base::findOrFail($input['base']);
+            $turno   = Turno::findOrFail($input['turno']);
             
-            Facilitador::single($agente, $periodo);
+            return view('Haberes::calculo.disclaimer')
+                ->with('base', $base)
+                ->with('periodo', $periodo)
+                ->with('turno', $turno);
             
-            Flash::success('Monto a pagar confirmado con &eacute;xito');
-        } catch (ModelNotFoundException $exception) {
-            Flash::error('No se pudieron encontrar los datos necesarios. Intente nuevamente');
+            
         } catch (\Exception $exception) {
             Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
+            
+            return redirect()->back();
+            
         }
-        
-        return redirect(route('haberesListaAgentes',
-            ['base' => $base->id, 'periodo' => $periodo->id, 'page' => $input['page']]));
         
     }
     
     public function batch(Request $request)
     {
         try {
-            $input = $request->all();
-            
-            $agentes = $input['agentes'];
+            $input   = $request->all();
             $periodo = Periodo::findOrFail($input['periodo']);
             $base    = Base::find($input['base']);
+            $turno   = Turno::findOrFail($input['turno']);
             
-            Facilitador::bacth($agentes, $periodo);
+            Facilitador::batch($base, $periodo, $turno);
+            Flash::success('Periodo cerrado con &eacute;xito');
             
-            Flash::success('Monto a pagar confirmado con &eacute;xito');
+            return redirect(route('haberesSelectBase'));
+            
+            
         } catch (ModelNotFoundException $exception) {
-            Flash::error('No se pudieron encontrar los datos necesarios. Intente nuevamente');
-        } catch (\Exception $exception) {
             Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
+            
+            return redirect()->back();
+            
         }
-        
-        return redirect(route('haberesListaAgentes',
-            ['base' => $base->id, 'periodo' => $periodo->id, 'page' => $input['page']]));
-        
     }
     
 }

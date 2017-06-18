@@ -68,7 +68,7 @@ class Agente extends Model
     }
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     * @return Base
      **/
     public function base()
     {
@@ -83,6 +83,9 @@ class Agente extends Model
         return $this->operativo->base();
     }
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     */
     public function operativo()
     {
         return $this->hasOne(Operativo::class, 'id_agente');

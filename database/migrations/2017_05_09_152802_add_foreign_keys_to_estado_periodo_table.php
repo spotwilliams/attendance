@@ -16,6 +16,7 @@ class AddForeignKeysToEstadoPeriodoTable extends Migration {
 		{
 			$table->foreign('id_periodo', 'estado_es_de_periodo')->references('id')->on('periodos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 			$table->foreign('id_base', 'estado_periodo_es_de_base')->references('id')->on('bases')->onUpdate('NO ACTION')->onDelete('NO ACTION');
+			$table->foreign('id_turno', 'estado_periodo_es_de_turno')->references('id')->on('turnos')->onUpdate('NO ACTION')->onDelete('NO ACTION');
 		});
 	}
 
