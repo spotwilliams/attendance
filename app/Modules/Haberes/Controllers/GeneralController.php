@@ -103,10 +103,11 @@ class GeneralController extends AppBaseController
                             ->orderBy('fecha', 'ASC');
                     },
                 ])
+                ->with('contrato.tipoContrato')
                 ->whereNotIn('agentes.id', $agentesYaConfirmados)
                 ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
                 ->where('operativos.id_turno', '=', $turno->id);
-            
+
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)

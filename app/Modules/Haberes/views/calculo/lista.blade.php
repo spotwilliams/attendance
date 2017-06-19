@@ -107,7 +107,7 @@ while ($fecha < $fechaToday) {
                                             <div class="col-xs-2">
                                                 <label>{{(new DateTime($p->fecha))->format('d/m')}}</label>
                                                 <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
-                                                {!! HtmlCustoms::getSelectForTipoPresentismo($p) !!}
+                                                {!! HtmlCustoms::getSelectForTipoPresentismo($p, $a->contrato->tipoContrato) !!}
 
                                             </div>
                                         @endforeach
