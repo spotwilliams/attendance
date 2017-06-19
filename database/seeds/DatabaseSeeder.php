@@ -38,6 +38,7 @@ class DatabaseSeeder extends Seeder
         $this->call(Turnos::class);
         $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
         $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
+        $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
 
         $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
         $this->call(AgentesSeeder::class);

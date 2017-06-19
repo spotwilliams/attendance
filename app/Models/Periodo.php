@@ -75,6 +75,7 @@ class Periodo extends Model
         $previo = Periodo::orderBy('fecha_fin', 'DESC')->first();
         if ($previo === null) {
             // En caso que el periodo previo no exista se simula uno
+            // a partir del 16 de presente mes
             $fecha = new \DateTime('now');
             // El periodo anterior cerro ayer
             $fecha->modify('-1day');

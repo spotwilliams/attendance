@@ -218,8 +218,10 @@ $idModal = 'comentarios-modal'
                 ordering: false,
                 paging: false,
                 bInfo: false,
+                @if($agentes->count() <= 1)
                 scrollY: "900px",
                 scrollCollapse: false,
+                @endif
                 columnDefs: [
                     {
                         targets: [0],
