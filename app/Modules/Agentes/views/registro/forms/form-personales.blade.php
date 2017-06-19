@@ -114,7 +114,7 @@ $estudios = \Cat\Helpers\HtmlCustoms::getEstudiosArray($data);
 $control = 0;
 ?>
 <div class="form-group">
-    {!! Form::label('estudios', 'Estudios', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('estudios', 'T&iacute;tutlo', ['class' => 'col-sm-2 control-label']) !!}
 
     <div class="panel panel-default col-sm-8">
         @foreach($estudios  as $est)
@@ -346,7 +346,7 @@ $control = 0;
 
 
             $('[name="fecha_nacimiento_show"]')
-                .val($('[name="fecha_nacimiento"]').val())
+                .val(moment($('[name="fecha_nacimiento"]').val()).format('DD/MM/YYYY'))
                 .daterangepicker({
                         locale: {
                             format: 'DD/MM/YYYY',
