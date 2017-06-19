@@ -91,11 +91,11 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 
                 // Locacion de servicio
                 if ($(this).val() == 7 || $(this).val() == 8) {
-                    $('[name="id_sial"]').parents().closest('.form-group').removeClass('hidden');
-                    $('[name="ficha"]').parents().closest('.form-group').removeClass('hidden');
-                } else {
                     $('[name="id_sial"]').parents().closest('.form-group').addClass('hidden');
                     $('[name="ficha"]').parents().closest('.form-group').addClass('hidden');
+                } else {
+                    $('[name="id_sial"]').parents().closest('.form-group').removeClass('hidden');
+                    $('[name="ficha"]').parents().closest('.form-group').removeClass('hidden');
 
                 }
             })

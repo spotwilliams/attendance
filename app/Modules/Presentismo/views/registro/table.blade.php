@@ -218,7 +218,14 @@ $idModal = 'comentarios-modal'
                 ordering: false,
                 paging: false,
                 bInfo: false,
-                srollY: '500px',
+                scrollY: "900px",
+                scrollCollapse: false,
+                columnDefs: [
+                    {
+                        targets: [0],
+                        visible: false
+                    }
+                ]
             });
 
             /**
