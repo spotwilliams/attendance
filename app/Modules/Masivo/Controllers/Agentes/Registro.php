@@ -39,7 +39,7 @@ class Registro extends AppBaseController
     public function upload(Request $request)
     {
         $rule = [
-            'archivo' => 'required|mimetypes:text/plain',
+            'archivo' => 'required|mimetypes:application/vnd.ms-excel',
         
         ];
         $this->validate($request, $rule);

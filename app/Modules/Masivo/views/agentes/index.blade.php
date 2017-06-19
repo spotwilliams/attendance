@@ -33,7 +33,7 @@
             </div>
             <div class="box-footer">
                 {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
-                <p class="help-block pull-left">Ingrese un archivo CSV acorde al formato permitido.
+                <p class="help-block pull-left">Ingrese un archivo xls(Excel) acorde al formato permitido.
                     <a class="btn btn-default btn-xs">Ver instrucciones</a>
                 </p>
             </div>

@@ -51,6 +51,7 @@ return [
         'array'   => 'El :attribute may not have more than :max items.',
     ],
     'mimes'                => 'El :attribute debe ser un archivo del tipo :values.',
+    'mimetypes'                => 'El archivo debe ser el tipo indicado.',
     'min'                  => [
         'numeric' => 'El :attribute debe ser at least :min.',
         'file'    => 'El :attribute debe ser at least :min kilobytes.',

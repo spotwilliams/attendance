@@ -22,7 +22,6 @@ class ArchivoHandler extends ExcelHandler
     public function handle($file)
     {
         /** @var Archivo $file */
-        
         $listaErrores = [];
         
         /** @var Base $base */
@@ -33,6 +32,7 @@ class ArchivoHandler extends ExcelHandler
         
         $file->each(function ($row) use ($base, &$listaErrores) {
             try {
+                dd($row);
                 $agente = $this->handlePersonales($row);
                 $this->handleLaborales($row, $agente);
                 $this->handleOperativos($row, $agente, $base);

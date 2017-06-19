@@ -35,7 +35,7 @@ abstract class Common extends Service
         $this->base          = $base;
         $this->file          = $file;
         $moment              = new \DateTime('now');
-        $this->newName       = $moment->format('Y-m-d') . $moment->getTimestamp() . '.csv';
+        $this->newName       = $moment->format('Y-m-d') . $moment->getTimestamp() . '.xlsx';
         $this->storageFolder = Storage::disk($storageKey)->getDriver()->getAdapter()->getPathPrefix();
         
     }

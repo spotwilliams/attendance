@@ -175,7 +175,7 @@ class Funciones extends Seeder
             ['id' => null, 'id_padre' => 2, 'nombre' => 'Abogada'],
             
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/ Motos'],
+            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/Motos'],
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/Alcoholemia'],
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Apoyo Operativo'],
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Chofer'],
@@ -183,7 +183,9 @@ class Funciones extends Seeder
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Delegado'],
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Mecánico'],
             ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos/ Alcoholemia'],
+            ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos/Alcoholemia'],
+
+            ['id' => null, 'id_padre' => null, 'nombre' => 'Otros'],
         
         ];
         
