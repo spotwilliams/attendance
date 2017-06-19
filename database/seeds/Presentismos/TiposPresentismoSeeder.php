@@ -2,6 +2,7 @@
 
 namespace Cat\Database\Presentismos;
 
+use Cat\Models\TipoPresentismo;
 use Illuminate\Database\Seeder;
 
 class TiposPresentismoSeeder extends Seeder
@@ -193,14 +194,14 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#ef94ef',
             ],
-            [
-                'descripcion'   => 'MEDICO INJUSTIFICADO',
-                'aplica'        => 'TODOS',
-                'codigo'        => 'MI',
-                'injustificado' => 1,
-                'corridos'      => 0,
-                'color'         => '#95dff9',
-            ],
+//            [
+//                'descripcion'   => 'MEDICO INJUSTIFICADO',
+//                'aplica'        => 'TODOS',
+//                'codigo'        => 'MI',
+//                'injustificado' => 1,
+//                'corridos'      => 0,
+//                'color'         => '#95dff9',
+//            ],
             [
                 'descripcion' => 'MEDICO JUSTIFICADO',
                 'aplica'      => '',
@@ -390,12 +391,14 @@ class TiposPresentismoSeeder extends Seeder
         
         
         foreach ($tipos as $nuevo) {
-            \Cat\Models\TipoPresentismo::create($nuevo);
+            $array = array_merge($nuevo, ['injustificado' => 1]);
+            \Cat\Models\TipoPresentismo::create($array);
         }
         
         $tiposNews = $this->mismosCodigosDiffDias(count($tipos));
         foreach ($tiposNews as $nuevo) {
-            \Cat\Models\TipoPresentismo::create($nuevo);
+            $array = array_merge($nuevo, ['injustificado' => 1]);
+            \Cat\Models\TipoPresentismo::create($array);
         }
     }
     

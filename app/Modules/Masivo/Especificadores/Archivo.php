@@ -23,6 +23,7 @@ class Archivo extends ExcelFile
         $this->fileName              = $fileName;
         
         parent::__construct($app, $excel);
+        $this->excel->selectSheets('procesado');
         
     }
     
@@ -52,4 +53,8 @@ class Archivo extends ExcelFile
         return $this->base;
     }
     
+    public function getExcel()
+    {
+        return $this->excel;
+    }
 }

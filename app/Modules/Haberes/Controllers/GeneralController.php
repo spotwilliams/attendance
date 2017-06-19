@@ -91,11 +91,6 @@ class GeneralController extends AppBaseController
                 ->getEloquentAgentes($base->id, $periodo);
             
             $agentes
-//                ->with([
-//                    'haberes' => function ($haberBuilder) use ($periodo) {
-//                        $haberBuilder->where('id_periodo', '=', $periodo->id);
-//                    },
-//                ])
                 // Override the condition
                 ->with([
                     'presentismos' => function ($presentismos) use ($desde, $hasta) {

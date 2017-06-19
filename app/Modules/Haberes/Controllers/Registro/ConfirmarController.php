@@ -59,10 +59,15 @@ class ConfirmarController extends AppBaseController
             
             Facilitador::batch($base, $periodo, $turno);
             Flash::success('Periodo cerrado con &eacute;xito');
-            
-            return redirect(route('haberesSelectBase'));
-            
-            
+    
+            return redirect(route('haberesListaAgentes', [
+                'base'    => $base,
+                'periodo' => $periodo,
+                'turno'   => $turno,
+            ]));
+    
+    
+    
         } catch (ModelNotFoundException $exception) {
             Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
             

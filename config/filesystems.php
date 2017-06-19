@@ -52,6 +52,10 @@ return [
             'driver' => 'local',
             'root' => storage_path('app/masivo/agentes'),
         ],
+        'haberes' => [
+            'driver' => 'local',
+            'root' => storage_path('app/haberes/reportes'),
+        ],
         'masivos_template' => [
             'driver' => 'local',
             'root' => storage_path('app/masivo/templates'),

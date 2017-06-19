@@ -11,6 +11,8 @@
 use Illuminate\Support\Facades\Route;
 use Cat\Modules\Haberes\Controllers\Registro\GeneralController;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
+use Cat\Modules\Haberes\Controllers\Registro\ReporteController;
+
 Route::group(
     ['middleware' => ['web'], 'prefix' => 'administracion'],
     
@@ -38,6 +40,12 @@ Route::group(
 
         Route::post('haberes/confirmar/lote', ConfirmarController::class . '@batch')
             ->name('haberesConfirmarLote');
+    
+        /**
+         * Reporte
+         */
+        Route::post('haberes/reporte', ReporteController::class . '@reporte')
+            ->name('haberesReporte');
         
     }
 );

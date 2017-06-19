@@ -29,18 +29,22 @@ class ArchivoHandler extends ExcelHandler
         
         /** @var LaravelExcelWriter $fileErrores */
         $fileErrores = $this->generateOutFile($file->getFileName(), 'agentes');
-        
-        $file->each(function ($row) use ($base, &$listaErrores) {
-            try {
+        $file->getExcel()
+//            ->selectSheets('procesado')
+//            ->load()
+            ->each(function ($row) use ($base, &$listaErrores) {
                 dd($row);
-                $agente = $this->handlePersonales($row);
-                $this->handleLaborales($row, $agente);
-                $this->handleOperativos($row, $agente, $base);
-                
-            } catch (\Exception $e) {
-                $listaErrores[] = $row->toArray();
-            }
-        });
+    
+                try {
+                    dd($row);
+                    $agente = $this->handlePersonales($row);
+                    $this->handleLaborales($row, $agente);
+                    $this->handleOperativos($row, $agente, $base);
+                    
+                } catch (\Exception $e) {
+                    $listaErrores[] = $row->toArray();
+                }
+            });
         
         $fileErrores->sheet('Errores', function ($sheet) use ($listaErrores) {
             

@@ -77,8 +77,24 @@ while ($fecha < $fechaToday) {
                     @if($agentes->isEmpty())
                         <tr>
                             <td colspan="10">
-                                <p class="help-block">Los presentismos para esta base y turno ya han sido cerrados.</p>
-                                <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
+                                <div class="col-md-offset-2 col-md-6">
+
+                                    <div class="alert alert-info alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                                        </button>
+                                        <h4><i class="icon fa fa-info"></i> Aviso</h4>
+                                        Los presentismos para esta base y turno ya han sido cerrados.
+                                    </div>
+                                    {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
+                                    {!! Form::hidden('periodo', $periodo->id) !!}
+                                    {!! Form::hidden('turno', $turno->id) !!}
+                                    {!! Form::hidden('base', $base->id) !!}
+                                    <button type="submit" class="btn btn-success pull-right">
+                                        <i class="fa fa-download"></i> Obtener reporte
+                                    </button>
+                                    {!! Form::close() !!}
+                                    <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
+                                </div>
                             </td>
                         </tr>
                     @endif
