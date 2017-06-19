@@ -44,18 +44,22 @@ class AgentesSeeder extends Seeder
                 'monto'              => rand(10000, 90000),
                 'fecha_ingreso'      => date('Y-m-d'),
                 'id_estado_contrato' => 1,
-                'id_tipo_contrato'   => rand(1,8),
+                'id_tipo_contrato'   => rand(1, 8),
             ];
             (new Laborales($age, $laboral))->execute();
             $operativos = [
-                'agente'      => $i,
-                'id_gerencia' => 1,
-                'id_area'     => 1,
-                'id_cargo'    => 1,
-                'id_funcion'  => 1,
-                'id_base'     => rand(1, 17),
-                'id_turno'    => rand(1, 11),
-                'id_horario'  => 1,
+                'agente'             => $i,
+                'id_gerencia'        => 1,
+                'id_area'            => 1,
+                'id_cargo'           => 1,
+                'id_funcion'         => 1,
+                'funcion_especifica' => '',
+                'id_base'            => rand(1, 17),
+                'id_turno'           => rand(1, 11),
+                'hora_entrada'       => 1,
+                'hora_salida'        => 1,
+                'eximido'            => 1,
+                'rotativo'           => 1,
             ];
             (new Operativos($operativos))->execute();
         }
