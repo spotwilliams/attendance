@@ -76,7 +76,10 @@ class GeneralController extends AppBaseController
         try {
             $periodo              = Periodo::findOrFail($periodo);
             $base                 = Base::findOrFail($base);
-            $tipoLocacion         = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
+            $tipoLocacion         = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
+                ->get(['id'])
+                ->keyBy('id')
+                ->toArray());
             $turno                = Turno::findOrFail($turno);
             $agentesYaConfirmados = Haber::where('id_periodo', '=', $periodo->id)
                 ->get(['id_agente'])->toArray();
@@ -105,9 +108,9 @@ class GeneralController extends AppBaseController
                 ])
                 ->with('contrato.tipoContrato')
                 ->whereNotIn('agentes.id', $agentesYaConfirmados)
-                ->where('contratos.id_tipo_contrato', '=', $tipoLocacion->id)
+                ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->where('operativos.id_turno', '=', $turno->id);
-
+            
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)
