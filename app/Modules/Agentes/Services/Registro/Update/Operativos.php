@@ -55,7 +55,7 @@ class Operativos extends Service
     
     public function __construct($agente, $input)
     {
-        
+//        dd($input);
         $this->agente   = Agente::findOrFail($input['agente']);
         $this->gerencia = $this->getMockModelWhenNull(Gerencia::class, $input['id_gerencia']);
         $this->area     = $this->getMockModelWhenNull(Area::class, $input['id_area']);
@@ -63,7 +63,12 @@ class Operativos extends Service
         $this->funcion  = Funcion::findOrFail($input['id_funcion']);
         $this->base     = Base::findOrFail($input['id_base']);
         $this->turno    = Turno::findOrFail($input['id_turno']);
-        $this->horario  = Horario::findOrFail($input['id_horario']);
+        $this->horario  = [
+            'hora_entrada' => $input['hora_entrada'],
+            'hora_salida'  => $input['hora_salida'],
+            'eximido'      => $input['eximido'],
+            'rotativo'     => $input['rotativo'],
+        ];
     }
     
     public function execute()
@@ -82,9 +87,16 @@ class Operativos extends Service
                     'id_cargo'    => $this->cargo->id,
                     'id_funcion'  => $this->funcion->id,
                     'id_turno'    => $this->turno->id,
-                    'id_horario'  => $this->horario->id,
                 ]);
             
+            $this->agente
+                ->operativo()
+                ->first()
+                ->horario()
+                ->first()
+                ->update(
+                    $this->horario
+                );
             DB::commit();
             
             return $this->agente;

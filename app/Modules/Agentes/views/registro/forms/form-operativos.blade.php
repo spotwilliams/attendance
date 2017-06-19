@@ -142,7 +142,13 @@ foreach (\Cat\Models\Turno::all() as $t) {
     </div>
 </div>
 
+<?php
 
+/** @var \Cat\Models\Horario $horario */
+$horario = (isset($operativo) ? $operativo->horario()->first() : null);
+$horaEntrada = isset($horario) ? $horario->hora_entrada : '00:00';
+$horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
+?>
 <div class="form-group">
     <label class="col-sm-2 control-label">Horario*</label>
     <div class="col-sm-10">
@@ -151,7 +157,7 @@ foreach (\Cat\Models\Turno::all() as $t) {
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                {!! Form::text('hora_entrada', '00:00', ['class' => 'form-control horario', ]) !!}
+                {!! Form::text('hora_entrada', $horaEntrada, ['class' => 'form-control horario', ]) !!}
                 @if($errors->has('hora_entrada'))
                     <span class="help-block">{{$errors->first('hora_entrada')}}</span>
                 @endif
@@ -162,7 +168,7 @@ foreach (\Cat\Models\Turno::all() as $t) {
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                {!! Form::text('hora_salida', '00:00', ['class' => 'form-control horario', 'placeholder' => '00:00']) !!}
+                {!! Form::text('hora_salida', $horaSalida, ['class' => 'form-control horario', 'placeholder' => '00:00']) !!}
 
                 @if($errors->has('hora_salida'))
                     <span class="help-block">{{$errors->first('hora_salida')}}</span>
