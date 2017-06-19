@@ -344,9 +344,13 @@ $control = 0;
 
             });
 
-
+            if ($('[name="fecha_nacimiento"]').val() === '') {
+                var day = moment();
+            } else {
+                var day = moment($('[name="fecha_nacimiento"]').val());
+            }
             $('[name="fecha_nacimiento_show"]')
-                .val(moment($('[name="fecha_nacimiento"]').val()).format('DD/MM/YYYY'))
+                .val(day.format('DD/MM/YYYY'))
                 .daterangepicker({
                         locale: {
                             format: 'DD/MM/YYYY',
