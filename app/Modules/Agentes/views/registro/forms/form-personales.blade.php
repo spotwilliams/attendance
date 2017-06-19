@@ -34,7 +34,7 @@
 </div>
 
 <div class="form-group @if($errors->has('dni')) has-error @endif">
-    {!! Form::label('dni', 'Dni', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('dni', 'DNI', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('dni', null, ['class' => 'form-control']) !!}
         @if($errors->has('dni'))
@@ -47,7 +47,9 @@
 <div class="form-group @if($errors->has('fecha_nacimiento')) has-error @endif">
     {!! Form::label('fecha_nacimiento', 'Fecha de nacimiento', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
-        {!! Form::date('fecha_nacimiento', null, ['class' => 'form-control']) !!}
+        {!! Form::hidden('fecha_nacimiento', null, ['class' => 'form-control']) !!}
+        <input type="text" name="fecha_nacimiento_show" class="form-control">
+        {{--        {!! Form::text('fecha_nacimiento', null, ['class' => 'form-control']) !!}--}}
         @if($errors->has('fecha_nacimiento'))
             <span class="help-block">{{$errors->first('fecha_nacimiento')}}</span>
         @endif
@@ -100,12 +102,12 @@
 $data = [];
 if (isset($agente)) {
     $data = [
-            'model' => $agente,
+        'model' => $agente,
     ];
 }
 if (!empty(session()->getOldInput())) {
     $data = [
-            'session' => session()->getOldInput(),
+        'session' => session()->getOldInput(),
     ];
 }
 $estudios = \Cat\Helpers\HtmlCustoms::getEstudiosArray($data);
@@ -118,24 +120,29 @@ $control = 0;
         @foreach($estudios  as $est)
 
             <?php $control++;?>
-                <input type="hidden" class="form-control" value="{{$est['id']}}" placeholder="Carrera" name="estudio[id][]">
+            <input type="hidden" class="form-control" value="{{$est['id']}}" placeholder="Carrera" name="estudio[id][]">
 
             <div class="panel-body estudiosWrapper">
                 <div class="form-group estudiosTemplate" id="estudiosTemplate">
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="Carrera" name="estudio[carrera][]">
+                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="Carrera"
+                               name="estudio[carrera][]">
                     </div>
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" value="{{$est['institucion']}}" placeholder="Instituci&oacute;n"
+                        <input type="text" class="form-control" value="{{$est['institucion']}}"
+                               placeholder="Instituci&oacute;n"
                                name="estudio[institucion][]">
 
                     </div>
 
                     <div class="col-sm-2">
                         <select name="estudio[nivelestudio][]" class="form-control">
-                            <option value="SECUNDARIO" {{$est['nivel']=='SECUNDARIO'? 'selected': ''}}>Secundario</option>
+                            <option value="SECUNDARIO" {{$est['nivel']=='SECUNDARIO'? 'selected': ''}}>Secundario
+                            </option>
                             <option value="TERCIARIO" {{$est['nivel']=='TERCIARIO'? 'selected': ''}}>Terciario</option>
-                            <option value="UNIVERSITARIO" {{$est['nivel']=='UNIVERSITARIO'? 'selected': ''}}>Universitario</option>
+                            <option value="UNIVERSITARIO" {{$est['nivel']=='UNIVERSITARIO'? 'selected': ''}}>
+                                Universitario
+                            </option>
                             <option value="POSGRADO" {{$est['nivel']=='POSGRADO'? 'selected': ''}}>Posgrado</option>
                             <option value="MASTER" {{$est['nivel']=='MASTER'? 'selected': ''}}>Master</option>
                             <option value="DOCTORADO" {{$est['nivel']=='DOCTORADO'? 'selected': ''}}>Doctorado</option>
@@ -144,9 +151,9 @@ $control = 0;
                     </div>
                     <div class="col-sm-2">
                         <select name="estudio[estado][]" class="form-control">
-                            <option value="CURSANDO">Cursando</option>
-                            <option value="ABANDONADO">Dej&oacute;</option>
-                            <option value="RECIBIDO">Recibido</option>
+                            <option value="RECIBIDO">Completo</option>
+                            <option value="ABANDONADO">Incompleto</option>
+                            <option value="CURSANDO">En curso</option>
                         </select>
                     </div>
                     <div class="col-sm-2">
@@ -172,12 +179,12 @@ $control = 0;
     $data = [];
     if (isset($agente)) {
         $data = [
-                'model' => $agente,
+            'model' => $agente,
         ];
     }
     if (!empty(session()->getOldInput())) {
         $data = [
-                'session' => session()->getOldInput(),
+            'session' => session()->getOldInput(),
         ];
     }
     $domicilios = \Cat\Helpers\HtmlCustoms::getDomiciliosArray($data);
@@ -186,9 +193,10 @@ $control = 0;
     <div class="panel panel-default col-sm-8">
         @foreach($domicilios as $dom)
             <?php $control++;?>
-                <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera" name="domicilio[id][]">
+            <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera"
+                   name="domicilio[id][]">
 
-                <div class="panel-body domiciliosWrapper">
+            <div class="panel-body domiciliosWrapper">
                 <div class="domiciliosTemplate" id="domiciliosTemplate">
                     <div class="form-group">
                         <div class="col-sm-6">
@@ -275,30 +283,30 @@ $control = 0;
                 var $template = $('#estudiosTemplate');
 
                 var $clone = $template
-                        .clone()
-                        .removeAttr('id')
-                        .insertAfter($template);
+                    .clone()
+                    .removeAttr('id')
+                    .insertAfter($template);
 
                 var $option = $clone
-                        .find('input')
-                        .val('');
+                    .find('input')
+                    .val('');
                 $option.find('[name="carrera[]"]')
-                        .focus();
+                    .focus();
                 //button
 
                 $clone.find('.btn-success')
-                        .addClass('hidden');
+                    .addClass('hidden');
 
                 $clone.find('.btn-danger')
-                        .removeClass('hidden');
+                    .removeClass('hidden');
 
             });
             $('.estudiosWrapper').on("click", ".removeButton", function (e) {
                 e.preventDefault();
                 $(this)
-                        .parents()
-                        .closest('.form-group.estudiosTemplate')
-                        .remove();
+                    .parents()
+                    .closest('.form-group.estudiosTemplate')
+                    .remove();
 
             });
 
@@ -308,33 +316,79 @@ $control = 0;
                 var $template = $('#domiciliosTemplate');
 
                 var $clone = $template
-                        .clone()
-                        .removeAttr('id')
-                        .insertAfter($template);
+                    .clone()
+                    .removeAttr('id')
+                    .insertAfter($template);
 
                 var $option = $clone
-                        .find('input')
-                        .val('');
+                    .find('input')
+                    .val('');
                 $option.find('[name="carrera[]"]')
-                        .focus();
+                    .focus();
                 //button
 
                 $clone.find('.btn-success')
-                        .addClass('hidden');
+                    .addClass('hidden');
 
                 $clone.find('.btn-danger')
-                        .removeClass('hidden');
+                    .removeClass('hidden');
 
             });
             $('.domiciliosWrapper').on("click", ".removeButton", function (e) {
                 e.preventDefault();
                 $(this)
-                        .parents()
-                        .closest('.domiciliosTemplate')
-                        .remove();
+                    .parents()
+                    .closest('.domiciliosTemplate')
+                    .remove();
 
 
             });
+
+
+            $('[name="fecha_nacimiento_show"]')
+                .val($('[name="fecha_nacimiento"]').val())
+                .daterangepicker({
+                        locale: {
+                            format: 'DD/MM/YYYY',
+                            separator: " - ",
+                            applyLabel: "Aplicar",
+                            cancelLabel: "Cancelar",
+                            fromLabel: "Desde",
+                            toLabel: "Hasta",
+                            weekLabel: "W",
+                            daysOfWeek: [
+                                "Do",
+                                "Lu",
+                                "Ma",
+                                "Mie",
+                                "Ju",
+                                "Vi",
+                                "Sa"
+                            ],
+                            monthNames: [
+                                "Enero",
+                                "Febrero",
+                                "Marzo",
+                                "Abril",
+                                "Mayo",
+                                "Junio",
+                                "Julio",
+                                "Agosto",
+                                "Septiembre",
+                                "Octubre",
+                                "Noviembre",
+                                "Diciembre"
+                            ],
+                        },
+                        showDropdowns: true,
+                        singleDatePicker: true,
+                        opens: 'center',
+                    },
+                    function (start, end, label) {
+                        $('[name="fecha_nacimiento"]').val(start.format('Y-MM-DD'))
+//                    console.log($('[name="fecha_nacimiento"]').val())
+                    });
+
         });
 
     </script>

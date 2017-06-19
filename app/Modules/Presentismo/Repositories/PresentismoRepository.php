@@ -4,11 +4,9 @@ namespace Cat\Modules\Validation\Repositories;
 
 use Cat\Models\Agente;
 use Cat\Models\Base;
-use Cat\Models\Contrato;
 use Cat\Models\EstadoContrato;
 use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
-use Cat\Models\TipoContrato;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use InfyOm\Generator\Common\BaseRepository;
@@ -98,7 +96,6 @@ class PresentismoRepository extends BaseRepository
     public function getEloquentAgentesBetweenDates(Base $base, \DateTime $desde, \DateTime $hasta)
     {
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
-        $tipoLocacion = TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)->first(['id']);
         $eloquent     = Agente::with([
             'presentismos' => function ($presentismos) use ($desde, $hasta) {
                 $presentismos

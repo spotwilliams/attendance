@@ -50,10 +50,10 @@ class Agente extends Model
         = [
             'nombre'           => 'required|max:255',
             'apellido'         => 'required|max:255',
-            'fecha_nacimiento' => 'required',
-            'cuit'             => 'required',
-            'dni'              => 'required',
-            'telefono'         => 'required',
+            'fecha_nacimiento' => 'required|date',
+            'cuit'             => 'required|integer',
+            'dni'              => 'required|integer',
+            'telefono'         => 'required|integer',
             'email'            => 'required|email',
         
         

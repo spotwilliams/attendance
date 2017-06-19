@@ -11,37 +11,6 @@
     </div>
 </div>
 <input type="hidden" name="agente" value="{{$agente}}">
-<div class="form-group">
-    <label class="col-sm-2 control-label">ID Sial</label>
-    <div class="col-sm-8">
-        {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-<div class="form-group">
-    <label class="col-sm-2 control-label">Ficha</label>
-    <div class="col-sm-8">
-        {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
-    <label class="col-sm-2 control-label">Fecha de ingreso</label>
-    <div class="col-sm-8">
-        {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
-        @if($errors->has('fecha_ingreso'))
-            <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
-        @endif
-    </div>
-</div>
-<div class="form-group">
-    <label class="col-sm-2 control-label">Monto</label>
-    <div class="col-sm-8">
-        {!! Form::text('monto', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-
 <?php
 $tipos[-1] = 'Seleccione';
 foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est) {
@@ -77,6 +46,36 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
         @endif
     </div>
 </div>
+<div class="form-group hidden">
+    <label class="col-sm-2 control-label">ID Sial</label>
+    <div class="col-sm-8">
+        {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group hidden">
+    <label class="col-sm-2 control-label">Ficha</label>
+    <div class="col-sm-8">
+        {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
+    <label class="col-sm-2 control-label">Fecha de ingreso</label>
+    <div class="col-sm-8">
+        {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
+        @if($errors->has('fecha_ingreso'))
+            <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
+        @endif
+    </div>
+</div>
+<div class="form-group">
+    <label class="col-sm-2 control-label">Monto</label>
+    <div class="col-sm-8">
+        {!! Form::text('monto', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         {!! Form::submit('Siguiente', ['class' => 'btn btn-primary']) !!}
@@ -88,6 +87,18 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 
         $(document).ready(function () {
             $('select').selectpicker({});
+            $('[name="id_tipo_contrato"]').on('change', function () {
+
+                // Locacion de servicio
+                if ($(this).val() == 7 || $(this).val() == 8) {
+                    $('[name="id_sial"]').parents().closest('.form-group').removeClass('hidden');
+                    $('[name="ficha"]').parents().closest('.form-group').removeClass('hidden');
+                } else {
+                    $('[name="id_sial"]').parents().closest('.form-group').addClass('hidden');
+                    $('[name="ficha"]').parents().closest('.form-group').addClass('hidden');
+
+                }
+            })
         });
     </script>
 @append

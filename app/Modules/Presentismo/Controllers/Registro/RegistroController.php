@@ -71,15 +71,14 @@ class RegistroController extends AppBaseController
         } catch (ModelNotFoundException $noHayPresentismoCargado) {
             $presentismo = new Presentismo(['id_tipo_presentismo' => -1, 'injustificado' => 1]);
         }
-        
-        $disabled = (isset($disabled) ? $disabled : ($presentismo->injustificado === 0) ? true : false);
+
+//        $disabled = (isset($disabled) ? $disabled : false;
         
         return Response::json([
             'message'     => $message,
             'agente'      => $agente->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === 1),
-                $disabled),
+            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === 1)),
         ], $code);
         
         

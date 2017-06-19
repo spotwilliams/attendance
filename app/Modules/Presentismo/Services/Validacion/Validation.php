@@ -45,9 +45,7 @@ class Validation extends Service
         return (
             // Revision de tipo de contratos y periodo
             (
-                $this->rulesExecuter(ContratoActivo::class)
-                and $this->rulesExecuter(ContratoLocacion::class)
-                and $this->rulesExecuter(PeriodoActivo::class)
+                $this->rulesExecuter(PeriodoActivo::class)
             )
             and
             // Reviso los tipos de Presentismo

@@ -80,7 +80,7 @@ class GeneralController extends AppBaseController
                 )
                 ->with('contrato.tipoContrato')
                 ->where('operativos.id_turno', '=', $turno->id);
-            
+
         } catch (ModelNotFoundException $e) {
             Flash::error('Se ha seleccionado una base inexistente');
             

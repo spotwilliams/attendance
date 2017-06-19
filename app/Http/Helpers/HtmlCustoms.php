@@ -150,7 +150,7 @@ class HtmlCustoms
             $seleccionado = ($tp->id === ($p == null ? -1 : $p->id_tipo_presentismo));
             $option       = "<option value=\"$tp->id\"";
             $option       .= $seleccionado ? ' selected' : '';
-            $option       .= " data-content=\"<span class='label' style='background-color: $tp->color;'>$tp->descripcion</span>\"";
+            $option       .= " data-content=\"<span class='label' style='background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
             $option       .= ">$tp->descripcion</option>";
             $select       .= $option;
         }

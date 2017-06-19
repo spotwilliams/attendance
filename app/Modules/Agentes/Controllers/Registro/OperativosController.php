@@ -62,7 +62,6 @@ class OperativosController extends AppBaseController
         $this->validate($request, Operativo::$rules);
         
         $input = $request->all();
-        
         try {
             
             $service = new Store($input);

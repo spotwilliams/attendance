@@ -71,13 +71,7 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#2ce226',
             ],
-            [
-                'descripcion' => 'DONACION DE SANGRE',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'D',
-                'corridos'    => 0,
-                'color'       => '#3770b7',
-            ],
+            
             [
                 'descripcion' => 'DUELO O LUTO',
                 'aplica'      => 'TODOS',
@@ -85,13 +79,7 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#6d6b62',
             ],
-            [
-                'descripcion' => 'EXAMEN',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'X',
-                'corridos'    => 0,
-                'color'       => '#d8bf43',
-            ],
+            
             [
                 'descripcion' => 'EXIMIDO',
                 'aplica'      => 'TODOS',
@@ -197,13 +185,7 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#f9b775',
             ],
-            [
-                'descripcion' => 'MATERNIDAD',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'N',
-                'corridos'    => 0,
-                'color'       => '#e050e0',
-            ],
+            
             [
                 'descripcion' => 'MATRIMONIO',
                 'aplica'      => 'TODOS',
@@ -226,26 +208,13 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#6de88f',
             ],
-            [
-                'descripcion' => 'MEDICO POR FAMILIAR',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'MF',
-                'corridos'    => 0,
-                'color'       => '#6dad7e',
-            ],
+            
             [
                 'descripcion' => 'MEDICO',
                 'aplica'      => 'TODOS',
                 'codigo'      => 'M',
                 'corridos'    => 0,
                 'color'       => '#37d661',
-            ],
-            [
-                'descripcion' => 'PATERNIDAD',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'PA',
-                'corridos'    => 1,
-                'color'       => '#12d1b1',
             ],
             [
                 'descripcion' => 'PRESENTE',
@@ -359,11 +328,158 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#4786f4',
             ],
+            //
+            [
+                'descripcion' => 'PATERNIDAD FLIA NUMEROSA',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'PN',
+                'corridos'    => 0,
+                'color'       => '#4556f4',
+            ],
+            [
+                'descripcion' => 'PATERNIDAD NAC MULTIPLE',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'PM',
+                'corridos'    => 0,
+                'color'       => '#4756f4',
+            ],
+            [
+                'descripcion' => 'MATERNIDAD FLIA NUMEROSA',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'NN',
+                'corridos'    => 0,
+                'color'       => '#AB86f4',
+            ],
+            [
+                'descripcion' => 'MATERNIDAD NAC MULTIPLE',
+                'aplica'      => 'TODOS',
+                'codigo'      => 'NM',
+                'corridos'    => 0,
+                'color'       => '#AB86f4',
+            ],
+            [
+                'descripcion' => 'EXTENSION MATERNIDAD',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'NE',
+                'corridos'    => 0,
+                'color'       => '#A096f4',
+            ],
+            [
+                'descripcion' => 'ADOPCION TITULAR',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'AD',
+                'corridos'    => 0,
+                'color'       => '#CA8094',
+            ],
+            [
+                'descripcion' => 'EXTENSION ADOPCION TITULAR',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'ADE',
+                'corridos'    => 0,
+                'color'       => '#CBB094',
+            ],
+            [
+                'descripcion' => 'ADOPCION NO TITULAR',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'ADN',
+                'corridos'    => 0,
+                'color'       => '#CBB094',
+            ],
+        
         ];
         
         
         foreach ($tipos as $nuevo) {
             \Cat\Models\TipoPresentismo::create($nuevo);
         }
+        
+        $tiposNews = $this->mismosCodigosDiffDias(count($tipos));
+        foreach ($tiposNews as $nuevo) {
+            \Cat\Models\TipoPresentismo::create($nuevo);
+        }
+    }
+    
+    private function mismosCodigosDiffDias($id)
+    {
+        return $tipos = [
+            /**
+             *
+             *  Mismos codigos diferentes cantidad de dias
+             *
+             *
+             */
+            [
+                'descripcion' => 'MATERNIDAD',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'N',
+                'corridos'    => 0,
+                'color'       => '#e050e0',
+            ],
+            
+            [
+                'descripcion' => 'DONACION DE SANGRE',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'D',
+                'corridos'    => 0,
+                'color'       => '#3770b7',
+            ],
+            [
+                'descripcion' => 'EXAMEN',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'X',
+                'corridos'    => 0,
+                'color'       => '#d8bf43',
+            ],
+            [
+                'descripcion' => 'MEDICO POR FAMILIAR',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'MF',
+                'corridos'    => 0,
+                'color'       => '#6dad7e',
+            ],
+            [
+                'descripcion' => 'PATERNIDAD',
+                'aplica'      => 'SITUACION_REVISTA',
+                'codigo'      => 'PA',
+                'corridos'    => 1,
+                'color'       => '#12d1b1',
+            ],
+            [
+                'descripcion' => 'MATERNIDAD',
+                'aplica'      => 'LOCACION',
+                'codigo'      => 'N',
+                'corridos'    => 0,
+                'color'       => '#e050e0',
+            ],
+            [
+                'descripcion' => 'DONACION DE SANGRE',
+                'aplica'      => 'LOCACION',
+                'codigo'      => 'D',
+                'corridos'    => 0,
+                'color'       => '#3770b7',
+            ],
+            [
+                'descripcion' => 'EXAMEN',
+                'aplica'      => 'LOCACION',
+                'codigo'      => 'X',
+                'corridos'    => 0,
+                'color'       => '#d8bf43',
+            ],
+            [
+                'descripcion' => 'MEDICO POR FAMILIAR',
+                'aplica'      => 'LOCACION',
+                'codigo'      => 'MF',
+                'corridos'    => 0,
+                'color'       => '#6dad7e',
+            ],
+            [
+                'descripcion' => 'PATERNIDAD',
+                'aplica'      => 'LOCACION',
+                'codigo'      => 'PA',
+                'corridos'    => 1,
+                'color'       => '#12d1b1',
+            ],
+        
+        ];
     }
 }

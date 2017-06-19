@@ -13,6 +13,7 @@
 {!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
 {!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
 {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
+{!! Html::style('plugins/timepicker/css/jquery.timepicker.css') !!}
 {!! Html::style('plugins/daterangepicker/css/daterangepicker.css') !!}
 {!! Html::style('css/style.css') !!}
 <!-- Ionicons -->
@@ -167,7 +168,10 @@
 
 {!! Html::script('plugins/pace/js/pace.min.js') !!}
 {!! Html::script('plugins/moment/js/moment.js') !!}
+
 {!! Html::script('plugins/daterangepicker/js/daterangepicker.js') !!}
+
+{!! Html::script('plugins/timepicker/js/jquery.timepicker.min.js') !!}
 
 
 

@@ -17,6 +17,8 @@ class CreateHorariosTable extends Migration {
 			$table->integer('id', true);
 			$table->string('hora_entrada', 15);
 			$table->string('hora_salida', 15);
+			$table->boolean('eximido');
+			$table->boolean('rotativo');
             $table->timestamps();
             
         });

@@ -28,10 +28,10 @@ class Operativo extends Model
     
     public static $rules
         = [
-            'id_funcion' => 'not_in:-1',
-            'id_base'    => 'not_in:-1',
-            'id_turno'   => 'not_in:-1',
-            'id_horario' => 'not_in:-1',
+            'id_funcion'   => 'not_in:-1',
+            'id_base'      => 'not_in:-1',
+            'id_turno'     => 'not_in:-1',
+            'id_horario'   => 'not_in:-1',
         ];
     
     /**

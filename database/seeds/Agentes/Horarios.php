@@ -13,6 +13,7 @@ class Horarios extends Seeder
      */
     public function run()
     {
+        return;
         $horarios = [
             ['hora_entrada' => '00:00', 'hora_salida' => '06:00'],
             ['hora_entrada' => '00:00', 'hora_salida' => '07:00'],

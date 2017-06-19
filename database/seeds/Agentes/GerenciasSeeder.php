@@ -18,8 +18,13 @@ class GerenciasSeeder extends Seeder
         
         $gerencias = [
             [
-                'id'       => 1,
+                'id'       => 10,
                 'nombre'   => 'Gerencia Operativa Cuerpo de Fiscalización en la Vía Pública',
+                'id_padre' => null,
+            ],
+            [
+                'id'       => 1,
+                'nombre'   => 'Dirección general',
                 'id_padre' => null,
             ],
             [

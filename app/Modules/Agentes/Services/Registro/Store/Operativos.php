@@ -52,17 +52,24 @@ class Operativos extends Service
     /** @var  Horario */
     protected $horario;
     
+    protected $funcion_especifica;
     
     public function __construct($input)
     {
-        $this->agente   = Agente::findOrFail($input['agente']);
-        $this->gerencia = $this->getMockModelWhenNull(Gerencia::class, $input['id_gerencia']);
-        $this->area     = $this->getMockModelWhenNull(Area::class, $input['id_area']);
-        $this->cargo    = $this->getMockModelWhenNull(Cargo::class, $input['id_cargo']);
-        $this->funcion  = Funcion::findOrFail($input['id_funcion']);
-        $this->base     = Base::findOrFail($input['id_base']);
-        $this->turno    = Turno::findOrFail($input['id_turno']);
-        $this->horario  = Horario::findOrFail($input['id_horario']);
+        $this->agente             = Agente::findOrFail($input['agente']);
+        $this->gerencia           = $this->getMockModelWhenNull(Gerencia::class, $input['id_gerencia']);
+        $this->area               = $this->getMockModelWhenNull(Area::class, $input['id_area']);
+        $this->cargo              = $this->getMockModelWhenNull(Cargo::class, $input['id_cargo']);
+        $this->funcion            = Funcion::findOrFail($input['id_funcion']);
+        $this->funcion_especifica = $input['funcion_especifica'];
+        $this->base               = Base::findOrFail($input['id_base']);
+        $this->turno              = Turno::findOrFail($input['id_turno']);
+        $this->horario            = [
+            'hora_entrada' => $input['hora_entrada'],
+            'hora_salida'  => $input['hora_salida'],
+            'eximido'      => $input['eximido'],
+            'rotativo'     => $input['rotativo'],
+        ];
     }
     
     public function execute()
@@ -70,16 +77,17 @@ class Operativos extends Service
         
         try {
             DB::beginTransaction();
-
+            $this->horario = Horario::create($this->horario);
             Operativo::create([
-                'id_agente'   => $this->agente->id,
-                'id_gerencia' => $this->gerencia->id,
-                'id_base'     => $this->base->id,
-                'id_area'     => $this->area->id,
-                'id_cargo'    => $this->cargo->id,
-                'id_funcion'  => $this->funcion->id,
-                'id_turno'    => $this->turno->id,
-                'id_horario'  => $this->horario->id,
+                'id_agente'          => $this->agente->id,
+                'id_gerencia'        => $this->gerencia->id,
+                'id_base'            => $this->base->id,
+                'id_area'            => $this->area->id,
+                'id_cargo'           => $this->cargo->id,
+                'id_funcion'         => $this->funcion->id,
+                'funcion_especifica' => $this->funcion_especifica,
+                'id_turno'           => $this->turno->id,
+                'id_horario'         => $this->horario->id,
             ]);
             
             DB::commit();

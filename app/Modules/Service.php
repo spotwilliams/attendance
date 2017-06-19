@@ -17,7 +17,7 @@ abstract class Service
     
     /**
      * Devuelve un model a partir de un id, y el nombre del model. En caso de no encontrarlo, devuelve un mock con id = -1
-     * @param $class clase del model
+     * @param $class string del model
      * @param $id id a buscar
      * @return Model
      */

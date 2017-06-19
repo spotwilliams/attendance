@@ -21,7 +21,7 @@ foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $
     /** @var \Cat\Models\Gerencia $geren */
     /** @var \Cat\Models\Gerencia $subgerencia */
     $gerencias[$geren->nombre] = [
-            $geren->id => $geren->nombre
+        $geren->id => $geren->nombre
     ];
 
     foreach ($geren->hijas()->get(['id', 'nombre']) as $subgerencia) {
@@ -97,6 +97,13 @@ foreach (\Cat\Models\Funcion::whereNull('id_padre')->get(['id', 'nombre']) as $f
     </div>
 </div>
 
+<div class="form-group">
+    <label class="col-sm-2 control-label">Funci&oacute;n espec&iacute;fica</label>
+    <div class="col-sm-8">
+        {!! Form::text('funcion_especifica', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
 
 <?php
 $bases = [-1 => 'Seleccione...'];
@@ -134,23 +141,54 @@ foreach (\Cat\Models\Turno::all() as $t) {
         @endif
     </div>
 </div>
-<?php
-$horarios = [-1 => 'Seleccione...'];
 
-foreach (\Cat\Models\Horario::all() as $h) {
-    /** @var \Cat\Models\Area $a */
-    $horarios[$h->id] = $h->hora_entrada . ' a ' . $h->hora_salida;
-}
-?>
-<div class="form-group @if($errors->has('id_horario')) has-error @endif">
+
+<div class="form-group">
     <label class="col-sm-2 control-label">Horario*</label>
-    <div class="col-sm-8">
-        {!! Form::select('id_horario',  $horarios, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+    <div class="col-sm-10">
+        <div class="col-sm-2 @if($errors->has('hora_entrada')) has-error @endif">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                {!! Form::text('hora_entrada', '00:00', ['class' => 'form-control horario', ]) !!}
+                @if($errors->has('hora_entrada'))
+                    <span class="help-block">{{$errors->first('hora_entrada')}}</span>
+                @endif
+            </div>
+        </div>
+        <div class="col-sm-2 @if($errors->has('hora_salida')) has-error @endif">
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <i class="fa fa-clock-o"></i>
+                </div>
+                {!! Form::text('hora_salida', '00:00', ['class' => 'form-control horario', 'placeholder' => '00:00']) !!}
 
-        @if($errors->has('id_horario'))
-            <span class="help-block">{{$errors->first('id_horario')}}</span>
-        @endif
+                @if($errors->has('hora_salida'))
+                    <span class="help-block">{{$errors->first('hora_salida')}}</span>
+                @endif
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="col-md-4">Rotativo</label>
+                <div class="col-md-6">
+                    {!! Form::select('rotativo',  [0 => 'No', 1 => 'Si'], null, ['class' => 'form-control hora-especial', ]) !!}
+                </div>
+
+            </div>
+        </div>
+        <div class="col-sm-3">
+            <div class="form-group">
+                <label class="col-md-4">Eximido</label>
+                <div class="col-md-6">
+                    {!! Form::select('eximido',  [0 => 'No', 1 => 'Si'], null, ['class' => 'form-control hora-especial', ]) !!}
+                </div>
+
+            </div>
+        </div>
     </div>
+
 </div>
 
 
@@ -165,6 +203,17 @@ foreach (\Cat\Models\Horario::all() as $h) {
 
         $(document).ready(function () {
             $('select').selectpicker({});
+            $('.horario').timepicker({});
+
+            $('.hora-especial').on('change', function () {
+
+                if ($(this).val() == 1) {
+                    $('.horario').attr('disabled', true);
+                } else {
+                    $('.horario').attr('disabled', false);
+
+                }
+            })
         });
     </script>
 @append

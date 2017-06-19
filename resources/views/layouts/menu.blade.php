@@ -46,7 +46,7 @@
        aria-expanded="true"
     >
         <i class="fa fa-calendar"></i>
-        <span>Presentismos</span>
+        <span>Presentismo</span>
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
