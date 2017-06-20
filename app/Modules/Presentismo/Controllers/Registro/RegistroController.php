@@ -71,8 +71,9 @@ class RegistroController extends AppBaseController
             $button      = HtmlCustoms::getButtonWithPopOver($presentismo, $presentismo->injustificado === 1);
             
         } catch (ModelNotFoundException $noHayPresentismoCargado) {
-            $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
-    
+            $button      = HtmlCustoms::getButtonWithPopOver(null, false, true);
+            $presentismo = new Presentismo(['id' => -1, 'id_tipo_presentismo' => -1]);
+            
         }
 
 //        $disabled = (isset($disabled) ? $disabled : false;
