@@ -135,7 +135,7 @@ class HtmlCustoms
         TipoContrato $tipoContrato,
         $selector = 'selectpicker'
     ) {
-        /** @var array $tiposPresentismos AGREGAR CACHE!!! */
+        /** @var array $tiposPresentismos*/
         
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);

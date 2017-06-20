@@ -17,7 +17,7 @@
             {!! Form::open(['route' => 'agentesMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
             <div class="box-body">
                 <div class="form-group">
-                    @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => $baseActual])
+                    @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
                 </div>
 
                 <div class="form-group @if($errors->has('archivo')) has-error @endif">

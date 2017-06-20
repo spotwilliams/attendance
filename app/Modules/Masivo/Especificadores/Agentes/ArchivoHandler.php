@@ -9,11 +9,15 @@ use Cat\Models\Base;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales as PersonalesStore;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as LaboralesStore;
 use Cat\Modules\Agentes\Services\Registro\Store\Operativos as OperativosStore;
+use Cat\Modules\Agentes\Services\Registro\Destroy\Personales as PersonalesDestroy;
+use Cat\Modules\Agentes\Services\Registro\Destroy\Laborales as LaboralesDestroy;
+use Cat\Modules\Agentes\Services\Registro\Destroy\Operativos as OperativosDestroy;
 use Cat\Masivo\Especificadores\Mappers\Laborales as LaboralesMapper;
 use Cat\Masivo\Especificadores\Mappers\Operativos as OperativosMapper;
 use Laracasts\Flash\Flash;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Cat\Masivo\Especificadores\Mappers\Personales as PersonalesMapper;
+use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class ArchivoHandler extends ExcelHandler
@@ -29,22 +33,36 @@ class ArchivoHandler extends ExcelHandler
         
         /** @var LaravelExcelWriter $fileErrores */
         $fileErrores = $this->generateOutFile($file->getFileName(), 'agentes');
-        $file->getExcel()
-//            ->selectSheets('procesado')
-//            ->load()
-            ->each(function ($row) use ($base, &$listaErrores) {
-                dd($row);
-    
-                try {
-                    dd($row);
+        
+        /** @var RowCollection $sheet */
+        $sheet = $this->getSheet($file, 'procesado');
+        
+        
+        for ($i = 0; $i < $sheet->count(); $i++) {
+            /** @var CellCollection $row */
+            $row = $sheet->get($i);
+            try {
+                if ($row->nombre !== 'empty') {
                     $agente = $this->handlePersonales($row);
                     $this->handleLaborales($row, $agente);
                     $this->handleOperativos($row, $agente, $base);
-                    
-                } catch (\Exception $e) {
-                    $listaErrores[] = $row->toArray();
+                } else {
+                    break;
                 }
-            });
+            } catch (\Exception $e) {
+                $this->clearPossibleMistakes($row);
+                
+                $listaErrores[] = [
+                    '#'                => $i + 2,
+                    'nombre'           => $row->nombre,
+                    'apellido'         => $row->apellido,
+                    'dni'              => $row->dni,
+                    'cuit'             => $row->cuit,
+//                    'technical_reason' => $e->getMessage(),
+                ];
+            }
+        }
+        
         
         $fileErrores->sheet('Errores', function ($sheet) use ($listaErrores) {
             
@@ -85,4 +103,25 @@ class ArchivoHandler extends ExcelHandler
         $storeService->execute();
     }
     
+    /**
+     * En caso de error, se trata de borrar cualquier cosa que se haya genereado
+     * @param CellCollection $cell
+     */
+    private function clearPossibleMistakes(CellCollection $cell)
+    {
+        $agente = Agente::where('dni', '=', (int)$cell->dni);
+
+        if ($agente !== null) {
+            
+            $destroy = [
+                PersonalesDestroy::class,
+                LaboralesDestroy::class,
+                OperativosDestroy::class,
+            ];
+            
+            foreach ($destroy as $service) {
+                (new $service($agente))->execute();
+            }
+        }
+    }
 }

@@ -33,4 +33,15 @@ abstract class ExcelHandler implements ImportHandler
         return Excel::create($name);
         
     }
+    
+    protected function getSheet($file, $title)
+    {
+        $sheets = $file->all();
+        foreach ($sheets as $sheet) {
+            if ($sheet->getTitle() === $title) {
+                return $sheet;
+            }
+        }
+        dd($sheets->selectSheets('procesado'));
+    }
 }

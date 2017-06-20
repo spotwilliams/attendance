@@ -6,6 +6,7 @@ use Cat\Masivo\Especificadores\Archivo;
 use Cat\Models\Base;
 use Cat\Modules\Service;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Session\Store;
 use Illuminate\Support\Facades\App;
 use Illuminate\Support\Facades\Storage;
 use Maatwebsite\Excel\Excel;
@@ -30,14 +31,17 @@ abstract class Common extends Service
     /** @var  string */
     protected $handlerClass;
     
+    /** @var string */
+    protected $storageKey;
+    
     public function __construct(Base $base, UploadedFile $file, $storageKey)
     {
         $this->base          = $base;
         $this->file          = $file;
         $moment              = new \DateTime('now');
         $this->newName       = $moment->format('Y-m-d') . $moment->getTimestamp() . '.xlsx';
-        $this->storageFolder = Storage::disk($storageKey)->getDriver()->getAdapter()->getPathPrefix();
-        
+        $this->storageKey    = $storageKey;
+        $this->storageFolder = Storage::disk($this->storageKey)->getDriver()->getAdapter()->getPathPrefix();
     }
     
     protected function moveFile()
@@ -49,7 +53,7 @@ abstract class Common extends Service
     {
         
         $this->moveFile();
-    
+        
         $this->archivo = new Archivo(
             app(),
             App::make(Excel::class),
@@ -62,6 +66,12 @@ abstract class Common extends Service
         
         $handler->handle($this->archivo);
         
+        $this->deleteFile();
+    }
+    
+    public function deleteFile()
+    {
+        Storage::disk($this->storageKey)->delete($this->newName);
     }
     
 }

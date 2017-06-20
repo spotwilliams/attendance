@@ -7,6 +7,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Masivo\Services\Agentes\Procesador;
 use Cat\Models\Base;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
+use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\View\View;
@@ -29,17 +30,17 @@ class Registro extends AppBaseController
      * @param Request $request
      * @return View
      */
-    public function index(Request $request, $base)
+    public function index(Request $request)
     {
         
-        return view('Masivo::agentes.index')
-            ->with('baseActual', $base);
+        return view('Masivo::agentes.index');
     }
     
     public function upload(Request $request)
     {
         $rule = [
-            'archivo' => 'required|mimetypes:application/vnd.ms-excel',
+//            'archivo' => 'required|mimetypes:application/vnd.ms-excel',
+'archivo' => 'required',
         
         ];
         $this->validate($request, $rule);
@@ -61,13 +62,24 @@ class Registro extends AppBaseController
     
     public function downloadErrores(Request $request)
     {
-        return response()->download($request->input('file'));
+        try {
+            return response()->download($request->input('file'));
+        } catch (FileNotFoundException $e) {
+            Flash::error('No se pudo descargar el archivo');
+            
+            return redirect(route('agentesMasivoIndex'));
+        }
+        
     }
     
     
     public function downloadTemplate(Request $request)
     {
-        return response()->download(Storage::disk('masivos_template')->getDriver()->getAdapter()->getPathPrefix() . 'agentes_masivo.csv');
+        return response()
+            ->download(Storage::disk('masivos_template')
+                    ->getDriver()
+                    ->getAdapter()
+                    ->getPathPrefix() . 'agentes_masivo_template.xls');
     }
     
 }

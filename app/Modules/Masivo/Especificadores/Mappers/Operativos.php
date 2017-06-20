@@ -18,51 +18,28 @@ class Operativos
     
     public static function toInput(CellCollection $collection, Agente $agente, Base $base)
     {
-        
-        
-        // gerencia	subgerencia
-        
-        /**
-         * Obligatorios
-         */
-        $funcion = Funcion::where('nombre', '=', $collection->funcion)
-            ->firstOrFail(['id']);
-        
-        $turno = Turno::where('codigo', '=', $collection->turno)
-            ->orWhere('descripcion', '=', $collection->turno)
-            ->firstOrFail(['id']);
-        
-        $horario = Horario::where('hora_entrada', '=', $collection->hora_entrada)
-            ->where('hora_salida', '=', $collection->hora_salida)
-            ->firstOrFail(['id']);
-        
-        
         /**
          * Opcionales
          */
-        $area = Area::where('nombre', '=', $collection->base)
-            ->first([DB::raw('IFNULL(id,-1) as id')]);
-        
-        $cargo = Cargo::where('nombre', '=', $collection->base)
-            ->first([DB::raw('IFNULL(id,-1) as id')]);
-        
-        $subGerencia = Gerencia::where('nombre', '=', $collection->subgerencia)
-            ->first([DB::raw('IFNULL(id,-1) as id')]);
+        $subGerencia = Gerencia::find($collection->subgerencia);
         
         if ($subGerencia == null) {
-            $subGerencia = Gerencia::where('nombre', '=', $collection->gerencia)
-                ->first([DB::raw('IFNULL(id,-1) as id')]);
+            $subGerencia = Gerencia::find($collection->gerencia);
         }
         
         return [
-            'agente'      => $agente->id,
-            'id_gerencia' => ($subGerencia === null) ? -1 : $subGerencia->id,
-            'id_base'     => $base->id,
-            'id_area'     => ($area === null) ? -1 : $area->id,
-            'id_cargo'    => ($cargo === null) ? -1 : $cargo->id,
-            'id_funcion'  => $funcion->id,
-            'id_turno'    => $turno->id,
-            'id_horario'  => $horario->id,
+            'agente'             => $agente->id,
+            'id_gerencia'        => ($subGerencia === null) ? -1 : $subGerencia->id,
+            'id_base'            => $base->id,
+            'id_area'            => $collection->area,
+            'id_cargo'           => $collection->cargo,
+            'id_funcion'         => $collection->funcion,
+            'id_turno'           => $collection->turno,
+            'funcion_especifica' => $collection->funcion_especifica,
+            'hora_entrada'       => $collection->hora_entrada,
+            'hora_salida'        => $collection->hora_salida,
+            'eximido'            => $collection->eximido,
+            'rotativo'           => $collection->rotativo,
         
         ];
         

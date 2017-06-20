@@ -163,6 +163,7 @@ class Agente extends Model
             
             return $cantDiasPermitidos - $cantDiasConsumidos;
         } catch (ModelNotFoundException $diaPermitidoNoCargado) {
+            return 1;
             throw new SinTopeONoEstablecido($ausencia);
         }
     }

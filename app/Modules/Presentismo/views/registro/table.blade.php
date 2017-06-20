@@ -42,7 +42,7 @@ $idModal = 'comentarios-modal'
                     <td><?php
                         $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
                         echo HtmlCustoms::getSelectForTipoPresentismo($p,
-                            $age->contrato->first()->tipoContrato->first())
+                            $age->contrato->tipoContrato)
                         ?></td>
                 @endfor
 
@@ -218,7 +218,7 @@ $idModal = 'comentarios-modal'
                 ordering: false,
                 paging: false,
                 bInfo: false,
-                @if($agentes->count() <= 1)
+                @if($agentes->count() <= 5)
                 scrollY: "900px",
                 scrollCollapse: false,
                 @endif

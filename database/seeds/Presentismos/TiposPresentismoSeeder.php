@@ -59,11 +59,12 @@ class TiposPresentismoSeeder extends Seeder
                 'color'       => '#56b1ef',
             ],
             [
-                'descripcion' => 'DIA NO LABORABLE',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'F',
-                'corridos'    => 0,
-                'color'       => '#cc9e33',
+                'descripcion'   => 'DIA NO LABORABLE',
+                'aplica'        => 'TODOS',
+                'codigo'        => 'F',
+                'injustificado' => 0,
+                'corridos'      => 0,
+                'color'         => '#cc9e33',
             ],
             [
                 'descripcion' => 'DONACION DE ÓRGANOS',
@@ -194,14 +195,14 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#ef94ef',
             ],
-//            [
-//                'descripcion'   => 'MEDICO INJUSTIFICADO',
-//                'aplica'        => 'TODOS',
-//                'codigo'        => 'MI',
-//                'injustificado' => 1,
-//                'corridos'      => 0,
-//                'color'         => '#95dff9',
-//            ],
+            //            [
+            //                'descripcion'   => 'MEDICO INJUSTIFICADO',
+            //                'aplica'        => 'TODOS',
+            //                'codigo'        => 'MI',
+            //                'injustificado' => 1,
+            //                'corridos'      => 0,
+            //                'color'         => '#95dff9',
+            //            ],
             [
                 'descripcion' => 'MEDICO JUSTIFICADO',
                 'aplica'      => '',
@@ -391,13 +392,23 @@ class TiposPresentismoSeeder extends Seeder
         
         
         foreach ($tipos as $nuevo) {
-            $array = array_merge($nuevo, ['injustificado' => 1]);
+            if (!isset($nuevo['injustificado'])) {
+        
+                $array = array_merge($nuevo, ['injustificado' => 1]);
+            } else {
+                $array = $nuevo;
+            }
             \Cat\Models\TipoPresentismo::create($array);
         }
         
         $tiposNews = $this->mismosCodigosDiffDias(count($tipos));
         foreach ($tiposNews as $nuevo) {
-            $array = array_merge($nuevo, ['injustificado' => 1]);
+            if (!isset($nuevo['injustificado'])) {
+                
+                $array = array_merge($nuevo, ['injustificado' => 1]);
+            } else {
+                $array = $nuevo;
+            }
             \Cat\Models\TipoPresentismo::create($array);
         }
     }

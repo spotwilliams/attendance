@@ -35,8 +35,6 @@ $cargo = $operativo->cargo()->first();
 /** @var \Cat\Models\Funcion $funcion */
 $funcion = $operativo->funcion()->first();
 
-$funcionPadre = $funcion->padre()->first();
-
 /** @var \Cat\Models\Horario $horario */
 $horario = $operativo->horario()->first();
 
@@ -69,11 +67,11 @@ $turno = $operativo->turno()->first();
         </tr>
         <tr>
             <th>Funci&oacute;n:</th>
-            <td>{{isset($funcionPadre->nombre)?$funcionPadre->nombre:'No posee'}}</td>
+            <td>{{isset($funcion->nombre)?$funcion->nombre:'No posee'}}</td>
         </tr>
         <tr>
             <th>Funci&oacute;n espec&iacute;fica:</th>
-            <td>{{isset($funcion->nombre)?$funcion->nombre:'No posee'}}</td>
+            <td>{{isset($operativo->funcion_especifica)?$operativo->funcion_especifica:'No posee'}}</td>
 
         </tr>
 

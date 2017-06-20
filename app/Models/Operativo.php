@@ -22,6 +22,7 @@ class Operativo extends Model
             'id_area',
             'id_cargo',
             'id_funcion',
+            'funcion_especifica',
             'id_turno',
             'id_horario',
         ];

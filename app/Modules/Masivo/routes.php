@@ -19,7 +19,7 @@ Route::group(
         /**
          * Agentes
          */
-        Route::get('agentes/masivo/base/{base}', AgentesMasivoController::class . '@index')
+        Route::get('agentes/masivo', AgentesMasivoController::class . '@index')
             ->name('agentesMasivoIndex');
     
         Route::post('agentes/masivo/upload', AgentesMasivoController::class . '@upload')

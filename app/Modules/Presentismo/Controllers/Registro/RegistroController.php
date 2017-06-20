@@ -59,17 +59,20 @@ class RegistroController extends AppBaseController
             $code    = 500;
         } catch (PeriodoCerrado $e) {
             
-            $message  = $e->getMessage();
-            $code     = 500;
-            $disabled = true;
+            $message = $e->getMessage();
+            $code    = 500;
+            $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
         }
         try {
             
             $presentismo = Presentismo::where('id_agente', '=', $agente->id)
                 ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
                 ->firstOrFail();
+            $button      = HtmlCustoms::getButtonWithPopOver($presentismo, $presentismo->injustificado === 1);
+            
         } catch (ModelNotFoundException $noHayPresentismoCargado) {
-            $presentismo = new Presentismo(['id_tipo_presentismo' => -1, 'injustificado' => 1]);
+            $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
+    
         }
 
 //        $disabled = (isset($disabled) ? $disabled : false;
@@ -78,7 +81,7 @@ class RegistroController extends AppBaseController
             'message'     => $message,
             'agente'      => $agente->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === 1)),
+            'button'      => $button,
         ], $code);
         
         

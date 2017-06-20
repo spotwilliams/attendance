@@ -114,7 +114,7 @@ $estudios = \Cat\Helpers\HtmlCustoms::getEstudiosArray($data);
 $control = 0;
 ?>
 <div class="form-group">
-    {!! Form::label('estudios', 'T&iacute;tutlo', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('estudios', 'Estudios', ['class' => 'col-sm-2 control-label']) !!}
 
     <div class="panel panel-default col-sm-8">
         @foreach($estudios  as $est)
@@ -125,7 +125,7 @@ $control = 0;
             <div class="panel-body estudiosWrapper">
                 <div class="form-group estudiosTemplate" id="estudiosTemplate">
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="Carrera"
+                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="T&iacute;tutlo"
                                name="estudio[carrera][]">
                     </div>
                     <div class="col-sm-3">
