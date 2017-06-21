@@ -13,6 +13,7 @@ class TipoPresentismo extends Model
     const CREATED_AT    = 'created_at';
     const UPDATED_AT    = 'updated_at';
     const INJUSTIFICADO = 'A';
+    const TARDANZA      = 'T';
     const PRESENTE      = 'P';
     
     protected $fillable
@@ -43,6 +44,11 @@ class TipoPresentismo extends Model
     public static function injusticado()
     {
         return TipoPresentismo::where('codigo', '=', TipoPresentismo::INJUSTIFICADO)->first();
+    }
+    
+    public static function tardanzas()
+    {
+        return TipoPresentismo::where('codigo', '=', TipoPresentismo::TARDANZA)->first();
     }
     
     public function esPresente()

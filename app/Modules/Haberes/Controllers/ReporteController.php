@@ -9,10 +9,12 @@ use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Haberes\Controllers\Helpers\Data;
+use Cat\Modules\Haberes\Services\Reporte\Reporte;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
@@ -38,20 +40,17 @@ class ReporteController extends AppBaseController
             $periodo = Periodo::findOrFail($input['periodo']);
             $base    = Base::findOrFail($input['base']);
             $turno   = Turno::findOrFail($input['turno']);
-            $agentes = $this->helper->getAgentes($periodo, $base, $turno);
+            $agentes = $this->helper
+                ->getAgentesForHaberesReport($base, $turno, $periodo);
             
-            dd($agentes);
+            $service = new Reporte($agentes);
             
-            return view('Haberes::calculo.lista')
-                ->with('agentes', $agentes->paginate(25))
-                ->with('base', $base)
-                ->with('periodo', $periodo)
-                ->with('turno', $turno);
-        } catch (ModelNotFoundException $e) {
+            $service->execute();
+            
+        } catch (\Exception $e) {
+
             Flash::error('No se ha podido continuar. Intente nuevamente');
-            
-            return view('Haberes::calculo.index-base')
-                ->with('baseActual', 1);
+            return view('Haberes::calculo.index-base');
         }
         
     }

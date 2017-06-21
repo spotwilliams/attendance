@@ -6,40 +6,23 @@
  * Time: 11:19
  */
 
-namespace Cat\Modules\Haberes\Services\Calculo;
+namespace Cat\Modules\Haberes\Services\Reporte;
 
-use Cat\Models\Agente;
-use Cat\Models\Base;
-use Cat\Models\Periodo;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoPresentismo;
-use Cat\Models\Turno;
 use Cat\Modules\Service;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
-use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Collection;
+use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Maatwebsite\Excel\Facades\Excel;
+use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class Reporte extends Service
 {
     
-    /** @var  Base */
-    protected $base;
+    /** @var  Collection */
+    protected $haberes;
     
-    /** @var  Periodo */
-    protected $periodo;
-    
-    /** @var  Turno */
-    protected $turno;
-    
-    /** @var  UploadedFile */
-    protected $file;
-    
-    
-    public function __construct(Base $base, Periodo $periodo, Turno $turno, UploadedFile $file)
+    public function __construct(Collection $haberesWithAgentes)
     {
-        $this->base          = $base;
-        $this->periodo       = $periodo;
-        $this->turno         = $turno;
-        $this->file          = $file;
+        $this->haberes = $haberesWithAgentes;
     }
     
     
@@ -48,8 +31,25 @@ class Reporte extends Service
      */
     public function execute()
     {
-    
-    
+        Excel::create('Reporte', function ($writer) {
+            /** @var LaravelExcelWriter $writer */
+            $writer->sheet('Haberes', function ($sheet) {
+                
+                /** @var  LaravelExcelWorksheet $sheet */
+                
+                foreach ($this->haberes as $haber) {
+                    $data [] = [
+                        'Nombre'           => $haber->agente->nombre,
+                        'Apellido'         => $haber->agente->apellido,
+                        'CUIT'             => $haber->agente->cuit,
+                        'Monto a Facturar' => $haber->monto_facturado,
+                    ];
+                }
+                $sheet->fromArray($data);
+                
+            });
+        })->export('xls');
+        
     }
     
     

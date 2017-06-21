@@ -17,6 +17,8 @@ class Haber extends Model
         = [
             'id_agente',
             'id_periodo',
+            'id_base',
+            'id_turno',
             'monto_facturado',
             'monto_contrato',
         ];

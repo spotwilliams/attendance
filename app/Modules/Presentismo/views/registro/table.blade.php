@@ -123,7 +123,7 @@ $idModal = 'comentarios-modal'
                         autoHide: true,
                         // if autoHide, hide after milliseconds
                         autoHideDelay: wait,
-                        position: 'top',
+                        position: 'left',
                         showAnimation: 'slideDown',
                         className: type,
                     });

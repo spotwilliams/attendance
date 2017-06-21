@@ -4,10 +4,12 @@ namespace Cat\Modules\Haberes\Controllers\Helpers;
 
 use Cat\Models\Base;
 use Cat\Models\Contrato;
+use Cat\Models\Haber;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Doctrine\DBAL\Query\QueryException;
 
 class Data
 {
@@ -46,5 +48,22 @@ class Data
             ->where('operativos.id_turno', '=', $turno->id);
         
         return $agentes;
+    }
+    
+    public function getAgentesForHaberesReport(Base $base, Turno $turno, Periodo $periodo)
+    {
+        $haberes = Haber::where('id_base', $base->id)
+            ->where('id_turno', '=', $turno->id)
+            ->where('id_periodo', '=', $periodo->id)
+//            ->with('agente.contrato.tipoContrato')
+        ;
+        
+        try {
+            return $haberes->get();
+        } catch (QueryException $e) {
+            dd($e);
+            
+            return [];
+        }
     }
 }

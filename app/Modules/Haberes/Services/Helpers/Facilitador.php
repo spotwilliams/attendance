@@ -42,7 +42,7 @@ class Facilitador
             /** @var Operativo $operativo */
             foreach ($operativos as $operativo) {
                 try {
-                    $service = new Registro($operativo->agente()->first(), $periodo);
+                    $service = new Registro($operativo->agente()->first(), $periodo, $turno, $base);
                     $service->execute();
                 } catch (QueryException $e) {
                     $periodoCerradoCompleto = false;
