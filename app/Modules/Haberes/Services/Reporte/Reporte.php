@@ -36,7 +36,7 @@ class Reporte extends Service
             $writer->sheet('Haberes', function ($sheet) {
                 
                 /** @var  LaravelExcelWorksheet $sheet */
-                
+                $data = [];
                 foreach ($this->haberes as $haber) {
                     $data [] = [
                         'Nombre'           => $haber->agente->nombre,
