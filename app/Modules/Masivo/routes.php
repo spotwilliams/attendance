@@ -34,16 +34,19 @@ Route::group(
         /**
          * Presentismos
          */
-        Route::get('presentismo/masivo/base/{base}', PresentismosMasivoController::class . '@index')
+        Route::get('presentismo/masivo/select/params', PresentismosMasivoController::class . '@index')
             ->name('presentismosMasivoIndex');
     
+        Route::post('presentismo/masivo/select/file', PresentismosMasivoController::class . '@selectFile')
+            ->name('presentismosMasivoSelectFile');
+
         Route::post('presentismo/masivo/upload', PresentismosMasivoController::class . '@upload')
             ->name('presentismosMasivoUpload');
     
         Route::post('presentismo/masivo/download/errores', PresentismosMasivoController::class . '@downloadErrores')
             ->name('presentismosMasivoDownload');
     
-        Route::get('presentismo/masivo/download/template', PresentismosMasivoController::class . '@downloadTemplate')
+        Route::get('presentismo/masivo/download/template/file/{fileName}', PresentismosMasivoController::class . '@downloadTemplate')
             ->name('presentismosMasivoTemplate');
     }
 );

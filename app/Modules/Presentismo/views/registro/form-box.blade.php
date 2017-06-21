@@ -24,12 +24,8 @@ $turnos = TurnosRepository::getAll();
     <div class="box-body">
         <div class="col-md-offset-2 col-md-8">
 
-            <div class="form-group @if($errors->has('base')) has-error @endif">
                 @include('bases.select-sin-btn' ,['label'=> 'Seleccione la base', 'baseSeleccionada' => '-1'])
-                @if($errors->has('base'))
-                    <span class="help-block col-md-offset-3 col-xs-offset-3">{{$errors->first('base')}}</span>
-                @endif
-            </div>
+
 
             <div class="form-group">
                 <label class="col-md-3 col-xs-3 control-label">Rango de fechas</label>

@@ -48,6 +48,11 @@ return [
             'root' => storage_path('app'),
         ],
 
+        'masivo' => [
+            'driver' => 'local',
+            'root' => storage_path('app/masivo'),
+        ],
+
         'agentes' => [
             'driver' => 'local',
             'root' => storage_path('app/masivo/agentes'),

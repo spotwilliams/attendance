@@ -4,7 +4,10 @@ namespace Cat\Modules\Agentes\Repositories;
 
 use Cat\Models\Agente;
 use Cat\Models\Base;
+use Cat\Models\Operativo;
+use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use InfyOm\Generator\Common\BaseRepository;
 
 class AgenteRepository extends BaseRepository
@@ -36,5 +39,16 @@ class AgenteRepository extends BaseRepository
             ->paginate(25);
     }
     
+    public static function getAgentesByBaseByTurno(Base $base, Turno $turno)
+    {
+        $agentes = Operativo::where('id_base', '=', $base->id)
+            ->where('id_turno', '=', $turno->id)
+            ->with('agente');
+        try {
+            return $agentes->get();
+        } catch (QueryException $e) {
+            return [];
+        }
+    }
     
 }

@@ -57,7 +57,7 @@
             </a>
         </li>
         <li>
-            <a href="{!! route('presentismosMasivoIndex', ['base' => 1]) !!}">
+            <a href="{!! route('presentismosMasivoIndex') !!}">
                 <i class="fa fa-file-excel-o"></i>
                 <span>Registro masivo</span>
             </a>

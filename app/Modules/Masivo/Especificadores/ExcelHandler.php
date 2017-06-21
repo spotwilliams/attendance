@@ -42,6 +42,6 @@ abstract class ExcelHandler implements ImportHandler
                 return $sheet;
             }
         }
-        dd($sheets->selectSheets('procesado'));
+        throw new \Exception('No existe la hoja solicitada');
     }
 }

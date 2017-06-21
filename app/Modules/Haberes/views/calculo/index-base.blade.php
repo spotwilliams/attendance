@@ -28,12 +28,7 @@
                             </div>
                         </div>
                     </div>
-                    <div class="form-group @if($errors->has('base')) has-error @endif">
                         @include('bases.select-sin-btn' ,[ 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
-                        @if($errors->has('base'))
-                            <span class="help-block">{{$errors->first('base')}}</span>
-                        @endif
-                    </div>
                 </div>
             </div>
             <div class="box-footer">
