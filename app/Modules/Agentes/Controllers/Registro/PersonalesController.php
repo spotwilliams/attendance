@@ -10,6 +10,7 @@ use Cat\Modules\Agentes\Services\Registro\Store\Personales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Personales as Update;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
 
@@ -30,7 +31,7 @@ class PersonalesController extends AppBaseController
     /**
      * Show the form for creating a new Presentismo.
      *
-     * @return Response
+     * @return View
      */
     public function create()
     {
@@ -59,9 +60,8 @@ class PersonalesController extends AppBaseController
             
             return redirect(route('agentesCreateLaborales', ['id' => $agente->id]));
         } catch (\Exception $e) {
-
-            Flash::error('No se pudo guadar los datos personales: ' . $e->getMessage());
-    
+            Flash::error('No se pudo guadar los datos personales.');
+            
             return redirect(route('agentesCreatePersonales'))
                 ->withInput();
             
@@ -76,7 +76,7 @@ class PersonalesController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return View
      */
     public function edit($id)
     {
@@ -113,7 +113,7 @@ class PersonalesController extends AppBaseController
         }
         
         try {
-
+            
             $service = new Update($agente, $input);
             $service->execute();
             Flash::success('Datos personales actualizados correctamente.');
@@ -122,8 +122,7 @@ class PersonalesController extends AppBaseController
             
             
         } catch (\Exception $e) {
-            
-            Flash::error('No se pudo actualizar los datos personales: ' . $e->getMessage());
+            Flash::error('No se pudo actualizar los datos personales.');
             
             return redirect(route('agentesEditPersonales', ['id' => $agente->id]));
             

@@ -47,9 +47,23 @@ class Personales extends Service
             
             for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
                 /** @var Domicilio $domicilio */
-                $domicilio = Domicilio::find($this->domicilios['id'][$i]);
-                if (!empty($domicilio)) {
-                    $domicilio->update([
+                if (isset($this->domicilios['id'][$i])) {
+                    $domicilio = Domicilio::find($this->domicilios['id'][$i]);
+                    if (!empty($domicilio)) {
+                        $domicilio->update([
+                            'calle'        => $this->domicilios['calle'][$i],
+                            'numero'       => $this->domicilios['numero'][$i],
+                            'departamento' => $this->domicilios['departamento'][$i],
+                            'piso'         => $this->domicilios['piso'][$i],
+                            'barrio'       => $this->domicilios['barrio'][$i],
+                            'provincia'    => $this->domicilios['provincia'][$i],
+                            'constituido'  => $this->domicilios['constituido'][$i],
+                        ]);
+                        
+                    }
+                } else {
+                    Domicilio::create([
+                        'id_agente'    => $this->agente->id,
                         'calle'        => $this->domicilios['calle'][$i],
                         'numero'       => $this->domicilios['numero'][$i],
                         'departamento' => $this->domicilios['departamento'][$i],
@@ -58,15 +72,25 @@ class Personales extends Service
                         'provincia'    => $this->domicilios['provincia'][$i],
                         'constituido'  => $this->domicilios['constituido'][$i],
                     ]);
-                    
                 }
             }
             for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
                 /** @var Estudio $estudio */
-                $estudio = Estudio::find($this->estudios['id'][$i]);
-                if (!empty($estudio)) {
-                    
-                    $estudio->update([
+                
+                if (isset($this->estudios['id'][$i])) {
+                    $estudio = Estudio::find($this->estudios['id'][$i]);
+                    if (!empty($estudio)) {
+                        
+                        $estudio->update([
+                            'carrera'     => $this->estudios['carrera'][$i],
+                            'institucion' => $this->estudios['institucion'][$i],
+                            'estado'      => $this->estudios['estado'][$i],
+                            'nivel'       => $this->estudios['nivelestudio'][$i],
+                        ]);
+                    }
+                } else {
+                    Estudio::create([
+                        'id_agente'   => $this->agente->id,
                         'carrera'     => $this->estudios['carrera'][$i],
                         'institucion' => $this->estudios['institucion'][$i],
                         'estado'      => $this->estudios['estado'][$i],
