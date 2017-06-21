@@ -4,6 +4,8 @@ namespace Cat\Modules\Presentismo\Services\Registro;
 
 use Cat\Models\Agente;
 use Cat\Models\Presentismo;
+use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeJustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Cat\Modules\Service;
@@ -37,9 +39,15 @@ class Justificar extends Service
     
     public function execute()
     {
-        $this->rulePeriodoActivo->check();
-        $this->ruleAusente->check();
-        $this->save();
+        /** @var TipoPresentismo $tipoPresentismo */
+        $tipoPresentismo = $this->presentismo->tipoPresentismo()->first();
+        if ($tipoPresentismo->esTipoInjustificado()) {
+            throw new NoSePuedeJustificar($tipoPresentismo);
+        } else {
+            $this->rulePeriodoActivo->check();
+            $this->ruleAusente->check();
+            $this->save();
+        }
     }
     
     private function save()

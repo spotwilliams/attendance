@@ -4,6 +4,8 @@ namespace Cat\Modules\Presentismo\Services\Registro;
 
 use Cat\Models\Agente;
 use Cat\Models\Presentismo;
+use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeInjustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Cat\Modules\Service;
@@ -34,15 +36,22 @@ class Injustificar extends Service
     
     public function execute()
     {
-        try {
-            
-            DB::beginTransaction();
-            $this->presentismo->injustificado = 1;
-            $this->presentismo->save();
-            DB::commit();
-        } catch (QueryException $e) {
-            DB::rollBack();
-            throw $e;
+        /** @var TipoPresentismo $tipoPresentismo */
+        $tipoPresentismo = $this->presentismo->tipoPresentismo()->first();
+        if ($tipoPresentismo->esPresente()) {
+            throw new NoSePuedeInjustificar($tipoPresentismo);
+        } else {
+            try {
+        
+                DB::beginTransaction();
+        
+                $this->presentismo->injustificado = 1;
+                $this->presentismo->save();
+                DB::commit();
+            } catch (QueryException $e) {
+                DB::rollBack();
+                throw $e;
+            }
         }
     }
     

@@ -11,6 +11,7 @@
 use Illuminate\Support\Facades\Route;
 use Cat\Modules\Presentismo\Controllers\Registro\RegistroController;
 use Cat\Modules\Presentismo\Controllers\Registro\GeneralController;
+use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 
 Route::group(
     ['middleware' => ['web']],
@@ -37,9 +38,9 @@ Route::group(
         Route::post('presentismo/store/comentario', RegistroController::class . '@comentario')
             ->name('presentismoComment');
         
-        Route::post('presentismo/update/justificar', RegistroController::class . '@justificar')
+        Route::post('presentismo/update/justificar', JustificacionController::class . '@justificar')
             ->name('presentismoJustificar');
-        Route::post('presentismo/update/injustificar', RegistroController::class . '@injustificar')
+        Route::post('presentismo/update/injustificar', JustificacionController::class . '@injustificar')
             ->name('presentismoInjustificar');
     }
 );

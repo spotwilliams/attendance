@@ -11,6 +11,8 @@ class Descriptor
     const SIN_DIAS_DISPONIBLES               = 3000;
     const PERIODO_CERRADO                    = 4000;
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
+    const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
+    const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
     private        $errorCode;
     private        $errorDescription;
     private static $errorMap;
@@ -72,6 +74,26 @@ class Descriptor
         }
         
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
+    }
+    public static function presentismoNoSeJustifica()
+    {
+        if (!isset(self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_JUSTIFICA])) {
+            self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_JUSTIFICA]
+                = new Descriptor(Descriptor::TIPO_PRESENTISMO_NO_SE_JUSTIFICA,
+                'El tipo de presentismo no se puede justificar');
+        }
+        
+        return self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_JUSTIFICA];
+    }
+    public static function presentismoNoSeInjustifica()
+    {
+        if (!isset(self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA])) {
+            self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA]
+                = new Descriptor(Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA,
+                'El tipo de presentismo no se puede injustificar');
+        }
+        
+        return self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA];
     }
     
     public function getCode()

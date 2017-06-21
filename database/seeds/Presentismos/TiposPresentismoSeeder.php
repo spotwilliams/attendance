@@ -219,11 +219,12 @@ class TiposPresentismoSeeder extends Seeder
                 'color'       => '#37d661',
             ],
             [
-                'descripcion' => 'PRESENTE',
-                'aplica'      => 'TODOS',
-                'codigo'      => 'P',
-                'corridos'    => 0,
-                'color'       => '#aebfbc',
+                'descripcion'   => 'PRESENTE',
+                'aplica'        => 'TODOS',
+                'codigo'        => 'P',
+                'injustificado' => 0,
+                'corridos'      => 0,
+                'color'         => '#aebfbc',
             ],
             [
                 'descripcion' => 'REPRODUCCION ASISTIDA',
@@ -393,7 +394,7 @@ class TiposPresentismoSeeder extends Seeder
         
         foreach ($tipos as $nuevo) {
             if (!isset($nuevo['injustificado'])) {
-        
+                
                 $array = array_merge($nuevo, ['injustificado' => 1]);
             } else {
                 $array = $nuevo;
