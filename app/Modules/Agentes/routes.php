@@ -83,12 +83,12 @@ Route::group(
         /**
          * Delete
          */
-        Route::get('agentes/delete/id/{id}', RegistroController::class . '@delete')
-            ->name('agentesDelete');
-    
-        Route::post('agentes/destroy/', RegistroController::class . '@destroy')
-            ->name('agentesDestroy');
-        
+//        Route::get('agentes/delete/id/{id}', RegistroController::class . '@delete')
+//            ->name('agentesDelete');
+//
+//        Route::post('agentes/destroy/', RegistroController::class . '@destroy')
+//            ->name('agentesDestroy');
+//
         /**
          * Busquedas
          */

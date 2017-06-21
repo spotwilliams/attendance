@@ -285,25 +285,38 @@ $control = 0;
             $('.estudiosTemplate .addButton').on('click', function (obj, event) {
 
 
+                // Template
                 var $template = $('#estudiosTemplate');
 
+                // Ubico los datos actuales
+                var inptus = $template.find('input');
+
+                // Realizo la copia y quito el id para no copiar repetidos
                 var $clone = $template
                     .clone()
                     .removeAttr('id')
                     .insertAfter($template);
 
-                var $option = $clone
-                    .find('input')
-                    .val('');
-                $option.find('[name="carrera[]"]')
-                    .focus();
-                //button
-
+                // Escondo los botones success y muestro el close
                 $clone.find('.btn-success')
                     .addClass('hidden');
 
+
                 $clone.find('.btn-danger')
                     .removeClass('hidden');
+
+                // Pongo los datos en la nueva fila creada
+                var inputsCopy = $clone.find('input');
+
+                for (var i = 0; i < 2; i++) {
+                    $(inputsCopy[i]).val($(inptus[i]).val());
+                }
+
+                // Saco los datos en la linea actual
+                $template
+                    .find('input')
+                    .val('');
+                $(inptus[0]).focus();
 
             });
             $('.estudiosWrapper').on("click", ".removeButton", function (e) {
@@ -320,6 +333,9 @@ $control = 0;
 
                 var $template = $('#domiciliosTemplate');
 
+                // Ubico los datos actuales
+                var inptus = $template.find('input');
+
                 var $clone = $template
                     .clone()
                     .removeAttr('id')
@@ -337,6 +353,19 @@ $control = 0;
 
                 $clone.find('.btn-danger')
                     .removeClass('hidden');
+
+                // Pongo los datos en la nueva fila creada
+                var inputsCopy = $clone.find('input');
+                for (var i = 0; i < 7; i++) {
+                    $(inputsCopy[i]).val($(inptus[i]).val());
+                }
+
+                // Saco los datos en la linea actual
+                $template
+                    .find('input')
+                    .val('');
+                $(inptus[0]).focus();
+
 
             });
             $('.domiciliosWrapper').on("click", ".removeButton", function (e) {
