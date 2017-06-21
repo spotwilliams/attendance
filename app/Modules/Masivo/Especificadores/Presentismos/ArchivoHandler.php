@@ -40,7 +40,7 @@ class ArchivoHandler extends ExcelHandler
         for ($i = 0; $i < $sheet->count(); $i++) {
             /** @var CellCollection $row */
             $row = $sheet->get($i);
-            if ($row->dni !== 'empty') {
+            if ($row->cuit !== 'empty') {
                 
                 try {
                     $agente           = $this->getAgente($row);
@@ -77,7 +77,7 @@ class ArchivoHandler extends ExcelHandler
     
     private function getAgente(CellCollection $row)
     {
-        return Agente::where('dni', '=', $row->dni)
+        return Agente::where('cuit', '=', $row->cuit)
             ->with('contrato.tipoContrato')
             ->firstOrFail();
     }
@@ -87,7 +87,7 @@ class ArchivoHandler extends ExcelHandler
         $data = $row->all();
         unset($data['nombre']);
         unset($data['apellido']);
-        unset($data['dni']);
+        unset($data['cuit']);
         $return = [];
         foreach ($data as $fecha => $codigoPresentismo) {
             

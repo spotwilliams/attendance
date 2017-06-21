@@ -54,7 +54,7 @@ class AgentesSeeder extends Seeder
                 'id_cargo'           => 1,
                 'id_funcion'         => 1,
                 'funcion_especifica' => '',
-                'id_base'            => rand(1, 17),
+                'id_base'            => rand(1, 16),
                 'id_turno'           => rand(1, 11),
                 'hora_entrada'       => 1,
                 'hora_salida'        => 1,

@@ -28,7 +28,6 @@ class BasesSeeder extends Seeder
             'P. Madero',
             'Parque Vial',
             'Piedras',
-            'Piedras',
             'Río Cuarto',
             'T. Obelisco',
         ];

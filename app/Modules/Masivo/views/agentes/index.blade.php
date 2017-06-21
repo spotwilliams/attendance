@@ -16,10 +16,8 @@
             </div>
             {!! Form::open(['route' => 'agentesMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
             <div class="box-body">
-                <div class="form-group">
-                    @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
-                </div>
-
+            <div class="col-md-offset-2 col-md-8">
+                @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
                 <div class="form-group @if($errors->has('archivo')) has-error @endif">
                     <label for="archivo" class="col-sm-3 col-xs-3 control-label">Seleccione el archivo</label>
                     {{--<input type="file" id="archivo" name="archivo" class="col-sm-6">--}}
@@ -30,6 +28,7 @@
                         @endif
                     </div>
                 </div>
+            </div>
             </div>
             <div class="box-footer">
                 {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
@@ -49,6 +48,7 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+            $('select').selectpicker({});
             $('p.help-block > a').on('click', function (elem, event) {
 
                 $('.instrucciones').removeClass('hidden');

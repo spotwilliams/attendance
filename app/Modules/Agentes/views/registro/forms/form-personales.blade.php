@@ -91,10 +91,15 @@
     {!! Form::label('estado_civil', 'Estado Civil', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::select('estado_civil',
-         ['CASADO'=> 'Casado',
+         [
+         'CASADO'=> 'Casado',
          'SOLTERO' => 'Soltero',
-          'VIUDO' => 'Viudo',
-          'DIVORCIADO' => 'Divorciado'], null, ['class' => 'form-control']) !!}
+         'VIUDO' => 'Viudo',
+         'CONCUBINATO' => 'Concubinato',
+         'SEPARADO DE HECHO' => 'Separado de hecho',
+         'UNION CIVIL' => 'Uni&oacute;n civil',
+         'DIVORCIADO' => 'Divorciado'
+          ], null, ['class' => 'form-control']) !!}
     </div>
 </div>
 {{-- Estudios --}}
@@ -151,9 +156,9 @@ $control = 0;
                     </div>
                     <div class="col-sm-2">
                         <select name="estudio[estado][]" class="form-control">
-                            <option value="RECIBIDO">Completo</option>
-                            <option value="ABANDONADO">Incompleto</option>
-                            <option value="CURSANDO">En curso</option>
+                            <option value="COMPLETO">Completo</option>
+                            <option value="INCOMPLETO">Incompleto</option>
+                            <option value="EN CURSO">En curso</option>
                         </select>
                     </div>
                     <div class="col-sm-2">

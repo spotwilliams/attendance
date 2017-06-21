@@ -75,7 +75,7 @@ class Generator
                 $date = new \DateTime();
                 $sheet->setCellValue('A1', 'Nombre');
                 $sheet->setCellValue('B1', 'Apellido');
-                $sheet->setCellValue('C1', 'DNI');
+                $sheet->setCellValue('C1', 'CUIT');
                 $sheet->setCellValue('D1', $date->format('Y-m-d'));
                 $date->modify('+1day');
                 $sheet->setCellValue('E1', $date->format('Y-m-d'));
@@ -95,7 +95,7 @@ class Generator
                 foreach ($operativos as $operativo) {
                     $sheet->setCellValue("A$row", $operativo->agente->nombre);
                     $sheet->setCellValue("B$row", $operativo->agente->apellido);
-                    $sheet->setCellValue("C$row", $operativo->agente->dni);
+                    $sheet->setCellValue("C$row", $operativo->agente->cuit);
                     
                     $row++;
                 }

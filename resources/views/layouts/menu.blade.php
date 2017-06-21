@@ -30,7 +30,7 @@
             </a>
         </li>
         <li>
-            <a href="{!! route('agentesMasivoIndex', ['base' => 1]) !!}">
+            <a href="{!! route('agentesMasivoIndex') !!}">
                 <i class="fa fa-file-excel-o"></i>
                 <span>Alta masiva</span>
             </a>

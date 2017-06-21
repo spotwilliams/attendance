@@ -42,7 +42,7 @@ class ArchivoHandler extends ExcelHandler
             /** @var CellCollection $row */
             $row = $sheet->get($i);
             try {
-                if ($row->nombre !== 'empty') {
+                if ($row->cuit !== 'empty') {
                     $agente = $this->handlePersonales($row);
                     $this->handleLaborales($row, $agente);
                     $this->handleOperativos($row, $agente, $base);
@@ -109,7 +109,8 @@ class ArchivoHandler extends ExcelHandler
      */
     private function clearPossibleMistakes(CellCollection $cell)
     {
-        $agente = Agente::where('dni', '=', (int)$cell->dni);
+        $agente = Agente::where('cuit', '=', (int)$cell->cuit)
+        ->first();
 
         if ($agente !== null) {
             

@@ -18,16 +18,8 @@ class CreateEstudiosTable extends Migration
             $table->integer('id_agente')->index('estudio_es_de_agente_idx');
             $table->string('institucion', 150);
             $table->string('carrera', 45);
-            $table->enum('estado', array('CURSANDO', 'ABANDONADO', 'RECIBIDO'));
-            $table->enum('nivel', array(
-                'SECUNDARIO',
-                'TERCIARIO',
-                'UNIVERSITARIO',
-                'POSGRADO',
-                'MASTER',
-                'DOCTORADO',
-                'OTRO',
-            ));
+            $table->string('estado');
+            $table->string('nivel');
             $table->string('comentario', 200)->nullable();
             $table->timestamps();
             $table->softDeletes();
