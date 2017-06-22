@@ -67,11 +67,11 @@ class Personales extends Service
             ->delete();
         for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
             if ($this->hasSomeUsefullData($this->domicilios, $i, ['constituido'])) {
-    
+                
                 if ($this->domicilios['id'][$i] !== '') {
                     $domicilio = Domicilio::find($this->domicilios['id'][$i]);
                     if (!empty($domicilio)) {
-
+                        
                         /** @var Domicilio $domicilio */
                         $domicilio->update([
                             'calle'        => $this->domicilios['calle'][$i],
@@ -81,7 +81,7 @@ class Personales extends Service
                             'barrio'       => $this->domicilios['barrio'][$i],
                             'provincia'    => $this->domicilios['provincia'][$i],
                             'constituido'  => $this->domicilios['constituido'][$i],
-                            'libre'  => $this->domicilios['libre'][$i],
+                            'libre'        => $this->domicilios['libre'][$i],
                         ]);
                         
                     }
@@ -95,7 +95,7 @@ class Personales extends Service
                         'barrio'       => $this->domicilios['barrio'][$i],
                         'provincia'    => $this->domicilios['provincia'][$i],
                         'constituido'  => $this->domicilios['constituido'][$i],
-                        'libre'  => $this->domicilios['libre'][$i],
+                        'libre'        => $this->domicilios['libre'][$i],
                     ]);
                 }
             }
@@ -136,7 +136,6 @@ class Personales extends Service
             }
         }
     }
-    
     
     
 }

@@ -362,7 +362,7 @@ $control = 0;
                 // Pongo los datos en la nueva fila creada
                 var inputsCopy = $clone.find('input');
                 var selectsCopy = $clone.find('select');
-                for (var i = 0; i < 7; i++) {
+                for (var i = 0; i < 8; i++) {
                     $(inputsCopy[i]).val($(inptus[i]).val());
                 }
                 $(selectsCopy[0]).val($(selects[0]).val());
