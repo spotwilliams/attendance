@@ -23,8 +23,7 @@ $turnos = TurnosRepository::getAll();
 
     <div class="box-body">
         <div class="col-md-offset-2 col-md-8">
-
-                @include('bases.select-sin-btn' ,['label'=> 'Seleccione la base', 'baseSeleccionada' => '-1'])
+            @include('bases.select-sin-btn' ,['label'=> 'Seleccione la base', 'baseSeleccionada' => (isset($baseActual)?$baseActual->id:-1)])
 
 
             <div class="form-group">
@@ -48,7 +47,7 @@ $turnos = TurnosRepository::getAll();
                     <select class="form-control" name="turno" data-live-search="true">
                         <option value="-1">...</option>
                         @foreach ($turnos as $t)
-                            <option value="{{ $t->id }}">{{$t->codigo}} ({{$t->descripcion}})</option>
+                            <option value="{{ $t->id }}" @if(isset($turno) and ($turno->id === $t->id)) selected @endif>{{$t->codigo}} ({{$t->descripcion}})</option>
                         @endforeach
                     </select>
                     @if($errors->has('turno'))

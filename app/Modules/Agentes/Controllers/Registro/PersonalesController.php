@@ -4,11 +4,14 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
 use Cat\Models\Agente;
+use Cat\Modules\Agentes\Exceptions\Registro\EntidadDuplicada;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Personales as Update;
 use Illuminate\Http\Request;
+use Illuminate\Routing\Redirector;
+use Illuminate\Support\Facades\Redirect;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
@@ -45,7 +48,7 @@ class PersonalesController extends AppBaseController
      *
      * @param Request $request
      *
-     * @return Response
+     * @return Redirector
      */
     public function store(Request $request)
     {
@@ -59,7 +62,14 @@ class PersonalesController extends AppBaseController
             $service->execute();
             
             return redirect(route('agentesCreateLaborales', ['id' => $agente->id]));
+        } catch (EntidadDuplicada $e) {
+            Flash::error($e->getMessage());
+            
+            return redirect(route('agentesCreatePersonales'))
+                ->withInput();
+            
         } catch (\Exception $e) {
+            dd($e);
             Flash::error('No se pudo guadar los datos personales.');
             
             return redirect(route('agentesCreatePersonales'))

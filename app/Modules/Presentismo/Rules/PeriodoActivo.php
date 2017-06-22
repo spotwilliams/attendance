@@ -8,11 +8,8 @@
 
 namespace Cat\Modules\Validation\Rules;
 
-
 use Cat\Models\Periodo;
-use Cat\Modules\Presentismo\Exceptions\Validacion\Descriptor;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
-use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 
 class PeriodoActivo extends Rule
 {

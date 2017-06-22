@@ -1,10 +1,11 @@
 <?php
 
-namespace Cat\Modules\Presentismo\Exceptions\Validacion;
+namespace Cat\Modules\Presentismo\Exceptions;
 
+use Cat\Exceptions\MainDescriptor;
 use Cat\Models\TipoPresentismo;
 
-class Descriptor
+class Descriptor extends MainDescriptor
 {
     const CONTRATO_INACTIVO                  = 1000;
     const CONTRATO_NO_LOCACION               = 2000;
@@ -13,15 +14,7 @@ class Descriptor
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
-    private        $errorCode;
-    private        $errorDescription;
-    private static $errorMap;
     
-    private function __construct($code, $descripcion)
-    {
-        $this->errorCode        = $code;
-        $this->errorDescription = $descripcion;
-    }
     
     public static function contratoInactivo()
     {
@@ -75,6 +68,7 @@ class Descriptor
         
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
     }
+    
     public static function presentismoNoSeJustifica()
     {
         if (!isset(self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_JUSTIFICA])) {
@@ -85,6 +79,7 @@ class Descriptor
         
         return self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_JUSTIFICA];
     }
+    
     public static function presentismoNoSeInjustifica()
     {
         if (!isset(self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA])) {
@@ -96,23 +91,5 @@ class Descriptor
         return self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA];
     }
     
-    public function getCode()
-    {
-        return $this->errorCode;
-    }
-    
-    public function getDescription()
-    {
-        return $this->errorDescription;
-    }
-    
-    /**
-     * @param $code
-     * @return Descriptor
-     */
-    public static function mySelf($code)
-    {
-        return self::$errorMap[$code];
-    }
     
 }

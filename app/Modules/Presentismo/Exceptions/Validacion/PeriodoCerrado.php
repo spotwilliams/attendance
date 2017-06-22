@@ -9,6 +9,7 @@
 namespace Cat\Modules\Presentismo\Exceptions\Validacion;
 
 use Cat\Models\Agente;
+use Cat\Modules\Presentismo\Exceptions\Descriptor;
 
 class PeriodoCerrado extends Validation
 {

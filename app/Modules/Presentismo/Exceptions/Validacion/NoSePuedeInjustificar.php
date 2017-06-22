@@ -10,6 +10,7 @@ namespace Cat\Modules\Presentismo\Exceptions\Validacion;
 
 
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Descriptor;
 
 class NoSePuedeInjustificar extends \Exception
 {

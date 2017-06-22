@@ -38,13 +38,11 @@ class Injustificar extends Service
     {
         /** @var TipoPresentismo $tipoPresentismo */
         $tipoPresentismo = $this->presentismo->tipoPresentismo()->first();
-        if ($tipoPresentismo->esPresente()) {
-            throw new NoSePuedeInjustificar($tipoPresentismo);
-        } else {
+        if ($tipoPresentismo->puedoInjustificarlo()) {
             try {
-        
+                
                 DB::beginTransaction();
-        
+                
                 $this->presentismo->injustificado = 1;
                 $this->presentismo->save();
                 DB::commit();
@@ -52,6 +50,8 @@ class Injustificar extends Service
                 DB::rollBack();
                 throw $e;
             }
+        } else {
+            throw new NoSePuedeInjustificar($tipoPresentismo);
         }
     }
     

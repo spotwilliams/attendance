@@ -41,12 +41,12 @@ class Justificar extends Service
     {
         /** @var TipoPresentismo $tipoPresentismo */
         $tipoPresentismo = $this->presentismo->tipoPresentismo()->first();
-        if ($tipoPresentismo->esTipoInjustificado()) {
-            throw new NoSePuedeJustificar($tipoPresentismo);
-        } else {
+        if ($tipoPresentismo->puedoJustificarlo()) {
             $this->rulePeriodoActivo->check();
             $this->ruleAusente->check();
             $this->save();
+        } else {
+            throw new NoSePuedeJustificar($tipoPresentismo);
         }
     }
     

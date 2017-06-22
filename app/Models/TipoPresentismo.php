@@ -24,6 +24,16 @@ class TipoPresentismo extends Model
             'injustificado',
         ];
     
+    protected $noJustificables
+        = [
+            'A',
+        ];
+    protected $noInjustificables
+        = [
+            'P',//Presente
+            'F',//No laborable
+        ];
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
@@ -72,10 +82,23 @@ class TipoPresentismo extends Model
         return ((strtoupper($this->codigo) === TipoPresentismo::INJUSTIFICADO) or ($this->injustificado === 1));
     }
     
-    public function esTipoInjustificado()
+    public function puedoJustificarlo()
     {
-        return ((strtoupper($this->codigo) === TipoPresentismo::INJUSTIFICADO));
-        
+        if (in_array($this->codigo, $this->noJustificables)) {
+            // Significa que no puedo justificarlo
+            return false;
+        } else {
+            return true;
+        }
+    }
+    public function puedoInjustificarlo()
+    {
+        if (in_array($this->codigo, $this->noInjustificables)) {
+            // Significa que no puedo justificarlo
+            return false;
+        } else {
+            return true;
+        }
     }
     
 }

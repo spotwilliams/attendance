@@ -30,7 +30,7 @@ $idModal = 'comentarios-modal'
         @endfor
         </thead>
         <tbody>
-{{--        {{dd($agentes->all())}}--}}
+        {{--        {{dd($agentes->all())}}--}}
         @foreach($agentes as $age)
             <tr>
                 <td>{{$age->id}}</td>
@@ -240,7 +240,7 @@ $idModal = 'comentarios-modal'
                 .on('click', function () {
 
                     var myParent = $(this).parent().parent();
-                    console.log(myParent)
+
                     var fecha = datatableColumnHeaderValue(myParent, dataTable);
                     var agente = datatableCellValue(myParent, dataTable);
                     var presentismoParent = $(myParent).children('div');
@@ -256,6 +256,7 @@ $idModal = 'comentarios-modal'
                     $('.modal-id-agente').val(agente[0]);
                     $('.modal-id-tipo-presentismo').val($(presentismoSelected).val());
 
+                    $('#{{$idModal}}').data('dialog-comentary', $(this));
                     $('#{{$idModal}}').modal();
 
 
@@ -288,6 +289,11 @@ $idModal = 'comentarios-modal'
                                     showAnimation: 'slideDown',
                                     className: 'success'
                                 });
+                            var button = $('#{{$idModal}}').data('dialog-comentary');
+                            button.addClass('bg-gray-active')
+                                .removeClass('btn-default')
+                                .data('comentario', $('.modal-comentario').val());
+
                         },
                         error: function (xhr, other) {
                             var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;

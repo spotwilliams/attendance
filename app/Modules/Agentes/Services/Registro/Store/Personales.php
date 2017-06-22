@@ -10,6 +10,7 @@ use Cat\Models\Estudio;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Agentes\Exceptions\Registro\EntidadDuplicada;
 use Cat\Modules\Agentes\Services\Registro\CheckEstudiosAndDomicilio;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
@@ -82,6 +83,9 @@ class Personales extends Service
             return $this->agente;
         } catch (QueryException $e) {
             DB::rollBack();
+            if (str_contains($e->getMessage(),'Duplicate')) {
+                throw new EntidadDuplicada($this->agente);
+            }
             throw $e;
         }
     }
