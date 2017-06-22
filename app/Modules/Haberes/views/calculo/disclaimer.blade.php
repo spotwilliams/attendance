@@ -36,11 +36,11 @@
                     <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4><i class="icon fa fa-warning"></i> Aviso: Est&aacute; a punto de cerrar un periodo.</h4>
-                        Esto significa que s&oacute;lo alguien con los <span class="label label-info">privilegios suficientes</span>
-                        puede modificar los <span class="label label-success">presentismo</span> correspondientes a la
-                        <span class="label label-success">base</span>,
-                        <span class="label label-success">turno</span> y <span
-                                class="label label-success">periodos</span> listados.
+                        Esto significa que s&oacute;lo alguien con los <span class="">privilegios suficientes</span>
+                        puede modificar los <span class="">presentismo</span> correspondientes a la
+                        <span class="">base</span>,
+                        <span class="">turno</span> y <span
+                                class="">periodos</span> listados.
 
                     </div>
                     <div class="">

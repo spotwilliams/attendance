@@ -161,31 +161,31 @@ class Funciones extends Seeder
             ['id' => 3, 'id_padre' => null, 'nombre' => 'Operativo',],
             
             
-            ['id' => null, 'id_padre' => 1, 'nombre' => 'Administrativo'],
-            ['id' => null, 'id_padre' => 1, 'nombre' => 'Operador'],
-            ['id' => null, 'id_padre' => 1, 'nombre' => 'Apoyo Operativo'],
-            ['id' => null, 'id_padre' => 1, 'nombre' => 'Actas'],
-            ['id' => null, 'id_padre' => 1, 'nombre' => 'Coordinador'],
-            
-            
-            ['id' => null, 'id_padre' => 2, 'nombre' => 'Gerente'],
-            ['id' => null, 'id_padre' => 2, 'nombre' => 'Subgerente'],
-            ['id' => null, 'id_padre' => 2, 'nombre' => 'Apoyo Operativo'],
-            ['id' => null, 'id_padre' => 2, 'nombre' => 'Jefe de Base'],
-            ['id' => null, 'id_padre' => 2, 'nombre' => 'Abogada'],
-            
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/Motos'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/Alcoholemia'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Apoyo Operativo'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Chofer'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Chofer Dirección'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Delegado'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Mecánico'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos'],
-            ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos/Alcoholemia'],
+//            ['id' => null, 'id_padre' => 1, 'nombre' => 'Administrativo'],
+//            ['id' => null, 'id_padre' => 1, 'nombre' => 'Operador'],
+//            ['id' => null, 'id_padre' => 1, 'nombre' => 'Apoyo Operativo'],
+//            ['id' => null, 'id_padre' => 1, 'nombre' => 'Actas'],
+//            ['id' => null, 'id_padre' => 1, 'nombre' => 'Coordinador'],
+//
+//
+//            ['id' => null, 'id_padre' => 2, 'nombre' => 'Gerente'],
+//            ['id' => null, 'id_padre' => 2, 'nombre' => 'Subgerente'],
+//            ['id' => null, 'id_padre' => 2, 'nombre' => 'Apoyo Operativo'],
+//            ['id' => null, 'id_padre' => 2, 'nombre' => 'Jefe de Base'],
+//            ['id' => null, 'id_padre' => 2, 'nombre' => 'Abogada'],
+//
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/Motos'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Agente de Tránsito/Alcoholemia'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Apoyo Operativo'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Chofer'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Chofer Dirección'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Delegado'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Mecánico'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos'],
+//            ['id' => null, 'id_padre' => 3, 'nombre' => 'Motos/Alcoholemia'],
 
-            ['id' => null, 'id_padre' => null, 'nombre' => 'Otros'],
+//            ['id' => null, 'id_padre' => null, 'nombre' => 'Otro'],
         
         ];
         

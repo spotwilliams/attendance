@@ -57,7 +57,7 @@ class Personales extends Service
                     ]);
                 }
             }
-            if (isset($this->domicilios['carrera'])) {
+            if (isset($this->estudios['carrera'])) {
                 for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
                     Estudio::create([
                         'carrera'     => $this->estudios['carrera'][$i],

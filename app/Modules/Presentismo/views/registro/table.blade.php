@@ -30,6 +30,7 @@ $idModal = 'comentarios-modal'
         @endfor
         </thead>
         <tbody>
+{{--        {{dd($agentes->all())}}--}}
         @foreach($agentes as $age)
             <tr>
                 <td>{{$age->id}}</td>

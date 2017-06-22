@@ -9,12 +9,9 @@
 namespace Cat\Modules\Haberes\Services\Calculo;
 
 use Cat\Models\Agente;
-use Cat\Models\Base;
 use Cat\Models\Periodo;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoPresentismo;
 use Cat\Modules\Service;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Repositories\TipoPresentismosRepository;
 
 class Calculador extends Service
 {
@@ -72,47 +69,11 @@ class Calculador extends Service
         /** @var float $montoDescontable Monto de referencia para descontar */
         $montoDescontable = floatval($this->montoContrato / Calculador::FACTOR_DIVISION);
         
-        /** @var TipoPresentismo $tardanza codigo de los injustifados */
-        $tardanza = TipoPresentismo::tardanzas();
-        
         /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
-        $diasADescontar = $this->agente
-            ->presentismos()
-            ->where('id_periodo', '=', $this->periodo->id)
-            ->where('injustificado', '=', 1)
-            ->where('id_tipo_presentismo', '<>', $tardanza->id)
-            ->count();
-        $diasADescontar += $this->equivalenteEnTardanzas($tardanza);
-        
-        if ($this->isWeekend()) {
-            $diasADescontar = $diasADescontar * 2;
-        }
-        $this->monto = floatval($this->montoContrato - ($montoDescontable * $diasADescontar));
+        $diasADescontar = TipoPresentismosRepository::getCantFaltasInjustificadas($this->agente, $this->periodo);
+        $this->monto    = floatval($this->montoContrato - ($montoDescontable * $diasADescontar));
         
         return floatval($this->monto);
-    }
-    
-    private function isWeekend()
-    {
-        return $this->agente
-            ->operativo()
-            ->first()
-            ->turno()
-            ->first()
-            ->esFinDeSemana();
-    }
-    
-    private function equivalenteEnTardanzas(TipoPresentismo $tardanza)
-    {
-        $tardanzas = $this->agente
-            ->presentismos()
-            ->where('id_periodo', '=', $this->periodo->id)
-            ->where('injustificado', '=', 1)
-            ->where('id_tipo_presentismo', '=', $tardanza->id)
-            ->count();
-        
-        return round($tardanzas / 3);
-        
     }
     
     public function getMontoContrato()

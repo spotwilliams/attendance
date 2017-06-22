@@ -96,11 +96,48 @@ foreach (\Cat\Models\Funcion::whereNull('id_padre')->get(['id', 'nombre']) as $f
         @endif
     </div>
 </div>
-
+<?php
+$funcionEspecifica = [
+    'Operador',
+    'Apoyo Operativo',
+    'Actas',
+    'Coordinador',
+    'Gerente',
+    'Subgerente',
+    'Apoyo Operativo',
+    'Jefe de Base',
+    'Abogada',
+    'Agente de Tránsito',
+    'Agente de Tránsito/Motos',
+    'Agente de Tránsito/Alcoholemia',
+    'Apoyo Operativo',
+    'Chofer',
+    'Chofer Dirección',
+    'Delegado',
+    'Mecánico',
+    'Motos',
+    'Motos/Alcoholemia',
+];
+$funcion = (isset($operativo) ? $operativo->funcion_especifica : 'Otro');
+?>
 <div class="form-group">
     <label class="col-sm-2 control-label">Funci&oacute;n espec&iacute;fica</label>
     <div class="col-sm-8">
-        {!! Form::text('funcion_especifica', null, ['class' => 'form-control']) !!}
+        <select class="form-control" id="funcion-especifica-select" data-live-search="true">
+            @foreach($funcionEspecifica as $fe)
+                <option value="{{$fe}}" @if($funcion === $fe) selected @endif>{{$fe}}</option>
+            @endforeach
+            <option value="Otro" @if(!in_array($funcion, $funcionEspecifica)) selected @endif>
+                Otro
+            </option>
+        </select>
+    </div>
+</div>
+<div class="form-group funcion-especifica-show @if(in_array($funcion, $funcionEspecifica)) hidden @endif ">
+    <div class="col-md-offset-2 col-sm-8">
+        {!! Form::hidden('funcion_especifica') !!}
+        {!! Form::text('funcion_especifica_show', null, ['class' => 'form-control']) !!}
+        <p class="help-block">Agregue una funci&oacute;n espec&iacute;fica que no est&eacute; listada</p>
     </div>
 </div>
 
@@ -219,7 +256,24 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
                     $('.horario').attr('disabled', false);
 
                 }
-            })
+            });
+
+            $('#funcion-especifica-select').on('change', function () {
+                $('[name="funcion_especifica"]').val($(this).val());
+                if ($(this).val() === 'Otro') {
+                    $('.funcion-especifica-show').removeClass('hidden');
+                } else {
+                    $('.funcion-especifica-show').addClass('hidden');
+
+                }
+            });
+
+            $('[name="funcion_especifica_show"]').val($('[name="funcion_especifica"]').val());
+
+            $('[name="funcion_especifica_show"]').keyup(function () {
+                $('[name="funcion_especifica"]').val($(this).val());
+            });
+
         });
     </script>
 @append

@@ -108,7 +108,8 @@ class PresentismoRepository extends BaseRepository
             ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
             ->where('operativos.id_base', $base->id)
             ->where('contratos.id_estado_contrato', '=', $activo->id)
-            ->orderBy('apellido', 'asc');
+            ->orderBy('apellido', 'asc')
+        ->select(['agentes.id as id', 'nombre', 'apellido', 'cuit']);
         
         return $eloquent;
     }

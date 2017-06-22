@@ -9,6 +9,7 @@
 namespace Cat\Modules\Haberes\Services\Reporte;
 
 use Cat\Modules\Service;
+use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Support\Collection;
 use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
 use Maatwebsite\Excel\Facades\Excel;
@@ -39,10 +40,12 @@ class Reporte extends Service
                 $data = [];
                 foreach ($this->haberes as $haber) {
                     $data [] = [
-                        'Nombre'           => $haber->agente->nombre,
-                        'Apellido'         => $haber->agente->apellido,
-                        'CUIT'             => $haber->agente->cuit,
-                        'Monto a Facturar' => $haber->monto_facturado,
+                        'Nombre'                         => $haber->agente->nombre,
+                        'Apellido'                       => $haber->agente->apellido,
+                        'CUIT'                           => $haber->agente->cuit,
+                        'Monto a Facturar'               => $haber->monto_facturado,
+                        'Cantidad faltas Injustificadas' => (string)TipoPresentismosRepository::getCantFaltasInjustificadas($haber->agente,
+                            $haber->periodo),
                     ];
                 }
                 $sheet->fromArray($data);

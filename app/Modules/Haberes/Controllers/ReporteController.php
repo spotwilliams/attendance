@@ -14,6 +14,7 @@ use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Log;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
@@ -40,6 +41,8 @@ class ReporteController extends AppBaseController
             $periodo = Periodo::findOrFail($input['periodo']);
             $base    = Base::findOrFail($input['base']);
             $turno   = Turno::findOrFail($input['turno']);
+            
+            /** @var Collection $agentes */
             $agentes = $this->helper
                 ->getAgentesForHaberesReport($base, $turno, $periodo);
             
