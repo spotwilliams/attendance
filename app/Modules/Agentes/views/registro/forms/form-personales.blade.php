@@ -87,7 +87,7 @@
 </div>
 
 
-<div class="form-group @if($errors->has('estado_civil')) has-error @endif">
+<div class="form-group">
     {!! Form::label('estado_civil', 'Estado Civil', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::select('estado_civil',
@@ -99,6 +99,17 @@
          'SEPARADO DE HECHO' => 'Separado de hecho',
          'UNION CIVIL' => 'Uni&oacute;n civil',
          'DIVORCIADO' => 'Divorciado'
+          ], null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group">
+    {!! Form::label('sexo', 'Sexo', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::select('sexo',
+         [
+         'M' => 'Mujer',
+         'H' => 'Hombre',
           ], null, ['class' => 'form-control']) !!}
     </div>
 </div>

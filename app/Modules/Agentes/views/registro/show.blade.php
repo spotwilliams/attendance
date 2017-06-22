@@ -44,6 +44,10 @@
                                 <b>F. Nacimiento</b> <a
                                         class="pull-right">{{(new DateTime($agente->fecha_nacimiento))->format('d/m/Y')}}</a>
                             </li>
+                            <li class="list-group-item">
+                                <b>Sexo</b> <a
+                                        class="pull-right">{{($agente->sexo ==='M'? 'Mujer': 'Hombre')}}</a>
+                            </li>
                         </ul>
                     </div>
                     <!-- /.box-body -->

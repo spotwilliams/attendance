@@ -21,6 +21,7 @@ class CreateAgentesTable extends Migration
             $table->string('dni', 60)->index('dni_index')->nullable();
             $table->date('fecha_nacimiento');
             $table->string('email', 100);
+            $table->string('sexo', 10)->nullable();
             $table->string('telefono', 100);
             $table->string('cuit', 45)->unique('cuit_index');
             

@@ -27,6 +27,7 @@ class Agente extends Model
             'telefono',
             'email',
             'estado_civil',
+            'sexo',
             'id_base',
             'id_area',
             'id_domicilio',

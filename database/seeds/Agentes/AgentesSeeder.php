@@ -41,6 +41,7 @@ class AgentesSeeder extends Seeder
                 'fecha_nacimiento' => date('Y-m-d'),
                 'cuit'             => $faker->isbn13(),
                 'estado_civil'     => 'CASADO',
+                'sexo'             => 'H',
                 'email'            => $faker->email(),
                 'telefono'         => $faker->phoneNumber(false),
             ];
