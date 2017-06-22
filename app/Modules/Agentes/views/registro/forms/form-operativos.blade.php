@@ -77,13 +77,9 @@ foreach (\Cat\Models\Cargo::all() as $c) {
 <?php
 $funciones = [-1 => 'Seleccione...'];
 
-foreach (\Cat\Models\Funcion::whereNull('id_padre')->get(['id', 'nombre']) as $funcion) {
-
-    foreach ($funcion->hijas()->get(['id', 'nombre']) as $f) {
-        $funciones[$funcion->nombre] [$f->id] = $f->nombre;
-    }
+foreach (\Cat\Models\Funcion::all() as $funcion) {
+    $funciones[$funcion->id] = $funcion->nombre;
 }
-
 ?>
 
 <div class="form-group @if($errors->has('id_funcion')) has-error @endif">

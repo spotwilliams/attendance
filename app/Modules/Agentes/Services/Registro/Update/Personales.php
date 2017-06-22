@@ -10,6 +10,7 @@ use Cat\Models\Estudio;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Agentes\Services\Registro\CheckEstudiosAndDomicilio;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\QueryException;
@@ -17,6 +18,7 @@ use Illuminate\Support\Facades\DB;
 
 class Personales extends Service
 {
+    use CheckEstudiosAndDomicilio;
     /** @var Agente */
     protected $agente;
     
@@ -44,12 +46,33 @@ class Personales extends Service
             DB::beginTransaction();
             
             $this->agente->update($this->input);
+            $this->workWithDomicilios();
+            $this->workWithEstudios();
             
-            for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
-                /** @var Domicilio $domicilio */
-                if (isset($this->domicilios['id'][$i])) {
+            DB::commit();
+            
+            return $this->agente;
+        } catch (QueryException $e) {
+            
+            DB::rollBack();
+            throw $e;
+        }
+    }
+    
+    private function workWithDomicilios()
+    {
+        $notDeleteThis = array_values($this->domicilios['id']);
+        
+        Domicilio::whereNotIn('id', $notDeleteThis)
+            ->delete();
+        for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
+            if ($this->hasSomeUsefullData($this->domicilios, $i, ['constituido'])) {
+    
+                if ($this->domicilios['id'][$i] !== '') {
                     $domicilio = Domicilio::find($this->domicilios['id'][$i]);
                     if (!empty($domicilio)) {
+
+                        /** @var Domicilio $domicilio */
                         $domicilio->update([
                             'calle'        => $this->domicilios['calle'][$i],
                             'numero'       => $this->domicilios['numero'][$i],
@@ -58,6 +81,7 @@ class Personales extends Service
                             'barrio'       => $this->domicilios['barrio'][$i],
                             'provincia'    => $this->domicilios['provincia'][$i],
                             'constituido'  => $this->domicilios['constituido'][$i],
+                            'libre'  => $this->domicilios['libre'][$i],
                         ]);
                         
                     }
@@ -71,13 +95,25 @@ class Personales extends Service
                         'barrio'       => $this->domicilios['barrio'][$i],
                         'provincia'    => $this->domicilios['provincia'][$i],
                         'constituido'  => $this->domicilios['constituido'][$i],
+                        'libre'  => $this->domicilios['libre'][$i],
                     ]);
                 }
             }
-            for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
-                /** @var Estudio $estudio */
+        }
+    }
+    
+    private function workWithEstudios()
+    {
+        
+        $notDeleteThis = array_values($this->estudios['id']);
+        
+        Estudio::whereNotIn('id', $notDeleteThis)
+            ->delete();
+        for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
+            if ($this->hasSomeUsefullData($this->estudios, $i, ['estado', 'nivelestudio'])) {
                 
-                if (isset($this->estudios['id'][$i])) {
+                if ($this->estudios['id'][$i] !== '') {
+                    /** @var Estudio $estudio */
                     $estudio = Estudio::find($this->estudios['id'][$i]);
                     if (!empty($estudio)) {
                         
@@ -98,15 +134,9 @@ class Personales extends Service
                     ]);
                 }
             }
-            
-            DB::commit();
-            
-            return $this->agente;
-        } catch (QueryException $e) {
-            
-            DB::rollBack();
-            throw $e;
         }
     }
+    
+    
     
 }

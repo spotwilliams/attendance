@@ -19,10 +19,11 @@ class Domicilio extends Model
         = [
             'calle',
             'numero',
-            'deptartamento',
+            'departamento',
             'piso',
             'barrio',
             'provincia',
+            'constituido',
             'libre',
             'id_agente',
         ];

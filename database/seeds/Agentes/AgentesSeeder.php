@@ -6,6 +6,8 @@ use Cat\Models\Agente;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales;
 use Cat\Modules\Agentes\Services\Registro\Store\Operativos;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales;
+use Faker\Provider\es_AR\PhoneNumber;
+use Faker\Provider\Internet;
 use Illuminate\Database\Seeder;
 
 class AgentesSeeder extends Seeder
@@ -22,8 +24,13 @@ class AgentesSeeder extends Seeder
         $person = new \Faker\Provider\en_US\Person($faker);
         $faker->addProvider($person);
         
-        $cuit = new \Faker\Provider\Uuid($faker);
+        $cuit = new \Faker\Provider\Barcode($faker);
         $faker->addProvider($cuit);
+        
+        $email = new Internet($faker);
+        $faker->addProvider($email);
+        
+        $faker->addProvider(new PhoneNumber($faker));
         
         for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
             $agente = [
@@ -32,8 +39,10 @@ class AgentesSeeder extends Seeder
                 'apellido'         => $faker->lastName(),
                 'dni'              => rand(3000000, 50000000) + rand(0, 999999),
                 'fecha_nacimiento' => date('Y-m-d'),
-                'cuit'             => $faker->uuid(),
+                'cuit'             => $faker->isbn13(),
                 'estado_civil'     => 'CASADO',
+                'email'            => $faker->email(),
+                'telefono'         => $faker->phoneNumber(false),
             ];
             $age    = new Agente($agente);
             (new Personales($age))->execute();

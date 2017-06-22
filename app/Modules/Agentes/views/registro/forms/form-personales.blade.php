@@ -125,10 +125,11 @@ $control = 0;
         @foreach($estudios  as $est)
 
             <?php $control++;?>
-            <input type="hidden" class="form-control" value="{{$est['id']}}" placeholder="Carrera" name="estudio[id][]">
 
             <div class="panel-body estudiosWrapper">
                 <div class="form-group estudiosTemplate" id="estudiosTemplate">
+                    <input type="hidden" class="form-control" value="{{$est['id']}}" placeholder="Carrera"
+                           name="estudio[id][]">
                     <div class="col-sm-3">
                         <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="T&iacute;tutlo"
                                name="estudio[carrera][]">
@@ -198,11 +199,11 @@ $control = 0;
     <div class="panel panel-default col-sm-8">
         @foreach($domicilios as $dom)
             <?php $control++;?>
-            <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera"
-                   name="domicilio[id][]">
 
             <div class="panel-body domiciliosWrapper">
                 <div class="domiciliosTemplate" id="domiciliosTemplate">
+                    <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera"
+                           name="domicilio[id][]">
                     <div class="form-group">
                         <div class="col-sm-6">
                             <input type="text" class="form-control" value="{{$dom['calle']}}" placeholder="Calle"
@@ -290,6 +291,7 @@ $control = 0;
 
                 // Ubico los datos actuales
                 var inptus = $template.find('input');
+                var selects = $template.find('select');
 
                 // Realizo la copia y quito el id para no copiar repetidos
                 var $clone = $template
@@ -307,9 +309,11 @@ $control = 0;
 
                 // Pongo los datos en la nueva fila creada
                 var inputsCopy = $clone.find('input');
+                var selectsCopy = $clone.find('select');
 
                 for (var i = 0; i < 2; i++) {
                     $(inputsCopy[i]).val($(inptus[i]).val());
+                    $(selectsCopy[i]).val($(selects[i]).val());
                 }
 
                 // Saco los datos en la linea actual
@@ -335,6 +339,7 @@ $control = 0;
 
                 // Ubico los datos actuales
                 var inptus = $template.find('input');
+                var selects = $template.find('select');
 
                 var $clone = $template
                     .clone()
@@ -356,9 +361,11 @@ $control = 0;
 
                 // Pongo los datos en la nueva fila creada
                 var inputsCopy = $clone.find('input');
+                var selectsCopy = $clone.find('select');
                 for (var i = 0; i < 7; i++) {
                     $(inputsCopy[i]).val($(inptus[i]).val());
                 }
+                $(selectsCopy[0]).val($(selects[0]).val());
 
                 // Saco los datos en la linea actual
                 $template

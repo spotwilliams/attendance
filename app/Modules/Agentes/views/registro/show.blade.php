@@ -51,6 +51,12 @@
                 <div class="box-body">
                     <a href="{!! route('agentesIndex', ['base' => $base->id]) !!}"
                        class="btn btn-primary">Volver</a>
+                    <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
+                       class="btn btn-primary"
+                       data-toggle="tooltip" data-placement="top" title="Editar"
+                    >Editar
+                        <i class="fa fa-edit"></i>
+                    </a>
                 </div>
                 <!-- /.box -->
             </div>
