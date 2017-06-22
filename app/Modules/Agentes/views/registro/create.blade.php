@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h1>
-            Datos del agente
-        </h1>
-    </section>
     <div class="content">
         <div class="box box-warning">
 
@@ -15,6 +10,11 @@
 
             --}}
             <div class="box-body">
+                <div class="box-header with-border">
+                    <h3 class="box-title">
+                        Datos del agente
+                    </h3>
+                </div>
                 @include('flash::message')
 
                 <div class="nav-tabs-custom">

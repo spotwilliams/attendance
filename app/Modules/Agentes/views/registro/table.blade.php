@@ -5,7 +5,7 @@ $idModal = 'modal-agentes';
 <table class="table table-hover" id="presentismos-table">
     <thead>
     <th>Agente</th>
-    <th>DNI</th>
+    {{--<th>DNI</th>--}}
     <th>CUIT</th>
     <th>Operaciones</th>
     </thead>
@@ -13,7 +13,7 @@ $idModal = 'modal-agentes';
     @foreach($agentes as $agente)
         <tr>
             <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
-            <td>{{$agente->dni}}</td>
+{{--            <td>{{$agente->dni}}</td>--}}
             <td>{{$agente->cuit}}</td>
             @include('Agentes::registro.commons.operaciones-celda')
 

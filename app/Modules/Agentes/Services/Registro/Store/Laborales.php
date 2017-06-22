@@ -45,13 +45,13 @@ class Laborales extends Service
     public function __construct(Agente $agente, $input)
     {
         
-        $this->agente     = $agente;
-        $this->id_sial    = $input['id_sial'];
-        $this->ficha      = $input['ficha'];
-        $this->monto      = $input['monto'];
-        $this->fecha      = new \DateTime($input['fecha_ingreso']);
-        $this->estado     = EstadoContrato::findOrFail($input['id_estado_contrato']);
-        $this->tipo       = TipoContrato::findOrFail($input['id_tipo_contrato']);
+        $this->agente  = $agente;
+        $this->id_sial = $input['id_sial'];
+        $this->ficha   = $input['ficha'];
+        $this->monto   = $input['monto'];
+        $this->fecha   = new \DateTime($input['fecha_ingreso']);
+        $this->estado  = EstadoContrato::findOrFail($input['id_estado_contrato']);
+        $this->tipo    = TipoContrato::findOrFail($input['id_tipo_contrato']);
     }
     
     public function execute()
@@ -62,11 +62,15 @@ class Laborales extends Service
             DB::beginTransaction();
             $this->agente->save();
             
-            Contrato::create([
-                'fecha_ingreso'      => $this->fecha->format('Y-m-d'),
+            /** @var Contrato $contrato */
+            $contrato = Contrato::firstOrCreate([
                 'id_tipo_contrato'   => $this->tipo->id,
                 'id_estado_contrato' => $this->estado->id,
                 'id_agente'          => $this->agente->id,
+            ]);
+            
+            $contrato->update([
+                'fecha_ingreso'      => $this->fecha->format('Y-m-d'),
                 'id_sial'            => $this->id_sial,
                 'ficha'              => $this->ficha,
                 'monto'              => floatval($this->monto),
@@ -75,7 +79,8 @@ class Laborales extends Service
             DB::commit();
             
             return $this->agente;
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
+            dd($e);
             DB::rollBack();
             throw $e;
         }

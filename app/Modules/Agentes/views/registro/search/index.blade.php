@@ -19,7 +19,7 @@
                         {{ Form::open(['route' => 'agentesSearchIndex', 'method' => 'GET'])}}
                         <div class="input-group input-group-sm">
                             {{--<input type="text" class="form-control">--}}
-                            {{ Form::text('search', Request::input('search'), ['id' => 'search', 'placeholder' => 'Ingrese un nombre ó CUIT ó DNI...', 'class' => 'form-control']) }}
+                            {{ Form::text('search', Request::input('search'), ['id' => 'search', 'placeholder' => 'Ingrese un nombre o CUIT o DNI...', 'class' => 'form-control']) }}
                             <span class="input-group-btn">
                                 {{--<button type="button" class="btn btn-info btn-flat">Buscar!</button>--}}
                                 {{ Form::submit('Buscar', ['class' => 'btn btn-info btn-flat']) }}
@@ -38,7 +38,7 @@
 
                             <thead>
                             <th>Agente</th>
-                            <th>DNI</th>
+                            {{--<th>DNI</th>--}}
                             <th>CUIT</th>
                             <th>Base</th>
                             <th>Operaciones</th>

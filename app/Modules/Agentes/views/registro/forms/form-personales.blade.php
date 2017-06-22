@@ -380,9 +380,11 @@ $control = 0;
 
             if ($('[name="fecha_nacimiento"]').val() === '') {
                 var day = moment();
+                $('[name="fecha_nacimiento"]').val(day.format('Y-MM-DD'))
             } else {
                 var day = moment($('[name="fecha_nacimiento"]').val());
             }
+
             $('[name="fecha_nacimiento_show"]')
                 .val(day.format('DD/MM/YYYY'))
                 .daterangepicker({
