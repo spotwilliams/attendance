@@ -11,3 +11,7 @@ i.overlay-td {
     position: relative;
     z-index: 999;
 }
+
+/*div.dropdown-menu  {*/
+    /*max-width: 50px !important;*/
+/*}*/

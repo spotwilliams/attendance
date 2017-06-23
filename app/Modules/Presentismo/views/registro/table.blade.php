@@ -18,39 +18,44 @@ while ($fecha <= $fechaToday) {
 $selector = 'selectpicker';
 $idModal = 'comentarios-modal'
 ?>
-<div class="table-responsive">
-    <table class="table hover" id="presentismos-table">
-        <thead>
-        <th>Id Agente</th>
-        <th>Agente</th>
-        <th>CUIT</th>
-        <th>Mod. Contratacion</th>
-        @for($i = 0; $i < count($fechasToShow) ;$i++)
-            <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
-        @endfor
-        </thead>
-        <tbody>
-        {{--        {{dd($agentes->all())}}--}}
-        @foreach($agentes as $age)
-            <tr>
-                <td>{{$age->id}}</td>
-                <td>{{$age->apellido}}, {{$age->nombre}}</td>
-                <td>{{$age->cuit}}</td>
-                <td>{{$age->contrato->tipoContrato->descripcion}}</td>
-                <?php $presentismos = $age->presentismos->keyBy('fecha'); ?>
+<div class="row">
+
+    <div class="col-md-12">
+        <div class="">
+            <table class="table hover" id="presentismos-table">
+                <thead>
+                <th>Id Agente</th>
+                <th>Agente</th>
+                <th>CUIT</th>
+                <th>Mod. Contratacion</th>
                 @for($i = 0; $i < count($fechasToShow) ;$i++)
-
-                    <td><?php
-                        $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
-                        echo HtmlCustoms::getSelectForTipoPresentismo($p,
-                            $age->contrato->tipoContrato)
-                        ?></td>
+                    <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
                 @endfor
+                </thead>
+                <tbody>
+                {{--        {{dd($agentes->all())}}--}}
+                @foreach($agentes as $age)
+                    <tr>
+                        <td>{{$age->id}}</td>
+                        <td>{{$age->apellido}}, {{$age->nombre}}</td>
+                        <td>{{$age->cuit}}</td>
+                        <td>{{$age->contrato->tipoContrato->descripcion}}</td>
+                        <?php $presentismos = $age->presentismos->keyBy('fecha'); ?>
+                        @for($i = 0; $i < count($fechasToShow) ;$i++)
 
-            </tr>
-        @endforeach
-        </tbody>
-    </table>
+                            <td><?php
+                                $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
+                                echo HtmlCustoms::getSelectForTipoPresentismo($p,
+                                    $age->contrato->tipoContrato)
+                                ?></td>
+                        @endfor
+
+                    </tr>
+                @endforeach
+                </tbody>
+            </table>
+        </div>
+    </div>
 </div>
 
 @section('scripts')
@@ -65,6 +70,7 @@ $idModal = 'comentarios-modal'
                 $('[data-toggle="popover"]')
                     .popover({
                         'html': true,
+                        'placement': 'bottom'
 
                     })
                     .off('click')
@@ -117,8 +123,8 @@ $idModal = 'comentarios-modal'
                     .selectpicker('refresh');
                 $(obj).children('.overlay-td').remove();
 
-                $(ref).hide();
-                var messenger = $(ref).parents('.input-group.margin')[0];
+//                $(ref).hide();
+//                var messenger = $(ref).parents('.input-group.margin')[0];
                 $(obj).notify(message,
                     {
                         autoHide: true,
@@ -219,10 +225,10 @@ $idModal = 'comentarios-modal'
                 ordering: false,
                 paging: false,
                 bInfo: false,
-                @if($agentes->count() <= 5)
-                scrollY: "900px",
-                scrollCollapse: false,
-                @endif
+                {{--@if($agentes->count() <= 5)--}}
+                //                scrollY: "900px",
+                //                scrollCollapse: false,
+                {{--@endif--}}
                 columnDefs: [
                     {
                         targets: [0],
@@ -280,19 +286,15 @@ $idModal = 'comentarios-modal'
                         type: 'POST',
                         data: data,
                         success: function (xhr, other) {
-                            $('.modal-save').notify(xhr.message,
-                                {
-                                    autoHide: true,
-                                    // if autoHide, hide after milliseconds
-                                    autoHideDelay: 2000,
-                                    position: 'top',
-                                    showAnimation: 'slideDown',
-                                    className: 'success'
-                                });
+
                             var button = $('#{{$idModal}}').data('dialog-comentary');
                             button.addClass('bg-gray-active')
                                 .removeClass('btn-default')
                                 .data('comentario', $('.modal-comentario').val());
+
+                            $('#{{$idModal}}').modal('toggle');
+                            message(button, xhr.message, idTipoPresentismo, 'success');
+
 
                         },
                         error: function (xhr, other) {

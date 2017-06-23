@@ -35,8 +35,8 @@
             <input type="hidden" class="modal-id-agente"/>
             <input type="hidden" class="modal-id-tipo-presentismo"/>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Close</button>
-                <button type="button" class="btn btn-primary modal-save">Save changes</button>
+                <button type="button" class="btn btn-default pull-left" data-dismiss="modal">Cancelar</button>
+                <button type="button" class="btn btn-primary modal-save">Guardar comentario</button>
             </div>
         </div>
     </div>

@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
+use Cat\Helpers\Calculation;
 use Cat\Models\Base;
 use Cat\Models\Periodo;
 use Cat\Models\Turno;
@@ -68,19 +69,21 @@ class GeneralController extends AppBaseController
         
         try {
             
-            $base    = Base::findOrFail($base);
-            $turno   = Turno::findOrFail($turno);
-            $desde   = new \DateTime($desde);
-            $hasta   = new \DateTime($hasta);
+            $base  = Base::findOrFail($base);
+            $turno = Turno::findOrFail($turno);
+
+            $dateRange =  Calculation::prepareTenDaysDiff($desde, $hasta);
+
+            // Controlamos que solo existan 10 dias como maximo
             $agentes = $this->presentismoRepository
                 ->getEloquentAgentesBetweenDates(
                     $base,
-                    $desde,
-                    $hasta
+                    $dateRange['desde'],
+                    $dateRange['hasta']
                 )
                 ->with('contrato.tipoContrato')
                 ->where('operativos.id_turno', '=', $turno->id);
-
+            
         } catch (ModelNotFoundException $e) {
             Flash::error('Se ha seleccionado una base inexistente');
             
@@ -88,8 +91,8 @@ class GeneralController extends AppBaseController
         }
         
         return view('Presentismo::registro.lista')
-            ->with('desde', $desde)
-            ->with('hasta', $hasta)
+            ->with('desde', $dateRange['desde'])
+            ->with('hasta', $dateRange['hasta'])
             ->with('turno', $turno)
             ->with('baseActual', $base)
             ->with('agentes', $agentes->paginate(25));

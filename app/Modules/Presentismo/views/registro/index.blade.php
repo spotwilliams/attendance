@@ -59,7 +59,7 @@
                     startDate: startDate.format('DD/MM/Y'),
                     endDate: endDate.format('DD/MM/Y'),
                     dateLimit: {
-                        days: 10
+                        days: {{\Cat\Helpers\Calculation::MAX_DIFF_BETWEEN_DATES}}
                     },
                     opens: 'center',
                 },

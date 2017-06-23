@@ -33,7 +33,7 @@ class Justificar extends Service
         $this->presentismo       = $presentismo;
         $this->agente            = $presentismo->agente()->first();
         $this->ruleAusente       = new Ausente($this->agente, $this->presentismo->tipoPresentismo()->first());
-        $this->rulePeriodoActivo = new PeriodoActivo($this->agente, $this->presentismo->tipoPresentismo()->first());
+        $this->rulePeriodoActivo = new PeriodoActivo($this->agente, $this->presentismo->tipoPresentismo()->first(), new \DateTime($this->presentismo->fecha));
         
     }
     

@@ -32,7 +32,7 @@ class AgentesSeeder extends Seeder
         
         $faker->addProvider(new PhoneNumber($faker));
         
-        for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
+        for ($i = 1; $i <2; $i++) {
             $agente = [
                 'id'               => $i,
                 'nombre'           => $faker->name(),
@@ -54,7 +54,7 @@ class AgentesSeeder extends Seeder
                 'monto'              => rand(10000, 90000),
                 'fecha_ingreso'      => date('Y-m-d'),
                 'id_estado_contrato' => 1,
-                'id_tipo_contrato'   => rand(1, 8),
+                'id_tipo_contrato'   => 8,
             ];
             (new Laborales($age, $laboral))->execute();
             $operativos = [
@@ -64,8 +64,8 @@ class AgentesSeeder extends Seeder
                 'id_cargo'           => 1,
                 'id_funcion'         => 1,
                 'funcion_especifica' => '',
-                'id_base'            => rand(1, 16),
-                'id_turno'           => rand(1, 11),
+                'id_base'            => 1,//rand(1, 16),
+                'id_turno'           => 1,//rand(1, 11),
                 'hora_entrada'       => 1,
                 'hora_salida'        => 1,
                 'eximido'            => 1,
