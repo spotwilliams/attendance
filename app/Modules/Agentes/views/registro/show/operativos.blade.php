@@ -47,49 +47,52 @@ $turno = $operativo->turno()->first();
 
 ?>
 <div class="table-responsive">
-    <table class="table">
-        <tbody>
-        <tr>
-            <th>Gerencia:</th>
-            <td>{{$nombreGerencia}}</td>
-        </tr>
-        <tr>
-            <th>Subgerencia:</th>
-            <td>{{$NombreSubgerencia}}</td>
-        </tr>
-        <tr>
-            <th>Area:</th>
-            <td>{{isset($area->nombre)?$area->nombre:'No posee'}}</td>
-        </tr>
-        <tr>
-            <th>Cargo:</th>
-            <td>{{isset($cargo->nombre)?$cargo->nombre:'No posee'}}</td>
-        </tr>
-        <tr>
-            <th>Funci&oacute;n:</th>
-            <td>{{isset($funcion->nombre)?$funcion->nombre:'No posee'}}</td>
-        </tr>
-        <tr>
-            <th>Funci&oacute;n espec&iacute;fica:</th>
-            <td>{{isset($operativo->funcion_especifica)?$operativo->funcion_especifica:'No posee'}}</td>
+    <div class="col-md-6">
 
-        </tr>
+        <table class="table">
+            <tbody>
+            <tr>
+                <th>Gerencia:</th>
+                <td>{{$nombreGerencia}}</td>
+            </tr>
+            <tr>
+                <th>Subgerencia:</th>
+                <td>{{$NombreSubgerencia}}</td>
+            </tr>
+            <tr>
+                <th>Area:</th>
+                <td>{{isset($area->nombre)?$area->nombre:'No posee'}}</td>
+            </tr>
+            <tr>
+                <th>Cargo:</th>
+                <td>{{isset($cargo->nombre)?$cargo->nombre:'No posee'}}</td>
+            </tr>
+            <tr>
+                <th>Funci&oacute;n:</th>
+                <td>{{isset($funcion->nombre)?$funcion->nombre:'No posee'}}</td>
+            </tr>
+            <tr>
+                <th>Funci&oacute;n espec&iacute;fica:</th>
+                <td>{{isset($operativo->funcion_especifica)?$operativo->funcion_especifica:'No posee'}}</td>
 
-        <tr>
-            <th>Base:</th>
-            <td>{{$base->nombre}}</td>
-        </tr>
-        <tr>
-            <th>Turno:</th>
-            <td>{{$turno->codigo}}</td>
-        </tr>
-        <tr>
-            <th>Horario:</th>
-            <td>{{$horario->hora_entrada}} a {{$horario->hora_salida}}</td>
-        </tr>
+            </tr>
+
+            <tr>
+                <th>Base:</th>
+                <td>{{$base->nombre}}</td>
+            </tr>
+            <tr>
+                <th>Turno:</th>
+                <td>{{$turno->codigo}}</td>
+            </tr>
+            <tr>
+                <th>Horario:</th>
+                <td>{{$horario->hora_entrada}} a {{$horario->hora_salida}}</td>
+            </tr>
 
 
-        </tbody>
-    </table>
+            </tbody>
+        </table>
+    </div>
 </div>
 
