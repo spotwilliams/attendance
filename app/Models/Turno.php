@@ -14,6 +14,7 @@ class Turno extends Model
         = [
             'FSD',
             'FSN',
+            'FSI',
         ];
     
     const CREATED_AT = 'created_at';

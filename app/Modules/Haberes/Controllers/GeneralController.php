@@ -4,6 +4,7 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 
 use Cat\Models\Base;
 use Cat\Models\Contrato;
+use Cat\Models\EstadoPeriodo;
 use Cat\Models\Haber;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
@@ -74,13 +75,18 @@ class GeneralController extends AppBaseController
     public function listaAgentes(Request $request, $base, $periodo, $turno)
     {
         try {
-            $periodo              = Periodo::findOrFail($periodo);
-            $base                 = Base::findOrFail($base);
-            $tipoLocacion         = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
+            $periodo       = Periodo::findOrFail($periodo);
+            $base          = Base::findOrFail($base);
+            $turno         = Turno::findOrFail($turno);
+            $estadoPeriodo = EstadoPeriodo::where('id_periodo', '=', $periodo->id)
+                ->where('id_base', '=', $base->id)
+                ->where('id_turno', '=', $turno->id)
+            ->first();
+            $tipoLocacion  = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
                 ->get(['id'])
                 ->keyBy('id')
                 ->toArray());
-            $turno                = Turno::findOrFail($turno);
+
             $agentesYaConfirmados = Haber::where('id_periodo', '=', $periodo->id)
                 ->get(['id_agente'])->toArray();
             $desde                = new \DateTime($periodo->fecha_comienzo);
@@ -105,11 +111,12 @@ class GeneralController extends AppBaseController
                 ->whereNotIn('agentes.id', $agentesYaConfirmados)
                 ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->where('operativos.id_turno', '=', $turno->id);
-            
+
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)
                 ->with('periodo', $periodo)
+                ->with('estadoPeriodo', $estadoPeriodo)
                 ->with('turno', $turno);
         } catch (ModelNotFoundException $e) {
             Flash::error('No se ha podido continuar. Intente nuevamente');

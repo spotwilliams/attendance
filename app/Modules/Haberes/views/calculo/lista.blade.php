@@ -31,7 +31,7 @@ while ($fecha < $fechaToday) {
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
-                    @if(!$agentes->isEmpty())
+                    @if($estadoPeriodo->estaAbierto())
                         {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}
                         {!! Form::hidden('periodo', $periodo->id) !!}
                         {!! Form::hidden('base', $base->id) !!}
@@ -46,22 +46,28 @@ while ($fecha < $fechaToday) {
             </div>
 
             <div class="box-body">
-                <div class="form-group">
-                    <h4 class="col-sm-8 col-sm-offset-2">
-                        Base <span class="label label-info">{{$base->nombre}}</span>
-                        Periodo <span
-                                class="label label-success">{{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}</span>
-                        hasta <span
-                                class="label label-success">{{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
-                        Turno <span class="label label-info">{{$turno->codigo}}</span>
-                    </h4>
-                    <div class="progress-group col-sm-8 col-sm-offset-2">
+                <div class="form-group col-sm-10 col-sm-offset-1">
+                    <div class="progress-group ">
                         <span class="progress-text">Paso 3</span>
                         <span class="progress-number"><b>3</b>/4</span>
 
                         <div class="progress">
                             <div class="progress-bar progress-bar-yellow" style="width: 75%"></div>
                         </div>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="box-title">Base <span class="label label-info">{{$base->nombre}}</span></h4>
+                    </div>
+                    <div class="col-md-2">
+                        <h4 class="box-title">Turno <span class="label label-info">{{$turno->codigo}}</span></h4>
+                    </div>
+                    <div class="col-md-4">
+                        <h4 class="box-title">
+                            Periodo <span
+                                    class="label label-info">{{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}</span>
+                            hasta <span
+                                    class="label label-info">{{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
+                        </h4>
                     </div>
                 </div>
 
@@ -74,7 +80,7 @@ while ($fecha < $fechaToday) {
                     {{--<th>Confirmar</th>--}}
                     </thead>
                     <tbody>
-                    @if($agentes->isEmpty())
+                    @if(!$estadoPeriodo->estaAbierto())
                         <tr>
                             <td colspan="10">
                                 <div class="col-md-offset-2 col-md-6">
@@ -94,6 +100,20 @@ while ($fecha < $fechaToday) {
                                     </button>
                                     {!! Form::close() !!}
                                     <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
+                                </div>
+                            </td>
+                        </tr>
+                    @elseif($agentes->isEmpty())
+                        <tr>
+                            <td colspan="10">
+                                <div class="col-md-offset-2 col-md-6">
+
+                                    <div class="alert alert-info alert-dismissible">
+                                        <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
+                                        </button>
+                                        <h4><i class="icon fa fa-info"></i> Aviso</h4>
+                                        No existen agentes con contrato de locaci&oacute;n para la base y turno.
+                                    </div>
                                 </div>
                             </td>
                         </tr>
@@ -123,7 +143,7 @@ while ($fecha < $fechaToday) {
                                             <div class="col-xs-2">
                                                 <label>{{(new DateTime($p->fecha))->format('d/m')}}</label>
                                                 <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
-                                                {!! HtmlCustoms::getSelectForTipoPresentismo($p, $a->contrato->tipoContrato) !!}
+                                                {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a->contrato->tipoContrato) !!}
 
                                             </div>
                                         @endforeach

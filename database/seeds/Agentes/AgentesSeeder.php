@@ -3,6 +3,9 @@
 namespace Cat\Database\Seeds\Agentes;
 
 use Cat\Models\Agente;
+use Cat\Models\Base;
+use Cat\Models\TipoContrato;
+use Cat\Models\Turno;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales;
 use Cat\Modules\Agentes\Services\Registro\Store\Operativos;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales;
@@ -31,8 +34,10 @@ class AgentesSeeder extends Seeder
         $faker->addProvider($email);
         
         $faker->addProvider(new PhoneNumber($faker));
-        
-        for ($i = 1; $i <2; $i++) {
+        $tiposContratos = TipoContrato::all()->count();
+        $base           = Base::all()->count();
+        $turno          = Turno::all()->count();
+        for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
             $agente = [
                 'id'               => $i,
                 'nombre'           => $faker->name(),
@@ -54,7 +59,7 @@ class AgentesSeeder extends Seeder
                 'monto'              => rand(10000, 90000),
                 'fecha_ingreso'      => date('Y-m-d'),
                 'id_estado_contrato' => 1,
-                'id_tipo_contrato'   => 8,
+                'id_tipo_contrato'   => rand(1, $tiposContratos - 1),
             ];
             (new Laborales($age, $laboral))->execute();
             $operativos = [
@@ -64,8 +69,8 @@ class AgentesSeeder extends Seeder
                 'id_cargo'           => 1,
                 'id_funcion'         => 1,
                 'funcion_especifica' => '',
-                'id_base'            => 1,//rand(1, 16),
-                'id_turno'           => 1,//rand(1, 11),
+                'id_base'            => rand(1, $base - 1),
+                'id_turno'           => rand(1, $turno - 1),
                 'hora_entrada'       => 1,
                 'hora_salida'        => 1,
                 'eximido'            => 1,

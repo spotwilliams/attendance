@@ -1,16 +1,19 @@
 <?php
-use Cat\Helpers\HtmlCustoms;
 /** @var \DateTime $fecha */
 /** @var \DateTime $fechaJson */
 /** @var \DateTime $fechaToday */
 /** @var \Cat\Models\Periodo $periodo */
-$fecha = new DateTime($desde->format('Y-m-d'));
+$fecha      = new DateTime($desde->format('Y-m-d'));
 $fechaToday = new DateTime($hasta->format('Y-m-d'));
 
 $fechasToShow = [];
 
 while ($fecha <= $fechaToday) {
-    $fechasToShow[] = ['data' => $fecha->format('Y-m-d'), 'show' => $fecha->format('d/m')];
+    $fechasToShow[] = [
+        'data' => $fecha->format('Y-m-d'),
+        'show' => $fecha->format('d/m'),
+        'day'  => $fecha->format('D')
+    ];
     $fecha->modify('+1day');
 }
 
@@ -32,26 +35,14 @@ $idModal = 'comentarios-modal'
                     <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
                 @endfor
                 </thead>
+                @include('Presentismo::registro.footer')
+
+                @if($turno->esFinDeSemana())
+                    @include('Presentismo::registro.weekend')
+                @else
+                    @include('Presentismo::registro.all-day')
+                @endif
                 <tbody>
-                {{--        {{dd($agentes->all())}}--}}
-                @foreach($agentes as $age)
-                    <tr>
-                        <td>{{$age->id}}</td>
-                        <td>{{$age->apellido}}, {{$age->nombre}}</td>
-                        <td>{{$age->cuit}}</td>
-                        <td>{{$age->contrato->tipoContrato->descripcion}}</td>
-                        <?php $presentismos = $age->presentismos->keyBy('fecha'); ?>
-                        @for($i = 0; $i < count($fechasToShow) ;$i++)
-
-                            <td><?php
-                                $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
-                                echo HtmlCustoms::getSelectForTipoPresentismo($p,
-                                    $age->contrato->tipoContrato)
-                                ?></td>
-                        @endfor
-
-                    </tr>
-                @endforeach
                 </tbody>
             </table>
         </div>

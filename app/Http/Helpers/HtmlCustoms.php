@@ -198,4 +198,8 @@ class HtmlCustoms
         
         return $button;
     }
+    
+    
+    public static function translateDay()
+    {}
 }

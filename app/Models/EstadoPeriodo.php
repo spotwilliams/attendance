@@ -30,4 +30,9 @@ class EstadoPeriodo extends Model
     {
         return $this->belongsTo(Base::class, 'id_base');
     }
+    
+    public function estaAbierto()
+    {
+        return $this->abierto === 1;
+    }
 }
