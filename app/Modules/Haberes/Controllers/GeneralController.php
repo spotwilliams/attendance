@@ -103,7 +103,7 @@ class GeneralController extends AppBaseController
                         $presentismos
                             ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
                             ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))
-                            ->where('injustificado', '=', 1)
+//                            ->where('injustificado', '=', 1)
                             ->orderBy('fecha', 'ASC');
                     },
                 ])

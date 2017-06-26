@@ -1,7 +1,4 @@
 <?php
-use Cat\Models\TipoPresentismo;
-use Cat\Helpers\HtmlCustoms;
-use Cat\Repositories\TipoPresentismosRepository;
 
 /** @var \DateTime $fecha */
 /** @var \Cat\Models\Periodo $periodo */
@@ -55,7 +52,7 @@ while ($fecha < $fechaToday) {
                             <div class="progress-bar progress-bar-yellow" style="width: 75%"></div>
                         </div>
                     </div>
-                    <div class="col-md-2">
+                    <div class="col-md-4">
                         <h4 class="box-title">Base <span class="label label-info">{{$base->nombre}}</span></h4>
                     </div>
                     <div class="col-md-2">
@@ -118,44 +115,11 @@ while ($fecha < $fechaToday) {
                             </td>
                         </tr>
                     @endif
-                    @foreach($agentes as $a)
-                        <tr>
-                            <td class="details-control">
-                                @if($a->presentismos->isEmpty())
-                                    <a class="btn btn-default details-control"><i class="fa fa-plus-circle"></i></a>
-                                @else
-                                    <a class="btn btn-success details-control"><i class="fa fa-plus-circle"></i></a>
-                                @endif
-                            </td>
-
-                            <td>{{$a->apellido}}, {{$a->nombre}}</td>
-                            <td>{{$a->dni}}</td>
-                            <td>{{$a->cuit}}</td>
-                        </tr>
-                        <tr class="hidden">
-                            <input type="hidden" data-presentismos="{{$a->presentismos}}">
-                            <td colspan="10">
-                                @if($a->presentismos->isEmpty())
-                                    <p class="help-block">No se registraron faltas injustificadas en el periodo.</p>
-                                @else
-                                    <div class="row">
-                                        @foreach($a->presentismos as $p)
-                                            <div class="col-xs-2">
-                                                <label>{{(new DateTime($p->fecha))->format('d/m')}}</label>
-                                                <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
-                                                {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a->contrato->tipoContrato) !!}
-
-                                            </div>
-                                        @endforeach
-                                    </div>
-
-                                @endif
-
-
-                            </td>
-                        </tr>
-
-                    @endforeach
+                    @if($turno->esFinDeSemana())
+                        @include('Haberes::calculo.weekend')
+                    @else
+                        @include('Haberes::calculo.all-days')
+                    @endif
                     </tbody>
                 </table>
             </div>
@@ -244,7 +208,7 @@ while ($fecha < $fechaToday) {
                                 var presentismo = xhr.presentismo;
                                 var button = xhr.button;
                                 var level = 'success';
-                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                                renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                             },
                             error: function (xhr, other) {
@@ -252,7 +216,7 @@ while ($fecha < $fechaToday) {
                                 var presentismo = xhr.responseJSON.presentismo;
                                 var button = xhr.responseJSON.button;
                                 var level = 'error';
-                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                                renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                             }
 
@@ -284,7 +248,7 @@ while ($fecha < $fechaToday) {
                     });
             }
 
-            function renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
+            function renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
                 var contailerToolButtons = myParent.children('.tools-presentismo');
 
                 $(contailerToolButtons).children('[data-toggle="popover"]').remove();
@@ -346,7 +310,7 @@ while ($fecha < $fechaToday) {
                             var presentismo = xhr.presentismo;
                             var button = xhr.button;
                             var level = 'success';
-                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                            renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                         },
                         error: function (xhr, other) {
@@ -354,7 +318,7 @@ while ($fecha < $fechaToday) {
                             var presentismo = xhr.responseJSON.presentismo;
                             var button = xhr.responseJSON.button;
                             var level = 'error';
-                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                            renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                         }
 

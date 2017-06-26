@@ -38,4 +38,10 @@ class Presentismo extends Model
         return $this->belongsTo(TipoPresentismo::class, 'id_tipo_presentismo');
     }
     
+    public function periodo()
+    {
+        return $this->belongsTo(Presentismo::class, 'id_periodo');
+        
+    }
+    
 }

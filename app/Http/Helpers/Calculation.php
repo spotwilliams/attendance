@@ -3,6 +3,9 @@
 namespace Cat\Helpers;
 
 
+use Cat\Models\Presentismo;
+use Illuminate\Support\Collection;
+
 class Calculation
 {
     const MAX_DIFF_BETWEEN_DATES = 8;
@@ -45,5 +48,80 @@ class Calculation
         } catch (\Exception $e) {
             return new \DateTime('now');
         }
+    }
+    
+    /**
+     * Devuelve una lista con las fechas de fin de semana en un periodo
+     * @param \DateTime $start
+     * @param \DateTime $end
+     * @return array
+     */
+    public static function getWeekends(\DateTime $start, \DateTime $end)
+    {
+        $days       = [
+            'Sat',
+            'Sun',
+        
+        ];
+        $compulsory = [];
+        
+        $interval = new \DateInterval('P1D');
+        
+        $period = new \DatePeriod($start, $interval, $end);
+        
+        /** @var \DateTime $day */
+        foreach ($period as $day) {
+            if (in_array($day->format('D'), $days, true)) {
+                $compulsory[] = $day->format('Y-m-d');
+            }
+        }
+        
+        return $compulsory;
+    }
+    
+    public static function getWeekDays(\DateTime $start, \DateTime $end)
+    {
+        $days       = [
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+        
+        ];
+        $compulsory = [];
+        $interval   = new \DateInterval('P1D');
+        
+        $period = new \DatePeriod($start, $interval, $end);
+        
+        /** @var \DateTime $day */
+        foreach ($period as $day) {
+            if (in_array($day->format('D'), $days, true)) {
+                $compulsory[] = $day->format('Y-m-d');
+            }
+        }
+        
+        return $compulsory;
+    }
+    
+    
+    public static function addFaltasNoRegistradas(Collection $agentesConPresentsimos, $fechas = [])
+    {
+        
+        foreach ($agentesConPresentsimos as $agente) {
+            
+            $fechasResigradas = array_keys($agente->presentismos->keyBy('fecha')->toArray());
+            $fechasQueFaltan  = array_diff($fechas, $fechasResigradas);
+            
+            foreach ($fechasQueFaltan as $fecha) {
+                $presentismoARegistrar = new Presentismo([
+                    'id_tipo_presentismo' => -1,
+                    'fecha'               => $fecha,
+                ]);
+                $agente->presentismos->add($presentismoARegistrar);
+            }
+        }
+        
+        return $agentesConPresentsimos;
     }
 }

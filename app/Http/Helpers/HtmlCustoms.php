@@ -135,7 +135,7 @@ class HtmlCustoms
         TipoContrato $tipoContrato,
         $selector = 'selectpicker'
     ) {
-        /** @var array $tiposPresentismos*/
+        /** @var array $tiposPresentismos */
         
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
@@ -192,8 +192,8 @@ class HtmlCustoms
         $toggles     = 'data-toggle=\'popover\' data-trigger=\'hover\'';
         
         $classButton = ($injustificado ? 'bg-gray-active' : 'btn-default');
-        $disabled    = ($disabled ? 'disabled' : '');
         $data        = 'data-presentismo=\'' . (($p === null or $disabled) ? '' : $p->toJson()) . '\'';
+        $disabled    = ($disabled ? 'disabled' : ($p->id_tipo_presentismo === -1) ? 'disabled' : '');
         $button      = "<button type='button' class='btn $classButton' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
         
         return $button;
@@ -201,5 +201,6 @@ class HtmlCustoms
     
     
     public static function translateDay()
-    {}
+    {
+    }
 }

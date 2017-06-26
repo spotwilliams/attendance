@@ -59,7 +59,7 @@ class AgentesSeeder extends Seeder
                 'monto'              => rand(10000, 90000),
                 'fecha_ingreso'      => date('Y-m-d'),
                 'id_estado_contrato' => 1,
-                'id_tipo_contrato'   => rand(1, $tiposContratos - 1),
+                'id_tipo_contrato'   => rand(7, 8)//rand(1, $tiposContratos - 1),
             ];
             (new Laborales($age, $laboral))->execute();
             $operativos = [
