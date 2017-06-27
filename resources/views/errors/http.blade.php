@@ -7,7 +7,7 @@
 
             <div class="error-content">
                 <h2 class="headline text-yellow">
-                    <i class="fa fa-warning text-yellow"></i>Error de refreso.</h2>
+                    <i class="fa fa-warning text-yellow"></i>Error de refresco</h2>
                 <p>
 Ha refrescado la p&aacute;gina desde el navegador. Se recomienda hacerlo utilizando CTRL + R                </p>
             </div>
