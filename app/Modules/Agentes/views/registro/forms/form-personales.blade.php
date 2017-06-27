@@ -13,7 +13,7 @@
 
 
 <div class="form-group @if($errors->has('nombre')) has-error @endif">
-    {!! Form::label('nombre', 'Nombre*', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('nombre', 'Nombre *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
         @if($errors->has('nombre'))
@@ -24,7 +24,7 @@
 
 
 <div class="form-group @if($errors->has('apellido')) has-error @endif">
-    {!! Form::label('apellido', 'Apellido*', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('apellido', 'Apellido *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('apellido', null, ['class' => 'form-control']) !!}
         @if($errors->has('apellido'))
@@ -34,7 +34,7 @@
 </div>
 
 <div class="form-group @if($errors->has('dni')) has-error @endif">
-    {!! Form::label('dni', 'DNI*', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('dni', 'DNI *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('dni', null, ['class' => 'form-control']) !!}
         @if($errors->has('dni'))
@@ -57,7 +57,7 @@
 </div>
 
 <div class="form-group @if($errors->has('cuit')) has-error @endif">
-    {!! Form::label('cuit', 'CUIT*', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('cuit', 'CUIT *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('cuit', null, ['class' => 'form-control']) !!}
         @if($errors->has('cuit'))
@@ -67,7 +67,7 @@
 </div>
 
 <div class="form-group @if($errors->has('email')) has-error @endif">
-    {!! Form::label('email', 'Email*', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('email', 'Email *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('email', null, ['class' => 'form-control']) !!}
         @if($errors->has('email'))
@@ -77,7 +77,7 @@
 </div>
 
 <div class="form-group @if($errors->has('telefono')) has-error @endif">
-    {!! Form::label('telefono', 'Telefono de contacto*', ['class' => 'col-sm-2 control-label']) !!}
+    {!! Form::label('telefono', 'Telefono de contacto *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
         {!! Form::text('telefono', null, ['class' => 'form-control']) !!}
         @if($errors->has('telefono'))

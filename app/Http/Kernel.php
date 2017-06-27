@@ -15,6 +15,7 @@ class Kernel extends HttpKernel
      */
     protected $middleware = [
         \Illuminate\Foundation\Http\Middleware\CheckForMaintenanceMode::class,
+        \Illuminate\Session\Middleware\StartSession::class,
     ];
 
     /**
@@ -26,7 +27,6 @@ class Kernel extends HttpKernel
         'web' => [
             \Cat\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
-            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Cat\Http\Middleware\VerifyCsrfToken::class,
             \Krucas\Notification\Middleware\NotificationMiddleware::class,

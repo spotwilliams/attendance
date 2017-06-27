@@ -9,6 +9,8 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
+use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
 {
@@ -49,6 +51,9 @@ class Handler extends ExceptionHandler
     {
         if ($e instanceof TokenMismatchException) {
             return response(view('errors.expired'), 500);
+        }
+        if ($e instanceof MethodNotAllowedHttpException) {
+            return response(view('errors.http'), 500);
         }
         
         return parent::render($request, $e);

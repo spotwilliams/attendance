@@ -19,7 +19,7 @@ foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est
 ?>
 
 <div class="form-group @if($errors->has('id_tipo_contrato')) has-error @endif">
-    <label class="col-sm-2 control-label">Modalidad contractual</label>
+    <label class="col-sm-2 control-label">Modalidad contractual *</label>
     <div class="col-sm-8">
         {!! Form::select('id_tipo_contrato',  $tipos, null, ['class' => 'form-control']) !!}
         @if($errors->has('id_tipo_contrato'))
@@ -38,7 +38,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 
 
 <div class="form-group @if($errors->has('id_estado_contrato')) has-error @endif">
-    <label class="col-sm-2 control-label">Estado de contrato</label>
+    <label class="col-sm-2 control-label">Estado de contrato *</label>
     <div class="col-sm-8">
         {!! Form::select('id_estado_contrato',  $estados, null, ['class' => 'form-control']) !!}
         @if($errors->has('id_estado_contrato'))
@@ -61,7 +61,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 </div>
 
 <div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
-    <label class="col-sm-2 control-label">Fecha de ingreso</label>
+    <label class="col-sm-2 control-label">Fecha de ingreso *</label>
     <div class="col-sm-8">
         {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
         @if($errors->has('fecha_ingreso'))
