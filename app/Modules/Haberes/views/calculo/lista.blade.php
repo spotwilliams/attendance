@@ -235,7 +235,7 @@ while ($fecha < $fechaToday) {
                     .selectpicker('refresh');
                 $(obj).children('.overlay').remove();
 
-                $(ref).hide();
+//                $(ref).hide();
                 var messenger = $(ref).parents('.input-group.margin')[0];
                 $(obj).notify(message,
                     {
@@ -361,6 +361,8 @@ while ($fecha < $fechaToday) {
                     $('.modal-id-agente').val(presentismo.id_agente);
                     $('.modal-id-tipo-presentismo').val(presentismo.id_tipo_presentismo);
 
+                    $('#comentarios-modal').data('dialog-comentary', $(this));
+
                     $('#comentarios-modal').modal();
 
 
@@ -384,15 +386,14 @@ while ($fecha < $fechaToday) {
                         type: 'POST',
                         data: data,
                         success: function (xhr, other) {
-                            $('.modal-save').notify(xhr.message,
-                                {
-                                    autoHide: true,
-                                    // if autoHide, hide after milliseconds
-                                    autoHideDelay: 2000,
-                                    position: 'top',
-                                    showAnimation: 'slideDown',
-                                    className: 'success'
-                                });
+                            var button = $('#comentarios-modal').data('dialog-comentary');
+                            button.addClass('bg-gray-active')
+                                .removeClass('btn-default')
+                                .data('comentario', $('.modal-comentario').val());
+
+                            $('#comentarios-modal').modal('toggle');
+                            message(button, xhr.message, idTipoPresentismo, 'success');
+
                         },
                         error: function (xhr, other) {
                             var message = (xhr.responseJSON.message === undefined) ? xhr.responseJSON.comentario[0] : xhr.responseJSON.message;

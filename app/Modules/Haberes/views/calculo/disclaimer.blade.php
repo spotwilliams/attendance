@@ -53,7 +53,7 @@
                                 <span class="info-box-number">{{$base->nombre}}</span>
 
                                 <div class="progress">
-                                    <div class="progress-bar" style="width: 50%"></div>
+                                    <div class="progress-bar" style="width: 100%"></div>
                                 </div>
 
                             </div>
@@ -69,7 +69,7 @@
                                     hasta {{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
 
                                 <div class="progress">
-                                    <div class="progress-bar" style="width: 50%"></div>
+                                    <div class="progress-bar" style="width: 100%"></div>
                                 </div>
                             </div>
                             <!-- /.info-box-content -->
@@ -83,7 +83,7 @@
                                 <span class="info-box-number">{{$turno->codigo}} ({{$turno->descripcion}})</span>
 
                                 <div class="progress">
-                                    <div class="progress-bar" style="width: 50%"></div>
+                                    <div class="progress-bar" style="width: 100%"></div>
                                 </div>
                             </div>
                             <!-- /.info-box-content -->
