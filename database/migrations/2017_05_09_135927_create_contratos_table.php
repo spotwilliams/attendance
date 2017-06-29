@@ -17,6 +17,7 @@ class CreateContratosTable extends Migration
             $table->integer('id', true);
             // Obligatorios
             $table->date('fecha_ingreso');
+            $table->date('fecha_ingreso_gobierno')->nullable();
             
             // Relations
             $table->integer('id_tipo_contrato')->index('contrato_es_de_tipo_idx');
@@ -26,7 +27,10 @@ class CreateContratosTable extends Migration
             // Opcionales
             $table->string('id_sial', 100)->nullable();
             $table->string('ficha', 100)->nullable();
+            $table->string('tipo_inscripcion', 100)->nullable();
             $table->decimal('monto', 10, 2)->default(0);
+            $table->date('fecha_baja')->nullable();
+            $table->string('comentario_baja', 400)->nullable();
             
             $table->timestamps();
             $table->softDeletes();

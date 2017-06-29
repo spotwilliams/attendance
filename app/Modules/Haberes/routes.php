@@ -46,6 +46,8 @@ Route::group(
          */
         Route::post('haberes/reporte', ReporteController::class . '@reporte')
             ->name('haberesReporte');
+        Route::post('haberes/reporte/preliminar', ReporteController::class . '@reportePreliminar')
+            ->name('haberesReportePreliminar');
         
     }
 );

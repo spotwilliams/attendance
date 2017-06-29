@@ -28,18 +28,31 @@ while ($fecha < $fechaToday) {
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
-                    @if($estadoPeriodo->estaAbierto())
-                        {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}
+                    <div class="col-md-6">
+
+                        {!! Form::open(['route' => 'haberesReportePreliminar']) !!}
                         {!! Form::hidden('periodo', $periodo->id) !!}
                         {!! Form::hidden('base', $base->id) !!}
                         {!! Form::hidden('turno', $turno->id) !!}
                         <input type="submit"
-                               class="btn btn-primary"
-                               value='Confimar presentismos'/>
+                               class="btn btn-default"
+                               value='Reporte preliminar'/>
                         {!! Form::close() !!}
-                    @endif
-                </div>
+                    </div>
+                    <div class="col-md-6">
+                        @if($estadoPeriodo->estaAbierto())
+                            {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}
+                            {!! Form::hidden('periodo', $periodo->id) !!}
+                            {!! Form::hidden('base', $base->id) !!}
+                            {!! Form::hidden('turno', $turno->id) !!}
+                            <input type="submit"
+                                   class="btn btn-primary"
+                                   value='Confirmar presentismos'/>
+                            {!! Form::close() !!}
+                        @endif
+                    </div>
 
+                </div>
             </div>
 
             <div class="box-body">

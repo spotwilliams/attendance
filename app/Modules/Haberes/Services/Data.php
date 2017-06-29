@@ -5,6 +5,7 @@ namespace Cat\Modules\Haberes\Controllers\Helpers;
 use Cat\Models\Base;
 use Cat\Models\Contrato;
 use Cat\Models\Haber;
+use Cat\Models\Operativo;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
@@ -54,14 +55,11 @@ class Data
     {
         $haberes = Haber::where('id_base', $base->id)
             ->where('id_turno', '=', $turno->id)
-            ->where('id_periodo', '=', $periodo->id)
-//            ->with('agente.contrato.tipoContrato')
-        ;
+            ->where('id_periodo', '=', $periodo->id);
         
         try {
             return $haberes->get();
         } catch (QueryException $e) {
-            dd($e);
             
             return [];
         }
