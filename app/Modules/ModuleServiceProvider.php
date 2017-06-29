@@ -34,8 +34,8 @@ class ModuleServiceProvider extends ServiceProvider
             }
             
             // Load the views
-            if (is_dir(__DIR__ . '/' . $module . '/Views')) {
-                $this->loadViewsFrom(__DIR__ . '/' . $module . '/Views', $module);
+            if (is_dir(__DIR__ . '/' . $module . '/views')) {
+                $this->loadViewsFrom(__DIR__ . '/' . $module . '/views', $module);
             }
         }
     }

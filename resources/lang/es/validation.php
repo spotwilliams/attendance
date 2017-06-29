@@ -41,7 +41,7 @@ return [
     'image'                => 'El :attribute debe ser an image.',
     'in'                   => 'El valor elegido para :attribute no es correcto.',
     'in_array'             => 'El campo :attribute does not exist in :oElr.',
-    'integer'              => 'El :attribute debe ser un n&uacute;mero.',
+    'integer'              => 'Debe ser un n&uacute;mero.',
     'ip'                   => 'El :attribute debe ser a valid IP address.',
     'json'                 => 'El :attribute debe ser a valid JSON string.',
     'max'                  => [
@@ -51,7 +51,7 @@ return [
         'array'   => 'El :attribute may not have more than :max items.',
     ],
     'mimes'                => 'El :attribute debe ser un archivo del tipo :values.',
-    'mimetypes'                => 'El archivo debe ser el tipo indicado.',
+    'mimetypes'            => 'El archivo debe ser el tipo indicado.',
     'min'                  => [
         'numeric' => 'El :attribute debe ser at least :min.',
         'file'    => 'El :attribute debe ser at least :min kilobytes.',
@@ -62,7 +62,7 @@ return [
     'numeric'              => 'El :attribute debe ser a number.',
     'present'              => 'El campo :attribute debe ser present.',
     'regex'                => 'El :attribute format is invalid.',
-    'required'             => 'El campo :attribute es obligatorio.',
+    'required'             => 'El campo es obligatorio.',
     'required_if'          => 'El campo :attribute es obligatorio when :oElr is :value.',
     'required_unless'      => 'El campo :attribute es obligatorio unless :oElr is in :values.',
     'required_with'        => 'El campo :attribute es obligatorio when :values is present.',
@@ -96,6 +96,25 @@ return [
         'attribute-name' => [
             'rule-name' => 'custom-message',
         ],
+        'domicilio'      => [
+            'calle'       => [
+                0 => [
+                    'required' => 'Debe existir al menos un domicilio.',
+                ],
+            ],
+            'numero'      => [
+                0 => [
+                    'integer' => 'Debe ser un n&uacute;mero.',
+                    'required' => 'Es obligatorio.',
+                ],
+            ],
+            'constituido' => [
+                0 => [
+                    'not_in' => 'El primer domicilio debe ser constituido.',
+                ],
+            ],
+        ],
+        
     ],
     
     /*

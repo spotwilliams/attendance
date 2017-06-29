@@ -208,7 +208,7 @@ $control = 0;
     $control = 0;
     ?>
     <div class="panel panel-default col-sm-8">
-        @foreach($domicilios as $dom)
+        @foreach($domicilios as $key =>$dom)
             <?php $control++;?>
 
             <div class="panel-body domiciliosWrapper">
@@ -216,14 +216,22 @@ $control = 0;
                     <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera"
                            name="domicilio[id][]">
                     <div class="form-group">
-                        <div class="col-sm-6">
+                        <div class="col-sm-6 @if($errors->has("domicilio.calle.$key" )) has-error @endif">
                             <input type="text" class="form-control" value="{{$dom['calle']}}" placeholder="Calle"
                                    name="domicilio[calle][]">
+                            @if($errors->has("domicilio.calle.$key"))
+                                <span class="help-block">{{$errors->first("domicilio.calle.$key")}}</span>
+                            @endif
+
                         </div>
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 @if($errors->has("domicilio.numero.$key" )) has-error @endif">
                             <input type="text" class="form-control" value="{{$dom['numero']}}"
                                    placeholder="N&uacute;mero"
                                    name="domicilio[numero][]">
+                            @if($errors->has("domicilio.numero.$key"))
+                                <span class="help-block">{{$errors->first("domicilio.numero.$key")}}</span>
+                            @endif
+
                         </div>
                         <div class="col-sm-2">
                             <input type="text" class="form-control" value="{{$dom['departamento']}}"
@@ -250,11 +258,14 @@ $control = 0;
                         </div>
 
 
-                        <div class="col-sm-2">
+                        <div class="col-sm-2 @if($errors->has("domicilio.constituido.$key")) has-error @endif">
                             <select name="domicilio[constituido][]" class="form-control">
-                                <option value="1" {{$dom['constituido']==1? 'selected': ''}}>Constituido</option>
-                                <option value="0" {{$dom['constituido']==0? 'selected': ''}}>Nominal</option>
+                                <option value="1" {{$dom['constituido']=='1'? 'selected': ''}}>Constituido</option>
+                                <option value="0" {{$dom['constituido']=='0'? 'selected': ''}}>Nominal</option>
                             </select>
+                            @if($errors->has("domicilio.constituido.$key"))
+                                <span class="help-block">{{$errors->first("domicilio.constituido.$key")}}</span>
+                            @endif
                         </div>
 
 
@@ -370,6 +381,11 @@ $control = 0;
                 $clone.find('.btn-danger')
                     .removeClass('hidden');
 
+                $template.find('.help-block')
+                    .remove();
+
+                $template.find('.has-error')
+                    .removeClass('has-error');
                 // Pongo los datos en la nueva fila creada
                 var inputsCopy = $clone.find('input');
                 var selectsCopy = $clone.find('select');

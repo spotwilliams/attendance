@@ -83,7 +83,7 @@ class HtmlCustoms
                 'institucion' => $input['institucion'][$i],
                 'estado'      => $input['estado'][$i],
                 'nivel'       => $input['nivelestudio'][$i],
-                'id'          => 'null',
+                'id'          =>  $input['id'][$i],
             ];
         }
         
@@ -104,7 +104,7 @@ class HtmlCustoms
                 'barrio'       => $input['barrio'][$i],
                 'provincia'    => $input['provincia'][$i],
                 'constituido'  => $input['constituido'][$i],
-                'id'           => 'null',
+                'id'           => $input['id'][$i],
             
             ];
         }

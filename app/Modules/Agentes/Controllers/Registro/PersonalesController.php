@@ -2,7 +2,7 @@
 
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
-use Cat\Handlers\Error;
+use Cat\Helpers\Validation;
 use Cat\Models\Agente;
 use Cat\Modules\Agentes\Exceptions\Registro\EntidadDuplicada;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
@@ -11,8 +11,6 @@ use Cat\Modules\Agentes\Services\Registro\Store\Personales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Personales as Update;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
-use Illuminate\Support\Facades\Redirect;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
@@ -53,8 +51,9 @@ class PersonalesController extends AppBaseController
     public function store(Request $request)
     {
         $input = $request->all();
-        $this->validate($request, Agente::$rules);
+        $rules = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
         
+        $this->validate($request, $rules);
         $agente = new Agente($input);
         
         try {
@@ -112,7 +111,9 @@ class PersonalesController extends AppBaseController
      */
     public function update(Request $request)
     {
-        $this->validate($request, Agente::$rules);
+        $rules = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
+        
+        $this->validate($request, $rules);
         $input  = $request->all();
         $agente = Agente::find($input['id']);
         
