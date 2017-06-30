@@ -39,8 +39,20 @@ class Laborales extends Service
     /** @var  TipoContrato */
     protected $tipo;
     
+    /** @var  string */
     protected $id_sial;
     
+    /** @var  \DateTime */
+    protected $fecha_baja;
+    
+    /** @var  string */
+    protected $comentario_baja;
+    
+    /** @var  \DateTime */
+    protected $tipo_inscripcion;
+    
+    /** @var  \DateTime */
+    protected $fecha_ingreso_gobierno;
     
     public function __construct(Agente $agente, $input)
     {
@@ -52,6 +64,11 @@ class Laborales extends Service
         $this->fecha   = new \DateTime($input['fecha_ingreso']);
         $this->estado  = EstadoContrato::findOrFail($input['id_estado_contrato']);
         $this->tipo    = TipoContrato::findOrFail($input['id_tipo_contrato']);
+        
+        $this->fecha_ingreso_gobierno = new \DateTime($input['fecha_ingreso_gobierno']);
+        $this->tipo_inscripcion       = $input['tipo_inscripcion'];
+        $this->fecha_baja             = ($this->estado->esActivo() ? null : new \DateTime($input['fecha_baja']));
+        $this->comentario_baja        = ($this->estado->esActivo() ? null : $input['comentario_baja']);
     }
     
     public function execute()
@@ -70,17 +87,21 @@ class Laborales extends Service
             ]);
             
             $contrato->update([
-                'fecha_ingreso'      => $this->fecha->format('Y-m-d'),
-                'id_sial'            => $this->id_sial,
-                'ficha'              => $this->ficha,
-                'monto'              => floatval($this->monto),
+                'fecha_ingreso'          => $this->fecha->format('Y-m-d'),
+                'id_sial'                => $this->id_sial,
+                'ficha'                  => $this->ficha,
+                'monto'                  => floatval($this->monto),
+                'fecha_baja'             => $this->fecha_baja,
+                'comentario_baja'        => $this->comentario_baja,
+                'tipo_inscripcion'       => $this->tipo_inscripcion,
+                'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
+            
             ]);
             
             DB::commit();
             
             return $this->agente;
         } catch (\Exception $e) {
-            dd($e);
             DB::rollBack();
             throw $e;
         }

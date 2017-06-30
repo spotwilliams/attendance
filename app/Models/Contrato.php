@@ -16,20 +16,27 @@ class Contrato extends Model
     protected     $fillable
                          = [
             'fecha_ingreso',
+            'fecha_ingreso_gobierno',
             'id_tipo_contrato',
             'id_estado_contrato',
             'id_agente',
             'id_sial',
             'ficha',
+            'tipo_inscripcion',
             'fin_semana',
             'monto',
+            'fecha_baja',
+            'comentario_baja',
         ];
     protected     $dates = ['deleted_at'];
     public static $rules
                          = [
-            'fecha_ingreso'      => 'required|date',
-            'id_tipo_contrato'   => 'not_in:-1',
-            'id_estado_contrato' => 'not_in:-1',
+            'fecha_ingreso'          => 'required|date',
+            'fecha_ingreso_gobierno' => 'date',
+            'fecha_baja'             => 'date',
+            'id_tipo_contrato'       => 'not_in:-1',
+            'id_estado_contrato'     => 'not_in:-1',
+            'tipo_inscripcion'       => 'not_in:-1',
             //            'id_agente'          => 'required',
             //            'id_sial'            => 'required',
             //            'ficha'              => 'required',

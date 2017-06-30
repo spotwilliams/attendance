@@ -1,3 +1,17 @@
+<?php
+use Cat\Models\EstadoContrato;
+use Cat\Models\TipoContrato;
+use Cat\Models\Contrato;
+$idEstadosContratosBaja = array_keys(
+    EstadoContrato::getEstadosEquivalentesBajas()->keyBy('id')->toArray()
+);
+$idTiposContratosLocacion = array_keys(
+    TipoContrato::getEquivalentesLocacion()->keyBy('id')->toArray()
+);
+if (!isset($contrato)) {
+    $contrato = new Contrato();
+}
+?>
 {!! Form::hidden('id', null, ['class' => 'form-control']) !!}
 
 <div class="form-group">
@@ -27,7 +41,19 @@ foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est
         @endif
     </div>
 </div>
+<div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
+    <label class="col-sm-2 control-label">ID Sial</label>
+    <div class="col-sm-8">
+        {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
 
+<div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
+    <label class="col-sm-2 control-label">Ficha</label>
+    <div class="col-sm-8">
+        {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
 
 <?php
 $estados[-1] = 'Seleccione';
@@ -46,26 +72,55 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
         @endif
     </div>
 </div>
-<div class="form-group hidden">
-    <label class="col-sm-2 control-label">ID Sial</label>
+
+<div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('fecha_baja')) has-error @endif">
+    <label class="col-sm-2 control-label">Fecha de baja</label>
     <div class="col-sm-8">
-        {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
+        {!! Form::date('fecha_baja', null, ['class' => 'form-control']) !!}
+        @if($errors->has('fecha_baja'))
+            <span class="help-block">{{$errors->first('fecha_baja')}}</span>
+        @endif
     </div>
 </div>
 
-<div class="form-group hidden">
-    <label class="col-sm-2 control-label">Ficha</label>
+<div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif">
+    <label class="col-sm-2 control-label">Comentario de baja</label>
     <div class="col-sm-8">
-        {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
+        {!! Form::textarea('comentario_baja', null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif">
+    <label class="col-sm-2 control-label">Tipo de inscripci&oacute;n IIBB * </label>
+    <div class="col-sm-8">
+        {!! Form::select('tipo_inscripcion',  [
+        '-1' => 'Seleccione',
+        'Regimen simplificado' => 'R&eacute;gimen simplificado',
+         'Convenio multilareral' => 'Convenio multilareral',
+          'Regimen general' => 'R&eacute;gimen general'
+          ], null, ['class' => 'form-control']) !!}
+        @if($errors->has('tipo_inscripcion'))
+            <span class="help-block">{{$errors->first('tipo_inscripcion')}}</span>
+        @endif
+
     </div>
 </div>
 
 <div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
-    <label class="col-sm-2 control-label">Fecha de ingreso *</label>
+    <label class="col-sm-2 control-label">Fecha alta de contrato *</label>
     <div class="col-sm-8">
         {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
         @if($errors->has('fecha_ingreso'))
             <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
+        @endif
+    </div>
+</div>
+<div class="form-group @if($errors->has('fecha_ingreso_gobierno')) has-error @endif">
+    <label class="col-sm-2 control-label">Fecha de ingreso al GCBA</label>
+    <div class="col-sm-8">
+        {!! Form::date('fecha_ingreso_gobierno', null, ['class' => 'form-control']) !!}
+        @if($errors->has('fecha_ingreso_gobierno'))
+            <span class="help-block">{{$errors->first('fecha_ingreso_gobierno')}}</span>
         @endif
     </div>
 </div>
@@ -88,15 +143,27 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
         $(document).ready(function () {
             $('select').selectpicker({});
             $('[name="id_tipo_contrato"]').on('change', function () {
-
+                var optionsLocacion = {{json_encode( $idTiposContratosLocacion)}};
                 // Locacion de servicio
-                if ($(this).val() == 7 || $(this).val() == 8) {
-                    $('[name="id_sial"]').parents().closest('.form-group').addClass('hidden');
-                    $('[name="ficha"]').parents().closest('.form-group').addClass('hidden');
-                } else {
-                    $('[name="id_sial"]').parents().closest('.form-group').removeClass('hidden');
-                    $('[name="ficha"]').parents().closest('.form-group').removeClass('hidden');
+                for (var i = 0; i < optionsLocacion.length; i++) {
+                    if ($(this).val() == optionsLocacion[i]) {
+                        $('.es-situacion-revista').addClass('hidden');
+                        break;
+                    } else {
+                        $('.es-situacion-revista').removeClass('hidden');
 
+                    }
+                }
+            });
+            $('[name="id_estado_contrato"]').on('change', function (event) {
+                var optionsBaja = {{json_encode( $idEstadosContratosBaja)}};
+                for (var i = 0; i < optionsBaja.length; i++) {
+                    if ($(this).val() == optionsBaja[i]) {
+                        $('.es-baja').removeClass('hidden');
+                        break;
+                    } else {
+                        $('.es-baja').addClass('hidden');
+                    }
                 }
             })
         });

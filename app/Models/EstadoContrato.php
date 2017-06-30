@@ -68,15 +68,25 @@ class EstadoContrato extends Model
         if (strtolower($this->estado) === strtolower(EstadoContrato::ESTADO_ACTIVO)) {
             return true;
         } else {
-            // Verificar que sea hijo de activoalguno de sus hijos.
-            $padre             = $this->padre();
+            // Verificar que sea hijo de activo o alguno de sus hijos.
+            $padre             = $this->padre()->first();
             $padreEstadoActivo = $this->estadoPadreActivo();
             
-            if ($padre->id === $padreEstadoActivo->id) {
+            if (($padre !== null) and ($padre->id === $padreEstadoActivo->id)) {
                 return true;
             } else {
                 return false;
             }
         }
+    }
+    
+    public static function getEstadosEquivalentesBajas()
+    {
+        $estadoBajaPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_BAJA)->first();
+        
+        return EstadoContrato::where('id', '=', $estadoBajaPadre->id)
+            ->orWhere('id_padre', '=', $estadoBajaPadre->id)
+            ->get();
+        
     }
 }

@@ -15,26 +15,47 @@ $estadoContrato = $contrato->estadoContrato()->first();
     <div class="col-md-6">
         <table class="table">
             <tbody>
+            @if($tipoContrato->codigo === \Cat\Models\TipoContrato::TIPO_SITUACION_REVISTA)
+                <tr>
+                    <th>ID Sial:</th>
+                    <td>{{$contrato->id_sial}}</td>
+                </tr>
+                <tr>
+                    <th>Ficha:</th>
+                    <td>{{$contrato->ficha}}</td>
+                </tr>
+            @endif
             <tr>
-                <th>ID Sial:</th>
-                <td>{{$contrato->id_sial}}</td>
-            </tr>
-            <tr>
-                <th>Ficha:</th>
-                <td>{{$contrato->ficha}}</td>
-            </tr>
-            <tr>
-                <th>Fecha comienzo:</th>
+                <th>Fecha alta contrato:</th>
                 <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
+            </tr>
+            <tr>
+                <th>Fecha de ingreso al GCBA:</th>
+                <td>{{(new DateTime($contrato->fecha_ingreso_gobierno))->format('d/m/Y')}}</td>
             </tr>
             <tr>
                 <th>Tipo contrato:</th>
                 <td>{{$tipoContrato->descripcion}}</td>
             </tr>
             <tr>
+                <th>Tipo inscripci&oacute;n a IIBB:</th>
+                <td>{{$contrato->tipo_inscripcion}}</td>
+            </tr>
+            <tr>
                 <th>Estado contrato:</th>
                 <td>{{$estadoContrato->descripcion}}</td>
             </tr>
+            @if(!$estadoContrato->esActivo())
+                <tr>
+                    <th>Fecha de baja:</th>
+                    <td>{{(new DateTime($contrato->fecha_baja))->format('d/m/Y')}}</td>
+                </tr>
+                <tr>
+                    <th>Comentarios de la baja:</th>
+                    <td>{{$contrato->comentario_baja}}</td>
+                </tr>
+            @endif
+
             </tbody>
         </table>
     </div>
