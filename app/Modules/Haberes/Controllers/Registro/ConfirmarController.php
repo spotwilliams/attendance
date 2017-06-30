@@ -30,9 +30,20 @@ class ConfirmarController extends AppBaseController
         try {
             $input = $request->all();
             
+            /** @var Periodo $periodo */
             $periodo = Periodo::findOrFail($input['periodo']);
             $base    = Base::findOrFail($input['base']);
             $turno   = Turno::findOrFail($input['turno']);
+            
+            if ($periodo->fechaComprendida(new \DateTime('now'))) {
+                Flash::error('No se puede cerrrar el periodo actual');
+                
+                return redirect(route('haberesListaAgentes', [
+                    'base'    => $base,
+                    'periodo' => $periodo,
+                    'turno'   => $turno,
+                ]));
+            }
             
             return view('Haberes::calculo.disclaimer')
                 ->with('base', $base)
@@ -59,15 +70,14 @@ class ConfirmarController extends AppBaseController
             
             Facilitador::batch($base, $periodo, $turno);
             Flash::success('Periodo cerrado con &eacute;xito');
-    
+            
             return redirect(route('haberesListaAgentes', [
                 'base'    => $base,
                 'periodo' => $periodo,
                 'turno'   => $turno,
             ]));
-    
-    
-    
+            
+            
         } catch (ModelNotFoundException $exception) {
             Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
             
