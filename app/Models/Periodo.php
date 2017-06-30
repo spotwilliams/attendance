@@ -102,4 +102,22 @@ class Periodo extends Model
         return $this->belongsToMany(Base::class, 'estado_periodos', 'id_periodo', 'id_base')->withPivot(['abierto']);
     }
     
+    /**
+     * Verifica si la fecha que recibo esta en el periodo
+     *
+     * @param \DateTime $date
+     * @return bool
+     */
+    public function fechaComprendida(\DateTime $date)
+    {
+        $desde = new \DateTime($this->fecha_desde);
+        $hasta = new \DateTime($this->fecha_hasta);
+        
+        if (($desde <= $date) and ($date <= $hasta)) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    
 }
