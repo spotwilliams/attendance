@@ -158,7 +158,7 @@ class HtmlCustoms
         if ($p !== null) {
             $btnDisabled   = '';
             $comentario    = $p->comentario;
-            $buttonJustice = ($p->injustificado === true?
+            $buttonJustice = ($p->injustificado == true?
                 self::getButtonWithPopOver($p, true) :
                 self::getButtonWithPopOver($p, false));
             $btnClass      = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');

@@ -205,7 +205,7 @@ while ($fecha < $fechaToday) {
                         var data = $(this).data('presentismo');
                         var url = null;
 
-                        if (data.injustificado === true) {
+                        if (data.injustificado == true) {
                             url = '{{route('presentismoJustificar')}}';
                         } else {
                             url = '{{route('presentismoInjustificar')}}';
