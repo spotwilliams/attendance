@@ -61,8 +61,8 @@ class Periodo extends Model
                 ->where('id_base', '=', $base->id)
                 ->where('id_turno', '=', $turno->id)
                 ->firstOrFail();
-            
-            return ($estado->abierto === 1);
+
+            return ($estado->abierto === true);
             
         } catch (ModelNotFoundException $e) {
             return false;

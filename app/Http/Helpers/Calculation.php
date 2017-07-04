@@ -50,6 +50,13 @@ class Calculation
         }
     }
     
+    public static function transformCabaDate($dMY)
+    {
+        $dMY = explode('/', $dMY);
+        
+        return $dMY[2] . '-' . $dMY[1] . '-' . $dMY[0];
+    }
+    
     /**
      * Devuelve una lista con las fechas de fin de semana en un periodo
      * @param \DateTime $start

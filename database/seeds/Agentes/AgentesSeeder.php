@@ -39,7 +39,7 @@ class AgentesSeeder extends Seeder
         $turno          = Turno::all()->count();
         for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
             $agente = [
-                'id'               => $i,
+//                'id'               => $i,
                 'nombre'           => $faker->name(),
                 'apellido'         => $faker->lastName(),
                 'dni'              => rand(3000000, 50000000) + rand(0, 999999),
@@ -54,12 +54,14 @@ class AgentesSeeder extends Seeder
             (new Personales($age))->execute();
             
             $laboral = [
-                'id_sial'            => rand(1, 100),
-                'ficha'              => rand(1, 100),
-                'monto'              => rand(10000, 90000),
-                'fecha_ingreso'      => date('Y-m-d'),
-                'id_estado_contrato' => 1,
-                'id_tipo_contrato'   => rand(1, $tiposContratos - 1),
+                'id_sial'                => rand(1, 100),
+                'ficha'                  => rand(1, 100),
+                'monto'                  => rand(10000, 90000),
+                'fecha_ingreso'          => date('Y-m-d'),
+                'fecha_ingreso_gobierno' => date('Y-m-d'),
+                'tipo_inscripcion'       => 'Regimen general',
+                'id_estado_contrato'     => 1,
+                'id_tipo_contrato'       => rand(1, $tiposContratos - 1),
             ];
             (new Laborales($age, $laboral))->execute();
             $operativos = [

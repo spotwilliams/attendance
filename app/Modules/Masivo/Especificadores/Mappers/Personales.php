@@ -2,6 +2,7 @@
 
 namespace Cat\Masivo\Especificadores\Mappers;
 
+use Cat\Helpers\Calculation;
 use Maatwebsite\Excel\Collections\CellCollection;
 
 class Personales
@@ -14,7 +15,7 @@ class Personales
             'apellido'         => $collection->apellido,
             'dni'              => $collection->dni,
             'cuit'             => $collection->cuit,
-            'fecha_nacimiento' => $collection->fecha_nacimiento,
+            'fecha_nacimiento' => Calculation::transformCabaDate($collection->fecha_nacimiento),
             'email'            => $collection->email,
             'telefono'         => $collection->telefono,
             'sexo'             => $collection->sexo,

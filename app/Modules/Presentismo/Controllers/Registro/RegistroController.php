@@ -68,7 +68,7 @@ class RegistroController extends AppBaseController
             $presentismo = Presentismo::where('id_agente', '=', $agente->id)
                 ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
                 ->firstOrFail();
-            $button      = HtmlCustoms::getButtonWithPopOver($presentismo, $presentismo->injustificado === 1);
+            $button      = HtmlCustoms::getButtonWithPopOver($presentismo, $presentismo->injustificado === true);
             
         } catch (ModelNotFoundException $noHayPresentismoCargado) {
             $button      = HtmlCustoms::getButtonWithPopOver(null, false, true);

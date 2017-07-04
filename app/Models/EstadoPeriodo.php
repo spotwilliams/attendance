@@ -33,6 +33,6 @@ class EstadoPeriodo extends Model
     
     public function estaAbierto()
     {
-        return $this->abierto === 1;
+        return $this->abierto === true;
     }
 }

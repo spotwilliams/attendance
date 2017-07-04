@@ -68,7 +68,6 @@ class PersonalesController extends AppBaseController
                 ->withInput();
             
         } catch (\Exception $e) {
-            dd($e);
             Flash::error('No se pudo guadar los datos personales.');
             
             return redirect(route('agentesCreatePersonales'))

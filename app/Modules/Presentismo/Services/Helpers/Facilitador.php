@@ -31,7 +31,7 @@ class Facilitador
             session()->flash('code', 200);
             
         } catch (SinDiasDisponibles $e) {
-            $tipoPresentismo->injustificado = 1;
+            $tipoPresentismo->injustificado = true;
             
             static::goOn($agente, $tipoPresentismo, $fecha);
             

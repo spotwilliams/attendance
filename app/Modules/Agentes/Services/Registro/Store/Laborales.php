@@ -84,10 +84,10 @@ class Laborales extends Service
                 'id_tipo_contrato'   => $this->tipo->id,
                 'id_estado_contrato' => $this->estado->id,
                 'id_agente'          => $this->agente->id,
+                'fecha_ingreso'      => $this->fecha->format('Y-m-d'),
             ]);
             
             $contrato->update([
-                'fecha_ingreso'          => $this->fecha->format('Y-m-d'),
                 'id_sial'                => $this->id_sial,
                 'ficha'                  => $this->ficha,
                 'monto'                  => floatval($this->monto),

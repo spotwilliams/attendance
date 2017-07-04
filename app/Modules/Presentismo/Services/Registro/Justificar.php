@@ -33,7 +33,8 @@ class Justificar extends Service
         $this->presentismo       = $presentismo;
         $this->agente            = $presentismo->agente()->first();
         $this->ruleAusente       = new Ausente($this->agente, $this->presentismo->tipoPresentismo()->first());
-        $this->rulePeriodoActivo = new PeriodoActivo($this->agente, $this->presentismo->tipoPresentismo()->first(), new \DateTime($this->presentismo->fecha));
+        $this->rulePeriodoActivo = new PeriodoActivo($this->agente, $this->presentismo->tipoPresentismo()->first(),
+            new \DateTime($this->presentismo->fecha));
         
     }
     
@@ -55,7 +56,7 @@ class Justificar extends Service
         try {
             
             DB::beginTransaction();
-            $this->presentismo->injustificado = 0;
+            $this->presentismo->injustificado = false;
             $this->presentismo->save();
             DB::commit();
         } catch (QueryException $e) {

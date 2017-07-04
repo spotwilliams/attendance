@@ -4,6 +4,7 @@ namespace Cat\Database\Presentismos;
 
 use Cat\Database\Seeds\DatabaseSeeder;
 use Cat\Repositories\PeriodoRepository;
+use Faker\Provider\DateTime;
 use Illuminate\Database\Seeder;
 
 class PeriodosSeeder extends Seeder
@@ -19,7 +20,13 @@ class PeriodosSeeder extends Seeder
         $cantDías = 30;
 //        $cantPeriodos = 50;
         
-        $now   = new \DateTime();
+        $now = new \DateTime();
+        if ($now->format('d') < 15) {
+            $now = new \DateTime($now->format('Y') .
+                '-' .
+                ($now->format('m') - 1) .
+                '-16');
+        }
         $desde = new \DateTime($now->format('Y') .
             '-' .
             $now->format('m') .
@@ -33,14 +40,14 @@ class PeriodosSeeder extends Seeder
             '-15');
         
         $periodo = [
-            'fecha_comienzo' => $desde->format('Y-m-d'),
-            'fecha_fin'      => $hasta->format('Y-m-d'),
+            'fecha_comienzo' => $desde,//->format('Y-m-d'),
+            'fecha_fin'      => $hasta,//->format('Y-m-d'),
             'cant_dias'      => $cantDías,
         ];
         
         $periodo = \Cat\Models\Periodo::create($periodo);
         
         PeriodoRepository::activarPeriodoEnBasesYTurnos($periodo);
-
+        
     }
 }

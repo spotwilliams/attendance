@@ -74,7 +74,7 @@ class JustificacionController extends AppBaseController
             'message'     => $message,
             'agente'      => $presentismo->agente()->first()->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === 1),
+            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === true),
                 (isset($disabled) ? $disabled : false)),
         ], $code);
         
@@ -104,7 +104,7 @@ class JustificacionController extends AppBaseController
             'message'     => $message,
             'agente'      => $presentismo->agente()->first()->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === 1),
+            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado === true),
                 (isset($disabled) ? $disabled : false)),
         ], $code);
         

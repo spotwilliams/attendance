@@ -43,7 +43,7 @@ class Injustificar extends Service
                 
                 DB::beginTransaction();
                 
-                $this->presentismo->injustificado = 1;
+                $this->presentismo->injustificado = true;
                 $this->presentismo->save();
                 DB::commit();
             } catch (QueryException $e) {

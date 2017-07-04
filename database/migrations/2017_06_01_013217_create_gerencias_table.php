@@ -16,7 +16,7 @@ class CreateGerenciasTable extends Migration {
 		{
 			$table->integer('id', true);
 			$table->integer('id_padre')->nullable()->index('subgerencia_es_de_gerencia_idx');
-			$table->string('nombre', 200)->index('nombre');
+			$table->string('nombre', 200)->index('nombre_gerencia');
 			$table->timestamps();
 		});
 	}
