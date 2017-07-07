@@ -141,7 +141,7 @@ class LaboralesController extends AppBaseController
             
             
         } catch (\Exception $e) {
-dd($e);
+
             Flash::error('No se pudo actualizar los datos laborales.');
             
             return redirect(route('agentesEditLaborales', ['id' => $agente->id]));

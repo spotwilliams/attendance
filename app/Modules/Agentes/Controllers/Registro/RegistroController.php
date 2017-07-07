@@ -3,6 +3,7 @@
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Models\Agente;
+use Cat\Models\Operativo;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Destroy\Laborales;
@@ -49,16 +50,17 @@ class RegistroController extends AppBaseController
     public function show($id)
     {
         try {
+            // Se verifica que el agente exista
             $agente = Agente::findOrFail($id);
+            // Se verifica que se haya terminado la carga de sus datos
+            $operativo = Operativo::findOrFail($agente->operativo->id);
             
             return view('Agentes::registro.show')
                 ->with('agente', $agente);
         } catch (\Exception $e) {
-            session()->flash('flash_notification.message',
-                'Se inten&oacute; acceder a informaci&oacute;n inexistente o no permitida');
-            session()->flash('flash_notification.level', 'warning');
+            Flash::warning('No se encontraron todos los datos del agente. Esto se debe a que no se termin&oacute; el proceso de carga. Intente editar los datos del mismo para ver si el problema persiste.');
             
-            return view('Agentes::registro.index', ['base' => 1])->with('baseActual', 1);
+            return redirect(route('agentesSearchIndex'));
             
         }
         

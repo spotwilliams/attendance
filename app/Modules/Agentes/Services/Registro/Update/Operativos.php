@@ -23,6 +23,7 @@ use Cat\Models\TipoPresentismo;
 use Cat\Models\Turno;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
@@ -67,38 +68,46 @@ class Operativos extends Service
         $this->horario            = [
             'hora_entrada' => $input['hora_entrada'],
             'hora_salida'  => $input['hora_salida'],
-            'eximido'      => $input['eximido'],
-            'rotativo'     => $input['rotativo'],
+            'eximido'      => ($input['eximido'] == 1 ? true : false),
+            'rotativo'     => ($input['rotativo'] == 1 ? true : false),
         ];
     }
     
     public function execute()
     {
         
+        $preliminarData = [
+            'id_agente'          => $this->agente->id,
+            'id_gerencia'        => $this->gerencia->id,
+            'id_base'            => $this->base->id,
+            'id_area'            => $this->area->id,
+            'funcion_especifica' => $this->funcion_especifica,
+            'id_cargo'           => $this->cargo->id,
+            'id_funcion'         => $this->funcion->id,
+            'id_turno'           => $this->turno->id,
+        ];
         try {
+//            dd($this->horario);
             DB::beginTransaction();
+            try {
+                
+                /** @var Operativo $operativo */
+                $operativo = $this->agente
+                    ->operativo()
+                    ->firstOrFail();
+                $operativo->update($preliminarData);
+                $operativo
+                    ->horario()
+                    ->first()
+                    ->update(
+                        $this->horario
+                    );
+            } catch (ModelNotFoundException $e) {
+                $horario                       = Horario::create($this->horario);
+                $preliminarData ['id_horario'] = $horario->id;
+                $operativo                     = Operativo::create($preliminarData);
+            }
             
-            $this->agente
-                ->operativo()
-                ->first()
-                ->update([
-                    'id_gerencia'        => $this->gerencia->id,
-                    'id_base'            => $this->base->id,
-                    'id_area'            => $this->area->id,
-                    'funcion_especifica' => $this->funcion_especifica,
-                    'id_cargo'   => $this->cargo->id,
-                    'id_funcion' => $this->funcion->id,
-                    'id_turno'   => $this->turno->id,
-                ]);
-            
-            $this->agente
-                ->operativo()
-                ->first()
-                ->horario()
-                ->first()
-                ->update(
-                    $this->horario
-                );
             DB::commit();
             
             return $this->agente;

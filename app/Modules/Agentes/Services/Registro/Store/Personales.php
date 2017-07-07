@@ -56,7 +56,7 @@ class Personales extends Service
                             'piso'         => $this->domicilios['piso'][$i],
                             'barrio'       => $this->domicilios['barrio'][$i],
                             'provincia'    => $this->domicilios['provincia'][$i],
-                            'constituido'  => $this->domicilios['constituido'][$i],
+                            'constituido'  => ($this->domicilios['constituido'][$i] == 1) ? true : false,
                             'id_agente'    => $this->agente->id,
                         ]);
                     }

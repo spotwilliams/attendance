@@ -67,8 +67,8 @@ class Operativos extends Service
         $this->horario            = [
             'hora_entrada' => $input['hora_entrada'],
             'hora_salida'  => $input['hora_salida'],
-            'eximido'      => $input['eximido'],
-            'rotativo'     => $input['rotativo'],
+            'eximido'      => ($input['eximido'] == 1 ? true : false),
+            'rotativo'     => ($input['rotativo'] == 1 ? true : false),
         ];
     }
     

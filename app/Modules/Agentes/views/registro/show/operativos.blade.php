@@ -89,8 +89,14 @@ $turno = $operativo->turno()->first();
                 <th>Horario:</th>
                 <td>{{$horario->hora_entrada}} a {{$horario->hora_salida}}</td>
             </tr>
-
-
+            <tr>
+                <th>Rotativo:</th>
+                <td>{{($horario->rotativo== true)?'Si' : 'No'}}</td>
+            </tr>
+            <tr>
+                <th>Eximido:</th>
+                <td>{{($horario->eximido== true)?'Si' : 'No'}}</td>
+            </tr>
             </tbody>
         </table>
     </div>

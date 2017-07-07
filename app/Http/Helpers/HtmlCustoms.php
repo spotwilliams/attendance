@@ -13,37 +13,43 @@ use Illuminate\Support\Collection;
 class HtmlCustoms
 {
     public static function getDomiciliosArray(
+        
         $input
         = [
             'session' => [],
             'model'   => [],
         ]
     ) {
-        $original = $return
-            = [
-            [
-                'id'           => '',
-                'id_agente'    => '',
-                'calle'        => '',
-                'numero'       => '',
-                'departamento' => '',
-                'piso'         => '',
-                'barrio'       => '',
-                'provincia'    => '',
-                'constituido'  => '',
-                'libre'        => '',
-                'created_at'   => '',
-                'updated_at'   => '',
-            ],
+        $domicilioTemplate = [
+            'id'           => '',
+            'id_agente'    => '',
+            'calle'        => '',
+            'numero'       => '',
+            'departamento' => '',
+            'piso'         => '',
+            'barrio'       => '',
+            'provincia'    => '',
+            'constituido'  => true,
+            'libre'        => '',
+            'created_at'   => '',
+            'updated_at'   => '',
         ];
+        
+        $return                           = [];
+        $return ['constituido']           = $domicilioTemplate;
+        $return ['nominal']               = $domicilioTemplate;
+        $return['nominal']['constituido'] = false;
+        
         if (isset($input['session'])) {
-            $return = self::getMultiDomicilioFromSession($input['session']['domicilio']);
+            self::getMultiDomicilioFromSession($input['session']['domicilio'], $return);
         } elseif
         (isset($input['model'])) {
-            $return = self::getMultiDomicilioFromModel($input['model']);
+            self::getMultiDomicilioFromModel($input['model'], $return);
         }
         
-        return empty($return) ? $original : $return;
+//        dd($return);
+        
+        return $return;
     }
     
     public static function getEstudiosArray(
@@ -83,7 +89,7 @@ class HtmlCustoms
                 'institucion' => $input['institucion'][$i],
                 'estado'      => $input['estado'][$i],
                 'nivel'       => $input['nivelestudio'][$i],
-                'id'          =>  $input['id'][$i],
+                'id'          => $input['id'][$i],
             ];
         }
         
@@ -91,11 +97,16 @@ class HtmlCustoms
         
     }
     
-    private static function getMultiDomicilioFromSession($input)
+    private static function getMultiDomicilioFromSession($input, &$salida)
     {
-        $salida = [];
         for ($i = 0; $i < count($input['calle']); $i++) {
-            $salida[] = [
+            
+            if ($input['constituido'][$i] == true) {
+                $key = 'constituido';
+            } else {
+                $key = 'nominal';
+            }
+            $salida[$key] = [
                 'calle'        => $input['calle'][$i],
                 'libre'        => $input['libre'][$i],
                 'numero'       => $input['numero'][$i],
@@ -119,9 +130,18 @@ class HtmlCustoms
         
     }
     
-    private static function getMultiDomicilioFromModel(Agente $model)
+    private static function getMultiDomicilioFromModel(Agente $model, &$salida)
     {
-        return $model->domicilios()->get()->toArray();
+        $input = $model->domicilios()->get()->toArray();
+        for ($i = 0; $i < count($input); $i++) {
+            
+            if ($input[$i]['constituido'] == true) {
+                $key = 'constituido';
+            } else {
+                $key = 'nominal';
+            }
+            $salida[$key] = $input[$i];
+        }
     }
     
     
@@ -158,7 +178,7 @@ class HtmlCustoms
         if ($p !== null) {
             $btnDisabled   = '';
             $comentario    = $p->comentario;
-            $buttonJustice = ($p->injustificado == true?
+            $buttonJustice = ($p->injustificado == true ?
                 self::getButtonWithPopOver($p, true) :
                 self::getButtonWithPopOver($p, false));
             $btnClass      = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');

@@ -15,19 +15,17 @@ class Validation
 {
     public static function getDomicilioRules(Request $request)
     {
-        $rules      = [
+        $rules           = [
             'domicilio.constituido.0' => 'not_in:0',
+            'domicilio.calle.0'       => 'required',
+            'domicilio.numero.0'      => 'required|integer',
         ];
-        $rulesGroup = ['calle', 'numero'];
-        foreach ($request->input('domicilio') as $key => $value) {
-            if (in_array($key, $rulesGroup)) {
-                foreach ($value as $index => $val) {
-                    $rules["domicilio.calle.$index"]  = 'required';
-                    $rules["domicilio.numero.$index"] = 'required|integer';
-                }
-            }
+        $domiciliosInput = $request->input('domicilio');
+
+        if (isset($domiciliosInput['numero'][1])) {
             
-            
+            $rules['domicilio.calle.1']  = 'required';
+            $rules['domicilio.numero.1'] = 'required|integer';
         }
         
         return $rules;

@@ -33,7 +33,7 @@ $estudios = $agente->estudio()->get();
                         <th>Provincia:</th>
                         <td colspan="2">{{$d->provincia}}</td>
                         <th>Es constituido:</th>
-                        <td>@if($d->constituido === false) NO @else SI @endif</td>
+                        <td>@if($d->constituido == false) NO @else SI @endif</td>
                     </tr>
                     <tr>
                         <th>Otro dato:</th>

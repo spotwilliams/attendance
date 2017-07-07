@@ -16,6 +16,7 @@ use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
@@ -73,25 +74,29 @@ class Laborales extends Service
     
     public function execute()
     {
-        
+        $data = [
+            'fecha_ingreso'          => $this->fecha->format('Y-m-d'),
+            'id_tipo_contrato'       => $this->tipo->id,
+            'id_estado_contrato'     => $this->estado->id,
+            'id_agente'              => $this->agente->id,
+            'id_sial'                => $this->id_sial,
+            'ficha'                  => $this->ficha,
+            'monto'                  => floatval($this->monto),
+            'fecha_baja'             => $this->fecha_baja,
+            'comentario_baja'        => $this->comentario_baja,
+            'tipo_inscripcion'       => $this->tipo_inscripcion,
+            'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
+        ];
         try {
             DB::beginTransaction();
-            $this->agente
-                ->contrato()
-                ->first()
-                ->update([
-                    'fecha_ingreso'          => $this->fecha->format('Y-m-d'),
-                    'id_tipo_contrato'       => $this->tipo->id,
-                    'id_estado_contrato'     => $this->estado->id,
-                    'id_agente'              => $this->agente->id,
-                    'id_sial'                => $this->id_sial,
-                    'ficha'                  => $this->ficha,
-                    'monto'                  => floatval($this->monto),
-                    'fecha_baja'             => $this->fecha_baja,
-                    'comentario_baja'        => $this->comentario_baja,
-                    'tipo_inscripcion'       => $this->tipo_inscripcion,
-                    'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
-                ]);
+            try {
+                $this->agente
+                    ->contrato()
+                    ->firstOrFail()
+                    ->update($data);;
+            } catch (ModelNotFoundException $e) {
+                Contrato::create($data);
+            }
             
             DB::commit();
             

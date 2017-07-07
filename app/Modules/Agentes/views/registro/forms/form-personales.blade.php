@@ -205,87 +205,79 @@ $control = 0;
         ];
     }
     $domicilios = \Cat\Helpers\HtmlCustoms::getDomiciliosArray($data);
-    $control = 0;
+    $control = -1;
     ?>
     <div class="panel panel-default col-sm-8">
         @foreach($domicilios as $key =>$dom)
             <?php $control++;?>
 
-            <div class="panel-body domiciliosWrapper">
-                <div class="domiciliosTemplate" id="domiciliosTemplate">
-                    <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera"
-                           name="domicilio[id][]">
-                    <div class="form-group">
-                        <div class="col-sm-6 @if($errors->has("domicilio.calle.$key" )) has-error @endif">
-                            <input type="text" class="form-control" value="{{$dom['calle']}}" placeholder="Calle"
-                                   name="domicilio[calle][]">
-                            @if($errors->has("domicilio.calle.$key"))
-                                <span class="help-block">{{$errors->first("domicilio.calle.$key")}}</span>
-                            @endif
-
-                        </div>
-                        <div class="col-sm-2 @if($errors->has("domicilio.numero.$key" )) has-error @endif">
-                            <input type="text" class="form-control" value="{{$dom['numero']}}"
-                                   placeholder="N&uacute;mero"
-                                   name="domicilio[numero][]">
-                            @if($errors->has("domicilio.numero.$key"))
-                                <span class="help-block">{{$errors->first("domicilio.numero.$key")}}</span>
-                            @endif
-
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" value="{{$dom['departamento']}}"
-                                   placeholder="Departamento"
-                                   name="domicilio[departamento][]">
-                        </div>
-                        <div class="col-sm-2">
-                            <input type="text" class="form-control" value="{{$dom['piso']}}" placeholder="Piso"
-                                   name="domicilio[piso][]">
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" value="{{$dom['barrio']}}" placeholder="Barrio"
-                                   name="domicilio[barrio][]">
-                        </div>
-
-                        <div class="col-sm-5">
-                            <input type="text" class="form-control" value="{{$dom['provincia']}}"
-                                   placeholder="Provincia"
-                                   name="domicilio[provincia][]">
-                        </div>
-
-
-                        <div class="col-sm-2 @if($errors->has("domicilio.constituido.$key")) has-error @endif">
-                            <select name="domicilio[constituido][]" class="form-control">
-                                <option value="1" {{$dom['constituido']=='1'? 'selected': ''}}>Constituido</option>
-                                <option value="0" {{$dom['constituido']=='0'? 'selected': ''}}>Nominal</option>
-                            </select>
-                            @if($errors->has("domicilio.constituido.$key"))
-                                <span class="help-block">{{$errors->first("domicilio.constituido.$key")}}</span>
-                            @endif
-                        </div>
-
+            <div class="panel-body">
+                <input type="hidden" class="form-control" value="{{$dom['id']}}" placeholder="Carrera"
+                       name="domicilio[id][]">
+                <div class="form-group">
+                    <div class="col-sm-6 @if($errors->has("domicilio.calle.$control" )) has-error @endif">
+                        <input type="text" class="form-control" value="{{$dom['calle']}}" placeholder="Calle"
+                               name="domicilio[calle][]">
+                        @if($errors->has("domicilio.calle.$control"))
+                            <span class="help-block">{{$errors->first("domicilio.calle.$control")}}</span>
+                        @endif
 
                     </div>
-                    <div class="row">
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" value="{{$dom['libre']}}" placeholder="Otro"
-                                   name="domicilio[libre][]">
-                        </div>
-                        <div class="col-sm-2">
-                            <button type="button" class="btn btn-success addButton {{$control == 1? '' : 'hidden'}}">
-                                <i class="fa fa-plus"></i>
-                            </button>
-                            <button type="button" class="btn btn-danger removeButton {{$control == 1? 'hidden':''}}">
-                                <i class="fa fa-remove"></i>
-                            </button>
-                        </div>
+                    <div class="col-sm-2 @if($errors->has("domicilio.numero.$control" )) has-error @endif">
+                        <input type="text" class="form-control" value="{{$dom['numero']}}"
+                               placeholder="N&uacute;mero"
+                               name="domicilio[numero][]">
+                        @if($errors->has("domicilio.numero.$control"))
+                            <span class="help-block">{{$errors->first("domicilio.numero.$control")}}</span>
+                        @endif
+
                     </div>
-                    <hr>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" value="{{$dom['departamento']}}"
+                               placeholder="Departamento"
+                               name="domicilio[departamento][]">
+                    </div>
+                    <div class="col-sm-2">
+                        <input type="text" class="form-control" value="{{$dom['piso']}}" placeholder="Piso"
+                               name="domicilio[piso][]">
+                    </div>
                 </div>
+
+                <div class="form-group">
+
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" value="{{$dom['barrio']}}" placeholder="Barrio"
+                               name="domicilio[barrio][]">
+                    </div>
+
+                    <div class="col-sm-5">
+                        <input type="text" class="form-control" value="{{$dom['provincia']}}"
+                               placeholder="Provincia"
+                               name="domicilio[provincia][]">
+                    </div>
+
+
+                    <div class="col-sm-2">
+                        <h4> <span class="label label-default">
+                                @if($dom['constituido'] == true)
+                                    Constituido
+                                @else
+                                    Nominal
+                                @endif
+                            </span>
+                        </h4>
+                        <input type="hidden" name="domicilio[constituido][]" value="{{$dom['constituido']== true ?1:0}}"/>
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" value="{{$dom['libre']}}" placeholder="Otro"
+                               name="domicilio[libre][]">
+                    </div>
+                </div>
+                <hr>
             </div>
         @endforeach
     </div>
@@ -351,64 +343,6 @@ $control = 0;
                     .parents()
                     .closest('.form-group.estudiosTemplate')
                     .remove();
-
-            });
-
-            $('.domiciliosTemplate .addButton').on('click', function (obj, event) {
-
-
-                var $template = $('#domiciliosTemplate');
-
-                // Ubico los datos actuales
-                var inptus = $template.find('input');
-                var selects = $template.find('select');
-
-                var $clone = $template
-                    .clone()
-                    .removeAttr('id')
-                    .insertAfter($template);
-
-                var $option = $clone
-                    .find('input')
-                    .val('');
-                $option.find('[name="carrera[]"]')
-                    .focus();
-                //button
-
-                $clone.find('.btn-success')
-                    .addClass('hidden');
-
-                $clone.find('.btn-danger')
-                    .removeClass('hidden');
-
-                $template.find('.help-block')
-                    .remove();
-
-                $template.find('.has-error')
-                    .removeClass('has-error');
-                // Pongo los datos en la nueva fila creada
-                var inputsCopy = $clone.find('input');
-                var selectsCopy = $clone.find('select');
-                for (var i = 0; i < 8; i++) {
-                    $(inputsCopy[i]).val($(inptus[i]).val());
-                }
-                $(selectsCopy[0]).val($(selects[0]).val());
-
-                // Saco los datos en la linea actual
-                $template
-                    .find('input')
-                    .val('');
-                $(inptus[0]).focus();
-
-
-            });
-            $('.domiciliosWrapper').on("click", ".removeButton", function (e) {
-                e.preventDefault();
-                $(this)
-                    .parents()
-                    .closest('.domiciliosTemplate')
-                    .remove();
-
 
             });
 

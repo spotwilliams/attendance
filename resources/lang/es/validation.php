@@ -101,6 +101,9 @@ return [
                 0 => [
                     'required' => 'Debe existir al menos un domicilio.',
                 ],
+                1 => [
+                    'required' => 'Un domicilio sin calle no es posible.',
+                ],
             ],
             'numero'      => [
                 0 => [
