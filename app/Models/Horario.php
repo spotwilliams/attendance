@@ -18,5 +18,7 @@ class Horario extends Model
         = [
             'hora_entrada',
             'hora_salida',
+            'eximido',
+            'rotativo',
         ];
 }

@@ -2,15 +2,10 @@
 
 namespace Cat\Masivo\Especificadores\Mappers;
 
+use Carbon\Carbon;
 use Cat\Models\Agente;
-use Cat\Models\Area;
 use Cat\Models\Base;
-use Cat\Models\Cargo;
-use Cat\Models\Funcion;
 use Cat\Models\Gerencia;
-use Cat\Models\Horario;
-use Cat\Models\Turno;
-use Illuminate\Support\Facades\DB;
 use Maatwebsite\Excel\Collections\CellCollection;
 
 class Operativos
@@ -36,8 +31,8 @@ class Operativos
             'id_funcion'         => $collection->funcion,
             'id_turno'           => $collection->turno,
             'funcion_especifica' => $collection->funcion_especifica,
-            'hora_entrada'       => $collection->hora_entrada,
-            'hora_salida'        => $collection->hora_salida,
+            'hora_entrada'       => $collection->hora_entrada->format('H:i'),
+            'hora_salida'        => $collection->hora_salida->format('H:i'),
             'eximido'            => $collection->eximido,
             'rotativo'           => $collection->rotativo,
         
