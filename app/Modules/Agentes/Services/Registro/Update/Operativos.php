@@ -87,7 +87,6 @@ class Operativos extends Service
             'id_turno'           => $this->turno->id,
         ];
         try {
-//            dd($this->horario);
             DB::beginTransaction();
             try {
                 

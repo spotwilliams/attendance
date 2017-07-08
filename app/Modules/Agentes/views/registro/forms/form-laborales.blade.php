@@ -90,7 +90,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
     </div>
 </div>
 
-<div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif">
+<div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif es-locacion">
     <label class="col-sm-2 control-label">Tipo de inscripci&oacute;n IIBB * </label>
     <div class="col-sm-8">
         {!! Form::select('tipo_inscripcion',  [
@@ -106,7 +106,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
     </div>
 </div>
 
-<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
+<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif es-locacion">
     <label class="col-sm-2 control-label">Fecha alta de contrato *</label>
     <div class="col-sm-8">
         {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
@@ -147,10 +147,13 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
                 // Locacion de servicio
                 for (var i = 0; i < optionsLocacion.length; i++) {
                     if ($(this).val() == optionsLocacion[i]) {
-                        $('.es-situacion-revista').addClass('hidden');
+
+                        $('.es-situacion-revista').fadeOut(400);
+                        $('.es-locacion').fadeIn(400);
                         break;
                     } else {
-                        $('.es-situacion-revista').removeClass('hidden');
+                        $('.es-situacion-revista').fadeIn(400);
+                        $('.es-locacion').fadeOut(400);
 
                     }
                 }

@@ -3,6 +3,7 @@
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
+use Cat\Helpers\Validation;
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
@@ -60,7 +61,7 @@ class LaboralesController extends AppBaseController
     {
         $input = $request->all();
         
-        $this->validate($request, Contrato::$rules);
+        $this->validate($request, Validation::getContratoRules($request));
         
         
         try {
@@ -119,9 +120,9 @@ class LaboralesController extends AppBaseController
      */
     public function update(Request $request)
     {
-        $this->validate($request, Contrato::$rules);
-    
-        $input  = $request->all();
+        $this->validate($request, Validation::getContratoRules($request));
+        
+        $input = $request->all();
         
         $agente = Agente::find($input['agente']);
         
@@ -141,7 +142,7 @@ class LaboralesController extends AppBaseController
             
             
         } catch (\Exception $e) {
-
+            
             Flash::error('No se pudo actualizar los datos laborales.');
             
             return redirect(route('agentesEditLaborales', ['id' => $agente->id]));

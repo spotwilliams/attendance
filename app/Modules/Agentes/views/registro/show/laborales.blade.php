@@ -27,7 +27,11 @@ $estadoContrato = $contrato->estadoContrato()->first();
             @endif
             <tr>
                 <th>Fecha alta contrato:</th>
-                <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
+                @if($tipoContrato->isLocacion())
+                    <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
+                @else
+                    <td>N/A</td>
+                @endif
             </tr>
             <tr>
                 <th>Fecha de ingreso al GCBA:</th>
@@ -39,7 +43,11 @@ $estadoContrato = $contrato->estadoContrato()->first();
             </tr>
             <tr>
                 <th>Tipo inscripci&oacute;n a IIBB:</th>
-                <td>{{$contrato->tipo_inscripcion}}</td>
+                @if($tipoContrato->isLocacion())
+                    <td>{{$contrato->tipo_inscripcion}}</td>
+                @else
+                    <td>N/A</td>
+                @endif
             </tr>
             <tr>
                 <th>Estado contrato:</th>

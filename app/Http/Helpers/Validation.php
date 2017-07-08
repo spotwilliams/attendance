@@ -9,6 +9,8 @@
 namespace Cat\Helpers;
 
 
+use Cat\Models\Contrato;
+use Cat\Models\TipoContrato;
 use Illuminate\Http\Request;
 
 class Validation
@@ -21,11 +23,28 @@ class Validation
             'domicilio.numero.0'      => 'required|integer',
         ];
         $domiciliosInput = $request->input('domicilio');
-
+        
         if (isset($domiciliosInput['numero'][1])) {
             
             $rules['domicilio.calle.1']  = 'required';
             $rules['domicilio.numero.1'] = 'required|integer';
+        }
+        
+        return $rules;
+    }
+    
+    public static function getContratoRules(Request $request)
+    {
+        $rules = Contrato::$rules;
+        if ($request->input('id_tipo_contrato') == -1) {
+            return $rules;
+        }
+        /** @var TipoContrato $tipoContrato */
+        $tipoContrato = TipoContrato::find($request->input('id_tipo_contrato'));
+        
+        if (!$tipoContrato->isLocacion()) {
+            unset($rules['fecha_ingreso']);
+            unset($rules['tipo_inscripcion']);
         }
         
         return $rules;
