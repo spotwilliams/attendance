@@ -162,10 +162,10 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
                 var optionsBaja = {{json_encode( $idEstadosContratosBaja)}};
                 for (var i = 0; i < optionsBaja.length; i++) {
                     if ($(this).val() == optionsBaja[i]) {
-                        $('.es-baja').removeClass('hidden');
+                        $('.es-baja').fadeIn(400);
                         break;
                     } else {
-                        $('.es-baja').addClass('hidden');
+                        $('.es-baja').fadeOut(400);
                     }
                 }
             })
