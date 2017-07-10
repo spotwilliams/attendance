@@ -21,7 +21,7 @@ $agentesCompletos = Calculation::addFaltasNoRegistradas($agentes->getCollection(
         </td>
 
         <td>{{$a->apellido}}, {{$a->nombre}}</td>
-        <td>{{$a->dni}}</td>
+        {{--<td>{{$a->dni}}</td>--}}
         <td>{{$a->cuit}}</td>
     </tr>
     <tr class="hidden">

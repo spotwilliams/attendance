@@ -81,12 +81,12 @@ class GeneralController extends AppBaseController
             $estadoPeriodo = EstadoPeriodo::where('id_periodo', '=', $periodo->id)
                 ->where('id_base', '=', $base->id)
                 ->where('id_turno', '=', $turno->id)
-            ->first();
+                ->first();
             $tipoLocacion  = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
                 ->get(['id'])
                 ->keyBy('id')
                 ->toArray());
-
+            
             $agentesYaConfirmados = Haber::where('id_periodo', '=', $periodo->id)
                 ->get(['id_agente'])->toArray();
             $desde                = new \DateTime($periodo->fecha_comienzo);
@@ -97,6 +97,12 @@ class GeneralController extends AppBaseController
                 ->getEloquentAgentes($base->id, $periodo);
             
             $agentes
+                ->select([
+                    'agentes.id as id',
+                    'agentes.nombre as nombre',
+                    'agentes.apellido as apellido',
+                    'agentes.cuit as cuit',
+                ])
                 // Override the condition
                 ->with([
                     'presentismos' => function ($presentismos) use ($desde, $hasta) {
@@ -112,6 +118,7 @@ class GeneralController extends AppBaseController
                 ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->where('operativos.id_turno', '=', $turno->id);
 
+//            dd($agentes->get());
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)

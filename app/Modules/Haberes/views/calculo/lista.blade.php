@@ -85,7 +85,7 @@ while ($fecha < $fechaToday) {
                     <thead>
                     <th>Detalles</th>
                     <th>Agente</th>
-                    <th>DNI</th>
+                    {{--<th>DNI</th>--}}
                     <th>CUIT</th>
                     {{--<th>Confirmar</th>--}}
                     </thead>
