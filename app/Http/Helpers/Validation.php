@@ -43,7 +43,7 @@ class Validation
         $tipoContrato = TipoContrato::find($request->input('id_tipo_contrato'));
         
         if (!$tipoContrato->isLocacion()) {
-            unset($rules['fecha_ingreso']);
+//            unset($rules['fecha_ingreso']);
             unset($rules['tipo_inscripcion']);
         }
         

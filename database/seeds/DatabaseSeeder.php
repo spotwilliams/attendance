@@ -41,7 +41,7 @@ class DatabaseSeeder extends Seeder
         $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
 
         $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
-        $this->call(AgentesSeeder::class);
+//        $this->call(AgentesSeeder::class);
         try {
         } catch (\Exception $error) {
             echo $error->getTraceAsString();

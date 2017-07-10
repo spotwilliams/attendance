@@ -106,8 +106,8 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
     </div>
 </div>
 
-<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif es-locacion">
-    <label class="col-sm-2 control-label">Fecha alta de contrato *</label>
+<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
+    <label class="col-sm-2 control-label">Fecha de contrato *</label>
     <div class="col-sm-8">
         {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
         @if($errors->has('fecha_ingreso'))
@@ -163,6 +163,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
                 for (var i = 0; i < optionsBaja.length; i++) {
                     if ($(this).val() == optionsBaja[i]) {
                         $('.es-baja').fadeIn(400);
+                        $('.es-baja').removeClass('hidden');
                         break;
                     } else {
                         $('.es-baja').fadeOut(400);

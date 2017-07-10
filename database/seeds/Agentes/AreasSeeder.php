@@ -44,6 +44,7 @@ class AreasSeeder extends Seeder
             'Operativa',
             'Pañol',
             'Patrimonio',
+            'Monitoreo',
             'Planeamiento',
             'Playa de Acarreo',
             'Presentismo y Legajos del Personal',
