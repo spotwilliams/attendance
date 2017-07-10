@@ -1,13 +1,25 @@
 <?php
-$week = [
+use Illuminate\Support\Facades\Gate;
 
+$week = [
     'Mon',
     'Tue',
     'Wed',
     'Thu',
     'Fri'
 ];
+if (Gate::allows('see-all-day')) {
+    $week = [
+        'Mon',
+        'Tue',
+        'Wed',
+        'Thu',
+        'Fri',
+        'Sat',
+        'Sun',
+    ];
 
+}
 ?>
 @foreach($agentes as $age)
     <tr>

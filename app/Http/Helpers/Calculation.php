@@ -63,13 +63,16 @@ class Calculation
      * @param \DateTime $end
      * @return array
      */
-    public static function getWeekends(\DateTime $start, \DateTime $end)
+    public static function getWeekends(\DateTime $start, \DateTime $end, $daysFiltered = [])
     {
-        $days       = [
+        $days = [
             'Sat',
             'Sun',
         
         ];
+        if (!empty($daysFiltered)) {
+            $days = $daysFiltered;
+        }
         $compulsory = [];
         
         $interval = new \DateInterval('P1D');
@@ -86,9 +89,9 @@ class Calculation
         return $compulsory;
     }
     
-    public static function getWeekDays(\DateTime $start, \DateTime $end)
+    public static function getWeekDays(\DateTime $start, \DateTime $end, $daysFiltered = [])
     {
-        $days       = [
+        $days = [
             'Mon',
             'Tue',
             'Wed',
@@ -96,6 +99,9 @@ class Calculation
             'Fri',
         
         ];
+        if (!empty($daysFiltered)) {
+            $days = $daysFiltered;
+        }
         $compulsory = [];
         $interval   = new \DateInterval('P1D');
         

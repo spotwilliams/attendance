@@ -12,20 +12,24 @@ class AuthServiceProvider extends ServiceProvider
      *
      * @var array
      */
-    protected $policies = [
-        'Cat\Model' => 'Cat\Policies\ModelPolicy',
-    ];
-
+    protected $policies
+        = [
+            'Cat\Model' => 'Cat\Policies\ModelPolicy',
+        ];
+    
     /**
      * Register any application authentication / authorization services.
      *
-     * @param  \Illuminate\Contracts\Auth\Access\Gate  $gate
+     * @param  \Illuminate\Contracts\Auth\Access\Gate $gate
      * @return void
      */
     public function boot(GateContract $gate)
     {
         $this->registerPolicies($gate);
-
-        //
+        
+        $gate->define('see-all-day', function ($user) {
+            
+            return $user->name == 'Subgerente';
+        });
     }
 }
