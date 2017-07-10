@@ -33,7 +33,7 @@ class TiposPresentismoSeeder extends Seeder
                 'descripcion'   => 'AUSENTE',
                 'aplica'        => 'TODOS',
                 'codigo'        => 'A',
-                'injustificado' => 1,
+                'injustificado' => true,
                 'corridos'      => 0,
                 'color'         => '#e0ba21',
             ],
@@ -388,6 +388,14 @@ class TiposPresentismoSeeder extends Seeder
                 'corridos'    => 0,
                 'color'       => '#CBB094',
             ],
+            [
+                'descripcion'   => 'LICENCIA ESPECIAL',
+                'aplica'        => 'TODOS',
+                'codigo'        => 'LES',
+                'injustificado' => false,
+                'corridos'      => 0,
+                'color'         => '#CBB094',
+            ],
         
         ];
         
@@ -406,7 +414,7 @@ class TiposPresentismoSeeder extends Seeder
         foreach ($tiposNews as $nuevo) {
             if (!isset($nuevo['injustificado'])) {
                 
-                $array = array_merge($nuevo, ['injustificado' => 1]);
+                $array = array_merge($nuevo, ['injustificado' => true]);
             } else {
                 $array = $nuevo;
             }
