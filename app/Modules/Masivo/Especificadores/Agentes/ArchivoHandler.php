@@ -41,6 +41,7 @@ class ArchivoHandler extends ExcelHandler
         for ($i = 0; $i < $sheet->count(); $i++) {
             /** @var CellCollection $row */
             $row = $sheet->get($i);
+    
             try {
                 if ($row->cuit !== 'empty') {
                     $agente = $this->handlePersonales($row);
@@ -58,7 +59,7 @@ class ArchivoHandler extends ExcelHandler
                     'apellido'         => $row->apellido,
                     'dni'              => $row->dni,
                     'cuit'             => $row->cuit,
-//                    'technical_reason' => $e->getMessage(),
+                    'technical_reason' => $e->getMessage(),
                 ];
             }
         }

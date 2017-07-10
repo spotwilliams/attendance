@@ -108,8 +108,8 @@
     <div class="col-sm-8">
         {!! Form::select('sexo',
          [
-         'M' => 'Mujer',
-         'H' => 'Hombre',
+         'F' => 'Mujer',
+         'M' => 'Hombre',
           ], null, ['class' => 'form-control']) !!}
     </div>
 </div>
