@@ -50,7 +50,6 @@ class ArchivoHandler extends ExcelHandler
                     break;
                 }
             } catch (\Exception $e) {
-                dd($e);
                 $this->clearPossibleMistakes($row);
                 
                 $listaErrores[] = [

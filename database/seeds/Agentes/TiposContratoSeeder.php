@@ -46,12 +46,12 @@ class TiposContratoSeeder extends Seeder
             ],
             [
                 'id'          => 7,
-                'descripcion' => 'Obra',
+                'descripcion' => 'Locaci&oacute;n de obra',
                 'codigo'      => 'LOCACION',
             ],
             [
                 'id'          => 8,
-                'descripcion' => 'Servicios',
+                'descripcion' => 'Locaci&oacute;n de  servicios',
                 'codigo'      => 'LOCACION',
             ],
         ];

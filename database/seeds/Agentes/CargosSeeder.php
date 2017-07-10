@@ -24,6 +24,7 @@ class CargosSeeder extends Seeder
             'Coordinador Gral.',
             'Jefe de Departamento',
             'Jefe de Base',
+            'Jefe de gr&uacute;s Brd',
             'Coordinador',
         ];
         
