@@ -114,7 +114,7 @@ $funcionEspecifica = [
     'Motos',
     'Motos/Alcoholemia',
 ];
-$funcion = (isset($operativo) ? $operativo->funcion_especifica : 'Otro');
+$funcion = (isset($operativo) ? $operativo->funcion_especifica : 'Operador');
 ?>
 <div class="form-group">
     <label class="col-sm-2 control-label">Funci&oacute;n espec&iacute;fica</label>
@@ -257,9 +257,10 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
             $('#funcion-especifica-select').on('change', function () {
                 $('[name="funcion_especifica"]').val($(this).val());
                 if ($(this).val() === 'Otro') {
+                    $('.funcion-especifica-show').fadeIn(400);
                     $('.funcion-especifica-show').removeClass('hidden');
                 } else {
-                    $('.funcion-especifica-show').addClass('hidden');
+                    $('.funcion-especifica-show').fadeOut(400);
 
                 }
             });
