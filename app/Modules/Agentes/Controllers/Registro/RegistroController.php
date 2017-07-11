@@ -58,7 +58,7 @@ class RegistroController extends AppBaseController
             return view('Agentes::registro.show')
                 ->with('agente', $agente);
         } catch (\Exception $e) {
-            Flash::warning('No se encontraron todos los datos del agente. Esto se debe a que no se termin&oacute; el proceso de carga. Intente editar los datos del mismo para ver si el problema persiste.');
+            Flash::warning('Agente inexistente o con datos incompletos. Si el agente existe, intente completando todos sus datos.');
             
             return redirect(route('agentesSearchIndex'));
             

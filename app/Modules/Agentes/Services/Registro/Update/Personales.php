@@ -62,8 +62,10 @@ class Personales extends Service
     private function workWithDomicilios()
     {
         $notDeleteThis = array_filter(array_values($this->domicilios['id']));
+        
         if (!empty($notDeleteThis)) {
-            Domicilio::whereNotIn('id', $notDeleteThis)
+            Domicilio::where('id_agente', '=', $this->agente->id)
+                ->whereNotIn('id', $notDeleteThis)
                 ->delete();
         }
         for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
@@ -108,7 +110,8 @@ class Personales extends Service
         
         $notDeleteThis = array_filter(array_values($this->estudios['id']));
         if (!empty($notDeleteThis)) {
-            Estudio::whereNotIn('id', $notDeleteThis)
+            Estudio::where('id_agente', '=', $this->agente->id)
+                ->whereNotIn('id', $notDeleteThis)
                 ->delete();
         }
         for ($i = 0; $i < count($this->estudios['carrera']); $i++) {
