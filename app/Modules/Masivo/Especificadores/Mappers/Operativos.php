@@ -16,10 +16,10 @@ class Operativos
         /**
          * Opcionales
          */
-        $subGerencia = Gerencia::find($collection->subgerencia);
+        $subGerencia = Gerencia::find(($collection->subgerencia == '#N/A' ? -1 : $collection->subgerencia));
         
         if ($subGerencia == null) {
-            $subGerencia = Gerencia::find($collection->gerencia);
+            $subGerencia = Gerencia::find(($collection->gerencia == '#N/A' ? -1 : $collection->gerencia));
         }
         
         return [
