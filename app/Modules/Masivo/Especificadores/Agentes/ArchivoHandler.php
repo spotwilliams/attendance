@@ -9,9 +9,9 @@ use Cat\Models\Base;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales as PersonalesStore;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as LaboralesStore;
 use Cat\Modules\Agentes\Services\Registro\Store\Operativos as OperativosStore;
-use Cat\Modules\Agentes\Services\Registro\Destroy\Personales as PersonalesDestroy;
-use Cat\Modules\Agentes\Services\Registro\Destroy\Laborales as LaboralesDestroy;
-use Cat\Modules\Agentes\Services\Registro\Destroy\Operativos as OperativosDestroy;
+use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Personales as PersonalesDestroy;
+use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Laborales as LaboralesDestroy;
+use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Operativos as OperativosDestroy;
 use Cat\Masivo\Especificadores\Mappers\Laborales as LaboralesMapper;
 use Cat\Masivo\Especificadores\Mappers\Operativos as OperativosMapper;
 use Laracasts\Flash\Flash;
@@ -41,7 +41,7 @@ class ArchivoHandler extends ExcelHandler
         for ($i = 0; $i < $sheet->count(); $i++) {
             /** @var CellCollection $row */
             $row = $sheet->get($i);
-    
+            
             try {
                 if ($row->cuit !== 'empty') {
                     $agente = $this->handlePersonales($row);
@@ -59,7 +59,7 @@ class ArchivoHandler extends ExcelHandler
                     'apellido'         => $row->apellido,
                     'dni'              => $row->dni,
                     'cuit'             => $row->cuit,
-//                    'technical_reason' => $e->getMessage(),
+                    'technical_reason' => $e->getMessage(),
                 ];
             }
         }
@@ -111,14 +111,14 @@ class ArchivoHandler extends ExcelHandler
     private function clearPossibleMistakes(CellCollection $cell)
     {
         $agente = Agente::where('cuit', '=', (int)$cell->cuit)
-        ->first();
-
+            ->first();
+        
         if ($agente !== null) {
             
             $destroy = [
-                PersonalesDestroy::class,
                 LaboralesDestroy::class,
                 OperativosDestroy::class,
+                PersonalesDestroy::class,
             ];
             
             foreach ($destroy as $service) {
