@@ -59,7 +59,7 @@ class ArchivoHandler extends ExcelHandler
                     'apellido'         => $row->apellido,
                     'dni'              => $row->dni,
                     'cuit'             => $row->cuit,
-                    'technical_reason' => $e->getMessage(),
+//                    'technical_reason' => $e->getMessage(),
                 ];
             }
         }
