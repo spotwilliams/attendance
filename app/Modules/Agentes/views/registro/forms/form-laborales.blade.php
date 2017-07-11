@@ -8,8 +8,12 @@ $idEstadosContratosBaja = array_keys(
 $idTiposContratosLocacion = array_keys(
     TipoContrato::getEquivalentesLocacion()->keyBy('id')->toArray()
 );
+
 if (!isset($contrato)) {
-    $contrato = new Contrato();
+    $contrato = new Contrato([
+        'id_tipo_contrato'   => old('id_tipo_contrato'),
+        'id_estado_contrato' => old('id_estado_contrato'),
+    ]);
 }
 ?>
 {!! Form::hidden('id', null, ['class' => 'form-control']) !!}
@@ -158,6 +162,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
                     }
                 }
             });
+            // Mostrar cambios cuando se selecciona
             $('[name="id_estado_contrato"]').on('change', function (event) {
                 var optionsBaja = {{json_encode( $idEstadosContratosBaja)}};
                 for (var i = 0; i < optionsBaja.length; i++) {
@@ -169,7 +174,8 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
                         $('.es-baja').fadeOut(400);
                     }
                 }
-            })
+            });
+            // Mostrar campos baja en caso que se retorne
         });
     </script>
 @append

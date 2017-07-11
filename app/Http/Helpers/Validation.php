@@ -23,8 +23,8 @@ class Validation
             'domicilio.numero.0'      => 'required|integer',
         ];
         $domiciliosInput = $request->input('domicilio');
-        
-        if (isset($domiciliosInput['numero'][1])) {
+
+        if (!empty($domiciliosInput['numero'][1])) {
             
             $rules['domicilio.calle.1']  = 'required';
             $rules['domicilio.numero.1'] = 'required|integer';
