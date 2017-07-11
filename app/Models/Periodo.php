@@ -110,9 +110,9 @@ class Periodo extends Model
      */
     public function fechaComprendida(\DateTime $date)
     {
-        $desde = new \DateTime($this->fecha_desde);
-        $hasta = new \DateTime($this->fecha_hasta);
-        
+        $desde = new \DateTime($this->fecha_comienzo);
+        $hasta = new \DateTime($this->fecha_fin);
+
         if (($desde <= $date) and ($date <= $hasta)) {
             return true;
         } else {
