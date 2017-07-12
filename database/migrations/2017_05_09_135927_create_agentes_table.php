@@ -19,7 +19,7 @@ class CreateAgentesTable extends Migration
             $table->string('nombre', 60)->index('nombre_index');
             $table->string('apellido', 60)->index('apellido_index');
             $table->string('dni', 60)->index('dni_index')->nullable();
-            $table->date('fecha_nacimiento');
+            $table->date('fecha_nacimiento')->default('1900-01-01');
             $table->string('email', 100);
             $table->string('sexo', 10)->nullable();
             $table->string('telefono', 100);

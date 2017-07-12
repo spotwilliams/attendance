@@ -45,8 +45,10 @@
                                         class="pull-right">{{(new DateTime($agente->fecha_nacimiento))->format('d/m/Y')}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Sexo</b> <a
-                                        class="pull-right">{{($agente->sexo ==='M'? 'Mujer': 'Hombre')}}</a>
+                                <b>Sexo</b><a class="pull-right">
+
+                                    {{($agente->sexo === ''?'':($agente->sexo ==='F'? 'Femenimo': 'Masculino'))}}
+                                </a>
                             </li>
                         </ul>
                     </div>
@@ -66,9 +68,9 @@
             </div>
             <!-- /.col -->
             <div class="col-md-9">
-                @include('Agentes::registro.show.tabs')
+            @include('Agentes::registro.show.tabs')
 
-                <!-- /.nav-tabs-custom -->
+            <!-- /.nav-tabs-custom -->
             </div>
             <!-- /.col -->
         </div>

@@ -10,7 +10,7 @@
         <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">Lista de agentes</h3>
+                <h3 class="box-title">B&uacute;squeda de agentes</h3>
             </div>
             <div class="box-body">
 

@@ -122,7 +122,10 @@ class ArchivoHandler extends ExcelHandler
             ];
             
             foreach ($destroy as $service) {
-                (new $service($agente))->execute();
+                try {
+                    (new $service($agente))->execute();
+                } catch (\Exception $e) {
+                }
             }
         }
     }

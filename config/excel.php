@@ -483,7 +483,7 @@ return array(
             | If set to false, a carbon object will return
             |
             */
-            'format'  => false,
+            'format'  => true,
 
             /*
             |--------------------------------------------------------------------------

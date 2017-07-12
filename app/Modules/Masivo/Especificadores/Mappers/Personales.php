@@ -2,7 +2,7 @@
 
 namespace Cat\Masivo\Especificadores\Mappers;
 
-use Cat\Helpers\Calculation;
+use Cat\Masivo\Helpers\DataCleaner;
 use Maatwebsite\Excel\Collections\CellCollection;
 
 class Personales
@@ -11,40 +11,40 @@ class Personales
     public static function toAgenteInput(CellCollection $collection)
     {
         return [
-            'nombre'           => $collection->nombre,
-            'apellido'         => $collection->apellido,
-            'dni'              => $collection->dni,
-            'cuit'             => $collection->cuit,
-            'fecha_nacimiento' => $collection->fecha_nacimiento,
-            'email'            => $collection->email,
-            'telefono'         => $collection->telefono,
-            'sexo'             => $collection->sexo,
-            'estado_civil'     => $collection->estado_civil,
+            'nombre'           => DataCleaner::cleanPossibleEmptyValue($collection->nombre),
+            'apellido'         => DataCleaner::cleanPossibleEmptyValue($collection->apellido),
+            'dni'              => DataCleaner::cleanPossibleEmptyValue($collection->dni),
+            'cuit'             => DataCleaner::cleanPossibleEmptyValue($collection->cuit),
+            'fecha_nacimiento' => DataCleaner::cleanPossibleEmptyDate($collection->fecha_nacimiento),
+            'email'            => DataCleaner::cleanPossibleEmptyValue($collection->email),
+            'telefono'         => DataCleaner::cleanPossibleEmptyValue($collection->telefono),
+            'sexo'             => DataCleaner::cleanPossibleEmptyValue($collection->sexo),
+            'estado_civil'     => DataCleaner::cleanPossibleEmptyValue($collection->estado_civil),
         ];
     }
     
     public static function toEstudioInput(CellCollection $collection)
     {
         return [
-            'carrera'      => [$collection->estudio_carrera],
-            'institucion'  => [$collection->estudio_institucion],
-            'estado'       => [$collection->estudio_estado],
-            'nivelestudio' => [$collection->estudio_nivel],
+            'carrera'      => [DataCleaner::cleanPossibleEmptyValue($collection->estudio_carrera)],
+            'institucion'  => [DataCleaner::cleanPossibleEmptyValue($collection->estudio_institucion)],
+            'estado'       => [DataCleaner::cleanPossibleEmptyValue($collection->estudio_estado)],
+            'nivelestudio' => [DataCleaner::cleanPossibleEmptyValue($collection->estudio_nivel)],
         ];
     }
     
     public static function toDomicilioInput(CellCollection $collection)
     {
         return [
-            
-            'calle'        => [$collection->domicilio_calle],
-            'numero'       => [$collection->domicilio_numero],
-            'departamento' => [$collection->domicilio_departamento],
-            'piso'         => [$collection->domicilio_piso],
-            'barrio'       => [$collection->domicilio_barrio],
-            'provincia'    => [$collection->domicilio_provincia],
-            'constituido'  => [(strtoupper($collection->domicilio_constituido) == 'SI') ? 1 : 0],
-            'libre'        => [$collection->domicilio_otro],
+    
+            'calle'        => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_calle)],
+            'numero'       => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_numero)],
+            'departamento' => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_departamento)],
+            'piso'         => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_piso)],
+            'barrio'       => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_barrio)],
+            'provincia'    => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_provincia)],
+            'constituido'  => [DataCleaner::cleanPossibleEmptyValue((strtoupper($collection->domicilio_constituido) == 'SI') ? true : false)],
+            'libre'        => [DataCleaner::cleanPossibleEmptyValue($collection->domicilio_otro)],
         
         ];
     }

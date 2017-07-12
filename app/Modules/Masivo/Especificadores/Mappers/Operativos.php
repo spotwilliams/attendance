@@ -3,6 +3,7 @@
 namespace Cat\Masivo\Especificadores\Mappers;
 
 use Carbon\Carbon;
+use Cat\Masivo\Helpers\DataCleaner;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\Gerencia;
@@ -16,25 +17,25 @@ class Operativos
         /**
          * Opcionales
          */
-        $subGerencia = Gerencia::find(($collection->subgerencia == '#N/A' ? -1 : $collection->subgerencia));
+        $subGerencia = Gerencia::find(DataCleaner::cleanPossibleEmptyValue($collection->subgerencia, true));
         
         if ($subGerencia == null) {
-            $subGerencia = Gerencia::find(($collection->gerencia == '#N/A' ? -1 : $collection->gerencia));
+            $subGerencia = Gerencia::find(DataCleaner::cleanPossibleEmptyValue($collection->gerencia, true));
         }
         
         return [
-            'agente'             => $agente->id,
+            'agente'             => DataCleaner::cleanPossibleEmptyValue($agente->id, true),
             'id_gerencia'        => ($subGerencia === null) ? -1 : $subGerencia->id,
-            'id_base'            => $base->id,
-            'id_area'            => $collection->area,
-            'id_cargo'           => $collection->cargo,
-            'id_funcion'         => $collection->funcion,
-            'id_turno'           => $collection->turno,
-            'funcion_especifica' => $collection->funcion_especifica,
-            'hora_entrada'       => $collection->hora_entrada->format('H:i'),
-            'hora_salida'        => $collection->hora_salida->format('H:i'),
-            'eximido'            => $collection->eximido,
-            'rotativo'           => $collection->rotativo,
+            'id_base'            => DataCleaner::cleanPossibleEmptyValue($base->id, true),
+            'id_area'            => DataCleaner::cleanPossibleEmptyValue($collection->area, true),
+            'id_cargo'           => DataCleaner::cleanPossibleEmptyValue($collection->cargo, true),
+            'id_funcion'         => DataCleaner::cleanPossibleEmptyValue($collection->funcion, true),
+            'id_turno'           => DataCleaner::cleanPossibleEmptyValue($collection->turno, true),
+            'funcion_especifica' => DataCleaner::cleanPossibleEmptyValue($collection->funcion_especifica),
+            'hora_entrada'       => DataCleaner::cleanPossibleEmptyValue($collection->hora_entrada),
+            'hora_salida'        => DataCleaner::cleanPossibleEmptyValue($collection->hora_salida),
+            'eximido'            => DataCleaner::cleanPossibleEmptyValue($collection->eximido),
+            'rotativo'           => DataCleaner::cleanPossibleEmptyValue($collection->rotativo),
         
         ];
         

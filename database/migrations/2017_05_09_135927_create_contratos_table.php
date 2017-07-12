@@ -16,7 +16,7 @@ class CreateContratosTable extends Migration
         Schema::create('contratos', function (Blueprint $table) {
             $table->integer('id', true);
             // Obligatorios
-            $table->date('fecha_ingreso');
+            $table->date('fecha_ingreso')->default('1900-01-01');
             $table->date('fecha_ingreso_gobierno')->nullable();
             
             // Relations
