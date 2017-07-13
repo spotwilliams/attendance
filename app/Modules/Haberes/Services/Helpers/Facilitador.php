@@ -44,9 +44,19 @@ class Facilitador
     {
         $periodoCerradoCompleto = true;
         try {
-            $operativos = $base->agentes()
+            $tipoLocacion = array_keys(
+                TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
+                    ->get(['id'])
+                    ->keyBy('id')
+                    ->toArray()
+            );
+            $operativos   = $base->agentes()
+                ->with('agente')
                 ->where('operativos.id_turno', '=', $turno->id)
+                ->join('contratos', 'contratos.id_agente', '=', 'agentes.id')
+                ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->get();
+
             /** @var Operativo $operativo */
             foreach ($operativos as $operativo) {
                 try {
@@ -81,7 +91,7 @@ class Facilitador
             ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
             ->with('agente')
             ->get(['operativos.id as id', 'operativos.id_agente as id_agente']);
-
+        
         /** @var Operativo $operativo */
         foreach ($operativos as $operativo) {
             try {

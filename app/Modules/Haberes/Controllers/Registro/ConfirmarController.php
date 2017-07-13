@@ -76,13 +76,6 @@ class ConfirmarController extends AppBaseController
                 ->with('base', $base)
                 ->with('turno', $turno);
             
-            return redirect(route('haberesListaAgentes', [
-                'base'    => $base,
-                'periodo' => $periodo,
-                'turno'   => $turno,
-            ]));
-            
-            
         } catch (ModelNotFoundException $exception) {
             Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
             

@@ -7,6 +7,7 @@ use Cat\Models\Agente;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
+use Illuminate\Support\Collection;
 
 class TipoPresentismosRepository
 {
@@ -54,22 +55,28 @@ class TipoPresentismosRepository
     public static function getCantFaltasInjustificadas(Agente $agente, Periodo $periodo)
     {
         
-        /** @var TipoPresentismo $tardanza codigo de los injustifados */
-        $tardanza = TipoPresentismo::tardanzas();
+        /** @var TipoPresentismo $tipoTardanza codigo de los injustifados */
+        $tipoTardanza = TipoPresentismo::tardanzas();
         
         /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
         $diasADescontar = $agente
             ->presentismos()
             ->where('id_periodo', '=', $periodo->id)
-            ->where('injustificado', '=', 1)
-            ->where('id_tipo_presentismo', '<>', $tardanza->id)
+            ->where('injustificado', '=', true)
+            ->where('id_tipo_presentismo', '<>', $tipoTardanza->id)
             ->count();
-        $diasADescontar += self::equivalenteEnTardanzas($tardanza, $agente, $periodo);
-        
-        if (self::isWorkingOnWeekend($agente)) {
-            $diasADescontar = $diasADescontar * 2;
+        /** @var Collection $tardanzas */
+        $tardanzas = self::getTardanzasGroupedByNRows($agente);
+        /** @var Collection $tardanzaRegistrada */
+        foreach ($tardanzas as $tardanzaRegistrada) {
+            if ($tardanzaRegistrada->count() === config('cat.presentismos.equivalencia.injustificado.tardanza')) {
+                $diasADescontar++;
+            }
         }
-
+        if (self::isWorkingOnWeekend($agente)) {
+            $diasADescontar = $diasADescontar * config('cat.presentismos.equivalencia.injustificado.fin_semana');
+        }
+        
         return $diasADescontar;
     }
     
@@ -83,16 +90,19 @@ class TipoPresentismosRepository
             ->esFinDeSemana();
     }
     
-    public static function equivalenteEnTardanzas(TipoPresentismo $tardanza, Agente $agente, Periodo $periodo)
+    public static function getTardanzasGroupedByNRows(Agente $agente)
     {
+        /** @var TipoPresentismo $tardanza codigo de los injustifados */
+        $tardanza = TipoPresentismo::tardanzas();
+        /** @var Collection $tardanzas */
         $tardanzas = $agente
             ->presentismos()
-            ->where('id_periodo', '=', $periodo->id)
-            ->where('injustificado', '=', 1)
+            ->where('injustificado', '=', true)
+            ->where('tardanza_calculada', '=', false)
             ->where('id_tipo_presentismo', '=', $tardanza->id)
-            ->count();
+            ->get();
         
-        return round($tardanzas / 3);
+        return $tardanzas->chunk(config('cat.presentismos.equivalencia.injustificado.tardanza'));
         
     }
 }

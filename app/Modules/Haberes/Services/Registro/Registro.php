@@ -6,10 +6,13 @@ use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\Haber;
 use Cat\Models\Periodo;
+use Cat\Models\TipoPresentismo;
 use Cat\Models\Turno;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
 use Cat\Modules\Service;
+use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 
 class Registro extends Service
@@ -62,6 +65,7 @@ class Registro extends Service
             
             $montoContrato = $this->supportService->getMontoContrato();
             $montoPagar    = $this->supportService->getMontoPagar();
+            // Se guardan los haberes
             Haber::create([
                 'id_agente'       => $this->agente->id,
                 'id_periodo'      => $this->periodo->id,
@@ -70,7 +74,19 @@ class Registro extends Service
                 'monto_facturado' => $montoPagar,
                 'monto_contrato'  => $montoContrato,
             ]);
+            // Se marcan las tardanzas
+            $tardanzas = TipoPresentismosRepository::getTardanzasGroupedByNRows($this->agente);
             
+            /** @var Collection $tardanza */
+            foreach ($tardanzas as $tardanza) {
+                if ($tardanza->count() === config('cat.presentismos.equivalencia.injustificado.tardanza')) {
+                    /** @var TipoPresentismo $t */
+                    foreach ($tardanza as $t) {
+                        $t->tardanza_calculada = true;
+                        $t->save();
+                    }
+                }
+            }
             DB::commit();
             
             return true;
