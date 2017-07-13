@@ -28,6 +28,7 @@ while ($fecha < $fechaToday) {
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
+                    @if($estadoPeriodo->estaAbierto())
                     <div class="col-md-6">
 
                         {!! Form::open(['route' => 'haberesReportePreliminar']) !!}
@@ -39,6 +40,7 @@ while ($fecha < $fechaToday) {
                                value='Reporte preliminar'/>
                         {!! Form::close() !!}
                     </div>
+                    @endif
                     <div class="col-md-6">
                         @if($estadoPeriodo->estaAbierto())
                             {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}

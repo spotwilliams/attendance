@@ -71,6 +71,11 @@ class ConfirmarController extends AppBaseController
             Facilitador::batch($base, $periodo, $turno);
             Flash::success('Periodo cerrado con &eacute;xito');
             
+            return view('Haberes::calculo.end')
+                ->with('periodo', $periodo)
+                ->with('base', $base)
+                ->with('turno', $turno);
+            
             return redirect(route('haberesListaAgentes', [
                 'base'    => $base,
                 'periodo' => $periodo,
