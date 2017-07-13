@@ -17,7 +17,7 @@ class BasesSeeder extends Seeder
             'Aeroparque',
             'Araoz de la Madrid',
             'BRD Sarmiento',
-            'BRD Tacuarí',
+            'BRD Garay',
             'Chacabuco',
             'Cochabamba',
             'Cucc',
