@@ -109,7 +109,7 @@ class GeneralController extends AppBaseController
                         $presentismos
                             ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
                             ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))
-//                            ->where('injustificado', '=', 1)
+//                            ->where('injustificado', '=', true)
                             ->orderBy('fecha', 'ASC');
                     },
                 ])
@@ -118,7 +118,6 @@ class GeneralController extends AppBaseController
                 ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->where('operativos.id_turno', '=', $turno->id);
 
-//            dd($agentes->get());
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)

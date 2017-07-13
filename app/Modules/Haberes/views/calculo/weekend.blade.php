@@ -41,7 +41,7 @@ $agentesCompletos = Calculation::addFaltasNoRegistradas($agentes->getCollection(
         <input type="hidden" data-presentismos="{{$a->presentismos}}">
         <td colspan="10">
             @if($a->presentismos->isEmpty())
-                <p class="help-block">No se registraron faltas injustificadas en el periodo.</p>
+                <p class="help-block col-md-12">No se registraron faltas injustificadas en el periodo.</p>
             @else
                 <div class="row">
                     @foreach($a->presentismos->sortBy('fecha')->all() as $p)

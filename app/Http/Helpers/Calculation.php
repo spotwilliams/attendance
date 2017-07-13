@@ -3,6 +3,7 @@
 namespace Cat\Helpers;
 
 
+use Cat\Models\Agente;
 use Cat\Models\Presentismo;
 use Illuminate\Support\Collection;
 
@@ -120,21 +121,44 @@ class Calculation
     
     public static function addFaltasNoRegistradas(Collection $agentesConPresentsimos, $fechas = [])
     {
-        
+        /** @var Agente $agente */
         foreach ($agentesConPresentsimos as $agente) {
             
             $fechasResigradas = array_keys($agente->presentismos->keyBy('fecha')->toArray());
             $fechasQueFaltan  = array_diff($fechas, $fechasResigradas);
+            /** @var Collection $presentismosGroupBy */
+            $presentismosGroupBy = self::getPresentismoGroupByJustificacion($agente);
             
             foreach ($fechasQueFaltan as $fecha) {
-                $presentismoARegistrar = new Presentismo([
+                $presentismoARegistrar                  = new Presentismo([
                     'id_tipo_presentismo' => -1,
                     'fecha'               => $fecha,
                 ]);
-                $agente->presentismos->add($presentismoARegistrar);
+                $presentismosGroupBy['injustificado'][] = $presentismoARegistrar;
             }
+            $agente->presentismos = $presentismosGroupBy->get('injustificado');
         }
         
         return $agentesConPresentsimos;
+    }
+    
+    /**
+     * Agrupa los presentismos si estan justificados. Genera collections en caso de empty
+     * @param Agente $agente
+     * @return mixed
+     */
+    private static function getPresentismoGroupByJustificacion(Agente $agente)
+    {
+        $presentismos = $agente->presentismos->groupBy(function ($item, $key) {
+            return ($item->injustificado === true) ? 'injustificado' : 'justificado';
+        });
+        if ($presentismos->get('injustificado') === null) {
+            $presentismos['injustificado'] = new Collection([]);
+        }
+        if ($presentismos->get('justificado') === null) {
+            $presentismos['justificado'] = new Collection([]);
+        }
+        
+        return $presentismos;
     }
 }
