@@ -11,10 +11,10 @@ class TurnosRepository
     {
         if ($cache) {
             $bases = Cache::get('all_turnos', function () {
-                return Turno::all();
+                return Turno::orderBy('codigo', 'ASC')->get();
             });
         } else {
-            $bases = Turno::all();
+            $bases = Turno::orderBy('codigo', 'ASC')->get();
         }
         
         return $bases;
