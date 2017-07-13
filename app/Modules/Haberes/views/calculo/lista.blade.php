@@ -47,7 +47,7 @@ while ($fecha < $fechaToday) {
                             {!! Form::hidden('turno', $turno->id) !!}
                             <input type="submit"
                                    class="btn btn-primary"
-                                   value='Confirmar presentismos'/>
+                                   value='Confirmar presentismo'/>
                             {!! Form::close() !!}
                         @endif
                     </div>
@@ -84,7 +84,7 @@ while ($fecha < $fechaToday) {
                 <table class="table table-hover" id="haberes-table">
                     <thead>
                     <th>Detalles</th>
-                    <th>Agente</th>
+                    <th>Personal</th>
                     {{--<th>DNI</th>--}}
                     <th>CUIT</th>
                     {{--<th>Confirmar</th>--}}
@@ -122,7 +122,7 @@ while ($fecha < $fechaToday) {
                                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×
                                         </button>
                                         <h4><i class="icon fa fa-info"></i> Aviso</h4>
-                                        No existen agentes con contrato de locaci&oacute;n para la base y turno.
+                                        No existe personal con contrato de locaci&oacute;n para la base y turno.
                                     </div>
                                 </div>
                             </td>
