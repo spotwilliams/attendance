@@ -4,7 +4,7 @@ $idModal = 'modal-agentes';
 
 <table class="table table-hover" id="presentismos-table">
     <thead>
-    <th>Agente</th>
+    <th>Personal</th>
     {{--<th>DNI</th>--}}
     <th>CUIT</th>
     <th>Operaciones</th>

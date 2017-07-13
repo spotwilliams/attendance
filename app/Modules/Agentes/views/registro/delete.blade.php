@@ -9,7 +9,7 @@
     ?>
     <section class="content-header">
         <h1>
-            Datos del agente
+            Datos del personal
         </h1>
     </section>
     <section class="content">
@@ -64,7 +64,7 @@
                             </p>
                             {!! Form::open(['route' => 'agentesDestroy', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
                             {!! Form::hidden('agente', $agente->id) !!}
-                            <a class="btn btn-app bg-red"><i class="fa fa-trash"></i>Eliminar datos agente</a>
+                            <a class="btn btn-app bg-red"><i class="fa fa-trash"></i>Eliminar datos de personal</a>
                             {!! Form::close() !!}
                         </div>
                     </div>
@@ -85,7 +85,7 @@
                     <h4 class="modal-title">Cuidado</h4>
                 </div>
                 <div class="modal-body">
-                    <p>Est&aacute;s a punto de elimiar la informaci&oacute;n de un agente. Esto provocar&aacute; que los datos
+                    <p>Est&aacute;s a punto de elimiar la informaci&oacute;n de un personal. Esto provocar&aacute; que los datos
                     del mismo ya no sean accesibles.</p>
                 </div>
                 <div class="modal-footer">

@@ -27,7 +27,7 @@ $idModal = 'comentarios-modal'
         <div class="">
             <table class="table hover" id="presentismos-table">
                 <thead>
-                <th>Id Agente</th>
+                <th>Id Personal</th>
                 <th>Agente</th>
                 <th>CUIT</th>
                 <th>Mod. Contratacion</th>

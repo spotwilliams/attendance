@@ -16,7 +16,6 @@ class BasesSeeder extends Seeder
         $bases = [
             'Aeroparque',
             'Araoz de la Madrid',
-            'BRD',
             'BRD Sarmiento',
             'BRD Tacuarí',
             'Chacabuco',

@@ -110,7 +110,7 @@ class ArchivoHandler extends ExcelHandler
      */
     private function clearPossibleMistakes(CellCollection $cell)
     {
-        $agente = Agente::where('cuit', '=', (int)$cell->cuit)
+        $agente = Agente::where('cuit', '=', $cell->cuit)
             ->first();
         
         if ($agente !== null) {

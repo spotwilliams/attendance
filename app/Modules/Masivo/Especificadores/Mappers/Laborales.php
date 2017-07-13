@@ -18,12 +18,12 @@ class Laborales
         return [
             'id_sial'                => DataCleaner::cleanPossibleEmptyValue($collection->id_sial),
             'ficha'                  => DataCleaner::cleanPossibleEmptyValue($collection->ficha),
-            'fecha_ingreso'          => DataCleaner::cleanPossibleEmptyDate($modalidad->fecha_ingreso),
-            'fecha_ingreso_gobierno' => DataCleaner::cleanPossibleEmptyDate($modalidad->fecha_ingreso_gobierno),
-            'tipo_inscripcion'       => DataCleaner::cleanPossibleEmptyValue($modalidad->tipo_inscripcion),
-            'id_estado_contrato'     => DataCleaner::cleanPossibleEmptyValue($estadoContrato->id, true),
-            'id_tipo_contrato'       => DataCleaner::cleanPossibleEmptyValue($modalidad->id, true),
-            'monto'                  => DataCleaner::cleanPossibleEmptyValue($modalidad->monto),
+            'fecha_ingreso'          => DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso),
+            'fecha_ingreso_gobierno' => DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso_gobierno),
+            'tipo_inscripcion'       => DataCleaner::cleanPossibleEmptyValue($collection->tipo_inscripcion),
+            'id_estado_contrato'     => $estadoContrato->id,
+            'id_tipo_contrato'       => $modalidad->id,
+            'monto'                  => DataCleaner::cleanPossibleEmptyValue($collection->monto),
         ];
         
     }

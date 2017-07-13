@@ -11,7 +11,7 @@
         <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header">
-                <h3 class="box-title">Carga de agentes masiva</h3>
+                <h3 class="box-title">Carga de personal masiva</h3>
 
             </div>
             {!! Form::open(['route' => 'agentesMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}

@@ -12,7 +12,7 @@
             <div class="box-body">
                 <div class="box-header with-border">
                     <h3 class="box-title">
-                        Datos del agente
+                        Datos del personal
                     </h3>
                 </div>
                 @include('flash::message')

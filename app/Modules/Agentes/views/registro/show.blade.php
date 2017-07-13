@@ -9,7 +9,7 @@
     ?>
     <section class="content-header">
         <h1>
-            Datos del agente
+            Datos del personal
         </h1>
     </section>
     <section class="content">

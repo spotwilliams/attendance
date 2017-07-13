@@ -6,20 +6,20 @@
     >
         <i class="fa fa-user-secret"></i>
 
-        <span>Agentes</span>
+        <span>Personal</span>
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
             <a href="{!! route('agentesSearchIndex') !!}">
                 <i class="fa fa-search"></i>
-                <span>B&uacute;squeda de agentes</span>
+                <span>B&uacute;squeda de personal</span>
             </a>
         </li>
         <li>
             <a href="{!! route('agentesIndex', ['base' => 1]) !!}">
                 <i class="fa fa-list"></i>
-                <span>Lista agentes por base</span>
+                <span>Lista de personal por base</span>
             </a>
         </li>
         <li>

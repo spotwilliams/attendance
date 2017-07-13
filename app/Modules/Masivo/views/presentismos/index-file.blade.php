@@ -52,7 +52,7 @@
                     <div class="form-group">
                         {{--<label for="archivo" class="col-sm-3 col-xs-3 control-label">Instrucciones</label>--}}
                         <div class="col-sm-9 col-xs-9 col-md-offset-3">
-                            <p class="help-block pull-left">Descargue el archivo con la lista de agentes de la base y turno, compl&eacute;telo y cont&iacute;nue. En caso de tenerlo, por favor, c&aacute;rguelo.</p>
+                            <p class="help-block pull-left">Descargue el archivo con la lista del personal de la base y turno, compl&eacute;telo y cont&iacute;nue. En caso de tenerlo, por favor, c&aacute;rguelo.</p>
                         </div>
                     </div>
                     <div class="form-group @if($errors->has('archivo')) has-error @endif">

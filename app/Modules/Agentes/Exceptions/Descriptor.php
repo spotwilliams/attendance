@@ -13,7 +13,7 @@ class Descriptor extends MainDescriptor
         if (!isset(self::$errorMap[Descriptor::AGENTE_YA_EXISTE])) {
             self::$errorMap[Descriptor::AGENTE_YA_EXISTE]
                 = new Descriptor(Descriptor::AGENTE_YA_EXISTE,
-                'Ya existe un agente con el mismo CUIT');
+                'Ya existe un personal con el mismo CUIT');
         }
         
         return self::$errorMap[Descriptor::AGENTE_YA_EXISTE];
