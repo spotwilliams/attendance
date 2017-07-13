@@ -61,7 +61,7 @@ class Periodo extends Model
                 ->where('id_base', '=', $base->id)
                 ->where('id_turno', '=', $turno->id)
                 ->firstOrFail();
-
+            
             return ($estado->abierto == true);
             
         } catch (ModelNotFoundException $e) {
@@ -112,7 +112,7 @@ class Periodo extends Model
     {
         $desde = new \DateTime($this->fecha_comienzo);
         $hasta = new \DateTime($this->fecha_fin);
-
+        $date->setTime(0, 0, 0);
         if (($desde <= $date) and ($date <= $hasta)) {
             return true;
         } else {
