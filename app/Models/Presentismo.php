@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Cat\User;
 use Illuminate\Database\Eloquent\Model;
 
 

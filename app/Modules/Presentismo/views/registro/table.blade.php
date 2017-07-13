@@ -224,21 +224,28 @@ $idModal = 'comentarios-modal'
              */
             $('.dialog-comentary')
                 .on('click', function () {
+                    $('.no-comment').addClass('hidden');
 
                     var myParent = $(this).parent().parent();
 
-                    var idAgente= $(this).parents().closest('td').data('agente');
+                    var idAgente = $(this).parents().closest('td').data('agente');
                     var fecha = datatableColumnHeaderValue(myParent, dataTable);
                     var agente = datatableCellValue(myParent, dataTable);
                     var presentismoParent = $(myParent).children('div');
                     var presentismoSelected = $(presentismoParent[0]).children('select');
                     var comentario = $(this).data('comentario');
                     // Parte visible
+
                     $('.modal-agente').html(agente[0]);
                     $('.modal-cuit').html(agente[1]);
                     $('.modal-fecha').html(fecha);
                     $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
                     $('.modal-comentario').val(comentario);
+                    $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
+                    $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
+                    if($(this).data('comentario')!== '') {
+                        $('.no-comment').removeClass('hidden');
+                    }
                     // Hidden para ajax
                     $('.modal-id-agente').val(idAgente);
                     $('.modal-id-tipo-presentismo').val($(presentismoSelected).val());
@@ -271,7 +278,11 @@ $idModal = 'comentarios-modal'
                             var button = $('#{{$idModal}}').data('dialog-comentary');
                             button.addClass('bg-gray-active')
                                 .removeClass('btn-default')
-                                .data('comentario', $('.modal-comentario').val());
+                                .data('comentario', xhr.presentismo.comentario)
+                                .data('usuario-comentario', xhr.usuario.name)
+                                .data('usuario-fecha', xhr.fecha_comentario)
+                            $('.no-comment').removeClass('hidden');
+                            ;
 
                             $('#{{$idModal}}').modal('toggle');
                             message(button, xhr.message, idTipoPresentismo, 'success');

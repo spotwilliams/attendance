@@ -3,12 +3,12 @@
 namespace Cat\Helpers;
 
 use Cat\Models\Agente;
-use Cat\Models\Contrato;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
 use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Auth;
 
 class HtmlCustoms
 {
@@ -46,7 +46,7 @@ class HtmlCustoms
         (isset($input['model'])) {
             self::getMultiDomicilioFromModel($input['model'], $return);
         }
-        
+
 //        dd($return);
         
         return $return;
@@ -174,14 +174,17 @@ class HtmlCustoms
             $option       .= ">$tp->descripcion</option>";
             $select       .= $option;
         }
-        
+        $usuarioComentario = null;
+        $fechaComentario   = null;
         if ($p !== null) {
-            $btnDisabled   = '';
-            $comentario    = $p->comentario;
-            $buttonJustice = ($p->injustificado == true ?
+            $btnDisabled       = '';
+            $comentario        = $p->comentario;
+            $usuarioComentario = $p->usuario;
+            $fechaComentario   = (new \DateTime($p->fecha_comentario))->format('Y-m-d');
+            $buttonJustice     = ($p->injustificado == true ?
                 self::getButtonWithPopOver($p, true) :
                 self::getButtonWithPopOver($p, false));
-            $btnClass      = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');
+            $btnClass          = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');
         } else {
             $comentario    = null;
             $btnDisabled   = 'disabled';
@@ -189,8 +192,15 @@ class HtmlCustoms
             $buttonJustice = self::getButtonWithPopOver($p, false, true);
         }
         
+        if ($usuarioComentario == null) {
+            $usuarioComentario = Auth::user()->email;
+        }
+        if ($fechaComentario == null) {
+            $fechaComentario = (new \DateTime())->format('Y-m-d');
+        }
+        
         $select        .= '</select>';
-        $buttonComment = "<button type='button' data-comentario='$comentario' class='btn $btnClass dialog-comentary' $btnDisabled><i class='fa fa-comment-o'></i></button>";
+        $buttonComment = "<button type='button' data-comentario='$comentario' data-usuario-comentario='$usuarioComentario' data-fecha-comentario='$fechaComentario' class='btn $btnClass dialog-comentary' $btnDisabled><i class='fa fa-comment-o'></i></button>";
         $buttonGroup   = "<div class=\"btn-group tools-presentismo\">$buttonComment$buttonJustice</div>";
         $select        .= $buttonGroup;
         

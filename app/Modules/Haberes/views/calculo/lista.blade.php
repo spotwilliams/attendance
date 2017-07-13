@@ -349,6 +349,7 @@ while ($fecha < $fechaToday) {
              */
             $('.dialog-comentary')
                 .on('click', function () {
+                    $('.no-comment').addClass('hidden');
 
                     var bro = $(this)
                         .parent()
@@ -364,10 +365,15 @@ while ($fecha < $fechaToday) {
                     var tipoPresentismo = $(presentismoSelect).find(':selected').data('content');
                     // Parte visible
                     $('.modal-agente').html(agente.apellido + ',' + agente.nombre);
+                    $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
+                    $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
                     $('.modal-cuit').html(agente.cuit);
                     $('.modal-fecha').html(presentismo.fecha);
                     $('.modal-presentismo').html(tipoPresentismo);
                     $('.modal-comentario').val($(this).data('comentario'));
+                    if($(this).data('comentario')!== '') {
+                        $('.no-comment').removeClass('hidden');
+                    }
                     // Hidden para ajax
                     $('.modal-id-agente').val(presentismo.id_agente);
                     $('.modal-id-tipo-presentismo').val(presentismo.id_tipo_presentismo);
@@ -400,7 +406,11 @@ while ($fecha < $fechaToday) {
                             var button = $('#comentarios-modal').data('dialog-comentary');
                             button.addClass('bg-gray-active')
                                 .removeClass('btn-default')
-                                .data('comentario', $('.modal-comentario').val());
+                                .data('comentario', xhr.presentismo.comentario)
+                                .data('usuario-comentario', xhr.usuario.name)
+                                .data('usuario-fecha', xhr.fecha_comentario);
+                            $('.no-comment').removeClass('hidden');
+
 
                             $('#comentarios-modal').modal('toggle');
                             message(button, xhr.message, idTipoPresentismo, 'success');

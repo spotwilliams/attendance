@@ -28,8 +28,11 @@
                     </table>
                 </div>
                 <div class="col-xs-12 form-group">
-                    <label>Comentarios</label>
-                    <textarea class="form-control modal-comentario" rows="3" placeholder="Comentarios de la fecha (400 caracteres máximo)"></textarea>
+                    <label>Comentarios <span class="no-comment hidden">por <span
+                                    class="label label-info modal-comentario-usuario"></span>, realizado el <span
+                                    class="label label-info modal-comentario-fecha"></span></span></label>
+                    <textarea class="form-control modal-comentario" rows="3"
+                              placeholder="Comentarios de la fecha (400 caracteres máximo)"></textarea>
                 </div>
             </div>
             <input type="hidden" class="modal-id-agente"/>

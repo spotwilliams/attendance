@@ -17,6 +17,7 @@ use Cat\Models\Presentismo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class RegistroController extends AppBaseController
@@ -101,7 +102,9 @@ class RegistroController extends AppBaseController
         
         try {
             
-            $presentismo->comentario = $input['comentario'];
+            $presentismo->comentario       = $input['comentario'];
+            $presentismo->usuario          = Auth::user()->email;
+            $presentismo->fecha_comentario = (new \DateTime());
             $presentismo->save();
             session()->flash('message', 'Guardado correctamente');
             session()->flash('code', 200);
@@ -111,7 +114,10 @@ class RegistroController extends AppBaseController
         }
         
         return Response::json([
-            'message' => session('message'),
+            'message'          => session('message'),
+            'presentismo'      => $presentismo,
+            'usuario'          => $presentismo->usuario,
+            'fecha_comentario' => $presentismo->fecha_comentario->format('Y-m-d'),
         ], session('code'));
         
     }

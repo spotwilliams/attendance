@@ -50,7 +50,7 @@ $estadoContrato = $contrato->estadoContrato()->first();
                 @endif
             </tr>
             <tr>
-                <th>Estado contrato:</th>
+                <th>Estado:</th>
                 <td>{{$estadoContrato->descripcion}}</td>
             </tr>
             @if(!$estadoContrato->esActivo())

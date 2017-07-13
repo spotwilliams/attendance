@@ -21,6 +21,8 @@ class CreatePresentismosTable extends Migration
             $table->date('fecha')->index('fecha_laboral');
             $table->boolean('injustificado')->default(false);
             $table->boolean('tardanza_calculada')->default(false);
+            $table->string('usuario')->nullable();
+            $table->timestamp('fecha_comentario')->nullable();
             $table->string('comentario', 400)->nullable();
             $table->unique(['id_agente', 'fecha', 'id_periodo']);
             $table->timestamps();

@@ -24,7 +24,7 @@ class GerenciasSeeder extends Seeder
             ],
             [
                 'id'       => 1,
-                'nombre'   => 'Dirección general',
+                'nombre'   => 'Dirección General',
                 'id_padre' => null,
             ],
             [

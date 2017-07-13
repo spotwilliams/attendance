@@ -68,7 +68,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 
 
 <div class="form-group @if($errors->has('id_estado_contrato')) has-error @endif">
-    <label class="col-sm-2 control-label">Estado de contrato *</label>
+    <label class="col-sm-2 control-label">Estado *</label>
     <div class="col-sm-8">
         {!! Form::select('id_estado_contrato',  $estados, null, ['class' => 'form-control']) !!}
         @if($errors->has('id_estado_contrato'))
@@ -131,7 +131,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 <div class="form-group">
     <label class="col-sm-2 control-label">Monto</label>
     <div class="col-sm-8">
-        {!! Form::text('monto', null, ['class' => 'form-control']) !!}
+        {!! Form::text('monto', null, ['class' => 'form-control', 'placeholder' => '14547']) !!}
     </div>
 </div>
 

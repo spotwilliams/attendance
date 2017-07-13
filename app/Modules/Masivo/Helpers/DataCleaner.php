@@ -24,10 +24,16 @@ class DataCleaner
     
     public static function cleanPossibleEmptyDate($exelCell)
     {
-        
         $value = self::cleanPossibleEmptyValue($exelCell);
+        if (empty($value)) {
+            $value = '1900-01-01';
+        } else {
+            
+            $date  = explode('/', $value);
+            $value = $date[2] . '-' . $date[1] . '-' . $date[0];
+        }
         
-        return (empty($value) ? '1900-01-01' : $value);
+        return $value;
     }
     
 }

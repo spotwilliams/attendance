@@ -34,8 +34,8 @@ class Operativos
             'funcion_especifica' => DataCleaner::cleanPossibleEmptyValue($collection->funcion_especifica),
             'hora_entrada'       => DataCleaner::cleanPossibleEmptyValue($collection->hora_entrada),
             'hora_salida'        => DataCleaner::cleanPossibleEmptyValue($collection->hora_salida),
-            'eximido'            => DataCleaner::cleanPossibleEmptyValue($collection->eximido),
-            'rotativo'           => DataCleaner::cleanPossibleEmptyValue($collection->rotativo),
+            'eximido'            => (int)DataCleaner::cleanPossibleEmptyValue($collection->eximido),
+            'rotativo'           => (int)DataCleaner::cleanPossibleEmptyValue($collection->rotativo),
         
         ];
         
