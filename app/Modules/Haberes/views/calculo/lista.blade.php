@@ -29,17 +29,17 @@ while ($fecha < $fechaToday) {
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
                     @if($estadoPeriodo->estaAbierto())
-                    <div class="col-md-6">
+                        <div class="col-md-6">
 
-                        {!! Form::open(['route' => 'haberesReportePreliminar']) !!}
-                        {!! Form::hidden('periodo', $periodo->id) !!}
-                        {!! Form::hidden('base', $base->id) !!}
-                        {!! Form::hidden('turno', $turno->id) !!}
-                        <input type="submit"
-                               class="btn btn-default"
-                               value='Reporte preliminar'/>
-                        {!! Form::close() !!}
-                    </div>
+                            {!! Form::open(['route' => 'haberesReportePreliminar']) !!}
+                            {!! Form::hidden('periodo', $periodo->id) !!}
+                            {!! Form::hidden('base', $base->id) !!}
+                            {!! Form::hidden('turno', $turno->id) !!}
+                            <input type="submit"
+                                   class="btn btn-default"
+                                   value='Reporte preliminar'/>
+                            {!! Form::close() !!}
+                        </div>
                     @endif
                     <div class="col-md-6">
                         @if($estadoPeriodo->estaAbierto())
@@ -130,11 +130,7 @@ while ($fecha < $fechaToday) {
                             </td>
                         </tr>
                     @endif
-                    @if($turno->esFinDeSemana())
-                        @include('Haberes::calculo.weekend')
-                    @else
-                        @include('Haberes::calculo.all-days')
-                    @endif
+                    @include('Haberes::calculo.all-days')
                     </tbody>
                 </table>
             </div>

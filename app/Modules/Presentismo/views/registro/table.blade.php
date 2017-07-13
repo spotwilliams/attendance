@@ -27,8 +27,7 @@ $idModal = 'comentarios-modal'
         <div class="">
             <table class="table hover" id="presentismos-table">
                 <thead>
-                <th>Id Personal</th>
-                <th>Agente</th>
+                <th>Personal</th>
                 <th>CUIT</th>
                 <th>Mod. Contratacion</th>
                 @for($i = 0; $i < count($fechasToShow) ;$i++)
@@ -37,11 +36,7 @@ $idModal = 'comentarios-modal'
                 </thead>
                 @include('Presentismo::registro.footer')
 
-                @if($turno->esFinDeSemana())
-                    @include('Presentismo::registro.weekend')
-                @else
-                    @include('Presentismo::registro.all-day')
-                @endif
+                @include('Presentismo::registro.all-day')
                 <tbody>
                 </tbody>
             </table>
@@ -220,12 +215,12 @@ $idModal = 'comentarios-modal'
                 //                scrollY: "900px",
                 //                scrollCollapse: false,
                 {{--@endif--}}
-                columnDefs: [
-                    {
-                        targets: [0],
-                        visible: false
-                    }
-                ]
+//                columnDefs: [
+//                    {
+//                        targets: [0],
+//                        visible: false
+//                    }
+//                ]
             });
 
             /**

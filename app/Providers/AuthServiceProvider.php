@@ -27,9 +27,5 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
         
-        $gate->define('see-all-day', function ($user) {
-            
-            return $user->name == 'Subgerente';
-        });
     }
 }
