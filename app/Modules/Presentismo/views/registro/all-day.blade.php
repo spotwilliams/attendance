@@ -7,7 +7,7 @@
         <?php $presentismos = $age->presentismos->keyBy('fecha'); ?>
         @for($i = 0; $i < count($fechasToShow) ;$i++)
 
-                <td><?php
+                <td data-agente="{{$age->id}}" ><?php
                     $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
                     echo \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p,
                         $age->contrato->tipoContrato)

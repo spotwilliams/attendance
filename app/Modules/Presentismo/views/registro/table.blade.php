@@ -166,7 +166,7 @@ $idModal = 'comentarios-modal'
                      *
                      */
                     var dataActual = datatableCellValue(myParent, dataTable);
-                    var agente = dataActual[0];
+                    var agente = $(myParent).parent('td').data('agente');
                     var fecha = datatableColumnHeaderValue(myParent, dataTable);//$(header).data('cat');
 
 
@@ -215,12 +215,6 @@ $idModal = 'comentarios-modal'
                 //                scrollY: "900px",
                 //                scrollCollapse: false,
                 {{--@endif--}}
-//                columnDefs: [
-//                    {
-//                        targets: [0],
-//                        visible: false
-//                    }
-//                ]
             });
 
             /**
@@ -233,19 +227,20 @@ $idModal = 'comentarios-modal'
 
                     var myParent = $(this).parent().parent();
 
+                    var idAgente= $(this).parents().closest('td').data('agente');
                     var fecha = datatableColumnHeaderValue(myParent, dataTable);
                     var agente = datatableCellValue(myParent, dataTable);
                     var presentismoParent = $(myParent).children('div');
                     var presentismoSelected = $(presentismoParent[0]).children('select');
                     var comentario = $(this).data('comentario');
                     // Parte visible
-                    $('.modal-agente').html(agente[1]);
-                    $('.modal-cuit').html(agente[2]);
+                    $('.modal-agente').html(agente[0]);
+                    $('.modal-cuit').html(agente[1]);
                     $('.modal-fecha').html(fecha);
                     $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
                     $('.modal-comentario').val(comentario);
                     // Hidden para ajax
-                    $('.modal-id-agente').val(agente[0]);
+                    $('.modal-id-agente').val(idAgente);
                     $('.modal-id-tipo-presentismo').val($(presentismoSelected).val());
 
                     $('#{{$idModal}}').data('dialog-comentary', $(this));
