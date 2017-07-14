@@ -1,14 +1,26 @@
 <?php
-/** @var \Cat\Models\Contrato $contrato */
 
 /** @var \Cat\Models\Agente $agente */
-$contrato = $agente->contrato()->first();
+try {
+    /** @var \Cat\Models\Contrato $contrato */
+    $contrato = $agente->contrato()->firstOrFail();
+} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+    $contrato = new \Cat\Models\Contrato();
+}
+try {
+    /** @var \Cat\Models\TipoContrato $tipoContrato */
+    $tipoContrato = $contrato->tipoContrato()->firstOrFail();
+} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+    $tipoContrato = new \Cat\Models\TipoContrato();
+}
+try {
+    /** @var \Cat\Models\EstadoContrato $estadoContrato */
+    $estadoContrato = $contrato->estadoContrato()->firstOrFail();
+} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+    $estadoContrato = new \Cat\Models\EstadoContrato();
+    $estadoContrato->estado = \Cat\Models\EstadoContrato::ESTADO_ACTIVO;
+}
 
-/** @var \Cat\Models\TipoContrato $tipoContrato */
-$tipoContrato = $contrato->tipoContrato()->first();
-
-/** @var \Cat\Models\EstadoContrato $estadoContrato */
-$estadoContrato = $contrato->estadoContrato()->first();
 
 ?>
 <div class="table-responsive">

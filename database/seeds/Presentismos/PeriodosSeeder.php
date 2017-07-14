@@ -20,7 +20,7 @@ class PeriodosSeeder extends Seeder
         $cantDías = 30;
 //        $cantPeriodos = 50;
         
-        $now = new \DateTime();
+        $now = new \DateTime('2016-12-16');
         if ($now->format('d') < 15) {
             $now = new \DateTime($now->format('Y') .
                 '-' .

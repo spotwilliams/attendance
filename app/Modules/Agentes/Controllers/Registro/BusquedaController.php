@@ -5,18 +5,10 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 use Cat\Models\Agente;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Modules\Agentes\Services\Registro\Destroy\Laborales;
-use Cat\Modules\Agentes\Services\Registro\Destroy\Operativos;
-use Cat\Modules\Agentes\Services\Registro\Destroy\Personales;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Str;
 use Illuminate\Support\Facades\Response;
-use Laracasts\Flash\Flash;
-use Yajra\Datatables\Facades\Datatables;
 
 class BusquedaController extends AppBaseController
 {
@@ -41,10 +33,10 @@ class BusquedaController extends AppBaseController
     {
         $input = Input::get('search');
         
-        $agentesEloquent = Agente::where('nombre', 'LIKE', "%$input%")
-            ->orWhere('apellido', 'LIKE', "%$input%")
-            ->orWhere('dni', 'LIKE', "%$input%")
-            ->orWhere('cuit', 'LIKE', "%$input%")
+        $agentesEloquent = Agente::where('nombre', 'ILIKE', "%$input%")
+            ->orWhere('apellido', 'ILIKE', "%$input%")
+            ->orWhere('dni', 'ILIKE', "%$input%")
+            ->orWhere('cuit', 'ILIKE', "%$input%")
             ->with('operativo.base');
         
         

@@ -73,7 +73,7 @@ class OperativosController extends AppBaseController
             
             $validator = Validator::make(['operacion' => null], ['operation |required']);
             $validator->after(function ($validator) use ($e) {
-                $validator->errors()->add('operacion', Error::getRespuestaAdecuada($e, 'agente'));
+                $validator->errors()->add('operacion', 'No se pudo guardar el dato operativo');
             });
             
             return redirect(route('agentesCreateOperativos', ['id' => $input['agente']]))
@@ -140,7 +140,7 @@ class OperativosController extends AppBaseController
             
         } catch (\Exception $e) {
             
-            Flash::error('No se pudo actualizar los datos operativos: ' . $e->getMessage());
+            Flash::error('No se pudo actualizar los datos operativos');
             
             return redirect(route('agentesEditOperativos', ['id' => $agente->id]));
             

@@ -54,7 +54,7 @@ class Agente extends Model
             'fecha_nacimiento' => 'required|date',
             'cuit'             => 'required|integer',
             'dni'              => 'required|integer',
-            'telefono'         => 'required|integer',
+            'telefono'         => 'required|digits_between:1,20',
             'email'            => 'required|email',
         
         
@@ -74,9 +74,9 @@ class Agente extends Model
     public function base()
     {
         /** @var Operativo $operativo */
-        $operativo = $this->operativo()->first();
+        $operativo = $this->operativo()->firstOrFail();
         
-        return $operativo->base()->first();
+        return $operativo->base()->firstOrFail();
     }
     
     public function baseEloquent()

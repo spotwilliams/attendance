@@ -1,12 +1,15 @@
 <?php
-/** @var \Cat\Models\Operativo $operativo */
+use Cat\Helpers\ModelCreator;
+use Cat\Models\Operativo;
 
 /** @var \Cat\Models\Agente $agente */
-$operativo = $agente->operativo()->first();
 
+/** @var \Cat\Models\Operativo $operativo */
+$operativo = ModelCreator::getModelFromRelation($agente, 'operativo', Operativo::class);
 
 /** @var \Cat\Models\Gerencia $gerencia */
 $gerencia       = $operativo->gerencia()->first();
+
 $nombreGerencia = $NombreSubgerencia = 'No posee';
 if ($gerencia !== null) {
     $gerenciaPadre = $gerencia->padre()->first();
@@ -27,22 +30,22 @@ if ($gerencia !== null) {
 }
 
 /** @var \Cat\Models\Area $area */
-$area = $operativo->area()->first();
+$area = ModelCreator::getModelFromRelation($operativo, 'area', \Cat\Models\Area::class);
 
 /** @var \Cat\Models\Cargo $cargo */
-$cargo = $operativo->cargo()->first();
+$cargo = ModelCreator::getModelFromRelation($operativo, 'cargo', \Cat\Models\Cargo::class);
 
 /** @var \Cat\Models\Funcion $funcion */
-$funcion = $operativo->funcion()->first();
+$funcion = ModelCreator::getModelFromRelation($operativo, 'funcion', \Cat\Models\Funcion::class);
 
 /** @var \Cat\Models\Horario $horario */
-$horario = $operativo->horario()->first();
+$horario = ModelCreator::getModelFromRelation($operativo, 'horario', \Cat\Models\Horario::class);
 
 /** @var \Cat\Models\Base $base */
-$base = $operativo->base()->first();
+$base = ModelCreator::getModelFromRelation($operativo, 'base', \Cat\Models\Base::class);;
 
 /** @var \Cat\Models\Turno $turno */
-$turno = $operativo->turno()->first();
+$turno = ModelCreator::getModelFromRelation($operativo, 'turno', \Cat\Models\Turno::class);;
 
 
 ?>

@@ -39,12 +39,11 @@ class AgentesSeeder extends Seeder
         $turno          = Turno::all()->count();
         for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
             $agente = [
-//                'id'               => $i,
                 'nombre'           => $faker->name(),
                 'apellido'         => $faker->lastName(),
-                'dni'              => rand(3000000, 50000000) + rand(0, 999999),
+                'dni'              => (10000 + $i),
                 'fecha_nacimiento' => date('Y-m-d'),
-                'cuit'             => $faker->isbn13(),
+                'cuit'             => (10000 + $i),
                 'estado_civil'     => 'CASADO',
                 'sexo'             => 'H',
                 'email'            => $faker->email(),

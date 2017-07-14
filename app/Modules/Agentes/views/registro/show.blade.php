@@ -3,9 +3,12 @@
 @section('content')
     <?php
 
-    /** @var \Cat\Models\Agente $agente */
-
-    $base = $agente->base();
+    try {
+        /** @var \Cat\Models\Agente $agente */
+        $base = $agente->base();
+    } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+        $base = new \Cat\Models\Base();
+    }
     ?>
     <section class="content-header">
         <h1>

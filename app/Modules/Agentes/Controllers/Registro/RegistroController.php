@@ -52,13 +52,11 @@ class RegistroController extends AppBaseController
         try {
             // Se verifica que el agente exista
             $agente = Agente::findOrFail($id);
-            // Se verifica que se haya terminado la carga de sus datos
-            $operativo = Operativo::findOrFail($agente->operativo->id);
             
             return view('Agentes::registro.show')
                 ->with('agente', $agente);
         } catch (\Exception $e) {
-            Flash::warning('Agente inexistente o con datos incompletos. Si el agente existe, intente completando todos sus datos.');
+            Flash::warning('Agente inexistente');
             
             return redirect(route('agentesSearchIndex'));
             
