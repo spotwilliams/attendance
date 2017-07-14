@@ -53,7 +53,7 @@ Route::group(
         
         /**
          * Incial temporal
-         */
+
         Route::get('presentismo/inicial/masivo/select/params', InicialMasivoController::class . '@index')
             ->name('presentismosInicialMasivoIndex');
         
@@ -69,6 +69,7 @@ Route::group(
         Route::get('presentismo/inicial/masivo/download/template/file/{fileName}',
             InicialMasivoController::class . '@downloadTemplate')
             ->name('presentismosInicialMasivoTemplate');
+         */
         
     }
 );

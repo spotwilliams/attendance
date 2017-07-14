@@ -62,12 +62,12 @@
                 <span>Registro masivo</span>
             </a>
         </li>
-        <li>
-            <a href="{!! route('presentismosInicialMasivoIndex') !!}">
-                <i class="fa fa-desktop"></i>
-                <span>Incial</span>
-            </a>
-        </li>
+        {{--<li>--}}
+            {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
+                {{--<i class="fa fa-desktop"></i>--}}
+                {{--<span>Incial</span>--}}
+            {{--</a>--}}
+        {{--</li>--}}
     </ul>
 </li>
 
