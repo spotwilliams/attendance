@@ -14,6 +14,7 @@ use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Laborales as LaboralesD
 use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Operativos as OperativosDestroy;
 use Cat\Masivo\Especificadores\Mappers\Laborales as LaboralesMapper;
 use Cat\Masivo\Especificadores\Mappers\Operativos as OperativosMapper;
+use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Cat\Masivo\Especificadores\Mappers\Personales as PersonalesMapper;
@@ -47,10 +48,12 @@ class ArchivoHandler extends ExcelHandler
                     $agente = $this->handlePersonales($row);
                     $this->handleLaborales($row, $agente);
                     $this->handleOperativos($row, $agente, $base);
+                    Log::info($row->cuit);
                 } else {
                     break;
                 }
             } catch (\Exception $e) {
+                Log::error($e->getMessage());
                 $this->clearPossibleMistakes($row);
                 
                 $listaErrores[] = [
@@ -98,6 +101,7 @@ class ArchivoHandler extends ExcelHandler
     
     private function handleOperativos(CellCollection $row, Agente $agente, Base $base)
     {
+        $base         = Base::findOrFail((string)round($row->base));
         $input        = OperativosMapper::toInput($row, $agente, $base);
         $storeService = new OperativosStore($input);
         

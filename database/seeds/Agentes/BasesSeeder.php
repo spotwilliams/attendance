@@ -14,7 +14,7 @@ class BasesSeeder extends Seeder
     public function run()
     {
         $bases = [
-            'Aeroparque',
+            'Playa Aeroparque',
             'Araoz de la Madrid',
             'BRD Sarmiento',
             'BRD Tacuarí',
@@ -24,11 +24,14 @@ class BasesSeeder extends Seeder
             'Dakota',
             'Las Heras',
             'Obelisco',
-            'P. Madero',
+            'Puerto Madero',
             'Parque Vial',
             'Piedras',
             'Río Cuarto',
-            'T. Obelisco',
+            'Terminal Obelisco',
+            'Playa California',
+            'Balcarce',
+            'Playa de acarreo',
         ];
         
         foreach ($bases as $b) {
