@@ -17,7 +17,7 @@ class AreasSeeder extends Seeder
         $areas = [
             'Dirección',
             'Actas',
-            'Adm. Evaluación y desarrollo del Personal',
+//            'Adm. Evaluación y desarrollo del Personal',
             'Alcoholemia',
             'Autos Abandonados',
             'Cajas y Convenios',
@@ -27,7 +27,7 @@ class AreasSeeder extends Seeder
             'Compras',
             'Compras y Presupuesto',
             'Comunicaciones',
-            'Contratos y Facturación',
+//            'Contratos y Facturación',
             'DCER',
             'Desarrollo Humano',
             'Educación Vial',
@@ -36,7 +36,7 @@ class AreasSeeder extends Seeder
             'Incorporación y Formación de Ag. De Tránsito',
             'Legales',
             'Mantenimiento',
-            'Medicina Laboral y ART',
+//            'Medicina Laboral y ART',
             'Mesa de Entrada',
             'Mesa de Entrada Seguridad Vial',
             'Observatorio Vial',
@@ -47,13 +47,14 @@ class AreasSeeder extends Seeder
             'Monitoreo',
             'Planeamiento',
             'Playa de Acarreo',
-            'Presentismo y Legajos del Personal',
+//            'Presentismo y Legajos del Personal',
             'Recursos Materiales',
             'Rel. Institucionales',
             'Sistemas',
             'Taller',
             'Uniformes',
             'Upe',
+            'Personal'
         ];
         
         foreach ($areas as $a) {

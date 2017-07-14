@@ -41,7 +41,7 @@ foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $
 <?php
 $areas = [-1 => 'Seleccione...'];
 
-foreach (\Cat\Models\Area::all() as $a) {
+foreach (\Cat\Models\Area::orderBy('nombre', 'ASC')->get() as $a) {
     /** @var \Cat\Models\Area $a */
     $areas[$a->id] = $a->nombre;
 }
@@ -141,7 +141,7 @@ $funcion = (isset($operativo) ? $operativo->funcion_especifica : 'Operador');
 <?php
 $bases = [-1 => 'Seleccione...'];
 
-foreach (\Cat\Models\Base::all() as $b) {
+foreach (\Cat\Models\Base::orderBy('nombre', 'ASC')->get() as $b) {
     /** @var \Cat\Models\Area $a */
     $bases[$b->id] = $b->nombre;
 }
@@ -160,7 +160,7 @@ foreach (\Cat\Models\Base::all() as $b) {
 <?php
 $turnos = [-1 => 'Seleccione...'];
 
-foreach (\Cat\Models\Turno::all() as $t) {
+foreach (\Cat\Models\Turno::orderBy('codigo', 'ASC')->get() as $t) {
     /** @var \Cat\Models\Area $a */
     $turnos[$t->id] = $t->codigo;
 }
