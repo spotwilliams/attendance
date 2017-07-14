@@ -66,7 +66,7 @@ class TipoPresentismosRepository
             ->where('id_tipo_presentismo', '<>', $tipoTardanza->id)
             ->count();
         /** @var Collection $tardanzas */
-        $tardanzas = self::getTardanzasGroupedByNRows($agente);
+        $tardanzas = self::getTardanzasGroupedByNRows($agente, $periodo);
         /** @var Collection $tardanzaRegistrada */
         foreach ($tardanzas as $tardanzaRegistrada) {
             if ($tardanzaRegistrada->count() === config('cat.presentismos.equivalencia.injustificado.tardanza')) {
@@ -90,7 +90,7 @@ class TipoPresentismosRepository
             ->esFinDeSemana();
     }
     
-    public static function getTardanzasGroupedByNRows(Agente $agente)
+    public static function getTardanzasGroupedByNRows(Agente $agente, Periodo $periodo)
     {
         /** @var TipoPresentismo $tardanza codigo de los injustifados */
         $tardanza = TipoPresentismo::tardanzas();
@@ -98,7 +98,7 @@ class TipoPresentismosRepository
         $tardanzas = $agente
             ->presentismos()
             ->where('injustificado', '=', true)
-            ->where('tardanza_calculada', '=', false)
+            ->where('id_periodo', '=', $periodo->id)
             ->where('id_tipo_presentismo', '=', $tardanza->id)
             ->get();
         
