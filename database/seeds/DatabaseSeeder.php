@@ -27,25 +27,23 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
-        
-        $this->call(AreasSeeder::class);
-        $this->call(BasesSeeder::class);
-        $this->call(EstadosContratoSeeder::class);
-        $this->call(TiposPresentismoSeeder::class);
-        $this->call(TiposContratoSeeder::class);
-        $this->call(Funciones::class);
-        $this->call(Turnos::class);
-        $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
-        $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
-        $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
 
-        $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
+//        $this->call(AreasSeeder::class);
+//        $this->call(BasesSeeder::class);
+//        $this->call(EstadosContratoSeeder::class);
+//        $this->call(TiposPresentismoSeeder::class);
+//        $this->call(TiposContratoSeeder::class);
+//        $this->call(Funciones::class);
+//        $this->call(Turnos::class);
+//        $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
+//        $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
+//        $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
+//
+//        $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
 //        $this->call(AgentesSeeder::class);
-        try {
-        } catch (\Exception $error) {
-            echo $error->getTraceAsString();
-        }
+//        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
+        
+            $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
     }
     
     

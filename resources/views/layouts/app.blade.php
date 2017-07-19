@@ -49,7 +49,7 @@
                             <!-- User Account Menu -->
                             <li class="dropdown user user-menu">
                                 <!-- Menu Toggle Button -->
-                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
+                                <a href="#" class="dropdown-toggle clearfix" data-toggle="dropdown">
                                     <!-- The user image in the navbar-->
                                     <img src="{{URL::asset('images/CABA1.png')}}"
                                          class="user-image" alt="User Image"/>
@@ -62,7 +62,9 @@
                                         <img src="{{URL::asset('images/CABA1.png')}}"
                                              class="img-circle" alt="User Image"/>
                                         <p>
-                                            {!! Auth::user()->name !!}
+                                            {!! Auth::user()->agente->nombre !!} ,
+                                            {!! Auth::user()->agente->apellido !!}
+                                            ({!! Auth::user()->email !!})
                                         </p>
                                     </li>
                                     <!-- Menu Footer-->

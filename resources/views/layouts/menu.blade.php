@@ -63,10 +63,10 @@
             </a>
         </li>
         {{--<li>--}}
-            {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
-                {{--<i class="fa fa-desktop"></i>--}}
-                {{--<span>Incial</span>--}}
-            {{--</a>--}}
+        {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
+        {{--<i class="fa fa-desktop"></i>--}}
+        {{--<span>Incial</span>--}}
+        {{--</a>--}}
         {{--</li>--}}
     </ul>
 </li>
@@ -88,6 +88,24 @@
                 <span>C&aacute;lculo de haberes</span>
             </a>
         </li>
+    </ul>
+</li>
+
+<li class="dropdown {{ Request::is('administracion*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-group"></i>
+        <span>Usuarios y roles</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li><a href="{{ url( 'administracion/usuario') }}"><i class="fa fa-user"></i>
+                <span>Users</span></a></li>
+        <li><a href="{{url('administracion/rol')}}"><i class="fa fa-group"></i>
+                <span>Roles</span></a></li>
     </ul>
 </li>
 {{--<li class="{{ Request::is('areas*') ? 'active' : '' }}">--}}

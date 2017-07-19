@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Cat\Security\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -61,5 +62,9 @@ class Base extends Model
         return $this->belongsToMany(Periodo::class, 'estado_periodos', 'id_base', 'id_periodo')->withPivot(['abierto']);
     }
     
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'base_roles', 'base_id', 'role_id');
+    }
     
 }
