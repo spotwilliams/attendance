@@ -5,5 +5,6 @@ return  [
         'Agentes',
         'Masivo',
         'Haberes',
+        'Reportes',
     ]
 ];

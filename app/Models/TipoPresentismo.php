@@ -91,6 +91,7 @@ class TipoPresentismo extends Model
             return true;
         }
     }
+    
     public function puedoInjustificarlo()
     {
         if (in_array($this->codigo, $this->noInjustificables)) {
@@ -99,6 +100,11 @@ class TipoPresentismo extends Model
         } else {
             return true;
         }
+    }
+    
+    public function getMyLabel()
+    {
+        return '<span class="label" style="background: ' . $this->color . ';">' . $this->codigo . '</span>';
     }
     
 }

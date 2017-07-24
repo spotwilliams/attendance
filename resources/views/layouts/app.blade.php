@@ -15,6 +15,7 @@
 {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
 {!! Html::style('plugins/jquerytimepicker/css/jquery.timepicker.css') !!}
 {!! Html::style('plugins/daterangepicker/css/daterangepicker.css') !!}
+{!! Html::style('plugins/awesome-bootstrap-checkbox/css/awesome-bootstrap-checkbox.css') !!}
 {!! Html::style('css/style.css') !!}
 <!-- Ionicons -->
     @yield('css')

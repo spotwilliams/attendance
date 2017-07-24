@@ -17,7 +17,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 2000;
+    const SIZE_AGENTE = 200;
     const SIZE_AREAS  = 10;
     
     /**
@@ -41,7 +41,9 @@ class DatabaseSeeder extends Seeder
         $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
 
         $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
-//        $this->call(AgentesSeeder::class);
+        $this->call(AgentesSeeder::class);
+        $this->call(\Cat\Database\Presentismos\PresentismoSeeder::class);
+        
         try {
         } catch (\Exception $error) {
             echo $error->getTraceAsString();

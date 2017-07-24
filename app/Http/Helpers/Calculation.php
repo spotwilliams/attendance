@@ -118,6 +118,20 @@ class Calculation
         return $compulsory;
     }
     
+    public static function getAllDaysBetween(\DateTime $start, \DateTime $end)
+    {
+        $days = [
+            'Mon',
+            'Tue',
+            'Wed',
+            'Thu',
+            'Fri',
+            'Sat',
+            'Sun',
+        ];
+        
+        return self::getWeekends($start, $end, $days);
+    }
     
     public static function addFaltasNoRegistradas(Collection $agentesConPresentsimos, $fechas = [])
     {

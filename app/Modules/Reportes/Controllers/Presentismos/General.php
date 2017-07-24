@@ -1,0 +1,122 @@
+<?php
+
+namespace Cat\Reportes\Controllers\Presentismos;
+
+use Cat\Models\Agente;
+use Cat\Http\Controllers\AppBaseController;
+use Cat\Models\Base;
+use Cat\Models\Presentismo;
+use Cat\Models\Turno;
+use Illuminate\Database\Query\Builder;
+use Illuminate\Database\Query\JoinClause;
+use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Input;
+use Illuminate\Support\Facades\View;
+use Illuminate\Support\Facades\Response;
+
+class General extends AppBaseController
+{
+    /** @var  Collection */
+    private $areas;
+    
+    /** @var  Turno */
+    private $turno;
+    
+    /** @var  Base */
+    private $base;
+    
+    /** @var  \DateTime */
+    private $desde;
+    
+    /** @var  \DateTime */
+    private $hasta;
+    
+    /** @var  Builder */
+    private $query;
+    
+    public function __construct()
+    {
+        $this->middleware('auth');
+        
+    }
+    
+    public function index()
+    {
+        return view('Reportes::presentismos.index');
+    }
+    
+    /**
+     * Display a listing of the Presentismo.
+     *
+     * @param Request $request
+     * @return Response
+     */
+    public function search(Request $request)
+    {
+        
+        $this->setupParams($request)
+            ->setupQuery();
+        
+        $return = $this->query->paginate(25);
+        
+        return View::make('Reportes::presentismos.index')
+            ->with('agentes', $return)
+            ->with('baseSeleccionada', $this->base)
+            ->with('turno', $this->turno)
+            ->with('areas', $this->areas)
+            ->with('desde', $this->desde)
+            ->with('hasta', $this->hasta);
+        
+    }
+    
+    private function setupParams(Request $request)
+    {
+        $this->desde = new \DateTime($request->input('desde'));
+        $this->hasta = new \DateTime($request->input('hasta'));
+        $this->areas = new Collection($request->input('areas'));
+        $this->base  = Base::find($request->input('base'));
+        $this->turno = Turno::find($request->input('turno'));
+        
+        return $this;
+    }
+    
+    private function setupQuery()
+    {
+        $this->query = Agente::with([
+            'presentismos' => function ($query) {
+                $query->whereDate('fecha', '>=', $this->desde)
+                    ->whereDate('fecha', '<=', $this->hasta)
+                    ->orderBy('fecha', 'ASC')
+                    ->with('tipoPresentismo');
+            },
+        ])
+            ->with('operativo.base')
+            ->with('operativo.turno')
+            ->with('contrato.tipoContrato')
+        ;
+        
+        $this->query->join('operativos', function ($join) {
+            /** @var JoinClause $join */
+            $join->on('operativos.id_agente', '=', 'agentes.id');
+            if ($this->base !== null) {
+                $join
+                    ->where('id_base', '=', $this->base->id);
+            }
+            
+            if ($this->turno !== null) {
+                $join
+                    ->where('id_turno', '=', $this->turno->id);
+            }
+            
+            if (!$this->areas->isEmpty()) {
+                $join
+                    ->whereIn('id_area', $this->areas->all());
+            }
+            
+        });
+        
+        return $this;
+    }
+    
+}

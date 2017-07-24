@@ -115,3 +115,22 @@
 {{--<a href="{!! route('baseModels.index') !!}"><i class="fa fa-edit"></i><span>BaseModels</span></a>--}}
 {{--</li>--}}
 
+<li class="dropdown {{ Request::is('reportes*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-bar-chart"></i>
+        <span>Reportes</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{!! route('reportesPresentismoGeneralIndex') !!}">
+                <i class="fa fa-check"></i>
+                <span>Reporte general</span>
+            </a>
+        </li>
+    </ul>
+</li>
