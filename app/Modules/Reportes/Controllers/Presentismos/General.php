@@ -62,7 +62,7 @@ class General extends AppBaseController
         
         return View::make('Reportes::presentismos.index')
             ->with('agentes', $return)
-            ->with('baseSeleccionada', $this->base)
+            ->with('base', $this->base)
             ->with('turno', $this->turno)
             ->with('areas', $this->areas)
             ->with('desde', $this->desde)

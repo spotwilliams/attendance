@@ -65,10 +65,10 @@ class AgentesSeeder extends Seeder
             (new Laborales($age, $laboral))->execute();
             $operativos = [
                 'agente'             => $i,
-                'id_gerencia'        => 1,
-                'id_area'            => 1,
-                'id_cargo'           => 1,
-                'id_funcion'         => 1,
+                'id_gerencia'        => rand(1, 10),
+                'id_area'            => rand(1, 36),
+                'id_cargo'           => rand(1, 9),
+                'id_funcion'         => rand(1, 3),
                 'funcion_especifica' => '',
                 'id_base'            => rand(1, $base - 1),
                 'id_turno'           => rand(1, $turno - 1),

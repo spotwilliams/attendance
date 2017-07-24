@@ -8,7 +8,7 @@ if (isset($desde) and isset($hasta)) {
 }
 
 /** @var \Illuminate\Pagination\LengthAwarePaginator $presentismos */
-//dd($agentes->getCollection()->get(0));
+
 ?>
 
 @foreach($agentes as $agente)

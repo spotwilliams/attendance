@@ -2,10 +2,11 @@
 
 /** @var array $fechasToShow */
 if (isset($desde) and isset($hasta)) {
-    $fechasToShow = \Cat\Helpers\Calculation::getAllDaysBetween($desde, $hasta, true);
+    $fechasToShow = \Cat\Helpers\Calculation::getAllDaysBetween($desde, $hasta);
 } else {
     $fechasToShow = [];
 }
+
 ?>
 <th>Personal</th>
 <th>CUIT</th>

@@ -1,7 +1,7 @@
 <?php
 $areasToDraw = \Cat\Repositories\AreaRepository::getAll();
 /** @var \Illuminate\Support\Collection $areas */
-$aSelected = (isset($areas) ? array_keys($areas->keyBy('id')->toArray()) : []);
+$aSelected = (isset($areas) ? ($areas->toArray()) : []);
 ?>
 
 <div class="row">
@@ -29,7 +29,7 @@ $aSelected = (isset($areas) ? array_keys($areas->keyBy('id')->toArray()) : []);
                        id="chk_{{$area->id}}"
                        name="areas[]"
                        @if(in_array($area->id,$aSelected))
-                       checked="checked"
+                           checked
                         @endif
                 >
                 <label for="chk_{{$area->id}}">

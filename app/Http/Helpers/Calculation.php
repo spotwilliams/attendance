@@ -64,25 +64,33 @@ class Calculation
      * @param \DateTime $end
      * @return array
      */
-    public static function getWeekends(\DateTime $start, \DateTime $end, $daysFiltered = [])
+    public static function getWeekends(\DateTime $start, \DateTime $end)
     {
         $days = [
             'Sat',
             'Sun',
         
         ];
-        if (!empty($daysFiltered)) {
-            $days = $daysFiltered;
-        }
+        
+        return self::getDays($start, $end, $days);
+    }
+    
+    public static function getDays(\DateTime $start, \DateTime $end, $days)
+    {
+        // Se crean nuevamente los objetos para evitar cambiarlos
+        $start      = new \DateTime($start->format('Y-m-d'));
+        $end        = new \DateTime($end->format('Y-m-d'));
+        
         $compulsory = [];
         
         $interval = new \DateInterval('P1D');
-        
+        $end->modify('+1day');
         $period = new \DatePeriod($start, $interval, $end);
         
         /** @var \DateTime $day */
         foreach ($period as $day) {
-            if (in_array($day->format('D'), $days, true)) {
+            
+            if (in_array($day->format('D'), $days)) {
                 $compulsory[] = $day->format('Y-m-d');
             }
         }
@@ -90,7 +98,7 @@ class Calculation
         return $compulsory;
     }
     
-    public static function getWeekDays(\DateTime $start, \DateTime $end, $daysFiltered = [])
+    public static function getWeekDays(\DateTime $start, \DateTime $end)
     {
         $days = [
             'Mon',
@@ -100,22 +108,8 @@ class Calculation
             'Fri',
         
         ];
-        if (!empty($daysFiltered)) {
-            $days = $daysFiltered;
-        }
-        $compulsory = [];
-        $interval   = new \DateInterval('P1D');
         
-        $period = new \DatePeriod($start, $interval, $end);
-        
-        /** @var \DateTime $day */
-        foreach ($period as $day) {
-            if (in_array($day->format('D'), $days, true)) {
-                $compulsory[] = $day->format('Y-m-d');
-            }
-        }
-        
-        return $compulsory;
+        return self::getDays($start, $end, $days);
     }
     
     public static function getAllDaysBetween(\DateTime $start, \DateTime $end)
@@ -130,7 +124,7 @@ class Calculation
             'Sun',
         ];
         
-        return self::getWeekends($start, $end, $days);
+        return self::getDays($start, $end, $days);
     }
     
     public static function addFaltasNoRegistradas(Collection $agentesConPresentsimos, $fechas = [])
