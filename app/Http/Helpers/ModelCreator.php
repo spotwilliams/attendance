@@ -31,4 +31,18 @@ class ModelCreator
         
         return $model;
     }
+    
+    
+    public static function getDataFromModel(Model $provider, $relations = [])
+    {
+        $model = $provider;
+        foreach ($relations as $data) {
+            $model = $model->{$data};
+            if ($model == null) {
+                return 'N/A';
+            }
+        }
+        
+        return $model;
+    }
 }

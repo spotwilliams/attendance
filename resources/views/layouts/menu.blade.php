@@ -129,7 +129,13 @@
         <li>
             <a href="{!! route('reportesPresentismoGeneralIndex') !!}">
                 <i class="fa fa-check"></i>
-                <span>Reporte general</span>
+                <span>Asistencias</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('reportesAgentesGeneralIndex') !!}">
+                <i class="fa fa-user-secret"></i>
+                <span>Agentes</span>
             </a>
         </li>
     </ul>

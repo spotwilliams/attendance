@@ -14,7 +14,7 @@ $classField = 'col-sm-9 col-xs-9';
         <div class="form-group">
             <label class="{{$classLabel}} control-label">Rango de fechas</label>
             <div class="{{$classField}}">
-                @include('Reportes::common.dates')
+                @include('Reportes::common.dates-range')
             </div>
         </div>
     </div>

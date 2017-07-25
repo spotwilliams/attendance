@@ -99,7 +99,13 @@ class FormPresenter implements PresenterContract
         
         $html .= '<input type="submit" name="page" value="' . $page . '" class="btn btn-default" ' . (($page === $this->paginator->currentPage() ? ' disabled ' : '')) . '/>';
         foreach ($this->params as $name => $value) {
-            $html .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
+            if (!is_array($value)) {
+                $html .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';
+            } else {
+                foreach ($value as $option) {
+                    $html .= '<input type="hidden" name="' . $name . '[]" value="' . $option . '" />';
+                }
+            }
         }
         
         $html .= '</form>';
@@ -118,7 +124,7 @@ class FormPresenter implements PresenterContract
     protected function getAvailablePageWrapper($url, $page, $rel = null)
     {
         $rel = is_null($rel) ? '' : ' rel="' . $rel . '"';
-
+        
         return '<li><a href="' . htmlentities($url) . '"' . $rel . '>' . $page . '</a></li>';
     }
     
@@ -180,7 +186,7 @@ class FormPresenter implements PresenterContract
         }
         
         foreach ($forms as $html) {
-            $htmlComplete .= '<li>'. $html .'</li>';
+            $htmlComplete .= '<li>' . $html . '</li>';
         }
         
         return $htmlComplete;

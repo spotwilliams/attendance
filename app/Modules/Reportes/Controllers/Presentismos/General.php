@@ -54,7 +54,7 @@ class General extends AppBaseController
     
     public function index()
     {
-        return view('Reportes::presentismos.index');
+        return view('Reportes::presentismos.index-general');
     }
     
     /**
@@ -72,7 +72,7 @@ class General extends AppBaseController
         /** @var LengthAwarePaginator $return */
         $return = $this->query->paginate(25, ['*'], 'pagina', $this->page);
         
-        return View::make('Reportes::presentismos.index')
+        return View::make('Reportes::presentismos.index-general')
             ->with('agentes', $return)
             ->with('base', $this->base)
             ->with('turno', $this->turno)
@@ -97,14 +97,15 @@ class General extends AppBaseController
     
     private function setupQuery()
     {
-        $this->query = Agente::with([
-            'presentismos' => function ($query) {
-                $query->whereDate('fecha', '>=', $this->desde)
-                    ->whereDate('fecha', '<=', $this->hasta)
-                    ->orderBy('fecha', 'ASC')
-                    ->with('tipoPresentismo');
-            },
-        ])
+        $this->query = Agente::select(['agentes.*'])
+            ->with([
+                'presentismos' => function ($query) {
+                    $query->whereDate('fecha', '>=', $this->desde)
+                        ->whereDate('fecha', '<=', $this->hasta)
+                        ->orderBy('fecha', 'ASC')
+                        ->with('tipoPresentismo');
+                },
+            ])
             ->with('operativo.base')
             ->with('operativo.turno')
             ->with('contrato.tipoContrato');

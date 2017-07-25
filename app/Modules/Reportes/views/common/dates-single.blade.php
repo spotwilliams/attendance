@@ -2,29 +2,19 @@
     <div class="input-group-addon">
         <i class="fa fa-calendar"></i>
     </div>
-    <input type="text" class="form-control pull-right" id="rango" readonly>
-    <input type="hidden" name="desde" class="form-control pull-right" id="desde" readonly>
-    <input type="hidden" name="hasta" class="form-control pull-right" id="hasta" readonly>
+    <input type="text" class="form-control pull-right" id="{{$nombreCampo}}" readonly>
+    <input type="hidden" name="{{$nombreCampo}}" id="{{$nombreCampo}}">
 </div>
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-//            var today = moment();
-            @if(isset($desde) and $desde !== null)
-                var startDate = moment('{{$desde->format('Ymd')}}', 'YYYYMMDD');
-            @else
-                var startDate = moment().subtract(5, 'day');
-            @endif
+                    {{--@if(isset($desde) and $desde !== null)--}}
+            {{--var date = moment('{{$desde->format('Ymd')}}', 'YYYYMMDD');--}}
+                    {{--@else--}}
+            var date = moment();
+            {{--@endif--}}
 
-            @if(isset($desde) and $hasta !== null)
-                var endDate = moment('{{$hasta->format('Ymd')}}', 'YYYYMMDD');
-            @else
-                var endDate = moment().add(5, 'day');
-            @endif
-            $('#desde').val(startDate.format('Y-MM-DD'));
-            $('#hasta').val(endDate.format('Y-MM-DD'));
-            $('select').selectpicker({});
-            $('#rango').daterangepicker({
+            $('#{{$nombreCampo}}').daterangepicker({
                     locale: {
                         format: 'DD/MM/YYYY',
                         separator: " - ",
@@ -57,16 +47,15 @@
                             "Diciembre"
                         ],
                     },
-                    startDate: startDate.format('DD/MM/Y'),
-                    endDate: endDate.format('DD/MM/Y'),
+                    startDate: date.format('DD/MM/Y'),
                     maxDate: moment(),
                     opens: 'center',
+                    autoUpdateInput: false,
+                    singleDatePicker: true,
 
                 },
                 function (start, end, label) {
-                    console.log(start)
-                    $('#desde').val(start.format('Y-MM-DD'));
-                    $('#hasta').val(end.format('Y-MM-DD'));
+                    $('[name="{{$nombreCampo}}"]').val(start.format('Y-MM-DD'));
                 });
 
         })
