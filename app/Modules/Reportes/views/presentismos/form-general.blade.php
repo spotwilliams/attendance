@@ -7,7 +7,7 @@ $classContainer = 'col-md-4';
 $classLabel = 'col-md-3 col-xs-3';
 $classField = 'col-sm-9 col-xs-9';
 ?>
-{!! Form::open(['route' => 'reportesPresentismoGeneralSeach', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+{!! Form::open(['route' => 'reportesPresentismoGeneralSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 <div class="box-body">
 
     <div class="{{$classContainer}}">

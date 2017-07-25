@@ -25,7 +25,7 @@ Route::group(
             ->name('reportesPresentismoGeneralIndex');
         
         Route::post('reportes/presentismo/general', General::class . '@search')
-            ->name('reportesPresentismoGeneralSeach');
+            ->name('reportesPresentismoGeneralSearch');
         
         
     }
