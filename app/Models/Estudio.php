@@ -42,4 +42,8 @@ class Estudio extends Model
         return $this->belongsTo(Agente::class, 'id_agente');
     }
     
+    public function printMe()
+    {
+        return "Carrera: $this->carrera - Instituci&oacute;n: $this->institucion - Nivel: $this->nivel - Estado: $this->estado";
+    }
 }

@@ -119,11 +119,14 @@ class General extends AppBaseController
     private function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
+            ->with('domicilios')
+            ->with('estudio')
             ->with('operativo.base')
             ->with('operativo.turno')
             ->with('operativo.cargo')
             ->with('operativo.funcion')
             ->with('operativo.area')
+            ->with('operativo.gerencia')
             ->with('contrato.tipoContrato')
             ->with('contrato.estadoContrato');
         

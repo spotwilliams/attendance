@@ -9,6 +9,7 @@
 namespace Cat\Helpers;
 
 
+use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -33,7 +34,7 @@ class ModelCreator
     }
     
     
-    public static function getDataFromModel(Model $provider, $relations = [])
+    public static function getDataFromModel(Model $provider, $relations = [], callable $formatter = null)
     {
         $model = $provider;
         foreach ($relations as $data) {
@@ -42,7 +43,11 @@ class ModelCreator
                 return 'S/D';
             }
         }
-        
-        return $model;
+        if ($formatter !== null) {
+            return call_user_func_array($formatter, [$model]);
+        } else {
+            
+            return $model;
+        }
     }
 }
