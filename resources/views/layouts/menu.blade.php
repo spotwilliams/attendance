@@ -158,6 +158,18 @@
                 <span>Bases</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('configuracion.area.index') !!}">
+                <i class="fa fa-map"></i>
+                <span>Areas</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('configuracion.turno.index') !!}">
+                <i class="fa fa-clock-o"></i>
+                <span>Turnos</span>
+            </a>
+        </li>
     </ul>
 </li>
 

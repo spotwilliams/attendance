@@ -1,23 +1,22 @@
 @extends('layouts.app')
 
 @section('content')
+    <section class="content-header">
+    </section>
     <div class="content">
-        <div class="clearfix"></div>
 
-        @include('flash::message')
-
-        <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header">
+
                 <h3 class="box-title">
-                    Editar nombre de base
+                    Agregar nuevo turno
                 </h3>
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::model($baseModel, ['route' => ['configuracion.base.update', $baseModel->id], 'method' => 'patch']) !!}
+                    {!! Form::open(['route' => 'configuracion.turno.store']) !!}
 
-                    @include('Configuracion::bases.fields')
+                    @include('Configuracion::turnos.fields')
 
                     {!! Form::close() !!}
                 </div>

@@ -21,10 +21,15 @@ class Turno extends Model
     const UPDATED_AT = 'updated_at';
     
     
-    public $fillable
+    public        $fillable
         = [
             'codigo',
             'descripcion',
+        ];
+    public static $rules
+        = [
+            'codigo'      => 'required',
+            'descripcion' => 'required',
         ];
     
     public function esFinDeSemana()
