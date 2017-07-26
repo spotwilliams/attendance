@@ -139,6 +139,9 @@ class CrudController extends AppBaseController
      */
     private function destroy($id)
     {
+        // Para evitar hacks
+        return redirect(route('configuracion.base.index'));
+        
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
@@ -151,6 +154,5 @@ class CrudController extends AppBaseController
         
         Flash::success('Base eliminada correctamente.');
         
-        return redirect(route('configuracion.base.index'));
     }
 }
