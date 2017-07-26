@@ -91,6 +91,10 @@ class FormPresenter implements PresenterContract
         return '';
     }
     
+    public function renderOne($text)
+    {
+        return $this->getHtmlForm(route($this->route), $text);
+    }
     
     protected function getHtmlForm($url, $page)
     {

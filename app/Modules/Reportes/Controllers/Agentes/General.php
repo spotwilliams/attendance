@@ -25,40 +25,40 @@ use Illuminate\Support\Facades\Response;
 class General extends AppBaseController
 {
     /** @var  Collection */
-    private $areas;
+    protected $areas;
     
     /** @var  Turno */
-    private $turno;
+    protected $turno;
     
     /** @var  Base */
-    private $base;
+    protected $base;
     
     /** @var  \DateTime */
-    private $fechaContrato;
+    protected $fechaContrato;
     
     /** @var  TipoContrato */
-    private $tipoContrato;
+    protected $tipoContrato;
     
     /** @var  EstadoContrato */
-    private $estadoContrato;
+    protected $estadoContrato;
     
     /** @var  Cargo */
-    private $cargo;
+    protected $cargo;
     
     /** @var  Funcion */
-    private $funcion;
+    protected $funcion;
     
     /** @var  Builder */
-    private $query;
+    protected $query;
     
     /** @var  int */
-    private $page;
+    protected $page;
     
     /**
      * Html handler for page links
-     * @var
+     * @var FormPresenter
      */
-    private $presenter;
+    protected $presenter;
     
     public function __construct()
     {
@@ -95,11 +95,13 @@ class General extends AppBaseController
             ->with('funcion', $this->funcion)
             ->with('tipoContrato', $this->tipoContrato)
             ->with('estadoContrato', $this->estadoContrato)
-            ->with('links', $this->getLinksLikeForm($return, $request));
+            ->with('links', $this->getLinksLikeForm($return, $request))
+            ->with('exportar', $this->getExportForm($return, $request))
+            ;
         
     }
     
-    private function setupParams(Request $request)
+    protected function setupParams(Request $request)
     {
         if (!$request->input('fechaContrato') === '') {
             $this->fechaContrato = new \DateTime($request->input('fechaContrato'));
@@ -116,7 +118,7 @@ class General extends AppBaseController
         return $this;
     }
     
-    private function setupQuery()
+    protected function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
             ->with('domicilios')
@@ -183,9 +185,19 @@ class General extends AppBaseController
     
     private function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request)
     {
-        $this->presenter = new FormPresenter($paginator, 'reportesAgentesGeneralSearch');
-        $this->presenter->setInputsParams($request->all());
+        /** @var FormPresenter $presenter */
+        $presenter = new FormPresenter($paginator, 'reportesAgentesGeneralSearch');
+        $presenter->setInputsParams($request->all());
         
         return $paginator->links($this->presenter);
+    }
+
+    private function getExportForm(LengthAwarePaginator $paginator, Request $request)
+    {
+        /** @var FormPresenter $presenter */
+        $presenter = new FormPresenter($paginator, 'reportesAgentesGeneralExport');
+        $presenter->setInputsParams($request->all());
+        
+        return $presenter->renderOne('Exportar a excel');
     }
 }

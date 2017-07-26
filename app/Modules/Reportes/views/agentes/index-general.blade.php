@@ -80,7 +80,9 @@ if (!isset($agentes)) {
                     },
                 ]
             });
-            $('.dt-buttons').append($('<a>Exportar a excel</a>').addClass('dt-button').addClass('buttons-colvisGroup'))
+            var exportButton = $('{!! $exportar !!}');
+            exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
+            $('.dt-buttons').append(exportButton);
         })
     </script>
 @append
