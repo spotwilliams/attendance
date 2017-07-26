@@ -6,5 +6,6 @@ return  [
         'Masivo',
         'Haberes',
         'Reportes',
+        'Configuracion',
     ]
 ];

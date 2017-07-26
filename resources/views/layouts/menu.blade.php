@@ -63,10 +63,10 @@
             </a>
         </li>
         {{--<li>--}}
-            {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
-                {{--<i class="fa fa-desktop"></i>--}}
-                {{--<span>Incial</span>--}}
-            {{--</a>--}}
+        {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
+        {{--<i class="fa fa-desktop"></i>--}}
+        {{--<span>Incial</span>--}}
+        {{--</a>--}}
         {{--</li>--}}
     </ul>
 </li>
@@ -140,3 +140,24 @@
         </li>
     </ul>
 </li>
+
+<li class="dropdown {{ Request::is('configuracion*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-gears"></i>
+        <span>Configuraci&oacute;n</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{!! route('configuracion.base.index') !!}">
+                <i class="fa fa-building"></i>
+                <span>Bases</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
