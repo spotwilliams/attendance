@@ -39,7 +39,7 @@ class ModelCreator
         foreach ($relations as $data) {
             $model = $model->{$data};
             if ($model == null) {
-                return 'N/A';
+                return 'S/D';
             }
         }
         

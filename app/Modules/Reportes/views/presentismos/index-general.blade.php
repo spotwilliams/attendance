@@ -16,7 +16,7 @@ if (!isset($agentes)) {
         <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">B&uacute;squeda de presentismos registrados</h3>
+                <h3 class="box-title">Reporte de asistencias</h3>
             </div>
             <div class="box-body">
                 <div class="col-md-12 col-xs-12 col-lg-12">

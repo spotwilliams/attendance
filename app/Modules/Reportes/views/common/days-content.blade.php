@@ -26,7 +26,7 @@ if (isset($desde) and isset($hasta)) {
             @if($pByFecha->get($fecha)!==null)
                 <td>{!! $pByFecha->get($fecha)->tipoPresentismo->getMyLabel() !!}</td>
             @else
-                <td>N/A</td>
+                <td>S/D</td>
             @endif
         @endforeach
     </tr>
