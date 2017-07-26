@@ -60,7 +60,7 @@ class CrudController extends AppBaseController
         
         $baseModel = $this->baseModelRepository->create($input);
         
-        Flash::success('Base Model saved successfully.');
+        Flash::success('Base creada correctamente.');
         
         return redirect(route('configuracion.base.index'));
     }
@@ -77,7 +77,7 @@ class CrudController extends AppBaseController
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
-            Flash::error('Base Model not found');
+            Flash::error('Base no encontrada');
             
             return redirect(route('configuracion.base.index'));
         }
@@ -97,7 +97,7 @@ class CrudController extends AppBaseController
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
-            Flash::error('Base Model not found');
+            Flash::error('Base no encontrada');
             
             return redirect(route('configuracion.base.index'));
         }
@@ -118,14 +118,14 @@ class CrudController extends AppBaseController
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
-            Flash::error('Base Model not found');
+            Flash::error('Base no encontrada');
             
             return redirect(route('configuracion.base.index'));
         }
         
         $baseModel = $this->baseModelRepository->update($request->all(), $id);
         
-        Flash::success('Base Model updated successfully.');
+        Flash::success('Base actualizada correctamente.');
         
         return redirect(route('configuracion.base.index'));
     }
@@ -142,14 +142,14 @@ class CrudController extends AppBaseController
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
-            Flash::error('Base Model not found');
+            Flash::error('Base no encontrada');
             
             return redirect(route('configuracion.base.index'));
         }
         
         $this->baseModelRepository->delete($id);
         
-        Flash::success('Base Model deleted successfully.');
+        Flash::success('Base eliminada correctamente.');
         
         return redirect(route('configuracion.base.index'));
     }
