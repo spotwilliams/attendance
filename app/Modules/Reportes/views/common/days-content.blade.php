@@ -15,10 +15,10 @@ if (isset($desde) and isset($hasta)) {
     <tr>
         <td>{{$agente->nombre}}, {{$agente->apellido}}</td>
         <td>{{$agente->cuit}}</td>
-        <td>{{$agente->operativo->base->nombre}}</td>
-        <td>{{$agente->operativo->turno->codigo}}</td>
-        <td>{{$agente->operativo->area->nombre}}</td>
-        <td>{{$agente->contrato->tipoContrato->descripcion}}</td>
+        <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','base', 'nombre'])}}</td>
+        <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','turno', 'codigo'])}}</td>
+        <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','area', 'nombre'])}}</td>
+        <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['contrato','tipoContrato', 'descripcion'])}}</td>
         <?php
         $pByFecha = $agente->presentismos->keyBy('fecha');
         ?>
