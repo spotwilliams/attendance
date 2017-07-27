@@ -1,9 +1,8 @@
 <?php
 
-namespace Cat\Modules\Reportes\Controllers\Agentes;
+namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
-
-use Cat\Modules\Reportes\Services\Formatters\Agente;
+use Cat\Modules\Reportes\Services\Formatters\Presentismo;
 use Cat\Modules\Reportes\Services\Reporte;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -27,7 +26,7 @@ class Exportar extends General
         /** @var Collection $data */
         $data = $this->query->get();
         
-        $service = new Reporte($data, Agente::class);
+        $service = new Reporte($data, Presentismo::class);
         try {
             $service->execute();
         } catch (\Exception $e) {
@@ -39,8 +38,22 @@ class Exportar extends General
     {
         parent::setupQuery();
         $this->query
-            ->with('domicilios')
-            ->with('estudio')
+            ->with([
+                'presentismos' => function ($query) {
+                    $query->whereDate('fecha', '>=', $this->desde)
+                        ->whereDate('fecha', '<=', $this->hasta)
+                        ->orderBy('fecha', 'ASC')
+                        ->with([
+                            'tipoPresentismo' => function ($tipo) {
+                                $tipo->select([
+                                    'id',
+                                    'codigo',
+                                    'descripcion',
+                                ]);
+                            },
+                        ]);
+                },
+            ])
             ->with([
                 'operativo.base' => function ($with) {
                     $with->select(['id', 'nombre as nombre_base']);
@@ -52,34 +65,10 @@ class Exportar extends General
                 },
             ])
             ->with([
-                'operativo.cargo' => function ($cargo) {
-                    $cargo->select(['id', 'nombre as cargo']);
-                },
-            ])
-            ->with([
-                'operativo.funcion' => function ($funcion) {
-                    $funcion->select(['id', 'nombre as funcion']);
-                },
-            ])
-            ->with([
-                'operativo.area' => function ($area) {
-                    $area->select(['id', 'nombre as area']);
-                },
-            ])
-            ->with([
-                'operativo.gerencia' => function ($gerencia) {
-                    $gerencia->select(['id', 'nombre as gerencia']);
-                },
-            ])
-            ->with([
                 'contrato.tipoContrato' => function ($tipo) {
                     $tipo->select(['id', 'descripcion as tipo_contrato']);
                 },
-            ])
-            ->with([
-                'contrato.estadoContrato' => function ($estado) {
-                    $estado->select(['id', 'descripcion as estado']);
-                },
             ]);
     }
+    
 }

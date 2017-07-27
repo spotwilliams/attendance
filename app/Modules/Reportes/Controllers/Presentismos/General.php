@@ -1,56 +1,35 @@
 <?php
 
-namespace Cat\Reportes\Controllers\Presentismos;
+namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
-use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Agente;
-use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Base;
-use Cat\Models\Presentismo;
 use Cat\Models\Turno;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Query\Builder;
+use Cat\Modules\Reportes\Controllers\ReporteController;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
 
-class General extends AppBaseController
+class General extends ReporteController
 {
     /** @var  Collection */
-    private $areas;
+    protected $areas;
     
     /** @var  Turno */
-    private $turno;
+    protected $turno;
     
     /** @var  Base */
-    private $base;
+    protected $base;
     
     /** @var  \DateTime */
-    private $desde;
+    protected $desde;
     
     /** @var  \DateTime */
-    private $hasta;
+    protected $hasta;
     
-    /** @var  Builder */
-    private $query;
-    
-    /** @var  int */
-    private $page;
-    /**
-     * Html handler for page links
-     * @var
-     */
-    private $presenter;
-    
-    public function __construct()
-    {
-        $this->middleware('auth');
-        
-    }
     
     public function index()
     {
@@ -79,11 +58,13 @@ class General extends AppBaseController
             ->with('areas', $this->areas)
             ->with('desde', $this->desde)
             ->with('hasta', $this->hasta)
-            ->with('links', $this->getLinksLikeForm($return, $request));
+            ->with('links', $this->getLinksLikeForm($return, $request))
+            ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoGeneralExport'))
+            ;
         
     }
     
-    private function setupParams(Request $request)
+    protected function setupParams(Request $request)
     {
         $this->desde = new \DateTime($request->input('desde'));
         $this->hasta = new \DateTime($request->input('hasta'));
@@ -95,7 +76,7 @@ class General extends AppBaseController
         return $this;
     }
     
-    private function setupQuery()
+    protected function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
             ->with([
@@ -131,13 +112,5 @@ class General extends AppBaseController
         });
         
         return $this;
-    }
-    
-    private function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request)
-    {
-        $this->presenter = new FormPresenter($paginator, 'reportesPresentismoGeneralSearch');
-        $this->presenter->setInputsParams($request->all());
-        
-        return $paginator->links($this->presenter);
     }
 }

@@ -1,28 +1,23 @@
 <?php
 
-namespace Cat\Reportes\Controllers\Agentes;
+namespace Cat\Modules\Reportes\Controllers\Agentes;
 
-use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Agente;
-use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Base;
 use Cat\Models\Cargo;
 use Cat\Models\EstadoContrato;
 use Cat\Models\Funcion;
-use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
+use Cat\Modules\Reportes\Controllers\ReporteController;
 
-class General extends AppBaseController
+class General extends ReporteController
 {
     /** @var  Collection */
     protected $areas;
@@ -48,23 +43,6 @@ class General extends AppBaseController
     /** @var  Funcion */
     protected $funcion;
     
-    /** @var  Builder */
-    protected $query;
-    
-    /** @var  int */
-    protected $page;
-    
-    /**
-     * Html handler for page links
-     * @var FormPresenter
-     */
-    protected $presenter;
-    
-    public function __construct()
-    {
-        $this->middleware('auth');
-        
-    }
     
     public function index()
     {
@@ -96,7 +74,7 @@ class General extends AppBaseController
             ->with('tipoContrato', $this->tipoContrato)
             ->with('estadoContrato', $this->estadoContrato)
             ->with('links', $this->getLinksLikeForm($return, $request))
-            ->with('exportar', $this->getExportForm($return, $request))
+            ->with('exportar', $this->getExportForm($return, $request, 'reportesAgentesGeneralExport'))
             ;
         
     }
@@ -183,21 +161,4 @@ class General extends AppBaseController
         return $this;
     }
     
-    private function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request)
-    {
-        /** @var FormPresenter $presenter */
-        $presenter = new FormPresenter($paginator, 'reportesAgentesGeneralSearch');
-        $presenter->setInputsParams($request->all());
-        
-        return $paginator->links($this->presenter);
-    }
-
-    private function getExportForm(LengthAwarePaginator $paginator, Request $request)
-    {
-        /** @var FormPresenter $presenter */
-        $presenter = new FormPresenter($paginator, 'reportesAgentesGeneralExport');
-        $presenter->setInputsParams($request->all());
-        
-        return $presenter->renderOne('Exportar a excel');
-    }
 }

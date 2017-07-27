@@ -19,20 +19,22 @@ abstract class  RowDataFormatter
      * @param array $excludeAttributes
      * @return array
      */
-    protected function toExcelRow(Model $data, $excludeAttributes = [])
+    protected function toExcelRow(Model $data, $excludeAttributes = [], $excludeRelations = [])
     {
         $output  = [];
         $allData = $data->toArray();
-        $this->extractAttribute($allData, $excludeAttributes, $output);
-
+        $this->extractAttribute($allData, $excludeAttributes, $excludeRelations, $output);
+        
         return $output;
     }
     
-    protected function extractAttribute($source, $excludeThis, &$output = [])
+    protected function extractAttribute($source, $excludeThis, $excludeRelations, &$output = [])
     {
         foreach ($source as $dataName => $dataValue) {
             if (is_array($dataValue)) {
-                $this->extractAttribute($dataValue, $excludeThis, $output);
+                if (!in_array($dataName, $excludeRelations)) {
+                    $this->extractAttribute($dataValue, $excludeThis, $excludeRelations, $output);
+                }
             } else {
                 if (!in_array($dataName, $excludeThis)) {
                     $output[$dataName] = $dataValue;
