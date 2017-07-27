@@ -71,7 +71,7 @@ if (!isset($agentes)) {
                         extend: 'colvisGroup',
                         text: 'Datos operativos',
                         show: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-                        hide: [0, 1, 2, 3, 4, 5,6, 7, 8, 9, 10, 11, 12, 13, 14]
+                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
                     },
                     {
                         extend: 'colvisGroup',
@@ -80,9 +80,11 @@ if (!isset($agentes)) {
                     },
                 ]
             });
-            var exportButton = $('{!! $exportar !!}');
-            exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
-            $('.dt-buttons').append(exportButton);
+            @if(isset($exportar))
+                var exportButton = $('{!! $exportar !!}');
+                exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
+                $('.dt-buttons').append(exportButton);
+            @endif
         })
     </script>
 @append

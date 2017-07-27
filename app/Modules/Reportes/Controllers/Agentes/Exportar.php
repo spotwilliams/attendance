@@ -2,25 +2,13 @@
 
 namespace Cat\Reportes\Controllers\Agentes;
 
-use Cat\Helpers\Pagination\FormPresenter;
-use Cat\Models\Agente;
-use Cat\Http\Controllers\AppBaseController;
-use Cat\Models\Base;
-use Cat\Models\Cargo;
-use Cat\Models\EstadoContrato;
-use Cat\Models\Funcion;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoContrato;
-use Cat\Models\Turno;
-use Illuminate\Contracts\Pagination\Paginator;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Database\Query\JoinClause;
+
+use Cat\Modules\Reportes\Services\Formatters\Agente;
+use Cat\Modules\Reportes\Services\Reporte;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Input;
-use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
+use Laracasts\Flash\Flash;
 
 class Exportar extends General
 {
@@ -40,7 +28,63 @@ class Exportar extends General
     {
         $this->setupParams($request)
             ->setupQuery();
-        dd($this);
-        return $this->query->get();
+        
+        /** @var Collection $data */
+        $data = $this->query->get();
+        
+        $service = new Reporte($data, Agente::class);
+        try {
+            $service->execute();
+        } catch (\Exception $e) {
+            Flash::error($e->getMessage());
+        }
+    }
+    
+    protected function setupQuery()
+    {
+        parent::setupQuery();
+        $this->query
+            ->with('domicilios')
+            ->with('estudio')
+            ->with([
+                'operativo.base' => function ($with) {
+                    $with->select(['id', 'nombre as nombre_base']);
+                },
+            ])
+            ->with([
+                'operativo.turno' => function ($turno) {
+                    $turno->select(['id', 'descripcion as turno']);
+                },
+            ])
+            ->with([
+                'operativo.cargo' => function ($cargo) {
+                    $cargo->select(['id', 'nombre as cargo']);
+                },
+            ])
+            ->with([
+                'operativo.funcion' => function ($funcion) {
+                    $funcion->select(['id', 'nombre as funcion']);
+                },
+            ])
+            ->with([
+                'operativo.area' => function ($area) {
+                    $area->select(['id', 'nombre as area']);
+                },
+            ])
+            ->with([
+                'operativo.gerencia' => function ($gerencia) {
+                    $gerencia->select(['id', 'nombre as gerencia']);
+                },
+            ])
+            ->with([
+                'contrato.tipoContrato' => function ($tipo) {
+                    $tipo->select(['id', 'descripcion as tipo_contrato']);
+                },
+            ])
+            ->with([
+                'contrato.estadoContrato' => function ($estado) {
+                    $estado->select(['id', 'descripcion as estado']);
+                },
+            ]);
     }
 }
