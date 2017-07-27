@@ -31,6 +31,7 @@ class Exportar extends General
             $service->execute();
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
+            return redirect(route('reportesPresentismoGeneralIndex'));
         }
     }
     

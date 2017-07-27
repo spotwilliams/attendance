@@ -21,7 +21,7 @@ class Reporte extends Service
      * @param Collection $collection
      * @param string $whoDecideWhatToShow Class name of formmater Must be RowDataFormatter
      */
-    public function __construct(Collection $collection,  $whoDecideWhatToShow)
+    public function __construct(Collection $collection, $whoDecideWhatToShow)
     {
         $this->collection   = $collection;
         $this->rowFormatter = new $whoDecideWhatToShow();
