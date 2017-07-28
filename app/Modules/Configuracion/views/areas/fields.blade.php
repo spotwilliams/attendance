@@ -1,0 +1,14 @@
+<!-- Nombre Field -->
+<div class="form-group col-sm-6 @if($errors->has('nombre')) has-error @endif ">
+    {!! Form::label('nombre', 'Nombre:') !!}
+    {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+    @if($errors->has('nombre'))
+        <span class="help-block">{{$errors->first('nombre')}}</span>
+    @endif
+</div>
+
+<!-- Submit Field -->
+<div class="form-group col-sm-12">
+    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+    <a href="{!! route('configuracion.area.index') !!}" class="btn btn-default">Cancelar</a>
+</div>

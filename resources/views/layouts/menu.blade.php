@@ -133,3 +133,61 @@
 {{--<a href="{!! route('baseModels.index') !!}"><i class="fa fa-edit"></i><span>BaseModels</span></a>--}}
 {{--</li>--}}
 
+<li class="dropdown {{ Request::is('reportes*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-bar-chart"></i>
+        <span>Reportes</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{!! route('reportesPresentismoGeneralIndex') !!}">
+                <i class="fa fa-check"></i>
+                <span>Asistencias</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('reportesAgentesGeneralIndex') !!}">
+                <i class="fa fa-user-secret"></i>
+                <span>Agentes</span>
+            </a>
+        </li>
+    </ul>
+</li>
+
+<li class="dropdown {{ Request::is('configuracion*') ? 'active' : '' }}">
+    <a href="#"
+       class="dropdown-toggle"
+       data-toggle="dropdown"
+       aria-expanded="true"
+    >
+        <i class="fa fa-gears"></i>
+        <span>Configuraci&oacute;n</span>
+        <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu" role="menu">
+        <li>
+            <a href="{!! route('configuracion.base.index') !!}">
+                <i class="fa fa-building"></i>
+                <span>Bases</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('configuracion.area.index') !!}">
+                <i class="fa fa-map"></i>
+                <span>Areas</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('configuracion.turno.index') !!}">
+                <i class="fa fa-clock-o"></i>
+                <span>Turnos</span>
+            </a>
+        </li>
+    </ul>
+</li>
+

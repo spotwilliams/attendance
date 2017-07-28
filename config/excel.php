@@ -22,7 +22,7 @@ return array(
         | memory|gzip|serialized|igbinary|discISAM|apc|memcache|temp|wincache|sqlite|sqlite3
         |
         */
-        'driver'   => 'memory',
+        'driver'   => 'igbinary',
 
         /*
         |--------------------------------------------------------------------------
@@ -31,7 +31,7 @@ return array(
         */
         'settings' => array(
 
-            'memoryCacheSize' => '32MB',
+            'memoryCacheSize' => '4096MB',
             'cacheTime'       => 600
 
         ),
@@ -58,12 +58,12 @@ return array(
     ),
 
     'properties' => array(
-        'creator'        => 'Maatwebsite',
-        'lastModifiedBy' => 'Maatwebsite',
-        'title'          => 'Spreadsheet',
-        'description'    => 'Default spreadsheet export',
-        'subject'        => 'Spreadsheet export',
-        'keywords'       => 'maatwebsite, excel, export',
+        'creator'        => 'Cat',
+        'lastModifiedBy' => 'Cat',
+        'title'          => 'Hoja',
+        'description'    => 'Excel',
+        'subject'        => 'Excel',
+        'keywords'       => 'excel, export',
         'category'       => 'Excel',
         'manager'        => 'Maatwebsite',
         'company'        => 'Maatwebsite',

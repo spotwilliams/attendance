@@ -7,7 +7,7 @@ use Cat\Models\Periodo;
 use Cat\Models\Turno;
 use Cat\Modules\Haberes\Controllers\Helpers\Data;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
-use Cat\Modules\Haberes\Services\Reporte\Reporte;
+use Cat\Modules\Haberes\Services\Reporte\RowDataFormatter;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -39,7 +39,7 @@ class ReporteController extends AppBaseController
             $agentes = $this->helper
                 ->getAgentesForHaberesReport($base, $turno, $periodo);
             
-            $service = new Reporte($agentes);
+            $service = new RowDataFormatter($agentes);
             
             $service->execute();
             
@@ -62,7 +62,7 @@ class ReporteController extends AppBaseController
             /** @var Collection $agentes */
             $agentes = Facilitador::preliminar($base, $periodo, $turno);
             
-            $service = new Reporte(new Collection($agentes));
+            $service = new RowDataFormatter(new Collection($agentes));
             
             $service->execute();
             

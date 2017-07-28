@@ -5,6 +5,8 @@ return  [
         'Agentes',
         'Masivo',
         'Haberes',
+        'Reportes',
+        'Configuracion',
         'Security',
     ]
 ];

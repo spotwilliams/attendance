@@ -1,4 +1,5 @@
 <?php
+
 namespace Cat\Database\Seeds\Agentes;
 
 use Illuminate\Database\Seeder;
@@ -14,7 +15,7 @@ class DomicilioSeeder extends Seeder
     {
         $faker = new \Faker\Generator();
         $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        for ($i = 1; $i < DatabaseSeeder::SIZE_AGENTE; $i++) {
+        for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
             
             // Domicilio
             $domicilio = [
@@ -25,6 +26,7 @@ class DomicilioSeeder extends Seeder
                 'barrio'       => 'city',
                 'provincia'    => 'state',
                 'id_agente'    => $i,
+                'constituido'  => rand(0, 1),
             ];
             \Cat\Models\Domicilio::create($domicilio);
         }

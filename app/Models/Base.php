@@ -38,7 +38,7 @@ class Base extends Model
      */
     public static $rules
         = [
-        
+            'nombre' => 'required',
         ];
     
     /**

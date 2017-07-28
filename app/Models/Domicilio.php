@@ -56,10 +56,15 @@ class Domicilio extends Model
         ];
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
     public function agentes()
     {
         return $this->belongsTo(Agente::class, 'id_agente');
+    }
+    
+    public function printMe()
+    {
+        return "Calle: $this->calle - Nro: $this->numero - Departamento: $this->departamento - Piso: $this->piso - Barrio: $this->barrio - Provincia: $this->provincia - Constituido: " . (($this->constituido == true) ? 'SI' : 'NO') . " - Otro dato: $this->libre";
     }
 }
