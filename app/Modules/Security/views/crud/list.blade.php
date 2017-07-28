@@ -7,7 +7,7 @@
     <!-- Default box -->
         <div class="box box-warning">
             <div class="box-header with-border">
-                {{--<h3 class="box-title">Listado</h3>--}}
+                <h3 class="box-title">Listado de {{$crud->entity_name_plural}}</h3>
                       @include('Security::crud.inc.button_stack', ['stack' => 'top'])
 
             </div>

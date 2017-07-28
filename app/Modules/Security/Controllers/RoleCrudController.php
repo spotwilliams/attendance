@@ -15,8 +15,8 @@ class RoleCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(Role::class);
-        $this->crud->setEntityNameStrings('Rol', 'Roles');
-        $this->crud->setRoute(url('administracion/rol'));
+        $this->crud->setEntityNameStrings('rol', 'roles');
+        $this->crud->setRoute(url('seguridad/rol'));
         
         $this->crud->setColumns([
             [

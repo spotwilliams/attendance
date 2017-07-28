@@ -91,25 +91,6 @@
     </ul>
 </li>
 
-<li class="dropdown {{ Request::is('administracion*') ? 'active' : '' }}">
-    <a href="#"
-       class="dropdown-toggle"
-       data-toggle="dropdown"
-       aria-expanded="true"
-    >
-        <i class="fa fa-group"></i>
-        <span>Usuarios y roles</span>
-        <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu" role="menu">
-        <li><a href="{{ url( 'administracion/usuario') }}"><i class="fa fa-user"></i>
-                <span>Users</span></a></li>
-        <li><a href="{{url('administracion/rol')}}"><i class="fa fa-group"></i>
-                <span>Roles</span></a></li>
-    </ul>
-</li>
-
-
 <li class="dropdown {{ Request::is('reportes*') ? 'active' : '' }}">
     <a href="#"
        class="dropdown-toggle"
@@ -147,6 +128,7 @@
         <span class="caret"></span>
     </a>
     <ul class="dropdown-menu" role="menu">
+        <li class="divider"></li>
         <li>
             <a href="{!! route('configuracion.base.index') !!}">
                 <i class="fa fa-building"></i>
@@ -165,6 +147,27 @@
                 <span>Turnos</span>
             </a>
         </li>
+        <li class="divider"></li>
+        {{--<li>--}}
+            {{--<a href="#">--}}
+                {{--<span class="label label-warning">Usuarios y roles</span>--}}
+            {{--</a>--}}
+        {{--</li>--}}
+
+        <li>
+            <a href="{{ route('seguridad.usuario.index') }}"><i class="fa fa-user"></i>
+                <span>Usuarios</span></a>
+        </li>
+        <li>
+            <a href="{{ route('seguridad.rol.index') }}"><i class="fa fa-group"></i>
+                <span>Roles</span></a>
+        </li>
+        <li>
+            <a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-group"></i>
+                <span>Permisos</span></a>
+        </li>
+
+
     </ul>
 </li>
 

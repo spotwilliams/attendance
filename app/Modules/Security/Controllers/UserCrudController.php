@@ -3,13 +3,10 @@
 namespace Cat\Security\Controllers;
 
 
-use Cat\Models\Agente;
-use Cat\Models\Base;
 use Cat\Security\Requests\UserStoreCrudRequest as StoreRequest;
 // VALIDATION
 use Cat\Security\Requests\UserUpdateCrudRequest as UpdateRequest;
 use Cat\Security\Controllers\Crud\CrudController;
-use Cat\Security\Models\Permission;
 use Cat\Security\Models\Role;
 use Cat\User;
 use Laracasts\Flash\Flash;
@@ -20,9 +17,9 @@ class UserCrudController extends CrudController
     
     public function setup()
     {
-        $this->crud->setModel(User::class, ['agente']);
-        $this->crud->setEntityNameStrings('Usuario', 'Usuarios');
-        $this->crud->setRoute(url('administracion/usuario'));
+        $this->crud->setModel(User::class);
+        $this->crud->setEntityNameStrings('usuario', 'usuarios');
+        $this->crud->setRoute(url('seguridad/usuario'));
         
         $this->setupColumns();
         $this->setupFields();
@@ -43,6 +40,11 @@ class UserCrudController extends CrudController
                 'type'  => 'email',
             ],
             [
+                'name'  => 'cuit',
+                'label' => 'Cuit',
+                'type'  => 'text',
+            ],
+            [
                 'name'  => 'password',
                 'label' => 'Contrase&ntilde;a',
                 'type'  => 'password',
@@ -53,7 +55,7 @@ class UserCrudController extends CrudController
                 'type'  => 'password',
             ],
             [
-                'label'     => 'Roles que puede asignarse',
+                'label'     => 'Roles que pueden asignarse',
                 'type'      => 'checklist',
                 'name'      => 'roles',
                 'entity'    => 'roles',
@@ -73,8 +75,11 @@ class UserCrudController extends CrudController
                 'label' => 'Nombre',
                 'type'  => 'text',
             ],
-        ]);
-        $this->crud->setColumns([
+            [
+                'name'  => 'cuit',
+                'label' => 'Cuit',
+                'type'  => 'text',
+            ],
             [
                 'name'  => 'email',
                 'label' => 'Email',

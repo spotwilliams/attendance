@@ -5,6 +5,7 @@ namespace Cat\Security\Controllers;
 use Cat\Security\Controllers\Crud\CrudController;
 // VALIDATION
 use Cat\Security\Models\Permission;
+use Cat\Security\Models\Role;
 use Cat\Security\Requests\PermissionCrudRequest as StoreRequest;
 use Cat\Security\Requests\PermissionCrudRequest as UpdateRequest;
 use Cat\User;
@@ -15,37 +16,37 @@ class PermissionCrudController extends CrudController
     {
         $this->crud->setModel(Permission::class);
         $this->crud->setEntityNameStrings('Permiso', 'Permisos');
-        $this->crud->setRoute(config('backpack.base.route_prefix').'/permission');
+        $this->crud->setRoute('seguridad/permission');
 
         $this->crud->addColumn([
             'name'  => 'name',
-            'label' => trans('backpack::permissionmanager.name'),
+            'label' => 'Nombre Rol',
             'type'  => 'text',
         ]);
-        $this->crud->addColumn([ // n-n relationship (with pivot table)
-            'label'     => trans('backpack::permissionmanager.roles_have_permission'),
-            'type'      => 'select_multiple',
-            'name'      => 'roles',
-            'entity'    => 'roles',
-            'attribute' => 'name',
-            'model'     => "Backpack\PermissionManager\app\Models\Role",
-            'pivot'     => true,
-        ]);
+//        $this->crud->addColumn([ // n-n relationship (with pivot table)
+//            'label'     => 'Nombre Rol',
+//            'type'      => 'select_multiple',
+//            'name'      => 'roles',
+//            'entity'    => 'roles',
+//            'attribute' => 'name',
+//            'model'     => Role::class,
+//            'pivot'     => true,
+//        ]);
 
         $this->crud->addField([
             'name'  => 'name',
-            'label' => trans('backpack::permissionmanager.name'),
+            'label' => 'Nombre Rol',
             'type'  => 'text',
         ]);
-        $this->crud->addField([
-            'label'     => trans('backpack::permissionmanager.roles'),
-            'type'      => 'checklist',
-            'name'      => 'roles',
-            'entity'    => 'roles',
-            'attribute' => 'name',
-            'model'     => "Backpack\PermissionManager\app\Models\Role",
-            'pivot'     => true,
-        ]);
+//        $this->crud->addField([
+//            'label'     => 'Roles',
+//            'type'      => 'checklist',
+//            'name'      => 'roles',
+//            'entity'    => 'roles',
+//            'attribute' => 'name',
+//            'model'     => Role::class,
+//            'pivot'     => true,
+//        ]);
 
         if (!config('backpack.permissionmanager.allow_permission_create')) {
             $this->crud->denyAccess('create');

@@ -22,6 +22,7 @@ class CrudController extends BaseController
     
     public function __construct()
     {
+        $this->middleware(['auth']);
         $this->crud = new CrudPanel();
         $this->setup();
     }
@@ -41,7 +42,7 @@ class CrudController extends BaseController
         
         // get all entries if AJAX is not enabled
         if (!$this->data['crud']->ajaxTable()) {
-
+            
             $this->data['entries'] = $this->data['crud']->getEntries();
         }
         
@@ -89,15 +90,9 @@ class CrudController extends BaseController
         
         // show a success message
         Flash::success('Guardado correctamente');
+
+        return \Redirect::to($this->crud->route);
         
-        // redirect the user where he chose to be redirected
-        switch ($request->input('redirect_after_save')) {
-            case 'current_item_edit':
-                return \Redirect::to($this->crud->route . '/' . $item->getKey() . '/edit');
-            
-            default:
-                return \Redirect::to($request->input('redirect_after_save'));
-        }
     }
     
     /**

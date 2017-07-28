@@ -26,7 +26,7 @@ class UserUpdateCrudRequest extends FormRequest
     {
         $rules = [
             'email'    => 'required',
-//            'password' => 'confirmed',
+            'password' => 'confirmed',
         ];
         
         return $rules;

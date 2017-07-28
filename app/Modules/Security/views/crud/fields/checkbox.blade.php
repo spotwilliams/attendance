@@ -2,7 +2,6 @@
 
 <div @include('crud::inc.field_wrapper_attributes') >
     <div class="checkbox">
-    	<label>
     	  <input type="hidden" name="{{ $field['name'] }}" value="0">
     	  <input type="checkbox" value="1"
 
@@ -19,7 +18,9 @@
     			{{ $attribute }}="{{ $value }}"
         	  @endforeach
           @endif
-          > {{ $field['label'] }}
+          >
+        <label>
+        {{ $field['label'] }}
     	</label>
 
         {{-- HINT --}}

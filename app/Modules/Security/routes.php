@@ -18,14 +18,14 @@ Route::group(
     function () {
         Route::group(
             [
-                'prefix'     => 'administracion',
+                'prefix'     => 'seguridad',
                 'middleware' => [
                     'web',
 //                    'admin',
                 ],
             ],
             function () {
-//                Route::resource('rol', PermissionCrudController::class);
+                Route::resource('permission', PermissionCrudController::class);
                 
                 Route::resource('rol', RoleCrudController::class);
 
