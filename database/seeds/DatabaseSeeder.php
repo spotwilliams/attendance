@@ -28,8 +28,6 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
 
-//        $this->call(\Cat\Database\Seeds\Agentes\EstudiosSeeder::class);
-//        return;
         
         $this->call(AreasSeeder::class);
         $this->call(BasesSeeder::class);
@@ -43,8 +41,10 @@ class DatabaseSeeder extends Seeder
         $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
 
         $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
-        $this->call(AgentesSeeder::class);
-        $this->call(\Cat\Database\Presentismos\PresentismoSeeder::class);
+        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
+        //        $this->call(AgentesSeeder::class);
+//        $this->call(\Cat\Database\Presentismos\PresentismoSeeder::class);
+//        $this->call(\Cat\Database\Seeds\Agentes\EstudiosSeeder::class);
         
         try {
         } catch (\Exception $error) {

@@ -64,8 +64,7 @@
                                         <img src="{{URL::asset('images/CABA1.png')}}"
                                              class="img-circle" alt="User Image"/>
                                         <p>
-                                            {!! Auth::user()->agente->nombre !!} ,
-                                            {!! Auth::user()->agente->apellido !!}
+                                            {!! Auth::user()->name !!}
                                             ({!! Auth::user()->email !!})
                                         </p>
                                     </li>
