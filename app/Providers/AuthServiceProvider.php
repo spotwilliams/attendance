@@ -2,6 +2,8 @@
 
 namespace Cat\Providers;
 
+use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
+use Cat\Policies\CrudAgentePolicy;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -14,7 +16,8 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies
         = [
-            'Cat\Model' => 'Cat\Policies\ModelPolicy',
+//            'Cat\Model'               => 'Cat\Policies\ModelPolicy',
+            BusquedaController::class => CrudAgentePolicy::class,
         ];
     
     /**

@@ -2,12 +2,13 @@
 
 @section('content')
 
+
     <section class="content">
         <div class="error-page">
             <div class="box-body">
                 <div class="jumbotron">
-                    <h1><i class="fa fa-refresh text-warning"></i>Error de refresco</h1>
-                    <p class="lead">Ha refrescado la p&aacute;gina desde el navegador. Se recomienda hacerlo utilizando CTRL + R.
+                    <h1><i class="fa fa-ban text-danger"></i> Error de permisos</h1>
+                    <p class="lead">Usted no tiene permiso para acceder al recurso solicitado
                     </p>
                 </div>
 

@@ -2,19 +2,16 @@
 
 @section('content')
 
-
     <section class="content">
         <div class="error-page">
+            <div class="box-body">
+                <div class="jumbotron">
+                    <h1><i class="fa fa-clock-o text-warning"></i>Tiempo de espera agotado</h1>
+                    <p class="lead">Ha pasado demasiado tiempo de espera, por favor refresque la página.
+                    </p>
+                </div>
 
-            <div class="error-content">
-                <h2 class="headline text-yellow">
-                    <i class="fa fa-warning text-yellow"></i>Tiempo de espera agotado.</h2>
-                <p>
-                    Ha pasado demasiado tiempo de espera, por favor refresque la página.
-                </p>
             </div>
-            <!-- /.error-content -->
         </div>
-        <!-- /.error-page -->
     </section>
 @endsection
