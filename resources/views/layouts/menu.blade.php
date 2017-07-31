@@ -162,10 +162,10 @@
             <a href="{{ route('seguridad.rol.index') }}"><i class="fa fa-group"></i>
                 <span>Roles</span></a>
         </li>
-        <li>
-            <a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-group"></i>
-                <span>Permisos</span></a>
-        </li>
+        {{--<li>--}}
+            {{--<a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-group"></i>--}}
+                {{--<span>Permisos</span></a>--}}
+        {{--</li>--}}
 
 
     </ul>
