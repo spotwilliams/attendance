@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\CreateAreasRequest;
 use App\Http\Requests\UpdateAreasRequest;
-use App\Repositories\AreasRepository;
+use App\Repositories\AreaRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
@@ -13,10 +13,10 @@ use Response;
 
 class AreasController extends AppBaseController
 {
-    /** @var  AreasRepository */
+    /** @var  AreaRepository */
     private $areasRepository;
 
-    public function __construct(AreasRepository $areasRepo)
+    public function __construct(AreaRepository $areasRepo)
     {
         $this->middleware('auth');
         $this->areasRepository = $areasRepo;
