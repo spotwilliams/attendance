@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Cat\Modules\Presentismo\Controllers\Registro\RegistroController;
 use Cat\Modules\Presentismo\Controllers\Registro\GeneralController;
 use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
-
+use Cat\Modules\Presentismo\Controllers\Registro\PorAgenteController;
 Route::group(
     ['middleware' => ['web']],
     function () {
@@ -24,11 +24,18 @@ Route::group(
         
         Route::post('presentismo/lista/agentes/', GeneralController::class . '@prepareListaAgentes')
             ->name('presentismoPrepareListaAgentes');
-        
-//        Route::get('presentismo/lista/agentes/base/{base}/desde/{desde}/hasta/{hasta}/turno/{turno}',
-//            GeneralController::class . '@listaAgentes')
-//            ->name('presentismoListaAgentes');
-        
+    
+        /**
+         * Por agente
+         */
+        Route::get('presentismo/agente', PorAgenteController::class . '@index')
+            ->name('presentismoPorAgenteIndex');
+
+        Route::post('presentismo/agente/search', PorAgenteController::class . '@search')
+            ->name('presentismoPorAgenteSearch');
+    
+        Route::post('presentismo/individual/agentes', PorAgenteController::class . '@prepareIndividualAgente')
+            ->name('presentismoPorAgenteRegistro');
         /**
          * Stores
          */

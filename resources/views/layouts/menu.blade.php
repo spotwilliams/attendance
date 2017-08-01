@@ -62,6 +62,12 @@
                 <span>Registro masivo</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('presentismoPorAgenteIndex') !!}">
+                <i class="fa fa-user"></i>
+                <span>Registro por agente</span>
+            </a>
+        </li>
         {{--<li>--}}
             {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
                 {{--<i class="fa fa-desktop"></i>--}}
