@@ -23,7 +23,7 @@ $idModal = 'comentarios-modal'
                     <h4 class="box-title">Base <span class="label label-info">{{$baseActual->nombre}}</span></h4>
                 </div>
                 <div class="col-md-4">
-                    <h4 class="box-title">Turno <span class="label label-info">{{$turno->codigo}}</span></h4>
+                    {{--<h4 class="box-title">Turno <span class="label label-info">{{$turno->codigo}}</span></h4>--}}
                 </div>
                 <div class="col-md-4">
                     <h4 class="box-title">Periodo actual: <span
@@ -38,9 +38,8 @@ $idModal = 'comentarios-modal'
                 @include('Presentismo::registro.table')
             </div>
             <div class="box-footer">
-                <div class="col-md-6 col-md-offset-3">
-
-                    {{$agentes->links()}}
+                <div class="text-center">
+                    {!! $links !!}
                 </div>
 
             </div>

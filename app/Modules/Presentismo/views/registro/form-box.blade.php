@@ -19,10 +19,13 @@
 
     <div class="box-body">
         <div class="col-md-offset-2 col-md-8">
-            @include('bases.select-sin-btn' ,['label'=> 'Seleccione la base', 'baseSeleccionada' => (isset($baseActual)?$baseActual->id:-1)])
+            @include('common.bases.as-select-sin-btn' ,['label'=> 'Seleccione la base', 'baseSeleccionada' => (isset($baseActual)?$baseActual->id:-1)])
 
             @include('common.turnos.as-checkbox')
+
             @include('common.areas.as-checkbox')
+
+            @include('common.funcion.as-select')
 
             <div class="form-group">
                 <label class="col-md-3 col-xs-3 control-label">Rango de fechas</label>

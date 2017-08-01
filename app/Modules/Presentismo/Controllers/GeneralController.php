@@ -3,6 +3,7 @@
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
 use Cat\Helpers\Calculation;
+use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Base;
 use Cat\Models\Periodo;
 use Cat\Models\Turno;
@@ -11,7 +12,10 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
 
@@ -44,58 +48,81 @@ class GeneralController extends AppBaseController
     public function prepareListaAgentes(Request $request)
     {
         $this->validate($request, [
-            'base'  => 'required|not_in:-1',
-            'turno' => 'not_in:-1',
+            'base'   => 'required|not_in:-1',
+            'turnos' => 'required',
+            'areas'  => 'required',
         ]);
         
         $input = $request->all();
         
-        return redirect(
-            route(
-                'presentismoListaAgentes',
-                [
-                    'base'  => $input['base'],
-                    'desde' => $input['desde'],
-                    'hasta' => $input['hasta'],
-                    'turno' => $input['turno'],
-                ]
-            )
+        return $this->listaAgentes(
+            $request,
+            $input['base'],
+            $input['turnos'],
+            $input['areas'],
+            $input['desde'],
+            $input['hasta'],
+            $input['funcion']
         );
-        
     }
     
-    public function listaAgentes(Request $request, $base, $desde, $hasta, $turno)
-    {
-        
+    /**
+     * @param $request Request
+     * @param $base int
+     * @param $turnos array
+     * @param $areas array
+     * @param $desde string (US date format)
+     * @param $hasta string (US date format)
+     * @param $funcion int
+     * @return mixed
+     */
+    private function listaAgentes(
+        Request $request,
+        $base,
+        $turnos,
+        $areas,
+        $desde,
+        $hasta,
+        $funcion
+    ) {
         try {
             
-            $base  = Base::findOrFail($base);
-            $turno = Turno::findOrFail($turno);
-
-            $dateRange =  Calculation::prepareTenDaysDiff($desde, $hasta);
-
+            $base = Base::findOrFail($base);
+            
             // Controlamos que solo existan 10 dias como maximo
+            $dateRange = Calculation::prepareTenDaysDiff($desde, $hasta);
+            
             $agentes = $this->presentismoRepository
                 ->getEloquentAgentesBetweenDates(
                     $base,
                     $dateRange['desde'],
                     $dateRange['hasta']
                 )
-                ->with('contrato.tipoContrato')
-                ->where('operativos.id_turno', '=', $turno->id);
+                ->whereIn('operativos.id_turno', $turnos)
+                ->whereIn('operativos.id_area', $areas)
+                // En caso que pasemos una funcion la buscamos, sino la excluimos desde sql
+                ->where('operativos.id_funcion', (($funcion == -1) ? '<>' : '='), $funcion)
+                ->with('contrato.tipoContrato');
             
+            /** @var LengthAwarePaginator $result */
+            $result = $agentes->paginate(25);
         } catch (ModelNotFoundException $e) {
             Flash::error('Se ha seleccionado una base inexistente');
             
             return redirect(route('presentismoIndex'));
         }
         
+        $presenter = new FormPresenter($result, 'presentismoPrepareListaAgentes');
+        $presenter->setInputsParams($request->all());
+
         return view('Presentismo::registro.lista')
             ->with('desde', $dateRange['desde'])
             ->with('hasta', $dateRange['hasta'])
-            ->with('turno', $turno)
+            ->with('turnos', new Collection($turnos))
+            ->with('areas', new Collection($areas))
+            ->with('links', $result->links($presenter))
             ->with('baseActual', $base)
-            ->with('agentes', $agentes->paginate(25));
+            ->with('agentes', $result);
     }
     
 }

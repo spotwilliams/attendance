@@ -12,6 +12,10 @@ i.overlay-td {
     z-index: 999;
 }
 
+.pagination {
+    display: inline-flex !important;
+}
+
 /* Quitar cuando se haga el merge y awsome-checkbox exista */
 .checkbox {
     padding-left: 20px;
