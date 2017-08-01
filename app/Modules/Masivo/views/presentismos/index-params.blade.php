@@ -31,7 +31,7 @@ $turnos = TurnosRepository::getAll();
                             </div>
                         </div>
                     </div>
-                    @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
+                    @include('common.bases.as-select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
                     <div class="form-group @if($errors->has('turno')) has-error @endif">
                         <label class="col-sm-3 col-xs-3 control-label">Seleccione el turno</label>
                         <div class="col-sm-9 col-xs-9">

@@ -28,7 +28,7 @@
                             </div>
                         </div>
                     </div>
-                        @include('bases.select-sin-btn' ,[ 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
+                        @include('common.bases.as-select-sin-btn' ,[ 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
                 </div>
             </div>
             <div class="box-footer">

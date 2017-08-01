@@ -17,7 +17,7 @@
             {!! Form::open(['route' => 'agentesMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
             <div class="box-body">
             <div class="col-md-offset-2 col-md-8">
-                @include('bases.select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
+                @include('common.bases.as-select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
                 <div class="form-group @if($errors->has('archivo')) has-error @endif">
                     <label for="archivo" class="col-sm-3 col-xs-3 control-label">Seleccione el archivo</label>
                     {{--<input type="file" id="archivo" name="archivo" class="col-sm-6">--}}
