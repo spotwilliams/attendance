@@ -12,6 +12,7 @@
 {!! Html::style('plugins/adminLTE/css/AdminLTE.min.css') !!}
 {!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
 {!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
+{!! Html::style('plugins/datatables/css/fixedHeader.bootstrap.min.css') !!}
 {!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
 {!! Html::style('plugins/jquerytimepicker/css/jquery.timepicker.css') !!}
 {!! Html::style('plugins/daterangepicker/css/daterangepicker.css') !!}
@@ -150,6 +151,7 @@
 
 {!! Html::script('plugins/jquery/js/jquery.min.js') !!}
 {!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
+{!! Html::script('plugins/datatables/js/dataTables.fixedHeader.min.js') !!}
 {!! Html::script('plugins/bootstrap-select/js/bootstrap-select.min.js') !!}
 {!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
 {!! Html::script('plugins/select2/js/select2.min.js') !!}

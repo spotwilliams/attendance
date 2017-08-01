@@ -211,10 +211,7 @@ $idModal = 'comentarios-modal'
                 ordering: false,
                 paging: false,
                 bInfo: false,
-                {{--@if($agentes->count() <= 5)--}}
-                //                scrollY: "900px",
-                //                scrollCollapse: false,
-                {{--@endif--}}
+                fixedHeader: true,
             });
 
             /**
@@ -243,7 +240,7 @@ $idModal = 'comentarios-modal'
                     $('.modal-comentario').val(comentario);
                     $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
                     $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
-                    if($(this).data('comentario')!== '') {
+                    if ($(this).data('comentario') !== '') {
                         $('.no-comment').removeClass('hidden');
                     }
                     // Hidden para ajax
