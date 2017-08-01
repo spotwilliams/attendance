@@ -21,29 +21,22 @@ while ($fecha <= $fechaToday) {
 $selector = 'selectpicker';
 $idModal = 'comentarios-modal'
 ?>
-<div class="row">
 
-    <div class="col-md-12">
-        <div class="">
-            <table class="table hover" id="presentismos-table">
-                <thead>
-                <th>Personal</th>
-                <th>CUIT</th>
-                <th>Mod. Contratacion</th>
-                @for($i = 0; $i < count($fechasToShow) ;$i++)
-                    <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
-                @endfor
-                </thead>
-                @include('Presentismo::registro.footer')
+<table class="table hover" id="presentismos-table">
+    <thead>
+    <th>Personal</th>
+    <th>CUIT</th>
+    <th>Mod. Contratacion</th>
+    @for($i = 0; $i < count($fechasToShow) ;$i++)
+        <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
+    @endfor
+    </thead>
+    {{--    @include('Presentismo::registro.footer')--}}
 
-                @include('Presentismo::registro.all-day')
-                <tbody>
-                </tbody>
-            </table>
-        </div>
-    </div>
-</div>
-
+    @include('Presentismo::registro.all-day')
+    <tbody>
+    </tbody>
+</table>
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -207,12 +200,29 @@ $idModal = 'comentarios-modal'
              */
 
             var dataTable = $('#presentismos-table').DataTable({
+                responsive: {
+                    details: {
+                        display: $.fn.dataTable.Responsive.display.modal({
+                            header: function (row) {
+                                var data = row.data();
+                                return '<span class="label label-warning">Aviso<span>';
+                            },
+                        }),
+                        renderer: function (api, rowIdx, columns) {
+
+                            var mssg = '<p class="help-block">No hay suficiente espacio en la pantalla para mostrar todas las fechas.<br>' +
+                                'Por favor aumente la resoluci&oacute;n de su navegador o seleccione un menor rango de fechas.</p>';
+
+                            return $('<table/>').append(mssg);
+                        },
+                    }
+                },
                 searching: false,
                 ordering: false,
                 paging: false,
                 bInfo: false,
-                fixedHeader: true,
             });
+            new $.fn.dataTable.FixedHeader(dataTable);
 
             /**
              *
