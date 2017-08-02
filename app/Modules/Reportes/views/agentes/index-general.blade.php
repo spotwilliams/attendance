@@ -33,6 +33,7 @@ if (!isset($agentes)) {
                         <tbody>
                         @include('Reportes::agentes.result.table-content')
                         </tbody>
+
                     </table>
                 </div>
             </div>
@@ -53,6 +54,10 @@ if (!isset($agentes)) {
                 ordering: false,
                 info: false,
                 searching: false,
+                scrollY:        "700px",
+                scrollX:        true,
+                scrollCollapse: true,
+                fixedColumns:   true,
                 dom: 'Bfrtip',
                 buttons: [
                     {
