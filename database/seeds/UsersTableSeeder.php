@@ -17,6 +17,14 @@ class UsersTableSeeder extends Seeder
         foreach ($this->getUsuariosAndPasswords() as $user) {
             \Illuminate\Foundation\Auth\User::create($user);
         }
+            \Illuminate\Foundation\Auth\User::create([
+                    'name'           => 'developer',
+                    'cuit'           => '1234567',
+                    'email'          => 'admin@remain-it.com',
+                    'password'       => bcrypt('remain14159'),
+                    'remember_token' => str_random(10),
+            ]);
+        
     }
     
     public function getUsuariosAndPasswords()

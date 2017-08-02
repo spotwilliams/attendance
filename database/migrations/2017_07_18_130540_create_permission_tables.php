@@ -12,6 +12,7 @@ class CreatePermissionTables extends Migration
      */
     public function up()
     {
+        return;
         $config = config('laravel-permission.table_names');
 
         Schema::create($config['roles'], function (Blueprint $table) {
@@ -102,6 +103,7 @@ class CreatePermissionTables extends Migration
      */
     public function down()
     {
+        return;
         $config = config('laravel-permission.table_names');
 
         Schema::drop($config['role_has_permissions']);
