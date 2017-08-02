@@ -33,10 +33,10 @@ class BusquedaController extends AppBaseController
     {
         $input = Input::get('search');
         
-        $agentesEloquent = Agente::where('nombre', 'ILIKE', "%$input%")
-            ->orWhere('apellido', 'ILIKE', "%$input%")
-            ->orWhere('dni', 'ILIKE', "%$input%")
-            ->orWhere('cuit', 'ILIKE', "%$input%")
+        $agentesEloquent = Agente::where('nombre', 'ILIKE', '%'.$input.'%')
+            ->orWhere('apellido', 'ILIKE', '%'.$input.'%')
+            ->orWhere('dni', 'ILIKE', '%'.$input.'%')
+            ->orWhere('cuit', 'ILIKE', '%'.$input.'%')
             ->with('operativo.base');
         
         
