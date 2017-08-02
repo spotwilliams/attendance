@@ -21,6 +21,7 @@ class FuncionRepository
         } else {
             $bases = Funcion::all();
         }
+        
         return $bases;
     }
 }

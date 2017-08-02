@@ -22,6 +22,7 @@ class AreaRepository
         } else {
             $bases = Area::all();
         }
+        
         return $bases;
     }
 }

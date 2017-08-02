@@ -117,6 +117,12 @@ return [
                 ],
             ],
         ],
+        'turnos' => [
+            'required' => 'Debe seleccionar al menos uno'
+        ],
+        'areas' => [
+            'required' => 'Debe seleccionar al menos uno'
+        ],
         
     ],
     

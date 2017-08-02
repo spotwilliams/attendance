@@ -15,7 +15,7 @@
             <div class="box-body">
                 <div class="row">
                     <div class="col-md-10">
-                        @include('bases.select' , ['routeName'=>'agentesIndex', 'label'=> 'Base actual', 'baseSeleccionada' => $baseActual])
+                        @include('common.bases.as-select' , ['routeName'=>'agentesIndex', 'label'=> 'Base actual', 'baseSeleccionada' => $baseActual])
                     </div>
                     <div class="col-md-2">
                         @include('Agentes::registro.commons.nuevo-btn')
