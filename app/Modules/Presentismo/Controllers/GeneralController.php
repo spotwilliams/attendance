@@ -62,7 +62,7 @@ class GeneralController extends AppBaseController
             $input['areas'],
             $input['desde'],
             $input['hasta'],
-            $input['funcion']
+            (isset($input['funcion']) ? $input['funcion'] : [])
         );
     }
     
@@ -73,7 +73,7 @@ class GeneralController extends AppBaseController
      * @param $areas array
      * @param $desde string (US date format)
      * @param $hasta string (US date format)
-     * @param $funcion int
+     * @param $funcion array
      * @return mixed
      */
     private function listaAgentes(
@@ -83,7 +83,7 @@ class GeneralController extends AppBaseController
         $areas,
         $desde,
         $hasta,
-        $funcion
+        $funcion = []
     ) {
         try {
             
@@ -99,10 +99,13 @@ class GeneralController extends AppBaseController
                     $dateRange['hasta']
                 )
                 ->whereIn('operativos.id_turno', $turnos)
-                ->whereIn('operativos.id_area', $areas)
-                // En caso que pasemos una funcion la buscamos, sino la excluimos desde sql
-                ->where('operativos.id_funcion', (($funcion == -1) ? '<>' : '='), $funcion)
-                ->with('contrato.tipoContrato');
+                ->whereIn('operativos.id_area', $areas);
+            // En caso que pasemos una funcion la buscamos, sino la excluimos desde sql
+            if (!empty($funcion)) {
+    
+                $agentes->whereIn('operativos.id_funcion', $funcion);
+            }
+            $agentes->with('contrato.tipoContrato');
             
             /** @var LengthAwarePaginator $result */
             $result = $agentes->paginate(25);
@@ -114,10 +117,11 @@ class GeneralController extends AppBaseController
         
         $presenter = new FormPresenter($result, 'presentismoPrepareListaAgentes');
         $presenter->setInputsParams($request->all());
-
+        
         return view('Presentismo::registro.lista')
             ->with('desde', $dateRange['desde'])
             ->with('hasta', $dateRange['hasta'])
+            ->with('funcion', new Collection($funcion))
             ->with('turnos', new Collection($turnos))
             ->with('areas', new Collection($areas))
             ->with('links', $result->links($presenter))
