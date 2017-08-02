@@ -17,7 +17,7 @@ use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 2000;
+    const SIZE_AGENTE = 200;
     const SIZE_AREAS  = 10;
     
     /**
@@ -29,22 +29,22 @@ class DatabaseSeeder extends Seeder
     {
 
         
-        $this->call(AreasSeeder::class);
-        $this->call(BasesSeeder::class);
-        $this->call(EstadosContratoSeeder::class);
-        $this->call(TiposPresentismoSeeder::class);
-        $this->call(TiposContratoSeeder::class);
-        $this->call(Funciones::class);
-        $this->call(Turnos::class);
-        $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
-        $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
-        $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
+//        $this->call(AreasSeeder::class);
+//        $this->call(BasesSeeder::class);
+//        $this->call(EstadosContratoSeeder::class);
+//        $this->call(TiposPresentismoSeeder::class);
+//        $this->call(TiposContratoSeeder::class);
+//        $this->call(Funciones::class);
+//        $this->call(Turnos::class);
+//        $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
+//        $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
+//        $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
 
-        $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
-        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
-        //        $this->call(AgentesSeeder::class);
-//        $this->call(\Cat\Database\Presentismos\PresentismoSeeder::class);
-//        $this->call(\Cat\Database\Seeds\Agentes\EstudiosSeeder::class);
+//        $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
+//        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
+                $this->call(AgentesSeeder::class);
+        $this->call(\Cat\Database\Presentismos\PresentismoSeeder::class);
+        $this->call(\Cat\Database\Seeds\Agentes\EstudiosSeeder::class);
         
         try {
         } catch (\Exception $error) {

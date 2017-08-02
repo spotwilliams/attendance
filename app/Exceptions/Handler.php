@@ -45,7 +45,6 @@ class Handler extends ExceptionHandler
      *
      * @param  \Illuminate\Http\Request $request
      * @param  \Exception $e
-     * @return \Illuminate\Http\Response
      */
     public function render($request, Exception $e)
     {
@@ -54,6 +53,9 @@ class Handler extends ExceptionHandler
         }
         if ($e instanceof MethodNotAllowedHttpException) {
             return response(view('errors.http'), 500);
+        }
+        if($e instanceof AuthorizationException) {
+            return response(view('errors.403'));
         }
         
         return parent::render($request, $e);

@@ -28,8 +28,6 @@ class Error
     
     private static function queryException(QueryException $e, $entidad)
     {
-        
-        
         if (str_contains($e->errorInfo[2], 'Duplicate entry')) {
             return "Ya existe un $entidad con los datos provistos";
         } else {

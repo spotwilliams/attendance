@@ -20,43 +20,17 @@ class PermissionCrudController extends CrudController
 
         $this->crud->addColumn([
             'name'  => 'name',
-            'label' => 'Nombre Rol',
+            'label' => 'Nombre permiso',
             'type'  => 'text',
         ]);
-//        $this->crud->addColumn([ // n-n relationship (with pivot table)
-//            'label'     => 'Nombre Rol',
-//            'type'      => 'select_multiple',
-//            'name'      => 'roles',
-//            'entity'    => 'roles',
-//            'attribute' => 'name',
-//            'model'     => Role::class,
-//            'pivot'     => true,
-//        ]);
+
 
         $this->crud->addField([
             'name'  => 'name',
-            'label' => 'Nombre Rol',
+            'label' => 'Nombre permiso',
             'type'  => 'text',
         ]);
-//        $this->crud->addField([
-//            'label'     => 'Roles',
-//            'type'      => 'checklist',
-//            'name'      => 'roles',
-//            'entity'    => 'roles',
-//            'attribute' => 'name',
-//            'model'     => Role::class,
-//            'pivot'     => true,
-//        ]);
-
-        if (!config('backpack.permissionmanager.allow_permission_create')) {
-            $this->crud->denyAccess('create');
-        }
-        if (!config('backpack.permissionmanager.allow_permission_update')) {
-            $this->crud->denyAccess('update');
-        }
-        if (!config('backpack.permissionmanager.allow_permission_delete')) {
-            $this->crud->denyAccess('delete');
-        }
+        
     }
 
     public function store(StoreRequest $request)
