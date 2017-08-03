@@ -31,7 +31,8 @@ $idModal = 'comentarios-modal'
         <th data-cat="{{$fechasToShow[$i]['data']}}">{{$fechasToShow[$i]['show']}}</th>
     @endfor
     </thead>
-    {{--    @include('Presentismo::registro.footer')--}}
+
+    @include('Presentismo::registro.footer')
 
     @include('Presentismo::registro.all-day')
     <tbody>
