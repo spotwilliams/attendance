@@ -21,6 +21,7 @@ class PorAgenteController extends BusquedaController
     
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
         // Se ejecuta para generar un periodo en caso que no exista
         PeriodoRepository::getOrCreatePeriodoActivo();
         
@@ -50,7 +51,7 @@ class PorAgenteController extends BusquedaController
     
     public function prepareIndividualAgente(Request $request)
     {
-        
+        $this->authorize('prepareIndividualAgente', $this);
         $input = $request->all();
         
         try {

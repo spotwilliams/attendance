@@ -39,7 +39,7 @@ Route::group(
         /**
          * Stores
          */
-        Route::post('presentismo/store', RegistroController::class . '@store')
+        Route::post('presentismo/registro', RegistroController::class . '@registro')
             ->name('presentismoStore');
         
         Route::post('presentismo/store/comentario', RegistroController::class . '@comentario')

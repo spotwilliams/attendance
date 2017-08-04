@@ -24,6 +24,15 @@ use Cat\Policies\Masivo\AgentesPolicy as AgenteMasivoPolicy;
 use Cat\Masivo\Controllers\Presentismos\Registro as PresentismoMasivo;
 use Cat\Policies\Agentes\PresentismosPolicy as PresentismoMasivoPolicy;
 
+// Registro Presentismo
+use Cat\Modules\Presentismo\Controllers\Registro\GeneralController as PresentismoGeneral;
+use Cat\Policies\Presentismos\GeneralPolicy as PresentismoGeneralPolicy;
+use Cat\Modules\Presentismo\Controllers\Registro\PorAgenteController as PresentismoPorAgente;
+use Cat\Policies\Presentismos\PorAgentePolicy;
+use Cat\Modules\Presentismo\Controllers\Registro\RegistroController as RegistroPresentismo;
+use Cat\Policies\Presentismos\RegistroPolicy as RegistroPresentismoPolicy;
+
+
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -43,6 +52,9 @@ class AuthServiceProvider extends ServiceProvider
             AgentesGeneral::class       => GeneralPolicy::class,
             AgenteMasivo::class         => AgenteMasivoPolicy::class,
             PresentismoMasivo::class    => PresentismoMasivoPolicy::class,
+            PresentismoGeneral::class   => PresentismoGeneralPolicy::class,
+            PresentismoPorAgente::class => PorAgentePolicy::class,
+            RegistroPresentismo::class  => RegistroPresentismoPolicy::class,
         ];
     
     /**

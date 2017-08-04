@@ -3,6 +3,7 @@
 namespace Cat\Exceptions;
 
 use Exception;
+use Illuminate\Support\Facades\Response;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -54,8 +55,18 @@ class Handler extends ExceptionHandler
         if ($e instanceof MethodNotAllowedHttpException) {
             return response(view('errors.http'), 500);
         }
-        if($e instanceof AuthorizationException) {
-            return response(view('errors.403'));
+        if ($e instanceof AuthorizationException) {
+            if ($request->ajax()) {
+                return Response::json([
+                    'message' => 'No tiene permisos para ejecutar',
+                
+                ], 403);
+                
+                
+            } else {
+                return response(view('errors.403'));
+            }
+            
         }
         
         return parent::render($request, $e);

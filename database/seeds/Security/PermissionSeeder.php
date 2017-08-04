@@ -35,7 +35,13 @@ class PermissionSeeder extends Seeder
             
             ['name' => 'Cargar personal masivo', 'comentarios' => '',],
             ['name' => 'Cargar presentismo masivo', 'comentarios' => '',],
-        
+
+            // Presentismos
+            ['name' => 'Registrar presentismo', 'comentarios' => '',],
+            ['name' => 'Modificar presentismo', 'comentarios' => '',],
+            ['name' => 'Comentar presentismo', 'comentarios' => '',],
+            ['name' => 'Justificar presentismo', 'comentarios' => '',],
+            ['name' => 'Injustificar presentismo', 'comentarios' => '',],
         
         ];
         

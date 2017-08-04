@@ -39,6 +39,7 @@ class GeneralController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
         // Se ejecuta para generar un periodo en caso que no exista
         PeriodoRepository::getOrCreatePeriodoActivo();
         
@@ -47,6 +48,7 @@ class GeneralController extends AppBaseController
     
     public function prepareListaAgentes(Request $request)
     {
+        $this->authorize('prepareListaAgentes', $this);
         $this->validate($request, [
             'base'   => 'required|not_in:-1',
             'turnos' => 'required',
@@ -102,7 +104,7 @@ class GeneralController extends AppBaseController
                 ->whereIn('operativos.id_area', $areas);
             // En caso que pasemos una funcion la buscamos, sino la excluimos desde sql
             if (!empty($funcion)) {
-    
+                
                 $agentes->whereIn('operativos.id_funcion', $funcion);
             }
             $agentes->with('contrato.tipoContrato');

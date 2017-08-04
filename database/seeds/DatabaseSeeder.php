@@ -20,7 +20,7 @@ use Cat\Database\Security\PermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 100;
+    const SIZE_AGENTE = 500;
     const SIZE_AREAS  = 10;
     
     /**
