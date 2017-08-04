@@ -31,7 +31,8 @@ use Cat\Modules\Presentismo\Controllers\Registro\PorAgenteController as Presenti
 use Cat\Policies\Presentismos\PorAgentePolicy;
 use Cat\Modules\Presentismo\Controllers\Registro\RegistroController as RegistroPresentismo;
 use Cat\Policies\Presentismos\RegistroPolicy as RegistroPresentismoPolicy;
-
+use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
+use Cat\Policies\Presentismos\JustificacionPolicy;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -45,16 +46,17 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies
         = [
-            BusquedaController::class   => SearchAgentePolicy::class,
-            LaboralesController::class  => CrudLaboralesPolicy::class,
-            OperativosController::class => CrudOperativosPolicy::class,
-            PersonalesController::class => CrudPersonalesPolicy::class,
-            AgentesGeneral::class       => GeneralPolicy::class,
-            AgenteMasivo::class         => AgenteMasivoPolicy::class,
-            PresentismoMasivo::class    => PresentismoMasivoPolicy::class,
-            PresentismoGeneral::class   => PresentismoGeneralPolicy::class,
-            PresentismoPorAgente::class => PorAgentePolicy::class,
-            RegistroPresentismo::class  => RegistroPresentismoPolicy::class,
+            BusquedaController::class      => SearchAgentePolicy::class,
+            LaboralesController::class     => CrudLaboralesPolicy::class,
+            OperativosController::class    => CrudOperativosPolicy::class,
+            PersonalesController::class    => CrudPersonalesPolicy::class,
+            AgentesGeneral::class          => GeneralPolicy::class,
+            AgenteMasivo::class            => AgenteMasivoPolicy::class,
+            PresentismoMasivo::class       => PresentismoMasivoPolicy::class,
+            PresentismoGeneral::class      => PresentismoGeneralPolicy::class,
+            PresentismoPorAgente::class    => PorAgentePolicy::class,
+            RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
+            JustificacionController::class => JustificacionPolicy::class,
         ];
     
     /**

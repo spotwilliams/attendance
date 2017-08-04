@@ -16,6 +16,7 @@ use Cat\Modules\Presentismo\Services\Registro\Justificar;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
@@ -37,6 +38,21 @@ class JustificacionController extends AppBaseController
     {
         
         try {
+            try {
+                $this->authorize('justificar', $this);
+            } catch (AuthorizationException $e) {
+                $presentismo = Presentismo::findOrFail($request->input('id'));
+                
+                return Response::json([
+                    'message'     => 'No tiene permisos para ejecutar',
+                    'agente'      => $presentismo->agente()->first()->id,
+                    'presentismo' => $presentismo,
+                    'button'      => HtmlCustoms::getButtonWithPopOver($presentismo,
+                        ($presentismo->injustificado == true),
+                        (isset($disabled) ? $disabled : false)),
+                ], 403);
+            }
+            
             /** @var Presentismo $presentismo */
             $presentismo = Presentismo::findOrFail($request->input('id'));
             $service     = new Justificar($presentismo);
@@ -83,14 +99,30 @@ class JustificacionController extends AppBaseController
     
     public function injustificar(Request $request)
     {
-        try{
-    
+        
+        try {
+            try {
+                $this->authorize('injustificar', $this);
+            } catch (AuthorizationException $e) {
+                dd($e);
+                $presentismo = Presentismo::findOrFail($request->input('id'));
+                
+                return Response::json([
+                    'message'     => 'No tiene permisos para ejecutar',
+                    'agente'      => $presentismo->agente()->first()->id,
+                    'presentismo' => $presentismo,
+                    'button'      => HtmlCustoms::getButtonWithPopOver($presentismo,
+                        ($presentismo->injustificado == true),
+                        (isset($disabled) ? $disabled : false)),
+                ], 403);
+            }
+            
             /** @var Presentismo $presentismo */
             $presentismo = Presentismo::findOrFail($request->input('id'));
             $service     = new Injustificar($presentismo);
-    
+            
             $service->execute();
-    
+            
             $message = 'Se ha injustificado la falta.';
             $code    = 200;
         } catch (NoSePuedeInjustificar $e) {
