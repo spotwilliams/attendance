@@ -32,12 +32,14 @@ class Registro extends AppBaseController
      */
     public function index(Request $request)
     {
-        
+        $this->authorize('index', $this);
         return view('Masivo::presentismos.index-params');
     }
     
     public function selectFile(Request $request)
     {
+        $this->authorize('selectFile', $this);
+    
         $rule = [
             'base'  => 'not_in:-1',
             'turno' => 'not_in:-1',
@@ -71,6 +73,8 @@ class Registro extends AppBaseController
     
     public function upload(Request $request)
     {
+        $this->authorize('upload', $this);
+    
         $rule = [
             'archivo' => 'required|mimetypes:application/vnd.ms-excel',
         
@@ -94,11 +98,15 @@ class Registro extends AppBaseController
     
     public function downloadErrores(Request $request)
     {
+        $this->authorize('downloadErrores', $this);
+    
         return response()->download($request->input('file'));
     }
     
     public function downloadTemplate(Request $request, $fileName)
     {
+        $this->authorize('downloadTemplate', $this);
+    
         try {
             
             $route = Storage::disk('masivo')

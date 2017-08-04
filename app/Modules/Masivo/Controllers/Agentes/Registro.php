@@ -32,12 +32,15 @@ class Registro extends AppBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
         
         return view('Masivo::agentes.index');
     }
     
     public function upload(Request $request)
     {
+        $this->authorize('upload', $this);
+    
         $rule = [
             'archivo' => 'required|mimetypes:application/vnd.ms-excel',
             'base'    => 'not_in:-1',
@@ -62,6 +65,8 @@ class Registro extends AppBaseController
     
     public function downloadErrores(Request $request)
     {
+        $this->authorize('downloadErrores', $this);
+    
         try {
             return response()->download($request->input('file'));
         } catch (FileNotFoundException $e) {
@@ -75,6 +80,8 @@ class Registro extends AppBaseController
     
     public function downloadTemplate(Request $request)
     {
+        $this->authorize('downloadTemplate', $this);
+    
         return response()
             ->download(Storage::disk('masivos_template')
                     ->getDriver()

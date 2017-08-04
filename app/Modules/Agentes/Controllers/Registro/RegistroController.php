@@ -34,6 +34,7 @@ class RegistroController extends AppBaseController
      */
     public function index(Request $request, $base)
     {
+        $this->authorize('index', $this);
         $agentes = $this->agenteRepository->getAgentesByBase($base);
         
         return view('Agentes::registro.index')
@@ -44,6 +45,8 @@ class RegistroController extends AppBaseController
     
     public function show($id)
     {
+        $this->authorize('show', $this);
+    
         try {
             // Se verifica que el agente exista
             $agente = Agente::findOrFail($id);
@@ -61,9 +64,7 @@ class RegistroController extends AppBaseController
     
     
     /**
-     *
      * @obsolete No se permiten eliminaciones
-     * @param $id
      */
     public function delete($id)
     {
@@ -85,8 +86,6 @@ class RegistroController extends AppBaseController
     
     /**
      * @obsolete No se permiten eliminaciones
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
      */
     public function destroy(Request $request)
     {

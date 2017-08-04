@@ -17,12 +17,13 @@
                 <div class="checkbox checkbox-info checkbox-circle">
                     <input type="checkbox"
                            class="selectable"
+                           id="chk_{{$field['model']}}_{{$connected_entity_entry->id}}"
                            name="{{ $field['name'] }}[]"
                            value="{{ $connected_entity_entry->id }}"
                            @if( ( old( $field["name"] ) && in_array($connected_entity_entry->id, old( $field["name"])) ) || (isset($field['value']) && in_array($connected_entity_entry->id, $field['value']->pluck('id', 'id')->toArray())))
                            checked="checked"
                             @endif >
-                    <label>
+                    <label for="chk_{{$field['model']}}_{{$connected_entity_entry->id}}">
                         {{ $connected_entity_entry->{$field['attribute']} }}
                     </label>
                 </div>

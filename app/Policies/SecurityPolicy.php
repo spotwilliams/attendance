@@ -2,7 +2,7 @@
 
 namespace Cat\Policies;
 
-use Cat\Security\Models\Permission;
+use Cat\Modules\Security\Models\Permission;
 use Cat\User;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Auth\Access\HandlesAuthorization;

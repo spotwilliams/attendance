@@ -2,7 +2,7 @@
 
 namespace Cat\Database\Security;
 
-use Cat\Security\Models\Permission;
+use Cat\Modules\Security\Models\Permission;
 use Illuminate\Database\Seeder;
 
 class PermissionSeeder extends Seeder
@@ -29,8 +29,20 @@ class PermissionSeeder extends Seeder
             ['name' => 'Guardar datos personales', 'comentarios' => ''],
             ['name' => 'Modificar datos personales', 'comentarios' => ''],
             ['name' => 'Eliminar datos personales', 'comentarios' => ''],
+            
+            ['name' => 'Listar personal por base', 'comentarios' => ''],
+            ['name' => 'Ver ficha de personal', 'comentarios' => ''],
+            
+            ['name' => 'Cargar personal masivo', 'comentarios' => '',],
+            ['name' => 'Cargar presentismo masivo', 'comentarios' => '',],
+        
+        
         ];
         
         return $ps;
     }
 }
+
+
+
+
