@@ -1,20 +1,20 @@
 <?php
 
-namespace Cat\Security\Panel;
+namespace Cat\Modules\Security\Panel;
 
-use Cat\Security\Panel\Traits\Access;
-use Cat\Security\Panel\Traits\AutoSet;
-use Cat\Security\Panel\Traits\Buttons;
-use Cat\Security\Panel\Traits\Columns;
-use Cat\Security\Panel\Traits\Create;
-use Cat\Security\Panel\Traits\Delete;
-use Cat\Security\Panel\Traits\FakeColumns;
-use Cat\Security\Panel\Traits\FakeFields;
-use Cat\Security\Panel\Traits\Fields;
-use Cat\Security\Panel\Traits\Query;
-use Cat\Security\Panel\Traits\Read;
-use Cat\Security\Panel\Traits\Reorder;
-use Cat\Security\Panel\Traits\Update;
+use Cat\Modules\Security\Panel\Traits\Access;
+use Cat\Modules\Security\Panel\Traits\AutoSet;
+use Cat\Modules\Security\Panel\Traits\Buttons;
+use Cat\Modules\Security\Panel\Traits\Columns;
+use Cat\Modules\Security\Panel\Traits\Create;
+use Cat\Modules\Security\Panel\Traits\Delete;
+use Cat\Modules\Security\Panel\Traits\FakeColumns;
+use Cat\Modules\Security\Panel\Traits\FakeFields;
+use Cat\Modules\Security\Panel\Traits\Fields;
+use Cat\Modules\Security\Panel\Traits\Query;
+use Cat\Modules\Security\Panel\Traits\Read;
+use Cat\Modules\Security\Panel\Traits\Reorder;
+use Cat\Modules\Security\Panel\Traits\Update;
 
 class CrudPanel
 {

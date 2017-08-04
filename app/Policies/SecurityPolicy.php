@@ -19,7 +19,12 @@ abstract class SecurityPolicy
             ->firstOrFail();
     }
     
-    
+    /**
+     * @param User $user
+     * @param $namePermission
+     * @return bool
+     * @throws AuthorizationException
+     */
     protected function verifyOnlyControllerPermission(User $user, $namePermission)
     {
         try {

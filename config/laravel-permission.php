@@ -24,7 +24,7 @@ return [
         |
         */
 
-        'permission' => \Cat\Security\Models\Permission::class,
+        'permission' => \Cat\Modules\Security\Models\Permission::class,
 
         /*
         |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
         |
         */
 
-        'role' => \Cat\Security\Models\Role::class,
+        'role' => \Cat\Modules\Security\Models\Role::class,
 
     ],
 

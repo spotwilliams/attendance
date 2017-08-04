@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Security\Panel;
+namespace Cat\Modules\Security\Panel;
 
 class CrudButton
 {

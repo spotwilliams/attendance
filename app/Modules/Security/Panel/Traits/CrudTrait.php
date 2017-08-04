@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Security\Panel\Traits;
+namespace Cat\Modules\Security\Panel\Traits;
 
 use DB;
 use Illuminate\Database\Eloquent\Model;

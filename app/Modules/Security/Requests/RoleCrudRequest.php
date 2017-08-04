@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Security\Requests;
+namespace Cat\Modules\Security\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 

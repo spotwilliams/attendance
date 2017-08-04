@@ -1,9 +1,9 @@
 <?php
 
-namespace Cat\Security\Models;
+namespace Cat\Modules\Security\Models;
 
 use Cat\Models\Base;
-use Cat\Security\Panel\Traits\CrudTrait;
+use Cat\Modules\Security\Panel\Traits\CrudTrait;
 use Spatie\Permission\Models\Role as OriginalRole;
 
 class Role extends OriginalRole

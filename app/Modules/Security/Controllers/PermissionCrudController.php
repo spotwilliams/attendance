@@ -1,14 +1,15 @@
 <?php
 
-namespace Cat\Security\Controllers;
+namespace Cat\Modules\Security\Controllers;
 
-use Cat\Security\Controllers\Crud\CrudController;
+use Cat\Modules\Security\Controllers\Crud\CrudController;
 // VALIDATION
-use Cat\Security\Models\Permission;
-use Cat\Security\Models\Role;
-use Cat\Security\Requests\PermissionCrudRequest as StoreRequest;
-use Cat\Security\Requests\PermissionCrudRequest as UpdateRequest;
+use Cat\Modules\Security\Models\Permission;
+use Cat\Modules\Security\Models\Role;
+use Cat\Modules\Security\Requests\PermissionCrudRequest as StoreRequest;
+use Cat\Modules\Security\Requests\PermissionCrudRequest as UpdateRequest;
 use Cat\User;
+use Illuminate\Support\Collection;
 
 class PermissionCrudController extends CrudController
 {
@@ -17,29 +18,47 @@ class PermissionCrudController extends CrudController
         $this->crud->setModel(Permission::class);
         $this->crud->setEntityNameStrings('Permiso', 'Permisos');
         $this->crud->setRoute('seguridad/permission');
-
+        
         $this->crud->addColumn([
             'name'  => 'name',
             'label' => 'Nombre permiso',
             'type'  => 'text',
         ]);
-
-
+        
+        
         $this->crud->addField([
             'name'  => 'name',
             'label' => 'Nombre permiso',
             'type'  => 'text',
         ]);
-        
-    }
+        // Quito todos los botones
+        $this->crud->buttons = new Collection();
 
+    }
+    
+    public function create()
+    {
+        return redirect($this->crud->route);
+    }
+    
+    public function edit($id)
+    {
+        return redirect($this->crud->route);
+    }
+    
     public function store(StoreRequest $request)
     {
-        return parent::storeCrud();
+        return redirect($this->crud->route);
     }
-
+    
     public function update(UpdateRequest $request)
     {
-        return parent::updateCrud();
+        return redirect($this->crud->route);
     }
+    
+    public function destroy($id)
+    {
+        return redirect($this->crud->route);
+    }
+    
 }

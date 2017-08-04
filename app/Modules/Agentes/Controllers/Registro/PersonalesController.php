@@ -36,6 +36,8 @@ class PersonalesController extends AppBaseController
      */
     public function create()
     {
+        $this->authorize('create', $this);
+    
         return view('Agentes::registro.create')
             ->with('tab', 'personales');
     }
@@ -50,6 +52,8 @@ class PersonalesController extends AppBaseController
      */
     public function store(Request $request)
     {
+        $this->authorize('store', $this);
+    
         $input = $request->all();
         $rules = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
         
@@ -88,6 +92,8 @@ class PersonalesController extends AppBaseController
      */
     public function edit($id)
     {
+        $this->authorize('edit', $this);
+    
         $agente = Agente::find($id);
         
         if (empty($agente)) {
@@ -110,6 +116,8 @@ class PersonalesController extends AppBaseController
      */
     public function update(Request $request)
     {
+        $this->authorize('update', $this);
+    
         $rules = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
         
         $this->validate($request, $rules);
@@ -150,6 +158,8 @@ class PersonalesController extends AppBaseController
      */
     public function destroy($id)
     {
+        $this->authorize('destroy', $this);
+    
         $presentismo = $this->agenteRepository->findWithoutFail($id);
         
         if (empty($presentismo)) {

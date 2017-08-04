@@ -1,11 +1,10 @@
 <?php
 
-namespace Cat\Security\Controllers\Crud;
+namespace Cat\Modules\Security\Controllers\Crud;
 
-
-use Cat\Security\Requests\Crud\CrudRequest as StoreRequest;
-use Cat\Security\Requests\Crud\CrudRequest as UpdateRequest;
-use Cat\Security\Panel\CrudPanel;
+use Cat\Modules\Security\Requests\Crud\CrudRequest as StoreRequest;
+use Cat\Modules\Security\Requests\Crud\CrudRequest as UpdateRequest;
+use Cat\Modules\Security\Panel\CrudPanel;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Security\Requests\Crud;
+namespace Cat\Modules\Security\Requests\Crud;
 
 use Illuminate\Foundation\Http\FormRequest;
 

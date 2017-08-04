@@ -3,7 +3,6 @@
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Models\Agente;
-use Cat\Models\Operativo;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Destroy\Laborales;
@@ -11,12 +10,8 @@ use Cat\Modules\Agentes\Services\Registro\Destroy\Operativos;
 use Cat\Modules\Agentes\Services\Registro\Destroy\Personales;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Response;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Yajra\Datatables\Facades\Datatables;
 
 class RegistroController extends AppBaseController
 {
@@ -64,6 +59,12 @@ class RegistroController extends AppBaseController
         
     }
     
+    
+    /**
+     *
+     * @obsolete No se permiten eliminaciones
+     * @param $id
+     */
     public function delete($id)
     {
         try {
@@ -82,6 +83,11 @@ class RegistroController extends AppBaseController
         
     }
     
+    /**
+     * @obsolete No se permiten eliminaciones
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function destroy(Request $request)
     {
         try {

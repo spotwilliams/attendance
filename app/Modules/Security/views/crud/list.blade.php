@@ -25,7 +25,7 @@
                             <th>{{ $column['label'] }}</th>
                         @endforeach
 
-                        @if ( $crud->buttons->where('stack', 'line') )
+                        @if ( !$crud->buttons->where('stack', 'line')->isEmpty() )
                             <th>Acciones</th>
                         @endif
                     </tr>

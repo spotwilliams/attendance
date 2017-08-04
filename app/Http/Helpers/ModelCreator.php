@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: worker
- * Date: 7/14/17
- * Time: 11:23
- */
 
 namespace Cat\Helpers;
 

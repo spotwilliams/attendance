@@ -1,14 +1,14 @@
 <?php
 
-namespace Cat\Security\Controllers;
+namespace Cat\Modules\Security\Controllers;
 
 use Cat\Models\Base;
-use Cat\Security\Controllers\Crud\CrudController;
+use Cat\Modules\Security\Controllers\Crud\CrudController;
 // VALIDATION
-use Cat\Security\Models\Permission;
-use Cat\Security\Models\Role;
-use Cat\Security\Requests\RoleCrudRequest as StoreRequest;
-use Cat\Security\Requests\RoleCrudRequest as UpdateRequest;
+use Cat\Modules\Security\Models\Permission;
+use Cat\Modules\Security\Models\Role;
+use Cat\Modules\Security\Requests\RoleCrudRequest as StoreRequest;
+use Cat\Modules\Security\Requests\RoleCrudRequest as UpdateRequest;
 
 class RoleCrudController extends CrudController
 {

@@ -1,8 +1,8 @@
 <?php
 
-namespace Cat\Security\Panel\Traits;
+namespace Cat\Modules\Security\Panel\Traits;
 
-use Cat\Security\Panel\CrudButton;
+use Cat\Modules\Security\Panel\CrudButton;
 
 trait Buttons
 {

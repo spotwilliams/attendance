@@ -1,13 +1,13 @@
 <?php
 
-namespace Cat\Security\Controllers;
+namespace Cat\Modules\Security\Controllers;
 
 
-use Cat\Security\Requests\UserStoreCrudRequest as StoreRequest;
+use Cat\Modules\Security\Requests\UserStoreCrudRequest as StoreRequest;
 // VALIDATION
-use Cat\Security\Requests\UserUpdateCrudRequest as UpdateRequest;
-use Cat\Security\Controllers\Crud\CrudController;
-use Cat\Security\Models\Role;
+use Cat\Modules\Security\Requests\UserUpdateCrudRequest as UpdateRequest;
+use Cat\Modules\Security\Controllers\Crud\CrudController;
+use Cat\Modules\Security\Models\Role;
 use Cat\User;
 use Laracasts\Flash\Flash;
 

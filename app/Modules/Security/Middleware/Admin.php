@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Security\Middleware;
+namespace Cat\Modules\Security\Middleware;
 
 use Closure;
 use Illuminate\Support\Facades\Auth;

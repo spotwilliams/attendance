@@ -1,23 +1,26 @@
 <?php
-//namespace Cat\Database\Seeds;
 
-use Cat\Database\Presentismos\DiasDisponiblesSeeder;
+use Cat\Database\Presentismos\DiasPermitidoSeeder;
+use Cat\Database\Presentismos\PresentismoSeeder;
+use Cat\Database\Seeds\Agentes\EstudiosSeeder;
+use Cat\Database\Seeds\Agentes\GerenciasSeeder;
+use Cat\Database\Seeds\Agentes\CargosSeeder;
+use Cat\Database\Presentismos\PeriodosSeeder;
 use Cat\Database\Presentismos\TiposPresentismoSeeder;
 use Cat\Database\Seeds\Agentes\AgentesSeeder;
 use Cat\Database\Seeds\Agentes\AreasSeeder;
 use Cat\Database\Seeds\Agentes\BasesSeeder;
-use Cat\Database\Seeds\Agentes\ContratosSeeder;
-use Cat\Database\Seeds\Agentes\DomicilioSeeder;
 use Cat\Database\Seeds\Agentes\EstadosContratoSeeder;
 use Cat\Database\Seeds\Agentes\Funciones;
-use Cat\Database\Seeds\Agentes\Horarios;
 use Cat\Database\Seeds\Agentes\TiposContratoSeeder;
 use Cat\Database\Seeds\Agentes\Turnos;
 use Illuminate\Database\Seeder;
+use Cat\Database\Seeds\UsersTableSeeder;
+use Cat\Database\Security\PermissionSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 200;
+    const SIZE_AGENTE = 100;
     const SIZE_AREAS  = 10;
     
     /**
@@ -27,8 +30,28 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-
+        $this->parametros();
+        $this->seguridad();
+        $this->agentes();
         
+    }
+    
+    private function agentes()
+    {
+        $this->call(AgentesSeeder::class);
+        $this->call(PresentismoSeeder::class);
+        $this->call(EstudiosSeeder::class);
+    }
+    
+    private function seguridad()
+    {
+        $this->call(UsersTableSeeder::class);
+        $this->call(PermissionSeeder::class);
+    
+    }
+    
+    private function parametros()
+    {
         $this->call(AreasSeeder::class);
         $this->call(BasesSeeder::class);
         $this->call(EstadosContratoSeeder::class);
@@ -36,20 +59,10 @@ class DatabaseSeeder extends Seeder
         $this->call(TiposContratoSeeder::class);
         $this->call(Funciones::class);
         $this->call(Turnos::class);
-        $this->call(\Cat\Database\Seeds\Agentes\GerenciasSeeder::class);
-        $this->call(\Cat\Database\Seeds\Agentes\CargosSeeder::class);
-        $this->call(\Cat\Database\Presentismos\PeriodosSeeder::class);
-//
-        $this->call(\Cat\Database\Presentismos\DiasPermitidoSeeder::class);
-        $this->call(\Cat\Database\Seeds\UsersTableSeeder::class);
-        $this->call(AgentesSeeder::class);
-        $this->call(\Cat\Database\Presentismos\PresentismoSeeder::class);
-        $this->call(\Cat\Database\Seeds\Agentes\EstudiosSeeder::class);
-        
-        try {
-        } catch (\Exception $error) {
-            echo $error->getTraceAsString();
-        }
+        $this->call(GerenciasSeeder::class);
+        $this->call(CargosSeeder::class);
+        $this->call(PeriodosSeeder::class);
+        $this->call(DiasPermitidoSeeder::class);
     }
     
     

@@ -36,6 +36,8 @@ class LaboralesController extends AppBaseController
      */
     public function create($id)
     {
+        $this->authorize('create', $this);
+    
         $agente = Agente::find($id);
         
         if (empty($agente)) {
@@ -59,6 +61,8 @@ class LaboralesController extends AppBaseController
      */
     public function store(Request $request)
     {
+        $this->authorize('store', $this);
+    
         $input = $request->all();
         
         $this->validate($request, Validation::getContratoRules($request));
@@ -96,6 +100,8 @@ class LaboralesController extends AppBaseController
      */
     public function edit($id)
     {
+        $this->authorize('edit', $this);
+    
         /** @var Agente $agente */
         $agente = Agente::find($id);
         
@@ -120,6 +126,8 @@ class LaboralesController extends AppBaseController
      */
     public function update(Request $request)
     {
+        $this->authorize('update', $this);
+    
         $this->validate($request, Validation::getContratoRules($request));
         
         $input = $request->all();
@@ -159,6 +167,8 @@ class LaboralesController extends AppBaseController
      */
     public function destroy($id)
     {
+        $this->authorize('destroy', $this);
+    
         $presentismo = $this->agenteRepository->findWithoutFail($id);
         
         if (empty($presentismo)) {

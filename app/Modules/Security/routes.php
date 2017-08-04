@@ -9,9 +9,9 @@
 |
 */
 use Illuminate\Support\Facades\Route;
-use Cat\Security\Controllers\PermissionCrudController;
-use Cat\Security\Controllers\UserCrudController;
-use Cat\Security\Controllers\RoleCrudController;
+use Cat\Modules\Security\Controllers\PermissionCrudController;
+use Cat\Modules\Security\Controllers\UserCrudController;
+use Cat\Modules\Security\Controllers\RoleCrudController;
 
 Route::group(
     ['middleware' => ['web']],

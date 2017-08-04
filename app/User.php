@@ -3,7 +3,7 @@
 namespace Cat;
 
 use Illuminate\Foundation\Auth\User as Authenticatable;
-use Cat\Security\Panel\Traits\CrudTrait;
+use Cat\Modules\Security\Panel\Traits\CrudTrait;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable

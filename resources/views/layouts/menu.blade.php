@@ -1,3 +1,5 @@
+<?php ?>
+
 <li class="dropdown {{ Request::is('agentes*') ? 'active' : '' }}">
     <a href="#"
        class="dropdown-toggle"
@@ -22,6 +24,7 @@
                 <span>Lista de personal por base</span>
             </a>
         </li>
+        {{--@haspermission('Buscar personal')--}}
         <li>
 
             <a href="{{route('agentesCreatePersonales')}}">
@@ -29,6 +32,7 @@
                 <span>Alta individual</span>
             </a>
         </li>
+        {{--@endhaspermission--}}
         <li>
             <a href="{!! route('agentesMasivoIndex') !!}">
                 <i class="fa fa-file-excel-o"></i>
@@ -155,9 +159,9 @@
         </li>
         <li class="divider"></li>
         {{--<li>--}}
-            {{--<a href="#">--}}
-                {{--<span class="label label-warning">Usuarios y roles</span>--}}
-            {{--</a>--}}
+        {{--<a href="#">--}}
+        {{--<span class="label label-warning">Usuarios y roles</span>--}}
+        {{--</a>--}}
         {{--</li>--}}
 
         <li>
@@ -168,10 +172,10 @@
             <a href="{{ route('seguridad.rol.index') }}"><i class="fa fa-group"></i>
                 <span>Roles</span></a>
         </li>
-        {{--<li>--}}
-            {{--<a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-group"></i>--}}
-                {{--<span>Permisos</span></a>--}}
-        {{--</li>--}}
+        <li>
+            <a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-lock"></i>
+                <span>Permisos</span></a>
+        </li>
 
 
     </ul>

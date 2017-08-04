@@ -3,6 +3,7 @@
 namespace Cat\Modules;
 
 use Illuminate\Support\ServiceProvider;
+use Illuminate\View\Compilers\BladeCompiler;
 
 class ModuleServiceProvider extends ServiceProvider
 {
@@ -42,6 +43,23 @@ class ModuleServiceProvider extends ServiceProvider
     
     public function register()
     {
+        $this->registerBladeExtensions();
+    }
+    
+    
+    protected function registerBladeExtensions()
+    {
+        $this->app->afterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
+            
+            $bladeCompiler->directive('haspermission', function ($permission) {
+//                Cat\Modules\Security\Helpers\Checker::hasPermission($permission)
+                return "<?php if(\Cat\Modules\Security\Helpers\Checker::hasPermission($permission)): ?>";
+            });
+            $bladeCompiler->directive('endhaspermission', function () {
+                return '<?php endif; ?>';
+            });
+            
+        });
     }
     
 }

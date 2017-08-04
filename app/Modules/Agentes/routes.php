@@ -25,9 +25,6 @@ Route::group(
         Route::get('agentes/base/{base}', RegistroController::class . '@index')
             ->name('agentesIndex');
         
-        Route::post('agentes/table/base/{base}', RegistroController::class . '@table')
-            ->name('agentesTable');
-        
         Route::get('agentes/show/id/{id}', RegistroController::class . '@show')
             ->name('agentesShow');
         
