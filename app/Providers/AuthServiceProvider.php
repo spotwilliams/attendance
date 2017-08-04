@@ -34,6 +34,14 @@ use Cat\Policies\Presentismos\RegistroPolicy as RegistroPresentismoPolicy;
 use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Policies\Presentismos\JustificacionPolicy;
 
+// Haberes
+use Cat\Modules\Haberes\Controllers\Registro\GeneralController as HaberesGeneral;
+use Cat\Policies\Haberes\GeneralPolicy as HaberesGeneralPolicy;
+use Cat\Modules\Haberes\Controllers\Registro\ReporteController as HaberesReporte;
+use Cat\Policies\Haberes\ReportePolicy as HaberesReportePolicy;
+use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController as HaberesConfirmar;
+use Cat\Policies\Haberes\CierrePeriodoPolicy as HaberesConfirmarPolicy;
+
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -57,6 +65,9 @@ class AuthServiceProvider extends ServiceProvider
             PresentismoPorAgente::class    => PorAgentePolicy::class,
             RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
             JustificacionController::class => JustificacionPolicy::class,
+            HaberesGeneral::class          => HaberesGeneralPolicy::class,
+            HaberesReporte::class          => HaberesReportePolicy::class,
+            HaberesConfirmar::class        => HaberesConfirmarPolicy::class,
         ];
     
     /**

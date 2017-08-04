@@ -29,6 +29,7 @@ class ReporteController extends AppBaseController
     
     public function reporte(Request $request)
     {
+        $this->authorize('reporte', $this);
         $input = $request->all();
         try {
             $periodo = Periodo::findOrFail($input['periodo']);
@@ -53,6 +54,8 @@ class ReporteController extends AppBaseController
     
     public function reportePreliminar(Request $request)
     {
+        $this->authorize('reportePreliminar', $this);
+    
         $input = $request->all();
         try {
             $periodo = Periodo::findOrFail($input['periodo']);

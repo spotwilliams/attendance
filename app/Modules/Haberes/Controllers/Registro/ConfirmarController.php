@@ -27,6 +27,8 @@ class ConfirmarController extends AppBaseController
     
     public function disclaimer(Request $request)
     {
+        $this->authorize('disclaimer', $this);
+        
         try {
             $input = $request->all();
             
@@ -62,6 +64,8 @@ class ConfirmarController extends AppBaseController
     
     public function batch(Request $request)
     {
+        $this->authorize('batch', $this);
+    
         try {
             $input   = $request->all();
             $periodo = Periodo::findOrFail($input['periodo']);

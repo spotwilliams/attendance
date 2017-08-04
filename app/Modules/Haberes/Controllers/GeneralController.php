@@ -37,6 +37,8 @@ class GeneralController extends AppBaseController
      */
     public function selectBase(Request $request)
     {
+        $this->authorize('selectBase', $this);
+    
         return view('Haberes::calculo.index-base');
     }
     
@@ -46,6 +48,8 @@ class GeneralController extends AppBaseController
      */
     public function selectPeriodo(Request $request)
     {
+        $this->authorize('selectPeriodo', $this);
+    
         $this->validate($request, ['base' => 'not_in:-1']);
         
         $base = Base::find($request->input('base'));
@@ -56,6 +60,8 @@ class GeneralController extends AppBaseController
     
     public function prepareListaAgentes(Request $request)
     {
+        $this->authorize('prepareListaAgentes', $this);
+    
         $this->validate(
             $request,
             ['turno' => 'not_in:-1', 'periodo' => 'not_in:-1']
@@ -74,6 +80,8 @@ class GeneralController extends AppBaseController
     
     public function listaAgentes(Request $request, $base, $periodo, $turno)
     {
+        $this->authorize('listaAgentes', $this);
+    
         try {
             $periodo       = Periodo::findOrFail($periodo);
             $base          = Base::findOrFail($base);
