@@ -1,8 +1,10 @@
 <?php
 
-namespace Cat\Database\Seeds;
+namespace Cat\Database\Security;
 
 use Cat\Models\Agente;
+use Cat\Modules\Security\Models\Role;
+use Cat\User;
 use Illuminate\Database\Seeder;
 
 class UsersTableSeeder extends Seeder
@@ -15,15 +17,17 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         foreach ($this->getUsuariosAndPasswords() as $user) {
-            \Illuminate\Foundation\Auth\User::create($user);
+            User::create($user);
         }
-            \Illuminate\Foundation\Auth\User::create([
-                    'name'           => 'developer',
-                    'cuit'           => '1234567',
-                    'email'          => 'admin@remain-it.com',
-                    'password'       => bcrypt('remain14159'),
-                    'remember_token' => str_random(10),
-            ]);
+        $user = User::create([
+            'name'           => 'developer',
+            'cuit'           => '1234567',
+            'email'          => 'admin@remain-it.com',
+            'password'       => bcrypt('remain14159'),
+            'remember_token' => str_random(10),
+        ]);
+        
+        $user->syncRoles(Role::findByName('Permisos full'));
         
     }
     

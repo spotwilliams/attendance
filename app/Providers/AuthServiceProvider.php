@@ -60,6 +60,13 @@ use Cat\Policies\Configuracion\Areas\CrudPolicy as AreasCrudPolicy;
 use Cat\Policies\Configuracion\Bases\CrudPolicy as BasesCrudPolicy;
 use Cat\Policies\Configuracion\Turnos\CrudPolicy as TurnosCrudPolicy;
 
+// Seguridad
+use Cat\Modules\Security\Controllers\PermissionCrudController;
+use Cat\Modules\Security\Controllers\RoleCrudController;
+use Cat\Modules\Security\Controllers\UserCrudController;
+use Cat\Policies\Security\PermissionCrudPolicy;
+use Cat\Policies\Security\RolCrudPolicy;
+use Cat\Policies\Security\UserCrudPolicy;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -94,6 +101,9 @@ class AuthServiceProvider extends ServiceProvider
             AreasCrud::class                   => AreasCrudPolicy::class,
             BasesCrud::class                   => BasesCrudPolicy::class,
             TurnosCrud::class                  => TurnosCrudPolicy::class,
+            PermissionCrudController::class    => PermissionCrudPolicy::class,
+            RoleCrudController::class          => RolCrudPolicy::class,
+            UserCrudController::class          => UserCrudPolicy::class,
         
         
         ];

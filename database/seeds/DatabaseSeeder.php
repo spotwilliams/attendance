@@ -15,12 +15,13 @@ use Cat\Database\Seeds\Agentes\Funciones;
 use Cat\Database\Seeds\Agentes\TiposContratoSeeder;
 use Cat\Database\Seeds\Agentes\Turnos;
 use Illuminate\Database\Seeder;
-use Cat\Database\Seeds\UsersTableSeeder;
+use Cat\Database\Security\UsersTableSeeder;
 use Cat\Database\Security\PermissionSeeder;
+use Cat\Database\Security\RolSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 500;
+    const SIZE_AGENTE = 2000;
     const SIZE_AREAS  = 10;
     
     /**
@@ -32,7 +33,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->parametros();
         $this->seguridad();
-        $this->agentes();
+//        $this->agentes();
         
     }
     
@@ -45,8 +46,9 @@ class DatabaseSeeder extends Seeder
     
     private function seguridad()
     {
-        $this->call(UsersTableSeeder::class);
         $this->call(PermissionSeeder::class);
+        $this->call(RolSeeder::class);
+        $this->call(UsersTableSeeder::class);
     
     }
     

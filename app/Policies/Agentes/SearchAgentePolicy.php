@@ -10,6 +10,6 @@ class SearchAgentePolicy extends SecurityPolicy
     
     public function search(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Buscar de personal');
+        return $this->verifyOnlyControllerPermission($user, 'Buscar personal');
     }
 }

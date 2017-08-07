@@ -5,6 +5,7 @@ namespace Cat\Modules\Security\Controllers\Crud;
 use Cat\Modules\Security\Requests\Crud\CrudRequest as StoreRequest;
 use Cat\Modules\Security\Requests\Crud\CrudRequest as UpdateRequest;
 use Cat\Modules\Security\Panel\CrudPanel;
+use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Bus\DispatchesJobs;
 use Illuminate\Foundation\Validation\ValidatesRequests;
 
@@ -14,7 +15,7 @@ use LiveControl\EloquentDataTable\DataTable;
 
 class CrudController extends BaseController
 {
-    use DispatchesJobs, ValidatesRequests;
+    use DispatchesJobs, ValidatesRequests, AuthorizesRequests;
     
     public $data = [];
     public $crud;
@@ -34,7 +35,7 @@ class CrudController extends BaseController
      */
     public function index()
     {
-        $this->crud->hasAccessOrFail('list');
+        $this->authorize('index', $this);
         
         $this->data['crud']  = $this->crud;
         $this->data['title'] = ucfirst($this->crud->entity_name_plural);
@@ -57,7 +58,7 @@ class CrudController extends BaseController
      */
     public function create()
     {
-        $this->crud->hasAccessOrFail('create');
+        $this->authorize('create', $this);
         
         // prepare the fields you need to show
         $this->data['crud']   = $this->crud;
@@ -77,7 +78,7 @@ class CrudController extends BaseController
      */
     public function storeCrud(StoreRequest $request = null)
     {
-        $this->crud->hasAccessOrFail('create');
+        $this->authorize('storeCrud', $this);
         
         // fallback to global request instance
         if (is_null($request)) {
@@ -103,7 +104,7 @@ class CrudController extends BaseController
      */
     public function edit($id)
     {
-        $this->crud->hasAccessOrFail('update');
+        $this->authorize('edit', $this);
         
         // get the info for that entry
         $this->data['entry']  = $this->crud->getEntry($id);
@@ -126,7 +127,7 @@ class CrudController extends BaseController
      */
     public function updateCrud(UpdateRequest $request = null)
     {
-        $this->crud->hasAccessOrFail('update');
+        $this->authorize('updateCrud', $this);
         
         // fallback to global request instance
         if (is_null($request)) {
@@ -152,7 +153,7 @@ class CrudController extends BaseController
      */
     public function show($id)
     {
-        $this->crud->hasAccessOrFail('show');
+//        $this->authorize('index', $this);
         
         // get the info for that entry
         $this->data['entry'] = $this->crud->getEntry($id);
@@ -171,7 +172,8 @@ class CrudController extends BaseController
      */
     public function destroy($id)
     {
-        $this->crud->hasAccessOrFail('delete');
+        $this->authorize('destroy', $this);
+
         
         return $this->crud->delete($id);
     }

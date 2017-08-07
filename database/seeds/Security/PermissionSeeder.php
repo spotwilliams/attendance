@@ -42,7 +42,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'Comentar presentismo', 'comentarios' => '',],
             ['name' => 'Justificar presentismo', 'comentarios' => '',],
             ['name' => 'Injustificar presentismo', 'comentarios' => '',],
-
+            
             // Haberes
             ['name' => 'Reporte haberes', 'comentarios' => '',],
             ['name' => 'Cerrar periodo', 'comentarios' => '',],
@@ -56,14 +56,21 @@ class PermissionSeeder extends Seeder
             // CRUD Bases
             ['name' => 'Crear base', 'comentarios' => '',],
             ['name' => 'Modificar base', 'comentarios' => '',],
-        
+            
             // CRUD Areas
             ['name' => 'Crear area', 'comentarios' => '',],
             ['name' => 'Modificar area', 'comentarios' => '',],
-
+            
             // CRUD Areas
             ['name' => 'Crear turnos', 'comentarios' => '',],
             ['name' => 'Modificar turnos', 'comentarios' => '',],
+            
+            // CRUD Permisos
+            ['name' => 'Ver permisos', 'comentarios' => '',],
+            ['name' => 'Crear rol', 'comentarios' => '',],
+            ['name' => 'Editar rol', 'comentarios' => '',],
+            ['name' => 'Crear usuario', 'comentarios' => '',],
+            ['name' => 'Editar usuario', 'comentarios' => '',],
         
         ];
         
