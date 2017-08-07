@@ -45,6 +45,13 @@ class PermissionSeeder extends Seeder
             // Haberes
             ['name' => 'Reporte haberes', 'comentarios' => '',],
             ['name' => 'Cerrar periodo', 'comentarios' => '',],
+            
+            // Reportes
+            ['name' => 'Exportar reporte personal', 'comentarios' => '',],
+            ['name' => 'Reporte personal', 'comentarios' => '',],
+            ['name' => 'Exportar reporte presentismos', 'comentarios' => '',],
+            ['name' => 'Reporte presentismos', 'comentarios' => '',],
+            
         
         ];
         

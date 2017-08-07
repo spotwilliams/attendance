@@ -42,6 +42,17 @@ use Cat\Policies\Haberes\ReportePolicy as HaberesReportePolicy;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController as HaberesConfirmar;
 use Cat\Policies\Haberes\CierrePeriodoPolicy as HaberesConfirmarPolicy;
 
+// Reportes
+use Cat\Modules\Reportes\Controllers\Agentes\General as ReporteAgentes;
+use Cat\Modules\Reportes\Controllers\Agentes\Exportar as ExportarReporteAgentes;
+use Cat\Modules\Reportes\Controllers\Presentismos\General as ReportePresentismos;
+use Cat\Modules\Reportes\Controllers\Presentismos\Exportar as ExprotarReportePresentismos;
+use Cat\Policies\Reportes\Agentes\ReportePolicy as AgentesReportePolicy;
+use Cat\Policies\Reportes\Agentes\ExportarPolicy as AgentesExportarReportePolicy;
+use Cat\Policies\Reportes\Presentismos\ReportePolicy as PresentismosReportePolicy;
+use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarReportePolicy;
+
+
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
 
@@ -54,20 +65,24 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies
         = [
-            BusquedaController::class      => SearchAgentePolicy::class,
-            LaboralesController::class     => CrudLaboralesPolicy::class,
-            OperativosController::class    => CrudOperativosPolicy::class,
-            PersonalesController::class    => CrudPersonalesPolicy::class,
-            AgentesGeneral::class          => GeneralPolicy::class,
-            AgenteMasivo::class            => AgenteMasivoPolicy::class,
-            PresentismoMasivo::class       => PresentismoMasivoPolicy::class,
-            PresentismoGeneral::class      => PresentismoGeneralPolicy::class,
-            PresentismoPorAgente::class    => PorAgentePolicy::class,
-            RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
-            JustificacionController::class => JustificacionPolicy::class,
-            HaberesGeneral::class          => HaberesGeneralPolicy::class,
-            HaberesReporte::class          => HaberesReportePolicy::class,
-            HaberesConfirmar::class        => HaberesConfirmarPolicy::class,
+            BusquedaController::class          => SearchAgentePolicy::class,
+            LaboralesController::class         => CrudLaboralesPolicy::class,
+            OperativosController::class        => CrudOperativosPolicy::class,
+            PersonalesController::class        => CrudPersonalesPolicy::class,
+            AgentesGeneral::class              => GeneralPolicy::class,
+            AgenteMasivo::class                => AgenteMasivoPolicy::class,
+            PresentismoMasivo::class           => PresentismoMasivoPolicy::class,
+            PresentismoGeneral::class          => PresentismoGeneralPolicy::class,
+            PresentismoPorAgente::class        => PorAgentePolicy::class,
+            RegistroPresentismo::class         => RegistroPresentismoPolicy::class,
+            JustificacionController::class     => JustificacionPolicy::class,
+            HaberesGeneral::class              => HaberesGeneralPolicy::class,
+            HaberesReporte::class              => HaberesReportePolicy::class,
+            HaberesConfirmar::class            => HaberesConfirmarPolicy::class,
+            ReporteAgentes::class              => AgentesReportePolicy::class,
+            ReportePresentismos::class         => PresentismosReportePolicy::class,
+            ExportarReporteAgentes::class      => AgentesExportarReportePolicy::class,
+            ExprotarReportePresentismos::class => PresentismosExportarReportePolicy::class,
         ];
     
     /**
