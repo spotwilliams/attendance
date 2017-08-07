@@ -52,6 +52,14 @@ use Cat\Policies\Reportes\Agentes\ExportarPolicy as AgentesExportarReportePolicy
 use Cat\Policies\Reportes\Presentismos\ReportePolicy as PresentismosReportePolicy;
 use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarReportePolicy;
 
+// Configuracion
+use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
+use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
+use Cat\Modules\Configuracion\Turnos\Controllers\CrudController as TurnosCrud;
+use Cat\Policies\Configuracion\Areas\CrudPolicy as AreasCrudPolicy;
+use Cat\Policies\Configuracion\Bases\CrudPolicy as BasesCrudPolicy;
+use Cat\Policies\Configuracion\Turnos\CrudPolicy as TurnosCrudPolicy;
+
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -83,6 +91,11 @@ class AuthServiceProvider extends ServiceProvider
             ReportePresentismos::class         => PresentismosReportePolicy::class,
             ExportarReporteAgentes::class      => AgentesExportarReportePolicy::class,
             ExprotarReportePresentismos::class => PresentismosExportarReportePolicy::class,
+            AreasCrud::class                   => AreasCrudPolicy::class,
+            BasesCrud::class                   => BasesCrudPolicy::class,
+            TurnosCrud::class                  => TurnosCrudPolicy::class,
+        
+        
         ];
     
     /**

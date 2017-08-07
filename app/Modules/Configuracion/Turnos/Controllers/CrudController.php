@@ -30,6 +30,8 @@ class CrudController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
+    
         $this->turnoModelRepository->pushCriteria(new RequestCriteria($request));
         $turnoModels = $this->turnoModelRepository->all();
         
@@ -44,6 +46,8 @@ class CrudController extends AppBaseController
      */
     public function create()
     {
+        $this->authorize('create', $this);
+    
         return view('Configuracion::turnos.create');
     }
     
@@ -56,6 +60,8 @@ class CrudController extends AppBaseController
      */
     public function store(CreateTurnoModelRequest $request)
     {
+        $this->authorize('store', $this);
+    
         $input = $request->all();
         
         $turnoModel = $this->turnoModelRepository->create($input);
@@ -94,6 +100,8 @@ class CrudController extends AppBaseController
      */
     public function edit($id)
     {
+        $this->authorize('edit', $this);
+    
         $turnoModel = $this->turnoModelRepository->findWithoutFail($id);
         
         if (empty($turnoModel)) {
@@ -115,6 +123,8 @@ class CrudController extends AppBaseController
      */
     public function update($id, UpdateTurnoModelRequest $request)
     {
+        $this->authorize('update', $this);
+    
         $turnoModel = $this->turnoModelRepository->findWithoutFail($id);
         
         if (empty($turnoModel)) {

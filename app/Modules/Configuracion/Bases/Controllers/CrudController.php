@@ -30,6 +30,8 @@ class CrudController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
+    
         $this->baseModelRepository->pushCriteria(new RequestCriteria($request));
         $baseModels = $this->baseModelRepository->all();
         
@@ -44,6 +46,8 @@ class CrudController extends AppBaseController
      */
     public function create()
     {
+        $this->authorize('create', $this);
+    
         return view('Configuracion::bases.create');
     }
     
@@ -56,6 +60,8 @@ class CrudController extends AppBaseController
      */
     public function store(CreateBaseModelRequest $request)
     {
+        $this->authorize('store', $this);
+    
         $input = $request->all();
         
         $baseModel = $this->baseModelRepository->create($input);
@@ -94,6 +100,8 @@ class CrudController extends AppBaseController
      */
     public function edit($id)
     {
+        $this->authorize('edit', $this);
+    
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
@@ -115,6 +123,8 @@ class CrudController extends AppBaseController
      */
     public function update($id, UpdateBaseModelRequest $request)
     {
+        $this->authorize('update', $this);
+    
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {

@@ -33,7 +33,7 @@ class General extends ReporteController
     
     public function index()
     {
-        $this->authorize('index');
+        $this->authorize('index', $this);
     
         return view('Reportes::presentismos.index-general');
     }
@@ -46,7 +46,7 @@ class General extends ReporteController
      */
     public function search(Request $request)
     {
-        $this->authorize('search');
+        $this->authorize('search', $this);
     
         $this->setupParams($request)
             ->setupQuery();

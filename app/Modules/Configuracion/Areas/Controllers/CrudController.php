@@ -30,6 +30,8 @@ class CrudController extends AppBaseController
      */
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
+        
         $this->areaRepository->pushCriteria(new RequestCriteria($request));
         $areas = $this->areaRepository->all();
         
@@ -44,6 +46,8 @@ class CrudController extends AppBaseController
      */
     public function create()
     {
+        $this->authorize('create', $this);
+    
         return view('Configuracion::areas.create');
     }
     
@@ -56,6 +60,8 @@ class CrudController extends AppBaseController
      */
     public function store(CreateAreaRequest $request)
     {
+        $this->authorize('store', $this);
+    
         $input = $request->all();
         
         $area = $this->areaRepository->create($input);
@@ -94,6 +100,8 @@ class CrudController extends AppBaseController
      */
     public function edit($id)
     {
+        $this->authorize('edit', $this);
+    
         $area = $this->areaRepository->findWithoutFail($id);
         
         if (empty($area)) {
@@ -115,6 +123,8 @@ class CrudController extends AppBaseController
      */
     public function update($id, UpdateAreaRequest $request)
     {
+        $this->authorize('update', $this);
+    
         $area = $this->areaRepository->findWithoutFail($id);
         
         if (empty($area)) {

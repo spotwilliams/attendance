@@ -42,6 +42,7 @@ class PermissionSeeder extends Seeder
             ['name' => 'Comentar presentismo', 'comentarios' => '',],
             ['name' => 'Justificar presentismo', 'comentarios' => '',],
             ['name' => 'Injustificar presentismo', 'comentarios' => '',],
+
             // Haberes
             ['name' => 'Reporte haberes', 'comentarios' => '',],
             ['name' => 'Cerrar periodo', 'comentarios' => '',],
@@ -52,6 +53,17 @@ class PermissionSeeder extends Seeder
             ['name' => 'Exportar reporte presentismos', 'comentarios' => '',],
             ['name' => 'Reporte presentismos', 'comentarios' => '',],
             
+            // CRUD Bases
+            ['name' => 'Crear base', 'comentarios' => '',],
+            ['name' => 'Modificar base', 'comentarios' => '',],
+        
+            // CRUD Areas
+            ['name' => 'Crear area', 'comentarios' => '',],
+            ['name' => 'Modificar area', 'comentarios' => '',],
+
+            // CRUD Areas
+            ['name' => 'Crear turnos', 'comentarios' => '',],
+            ['name' => 'Modificar turnos', 'comentarios' => '',],
         
         ];
         

@@ -20,7 +20,7 @@ class Exportar extends General
      */
     public function export(Request $request)
     {
-        $this->authorize('export');
+        $this->authorize('export', $this);
     
         $this->setupParams($request)
             ->setupQuery();
