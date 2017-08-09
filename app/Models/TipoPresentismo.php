@@ -21,6 +21,7 @@ class TipoPresentismo extends Model
             'codigo',
             'descripcion',
             'color',
+            'color_letra',
             'injustificado',
         ];
     

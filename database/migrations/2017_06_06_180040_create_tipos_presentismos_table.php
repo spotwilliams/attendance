@@ -18,6 +18,7 @@ class CreateTiposPresentismosTable extends Migration
             $table->string('codigo', 50)->index('tipo_index');
             $table->string('descripcion', 100);
             $table->string('color', 10);
+            $table->string('color_letra', 10)->default('#333');
             $table->enum('aplica', ['LOCACION', 'SITUACION_REVISTA', 'TODOS', '']);
             $table->boolean('injustificado')->default(0);
             $table->boolean('corridos');

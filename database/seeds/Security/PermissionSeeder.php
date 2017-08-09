@@ -62,8 +62,12 @@ class PermissionSeeder extends Seeder
             ['name' => 'Modificar area', 'comentarios' => '',],
             
             // CRUD Areas
-            ['name' => 'Crear turnos', 'comentarios' => '',],
-            ['name' => 'Modificar turnos', 'comentarios' => '',],
+            ['name' => 'Crear turno', 'comentarios' => '',],
+            ['name' => 'Modificar turno', 'comentarios' => '',],
+            
+            // CRUD Tipo presentismos
+            ['name' => 'Crear tipo presentismo', 'comentarios' => '',],
+            ['name' => 'Modificar tipo presentismo', 'comentarios' => '',],
             
             // CRUD Permisos
             ['name' => 'Ver permisos', 'comentarios' => '',],

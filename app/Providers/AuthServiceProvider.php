@@ -56,9 +56,11 @@ use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarRep
 use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
 use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
 use Cat\Modules\Configuracion\Turnos\Controllers\CrudController as TurnosCrud;
+use Cat\Modules\Configuracion\TipoPresentismos\Controllers\CrudController as TipoPresentismosCrud;
 use Cat\Policies\Configuracion\Areas\CrudPolicy as AreasCrudPolicy;
 use Cat\Policies\Configuracion\Bases\CrudPolicy as BasesCrudPolicy;
 use Cat\Policies\Configuracion\Turnos\CrudPolicy as TurnosCrudPolicy;
+use Cat\Policies\Configuracion\TipoPresentismo\CrudPolicy as TipoPresentismosCrudPolicy;
 
 // Seguridad
 use Cat\Modules\Security\Controllers\PermissionCrudController;
@@ -104,6 +106,7 @@ class AuthServiceProvider extends ServiceProvider
             PermissionCrudController::class    => PermissionCrudPolicy::class,
             RoleCrudController::class          => RolCrudPolicy::class,
             UserCrudController::class          => UserCrudPolicy::class,
+            TipoPresentismosCrud::class        => TipoPresentismosCrudPolicy::class,
         
         
         ];

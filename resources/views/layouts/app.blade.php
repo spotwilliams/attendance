@@ -18,6 +18,7 @@
 {!! Html::style('plugins/jquerytimepicker/css/jquery.timepicker.css') !!}
 {!! Html::style('plugins/daterangepicker/css/daterangepicker.css') !!}
 {!! Html::style('plugins/awesome-bootstrap-checkbox/css/awesome-bootstrap-checkbox.css') !!}
+{!! Html::style('plugins/colorpicker/css/bootstrap-colorpicker.min.css') !!}
 {!! Html::style('plugins/datatables-buttons-1.3.1/css/buttons.dataTables.css') !!}
 {!! Html::style('css/style.css') !!}
 <!-- Ionicons -->
@@ -182,6 +183,7 @@
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/dataTables.buttons.js') !!}
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.colVis.js') !!}
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') !!}
+{!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
 
 
 

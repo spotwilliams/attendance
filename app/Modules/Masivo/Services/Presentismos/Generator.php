@@ -77,13 +77,13 @@ class Generator
                 $sheet->setCellValue('B1', 'Apellido');
                 $sheet->setCellValue('C1', 'CUIT');
                 $sheet->setCellValue('D1', $date->format('Y-m-d'));
-                $date->modify('+1day');
+                $date->modify('-1day');
                 $sheet->setCellValue('E1', $date->format('Y-m-d'));
-                $date->modify('+1day');
+                $date->modify('-1day');
                 $sheet->setCellValue('F1', $date->format('Y-m-d'));
-                $date->modify('+1day');
+                $date->modify('-1day');
                 $sheet->setCellValue('G1', $date->format('Y-m-d'));
-                $date->modify('+1day');
+                $date->modify('-1day');
                 $sheet->setCellValue('H1', $date->format('Y-m-d'));
                 /**
                  * Valores

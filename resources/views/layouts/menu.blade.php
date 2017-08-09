@@ -157,6 +157,12 @@
                 <span>Turnos</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('configuracion.licencia.index') !!}">
+                <i class="fa fa-calendar"></i>
+                <span>Tipos presentismo</span>
+            </a>
+        </li>
         <li class="divider"></li>
         {{--<li>--}}
         {{--<a href="#">--}}
