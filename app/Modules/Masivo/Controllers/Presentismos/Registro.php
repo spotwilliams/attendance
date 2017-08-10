@@ -11,6 +11,7 @@ use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
+use Illuminate\Validation\ValidationException;
 use Laracasts\Flash\Flash;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 
@@ -71,13 +72,14 @@ class Registro extends AppBaseController
     
     public function upload(Request $request)
     {
-        $rule = [
-            'archivo' => 'required|mimetypes:application/vnd.ms-excel',
-        
-        ];
-        $this->validate($request, $rule);
-        
         try {
+            $rule = [
+                'archivo' => 'required',
+            
+            ];
+            
+            $this->validate($request, $rule);
+            
             $input   = $request->all();
             $base    = Base::find($input['base']);
             $file    = $request->file('archivo');
@@ -85,20 +87,32 @@ class Registro extends AppBaseController
             
             $service->execute();
             
+        } catch (ValidationException $fileNotFound) {
+            Flash::error('Verifique que el archivo tengo la extensi&oacute;n correcta.');
+            
+            return redirect(route('presentismosMasivoIndex'));
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
+            
+            return redirect(route('presentismosMasivoIndex'));
+            
         }
         
         return view('Masivo::presentismos.end-process');
     }
     
-    public function downloadErrores(Request $request)
-    {
+    public
+    function downloadErrores(
+        Request $request
+    ) {
         return response()->download($request->input('file'));
     }
     
-    public function downloadTemplate(Request $request, $fileName)
-    {
+    public
+    function downloadTemplate(
+        Request $request,
+        $fileName
+    ) {
         try {
             
             $route = Storage::disk('masivo')
