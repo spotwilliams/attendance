@@ -13,6 +13,7 @@ use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
@@ -38,7 +39,7 @@ class GeneralController extends AppBaseController
     public function selectBase(Request $request)
     {
         $this->authorize('selectBase', $this);
-    
+        
         return view('Haberes::calculo.index-base');
     }
     
@@ -49,23 +50,35 @@ class GeneralController extends AppBaseController
     public function selectPeriodo(Request $request)
     {
         $this->authorize('selectPeriodo', $this);
-    
-        $this->validate($request, ['base' => 'not_in:-1']);
         
-        $base = Base::find($request->input('base'));
+        $this->validate($request, ['base' => 'not_in:-1', 'turno' => 'not_in:-1']);
+        
+        $base  = Base::find($request->input('base'));
+        $turno = Turno::find($request->input('turno'));
         
         return view('Haberes::calculo.index-periodo')
-            ->with('base', $base);
+            ->with('base', $base)
+            ->with('turno', $turno);
     }
     
     public function prepareListaAgentes(Request $request)
     {
         $this->authorize('prepareListaAgentes', $this);
-    
-        $this->validate(
-            $request,
-            ['turno' => 'not_in:-1', 'periodo' => 'not_in:-1']
-        );
+        try {
+            
+            $this->validate(
+                $request,
+                ['periodo' => 'not_in:-1']
+            );
+        } catch (ValidationException $e) {
+            $base  = Base::find($request->input('base'));
+            $turno = Turno::find($request->input('turno'));
+            
+            return view('Haberes::calculo.index-periodo')
+                ->with('base', $base)
+                ->with('turno', $turno)
+                ->withErrors($e->validator->getMessageBag());
+        }
         
         $input  = $request->all();
         $params = [
@@ -81,7 +94,7 @@ class GeneralController extends AppBaseController
     public function listaAgentes(Request $request, $base, $periodo, $turno)
     {
         $this->authorize('listaAgentes', $this);
-    
+        
         try {
             $periodo       = Periodo::findOrFail($periodo);
             $base          = Base::findOrFail($base);
@@ -125,7 +138,7 @@ class GeneralController extends AppBaseController
                 ->whereNotIn('agentes.id', $agentesYaConfirmados)
                 ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->where('operativos.id_turno', '=', $turno->id);
-
+            
             return view('Haberes::calculo.lista')
                 ->with('agentes', $agentes->paginate(25))
                 ->with('base', $base)

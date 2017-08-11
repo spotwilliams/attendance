@@ -1,9 +1,8 @@
 <?php
 use Cat\Repositories\PeriodoRepository;
-use Cat\Repositories\TurnosRepository;
 
-$periodos = PeriodoRepository::getPeriodosActivosParaBase($base->id);
-$turnos = TurnosRepository::getAll();
+$estadoPeriodos = PeriodoRepository::getPeriodosActivosParaBaseAndTurno($base, $turno);
+
 ?>
 @extends('layouts.app')
 
@@ -23,6 +22,7 @@ $turnos = TurnosRepository::getAll();
             {!! Form::open(['route' => 'haberesPrepareListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 
             {!! Form::hidden('base', $base->id) !!}
+            {!! Form::hidden('turno', $turno->id) !!}
             <div class="box-body">
                 <div class="col-md-offset-2 col-md-8">
 
@@ -42,35 +42,25 @@ $turnos = TurnosRepository::getAll();
                             <span class="label label-info">{{$base->nombre}}</span>
                         </div>
                     </div>
+                    <div class="form-group">
+                        <label class="col-sm-3 col-xs-3 control-label">Turno seleccionado</label>
+                        <div class="col-sm-9 col-xs-9">
+                            <span class="label label-info">{{$turno->codigo}}</span>
+                        </div>
+                    </div>
                     <div class="form-group @if($errors->has('periodo')) has-error @endif">
                         <label class="col-sm-3 col-xs-3 control-label">Seleccione el periodo</label>
                         <div class="col-sm-9 col-xs-9">
                             <select class="form-control" name="periodo">
                                 <option value="-1">...</option>
-                                @foreach ($periodos as $periodo)
-                                    <option value="{{ $periodo->id }}">
-                                        Del {{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}
-                                        hasta {{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</option>
+                                @foreach ($estadoPeriodos as $estado)
+                                    <option value="{{ $estado->id_periodo }}">
+                                        Del {{(new DateTime($estado->periodo->fecha_comienzo))->format('d/m/Y')}}
+                                        hasta {{(new DateTime($estado->periodo->fecha_fin))->format('d/m/Y')}}</option>
                                 @endforeach
                             </select>
                             @if($errors->has('periodo'))
                                 <span class="help-block">{{$errors->first('periodo')}}</span>
-                            @endif
-                        </div>
-                    </div>
-                    <div class="form-group @if($errors->has('turno')) has-error @endif">
-                        <label class="col-sm-3 col-xs-3 control-label">Seleccione el turno</label>
-                        <div class="col-sm-9 col-xs-9">
-                            <select class="form-control" name="turno">
-                                <option value="-1">...</option>
-                                @foreach ($turnos as $t)
-                                    <option value="{{ $t->id }}">{{$t->codigo}}
-                                        {{--({{$t->descripcion}})--}}
-                                    </option>
-                                @endforeach
-                            </select>
-                            @if($errors->has('turno'))
-                                <span class="help-block">{{$errors->first('turno')}}</span>
                             @endif
                         </div>
                     </div>

@@ -32,7 +32,7 @@ class PeriodoRepository extends BaseRepository
     {
         $periodo = Periodo::findActivo($fecha);
         
-
+        
         if ($periodo == null) {
             // Buscar el ultimo periodo creado y crear uno a partir de este
             $ultimoPeriodo = Periodo::getUltimoPeriodo();
@@ -75,7 +75,7 @@ class PeriodoRepository extends BaseRepository
                     ];
                     EstadoPeriodo::create($inserts);
                 } catch (QueryException $error) {
-
+                    
                     Log::error($error);
                 }
             }
@@ -90,9 +90,30 @@ class PeriodoRepository extends BaseRepository
             
             return Base::findOrFail($idBase)
                 ->periodos()
-                ->wherePivot('abierto', 1)
+                ->wherePivot('abierto', true)
                 ->distinct('id_periodo')
                 ->get();
+            
+        } catch (ModelNotFoundException $e) {
+            return new Collection();
+        }
+    }
+    
+    /**
+     * @param Base $base
+     * @param Turno $turno
+     * @return Collection{EstadoPeriodo}
+     */
+    public static function getPeriodosActivosParaBaseAndTurno(Base $base, Turno $turno)
+    {
+        try {
+            $periodos = EstadoPeriodo::where('id_base', '=', $base->id)
+                ->where('id_turno', '=', $turno->id)
+                ->where('abierto', '=', true)
+                ->with('periodo')
+                ->get();
+            
+            return $periodos;
             
         } catch (ModelNotFoundException $e) {
             return new Collection();

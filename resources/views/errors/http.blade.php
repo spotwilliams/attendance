@@ -6,8 +6,8 @@
         <div class="error-page">
             <div class="box-body">
                 <div class="jumbotron">
-                    <h1><i class="fa fa-refresh text-warning"></i>Error de refresco</h1>
-                    <p class="lead">Ha refrescado la p&aacute;gina desde el navegador. Se recomienda hacerlo utilizando CTRL + R.
+                    <h1><i class="fa fa-refresh text-warning"></i>Error inesperado</h1>
+                    <p class="lead">No se pudo precesar la petici&oacute;n correctamente. Intente nuevamente m&aacute;s tarde.
                     </p>
                 </div>
 

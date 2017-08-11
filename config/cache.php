@@ -68,7 +68,7 @@ return [
     /*
     |--------------------------------------------------------------------------
     | Cache Key Prefix
-    |--------------------------------------------------------------------------
+    |----------w----------------------------------------------------------------
     |
     | When utilizing a RAM based store such as APC or Memcached, there might
     | be other applications utilizing the same cache. So, we'll specify a

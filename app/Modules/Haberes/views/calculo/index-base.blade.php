@@ -13,7 +13,7 @@
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
             </div>
-            {!! Form::open(['route' => 'haberesSelectPeriodo', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
+            {!! Form::open(['route' => 'haberesSelectPeriodo', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 
             <div class="box-body">
                 <div class="col-md-offset-2 col-md-8">
@@ -29,6 +29,7 @@
                         </div>
                     </div>
                         @include('common.bases.as-select-sin-btn' ,[ 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
+                        @include('common.turnos.as-select' ,[ 'label'=> 'Seleccione el turno', 'baseSeleccionada' => -1])
                 </div>
             </div>
             <div class="box-footer">
