@@ -8,6 +8,7 @@ use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\TipoPresentismo;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Maatwebsite\Excel\Collections\CellCollection;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
@@ -15,14 +16,14 @@ use Cat\Modules\Presentismo\Services\Helpers\Facilitador as StoreService;
 
 class ArchivoHandler extends ExcelHandler
 {
+    protected $listaErrores;
+    
     /**
      * @param $file Archivo
      * @return mixed
      */
     public function handle($file)
     {
-        
-        $listaErrores = [];
         
         /** @var Base $base */
         $base = $file->getBase();
@@ -47,27 +48,36 @@ class ArchivoHandler extends ExcelHandler
                     $listaPresentismo = $this->getDatesWithPresentismos($row, $agente, $fechas);
                     
                     foreach ($listaPresentismo as $presente) {
-                        StoreService::validarDespuesGuardar($agente, $presente['tipo_presentismo'], $presente['fecha']);
-                    }
-                } catch (\Exception $e) {
-                    foreach ($row->toArray() as $key => $item) {
-                        if (isset($fechas[$key])) {
+                        try {
                             
-                            $error [$fechas[$key]] = $item;
-                        } else {
-                            $error[$key] = $item;
+                            StoreService::validarDespuesGuardar($agente, $presente['tipo_presentismo'],
+                                $presente['fecha']);
+                        } catch (\Exception $error) {
+                            $this->listaErrores[] = [
+                                'cuit'             => $agente->cuit,
+                                'fecha'            => $presente['fecha']->format('Y-m-d'),
+                                'tipo_presentismo' => $presente['tipo_presentismo']->descripcion,
+                                'mensaje'          => $error->getMessage(),
+                            ];
                         }
                     }
-                    $listaErrores[] = $error;
+                    
+                } catch (\Exception $e) {
+                    $this->listaErrores[] = [
+                        'cuit'             => $row->cuit,
+                        'fecha'            => 'N/A',
+                        'tipo_presentismo' => 'N/A',
+                        'mensaje'          => 'No se pudo procesar toda la fila',
+                    ];
                 }
             } else {
                 break;
             }
         }
         
-        $fileErrores->sheet('Errores', function ($sheet) use ($listaErrores) {
+        $fileErrores->sheet('Errores', function ($sheet) {
             
-            $sheet->fromArray($listaErrores);
+            $sheet->fromArray($this->listaErrores);
             
         })->store('xls', $this->location, true);
         
@@ -95,15 +105,33 @@ class ArchivoHandler extends ExcelHandler
                 $tipoPresentismo = TipoPresentismo::where('codigo', '=', $codigoPresentismo)
                     ->where('aplica', '=', $agente->contrato->TipoContrato->codigo)
                     ->firstOrFail();
-            } catch (ModelNotFoundException $e) {
-                $tipoPresentismo = TipoPresentismo::where('codigo', '=', $codigoPresentismo)
-                    ->where('aplica', '=', 'TODOS')
-                    ->firstOrFail();
+                
+                $return [] = [
+                    'fecha'            => new \DateTime($fechas[$fecha]),
+                    'tipo_presentismo' => $tipoPresentismo,
+                ];
+            } catch (ModelNotFoundException $noEncontratoPrimerIntento) {
+                try {
+                    
+                    $tipoPresentismo = TipoPresentismo::where('codigo', '=', $codigoPresentismo)
+                        ->where('aplica', '=', 'TODOS')
+                        ->firstOrFail();
+                    
+                    $return [] = [
+                        'fecha'            => new \DateTime($fechas[$fecha]),
+                        'tipo_presentismo' => $tipoPresentismo,
+                    ];
+                } catch (ModelNotFoundException $noEncontratoSegundoIntento) {
+                    
+                    $this->listaErrores[] = [
+                        'cuit'             => $row->cuit,
+                        'fecha'            => $fechas[$fecha],
+                        'tipo_presentismo' => $codigoPresentismo,
+                        'mensaje'          => 'El tipo de presentismo no se corresponde con el tipo de contrato. Intente manualmente desde la interfaz',
+                    ];
+                }
             }
-            $return [] = [
-                'fecha'            => new \DateTime($fechas[$fecha]),
-                'tipo_presentismo' => $tipoPresentismo,
-            ];
+            
         }
         
         return $return;

@@ -180,10 +180,6 @@
 {!! Html::script('plugins/daterangepicker/js/daterangepicker.js') !!}
 
 {!! Html::script('plugins/jquerytimepicker/js/jquery.timepicker.min.js') !!}
-{!! Html::script('plugins/datatables-buttons-1.3.1/js/dataTables.buttons.js') !!}
-{!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.colVis.js') !!}
-{!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') !!}
-{!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
 
 
 

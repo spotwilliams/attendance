@@ -25,7 +25,7 @@ class AgenteRepository extends BaseRepository
         try {
             /** @var Base $base */
             $base    = Base::findOrFail($idBase);
-            $agentes = $base->agentes()->paginate(50);
+            $agentes = $base->agentes()->paginate(25);
         } catch (ModelNotFoundException $e) {
         
         }

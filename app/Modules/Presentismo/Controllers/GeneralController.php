@@ -51,8 +51,8 @@ class GeneralController extends AppBaseController
         $this->authorize('prepareListaAgentes', $this);
         $this->validate($request, [
             'base'   => 'required|not_in:-1',
-            'turnos' => 'required',
-            'areas'  => 'required',
+//            'turnos' => 'required',
+            //            'areas'  => 'required',
         ]);
         
         $input = $request->all();
@@ -60,8 +60,9 @@ class GeneralController extends AppBaseController
         return $this->listaAgentes(
             $request,
             $input['base'],
-            $input['turnos'],
-            $input['areas'],
+            (isset($input['turnos']) ? $input['turnos'] : []),
+            (isset($input['areas']) ? $input['areas'] : []),
+//            $input['areas'],
             $input['desde'],
             $input['hasta'],
             (isset($input['funcion']) ? $input['funcion'] : [])
@@ -99,9 +100,14 @@ class GeneralController extends AppBaseController
                     $base,
                     $dateRange['desde'],
                     $dateRange['hasta']
-                )
-                ->whereIn('operativos.id_turno', $turnos)
-                ->whereIn('operativos.id_area', $areas);
+                );
+            if (!empty($turnos)) {
+                $agentes->whereIn('operativos.id_turno', $turnos);
+            }
+
+            if (!empty($areas)) {
+                $agentes->whereIn('operativos.id_area', $areas);
+            }
             // En caso que pasemos una funcion la buscamos, sino la excluimos desde sql
             if (!empty($funcion)) {
                 
