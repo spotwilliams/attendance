@@ -57,9 +57,10 @@
                             "Diciembre"
                         ],
                     },
-                    dateLimit: {
-                        days: 32
-                    },
+//                    dateLimit: {
+//                        days: 32
+//                    },
+                    showDropdowns: true,
                     startDate: startDate.format('DD/MM/Y'),
                     endDate: endDate.format('DD/MM/Y'),
                     maxDate: moment(),

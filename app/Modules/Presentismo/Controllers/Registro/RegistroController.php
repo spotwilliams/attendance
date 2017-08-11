@@ -5,6 +5,7 @@ namespace Cat\Modules\Presentismo\Controllers\Registro;
 use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
@@ -164,6 +165,12 @@ class RegistroController extends AppBaseController
             $code    = 500;
         } catch (PeriodoCerrado $e) {
             
+            $message = $e->getMessage();
+            $code    = 500;
+            $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
+        }
+        catch (FechaFutura $e) {
+    
             $message = $e->getMessage();
             $code    = 500;
             $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);

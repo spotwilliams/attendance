@@ -2,28 +2,28 @@
 
 namespace Cat\Modules\Reportes\Services;
 
-use Cat\Modules\Reportes\Services\Formatters\RowDataFormatter;
+use Cat\Modules\Reportes\Services\Formatters\Agente;
 use Cat\Modules\Service;
-use Illuminate\Support\Collection;
-use Maatwebsite\Excel\Classes\LaravelExcelWorksheet;
+use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\Paginator;
 use Maatwebsite\Excel\Facades\Excel;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class Reporte extends Service
 {
     
-    /** @var  Collection */
-    protected $collection;
+    /** @var  Builder */
+    protected $eloquent;
     protected $rowFormatter;
     
     /**
      * Reporte constructor.
-     * @param Collection $collection
+     * @param Builder $eloquent
      * @param string $whoDecideWhatToShow Class name of formmater Must be RowDataFormatter
      */
-    public function __construct(Collection $collection, $whoDecideWhatToShow)
+    public function __construct(Builder $eloquent, $whoDecideWhatToShow)
     {
-        $this->collection   = $collection;
+        $this->eloquent     = $eloquent;
         $this->rowFormatter = new $whoDecideWhatToShow();
     }
     
@@ -36,13 +36,37 @@ class Reporte extends Service
         Excel::create('Reporte', function ($writer) {
             /** @var LaravelExcelWriter $writer */
             $writer->sheet('Reporte', function ($sheet) {
-                
-                /** @var  LaravelExcelWorksheet $sheet */
-                $data = [];
-                foreach ($this->collection as $model) {
-                    $data [] = $this->rowFormatter->format($model);
-                }
-                $sheet->fromArray($data);
+
+//                /** @var  LaravelExcelWorksheet $sheet */
+//                $data = [];
+//                foreach ($this->eloquent as $model) {
+//                    $data [] = $this->rowFormatter->format($model);
+//                }
+//                $sheet->fromArray($data);
+                /** @var Paginator $models */
+                $page = 1;
+                do {
+                    $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
+                    
+                    $page++;
+                    $data = [];
+                    foreach ($models->items() as $model) {
+                        $data [] = $this->rowFormatter->format($model);
+                    }
+                    $sheet->fromArray($data);
+                    
+//                    die('hola');
+                } while ($models->hasMorePages());
+//                $this->eloquent->chunk(500, function ($models) use ($sheet) {
+//                    /** @var Agente $model */
+//                    $data = [];
+//                    dd($models);
+//                    foreach ($models as $model) {
+//                        $data [] = $this->rowFormatter->format($model);
+//                    }
+//                    $sheet->fromArray($data);
+//
+//                });
                 
             });
         })->export('xls');

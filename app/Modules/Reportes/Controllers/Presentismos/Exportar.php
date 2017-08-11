@@ -21,18 +21,16 @@ class Exportar extends General
     public function export(Request $request)
     {
         $this->authorize('export', $this);
-    
+        
         $this->setupParams($request)
             ->setupQuery();
         
-        /** @var Collection $data */
-        $data = $this->query->get();
-        
-        $service = new Reporte($data, Presentismo::class);
+        $service = new Reporte($this->query, Presentismo::class);
         try {
             $service->execute();
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
+            
             return redirect(route('reportesPresentismoGeneralIndex'));
         }
     }

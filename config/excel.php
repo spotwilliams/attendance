@@ -22,7 +22,7 @@ return array(
         | memory|gzip|serialized|igbinary|discISAM|apc|memcache|temp|wincache|sqlite|sqlite3
         |
         */
-        'driver'   => 'igbinary',
+        'driver'   => 'sqlite',
 
         /*
         |--------------------------------------------------------------------------
@@ -32,7 +32,7 @@ return array(
         'settings' => array(
 
             'memoryCacheSize' => '4096MB',
-            'cacheTime'       => 600
+            'cacheTime'       => 6000
 
         ),
 
@@ -54,7 +54,7 @@ return array(
         |--------------------------------------------------------------------------
         */
 
-        'dir'      => storage_path('cache')
+        'dir'      => storage_path('app/cache')
     ),
 
     'properties' => array(

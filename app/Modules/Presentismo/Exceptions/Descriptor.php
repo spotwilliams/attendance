@@ -14,6 +14,7 @@ class Descriptor extends MainDescriptor
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
+    const FECHA_FUTURA = 8000;
     
     
     public static function contratoInactivo()
@@ -67,6 +68,17 @@ class Descriptor extends MainDescriptor
         }
         
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
+    }
+    
+    public static function fechaFutura()
+    {
+        if (!isset(self::$errorMap[Descriptor::FECHA_FUTURA])) {
+            self::$errorMap[Descriptor::FECHA_FUTURA]
+                = new Descriptor(Descriptor::FECHA_FUTURA,
+                'La fecha es mayor a la de hoy');
+        }
+        
+        return self::$errorMap[Descriptor::FECHA_FUTURA];
     }
     
     public static function presentismoNoSeJustifica()

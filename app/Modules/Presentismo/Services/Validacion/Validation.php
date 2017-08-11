@@ -10,10 +10,9 @@ namespace Cat\Modules\Presentismo\Services\Validacion;
 
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Validation\Rules\NoEsFuturo;
 use Cat\Modules\Service;
 use Cat\Modules\Validation\Rules\Ausente;
-use Cat\Modules\Validation\Rules\ContratoActivo;
-use Cat\Modules\Validation\Rules\ContratoLocacion;
 use Cat\Modules\Validation\Rules\PeriodoActivo;
 use Cat\Modules\Validation\Rules\Presente;
 use Cat\Modules\Validation\Rules\Rule;
@@ -46,6 +45,9 @@ class Validation extends Service
             // Revision de tipo de contratos y periodo
             (
                 $this->rulesExecuter(PeriodoActivo::class)
+                and
+                $this->rulesExecuter(NoEsFuturo::class)
+            
             )
             and
             // Reviso los tipos de Presentismo
