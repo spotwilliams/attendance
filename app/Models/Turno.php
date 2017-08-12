@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Cat\Modules\Security\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -35,5 +36,10 @@ class Turno extends Model
     public function esFinDeSemana()
     {
         return in_array($this->codigo, $this->finSemana);
+    }
+    
+    public function roles()
+    {
+        return $this->belongsToMany(Role::class, 'turno_roles', 'turno_id', 'role_id');
     }
 }

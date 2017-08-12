@@ -2,7 +2,7 @@
 
 namespace Cat\Models;
 
-use Cat\Security\Models\Role;
+use Cat\Modules\Security\Models\Role;
 use Illuminate\Database\Eloquent\Model;
 
 

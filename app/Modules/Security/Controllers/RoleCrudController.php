@@ -3,6 +3,7 @@
 namespace Cat\Modules\Security\Controllers;
 
 use Cat\Models\Base;
+use Cat\Models\Turno;
 use Cat\Modules\Security\Controllers\Crud\CrudController;
 // VALIDATION
 use Cat\Modules\Security\Models\Permission;
@@ -43,6 +44,15 @@ class RoleCrudController extends CrudController
                 'model'     => Base::class, // foreign key model
                 'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
             ],
+            [
+                'label'     => 'Turnos asignados',
+                'type'      => 'select_multiple',
+                'name'      => 'turnos', // the method that defines the relationship in your Model
+                'entity'    => 'turnos', // the method that defines the relationship in your Model
+                'attribute' => 'codigo', // foreign key attribute that is shown to user
+                'model'     => Turno::class, // foreign key model
+                'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
+            ],
         ]);
         
         $this->crud->addField([
@@ -71,15 +81,16 @@ class RoleCrudController extends CrudController
             'pivot'     => true,
         ]);
         
-        if (config('backpack.permissionmanager.allow_role_create') == false) {
-            $this->crud->denyAccess('create');
-        }
-        if (config('backpack.permissionmanager.allow_role_update') == false) {
-            $this->crud->denyAccess('update');
-        }
-        if (config('backpack.permissionmanager.allow_role_delete') == false) {
-            $this->crud->denyAccess('delete');
-        }
+        $this->crud->addField([
+            'label'     => 'Turnos con los que puede trabajar',
+            'type'      => 'checklist',
+            'name'      => 'turnos',
+            'entity'    => 'turnos',
+            'attribute' => 'codigo',
+            'model'     => Turno::class,
+            'pivot'     => true,
+        ]);
+        
     }
     
     public function store(StoreRequest $request)
