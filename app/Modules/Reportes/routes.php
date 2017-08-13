@@ -10,6 +10,8 @@
 */
 use Illuminate\Support\Facades\Route;
 use Cat\Modules\Reportes\Controllers\Presentismos\General as PresentismosGeneral;
+use Cat\Modules\Reportes\Controllers\Presentismos\Individual as PresentismosIndividual;
+use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as PresentismosIndividualSearch;
 use Cat\Modules\Reportes\Controllers\Presentismos\Exportar as PresentismoExport;
 use Cat\Modules\Reportes\Controllers\Agentes\General as AgentesGeneral;
 use Cat\Modules\Reportes\Controllers\Agentes\Exportar as AgentesExport;
@@ -41,6 +43,23 @@ Route::group(
         
         Route::post('reportes/presentismo/general/export', PresentismoExport::class . '@export')
             ->name('reportesPresentismoGeneralExport');
-        
+        /**
+         * Individuales
+         */
+        // Muestra el index
+        Route::get('reportes/presentismo/individual', PresentismosIndividualSearch::class . '@index')
+            ->name('reportesPresentismoIndividualIndex');
+    
+        // Busca
+        Route::post('reportes/presentismo/individual/search/agente', PresentismosIndividualSearch::class . '@search')
+            ->name('reportesPresentismoIndividualSearch');
+
+        // Reporte
+        Route::post('reportes/presentismo/individual/search/presentismo', PresentismosIndividual::class . '@reporte')
+            ->name('reportesPresentismoIndividualReportePresentismos');
+    
+        // Descarga
+        Route::post('reportes/presentismo/individual/export', PresentismosIndividual::class . '@export')
+            ->name('reportesPresentismoIndividualExport');
     }
 );

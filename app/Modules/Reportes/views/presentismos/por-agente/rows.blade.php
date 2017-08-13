@@ -1,30 +1,42 @@
-<div class="input-group">
-    <div class="input-group-addon">
-        <i class="fa fa-calendar"></i>
-    </div>
-    <input type="text" class="form-control pull-right" id="rango" readonly>
-    <input type="hidden" name="desde" class="form-control pull-right" id="desde" readonly>
-    <input type="hidden" name="hasta" class="form-control pull-right" id="hasta" readonly>
-</div>
+@foreach ($agentes as $agente)
+    <tr>
+        <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
+        <td>{{$agente->cuit}}</td>
+        <td>@if(isset($agente->operativo))
+                {{$agente->operativo->base->nombre}}
+            @endif
+        </td>
+        <td>
+            <div class="input-group">
+                <div class="input-group-addon">
+                    <i class="fa fa-calendar"></i>
+                </div>
+                <input type="text" class="form-control pull-right rango" readonly>
+            </div>
+        </td>
+
+        <td>
+            {{ Form::open(['route' => 'reportesPresentismoIndividualReportePresentismos', 'method' => 'POST'])}}
+
+            <input type="hidden" name="desde" class="desde">
+            <input type="hidden" name="hasta" class="hasta">
+            <input type="hidden" name="agente" value="{{$agente->id}}">
+            {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true) !!}
+            {{ Form::submit('Reporte', ['class' => 'btn btn-primary']) }}
+
+            {{ Form::close() }}
+        </td>
+    </tr>
+@endforeach
+
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-//            var today = moment();
-                    @if(isset($desde) and $desde !== null)
-            var startDate = moment('{{$desde->format('Ymd')}}', 'YYYYMMDD');
-                    @else
             var startDate = moment().subtract(5, 'day');
-                    @endif
-
-                    @if(isset($desde) and $hasta !== null)
-            var endDate = moment('{{$hasta->format('Ymd')}}', 'YYYYMMDD');
-                    @else
             var endDate = moment().add(5, 'day');
-            @endif
-            $('#desde').val(startDate.format('Y-MM-DD'));
-            $('#hasta').val(endDate.format('Y-MM-DD'));
-            $('select').selectpicker({});
-            $('#rango').daterangepicker({
+            $('.desde').val(startDate.format('Y-MM-DD'));
+            $('.hasta').val(endDate.format('Y-MM-DD'));
+            $('.rango').daterangepicker({
                     locale: {
                         format: 'DD/MM/YYYY',
                         separator: " - ",
@@ -57,19 +69,17 @@
                             "Diciembre"
                         ],
                     },
-                    dateLimit: {
-                        days: 31
-                    },
-                    showDropdowns: true,
                     startDate: startDate.format('DD/MM/Y'),
                     endDate: endDate.format('DD/MM/Y'),
-                    maxDate: moment(),
+                    dateLimit: {
+                        days: 365
+                    },
                     opens: 'center',
-
                 },
                 function (start, end, label) {
-                    $('#desde').val(start.format('Y-MM-DD'));
-                    $('#hasta').val(end.format('Y-MM-DD'));
+                    console.log($(this))
+                    $('.desde').val(start.format('Y-MM-DD'));
+                    $('.hasta').val(end.format('Y-MM-DD'));
                 });
 
         })

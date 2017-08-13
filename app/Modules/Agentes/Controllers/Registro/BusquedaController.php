@@ -31,7 +31,7 @@ class BusquedaController extends AppBaseController
      */
     public function search(Request $request)
     {
-        $this->authorize('search', $this);
+//        $this->authorize('search', $this);
         
         $input = Input::get('search');
         

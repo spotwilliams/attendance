@@ -115,13 +115,19 @@
         <li>
             <a href="{!! route('reportesPresentismoGeneralIndex') !!}">
                 <i class="fa fa-check"></i>
-                <span>Asistencias</span>
+                <span>Presentismo</span>
             </a>
         </li>
         <li>
             <a href="{!! route('reportesAgentesGeneralIndex') !!}">
                 <i class="fa fa-user-secret"></i>
-                <span>Agentes</span>
+                <span>Datos personales</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('reportesPresentismoIndividualIndex') !!}">
+                <i class="fa fa-calendar"></i>
+                <span>Licencias</span>
             </a>
         </li>
     </ul>
