@@ -11,18 +11,18 @@ class GeneralPolicy extends SecurityPolicy
     public function index(User $user)
     {
         return (
-            $this->verifyOnlyControllerPermission($user, 'Registrar presentismo')
-            or
             $this->verifyOnlyControllerPermission($user, 'Modificar presentismo')
+            or
+            $this->verifyOnlyControllerPermission($user, 'Cargar presentismo individual')
         );
     }
     
     public function prepareListaAgentes(User $user)
     {
         return (
-            $this->verifyOnlyControllerPermission($user, 'Registrar presentismo')
-            or
             $this->verifyOnlyControllerPermission($user, 'Modificar presentismo')
+            or
+            $this->verifyOnlyControllerPermission($user, 'Cargar presentismo individual')
         );
     }
 }

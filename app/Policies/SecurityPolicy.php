@@ -12,6 +12,12 @@ abstract class SecurityPolicy
 {
     use HandlesAuthorization;
     
+    protected $specialPermissions;
+    
+    public function __construct(array $specialPermissions = [])
+    {
+        $this->specialPermissions = $specialPermissions;
+    }
     
     protected function findPermission($name)
     {

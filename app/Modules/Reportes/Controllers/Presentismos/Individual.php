@@ -41,7 +41,7 @@ class Individual extends ReporteController
      */
     public function reporte(Request $request)
     {
-//        $this->authorize('search', $this);
+        $this->authorize('reporte', $this);
         
         $this->setupParams($request)
             ->setupQuery();
@@ -60,7 +60,8 @@ class Individual extends ReporteController
     
     public function export(Request $request)
     {
-        
+        $this->authorize('export', $this);
+
         $this->setupParams($request)
             ->setupQuery();
         

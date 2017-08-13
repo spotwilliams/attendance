@@ -10,12 +10,12 @@ class ReportePolicy extends SecurityPolicy
     
     public function index(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Reporte personal');
+        return $this->verifyOnlyControllerPermission($user, 'Ver y Exportar Reportes');
     }
     
     public function search(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Reporte personal');
+        return $this->verifyOnlyControllerPermission($user, 'Ver y Exportar Reportes');
     }
     
 }

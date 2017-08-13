@@ -9,11 +9,11 @@ class ReportePolicy extends SecurityPolicy
 {
     public function reporte(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Reporte haberes');
+        return $this->verifyOnlyControllerPermission($user, 'Calcular haberes');
     }
     
     public function reportePreliminar(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Reporte haberes');
+        return $this->verifyOnlyControllerPermission($user, 'Calcular haberes');
     }
 }

@@ -9,12 +9,14 @@ class GeneralPolicy extends SecurityPolicy
 {
     public function index(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Listar personal por base');
+        return true;
+//        return $this->verifyOnlyControllerPermission($user, 'Alta individual personal');
     }
     
     
     public function show(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Ver ficha de personal');
+        return true;
+//        return $this->verifyOnlyControllerPermission($user, 'Alta individual personal');
     }
 }

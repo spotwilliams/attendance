@@ -9,38 +9,25 @@ class GeneralPolicy extends SecurityPolicy
 {
     public function selectBase(User $user)
     {
-        return (
-            $this->verifyOnlyControllerPermission($user, 'Reporte haberes')
-            or
-            $this->verifyOnlyControllerPermission($user, 'Cerrar periodo')
-        );
+        return $this->verifyOnlyControllerPermission($user, 'Calcular haberes');
     }
     
     
     public function selectPeriodo(User $user)
     {
-        return (
-            $this->verifyOnlyControllerPermission($user, 'Reporte haberes')
-            or
-            $this->verifyOnlyControllerPermission($user, 'Cerrar periodo')
-        );
+        return $this->verifyOnlyControllerPermission($user, 'Calcular haberes');
+        
     }
     
     public function prepareListaAgentes(User $user)
     {
-        return (
-            $this->verifyOnlyControllerPermission($user, 'Reporte haberes')
-            or
-            $this->verifyOnlyControllerPermission($user, 'Cerrar periodo')
-        );
+        return $this->verifyOnlyControllerPermission($user, 'Calcular haberes');
+        
     }
     
     public function listaAgentes(User $user)
     {
-        return (
-            $this->verifyOnlyControllerPermission($user, 'Reporte haberes')
-            or
-            $this->verifyOnlyControllerPermission($user, 'Cerrar periodo')
-        );
+        return $this->verifyOnlyControllerPermission($user, 'Calcular haberes');
+        
     }
 }

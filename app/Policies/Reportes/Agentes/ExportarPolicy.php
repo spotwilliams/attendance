@@ -10,7 +10,7 @@ class ExportarPolicy extends SecurityPolicy
     
     public function export(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Exportar reporte personal');
+        return $this->verifyOnlyControllerPermission($user, 'Ver y Exportar Reportes');
     }
     
 }

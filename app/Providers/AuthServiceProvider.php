@@ -51,16 +51,16 @@ use Cat\Policies\Reportes\Agentes\ReportePolicy as AgentesReportePolicy;
 use Cat\Policies\Reportes\Agentes\ExportarPolicy as AgentesExportarReportePolicy;
 use Cat\Policies\Reportes\Presentismos\ReportePolicy as PresentismosReportePolicy;
 use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarReportePolicy;
+use Cat\Modules\Reportes\Controllers\Presentismos\Individual as ReporteIndividual;
+use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as ReporteIndividualSearch;
+use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
 
 // Configuracion
 use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
 use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
 use Cat\Modules\Configuracion\Turnos\Controllers\CrudController as TurnosCrud;
 use Cat\Modules\Configuracion\TipoPresentismos\Controllers\CrudController as TipoPresentismosCrud;
-use Cat\Policies\Configuracion\Areas\CrudPolicy as AreasCrudPolicy;
-use Cat\Policies\Configuracion\Bases\CrudPolicy as BasesCrudPolicy;
-use Cat\Policies\Configuracion\Turnos\CrudPolicy as TurnosCrudPolicy;
-use Cat\Policies\Configuracion\TipoPresentismo\CrudPolicy as TipoPresentismosCrudPolicy;
+use Cat\Policies\Configuracion\Areas\ConfiguracionPolicy;
 
 // Seguridad
 use Cat\Modules\Security\Controllers\PermissionCrudController;
@@ -69,6 +69,7 @@ use Cat\Modules\Security\Controllers\UserCrudController;
 use Cat\Policies\Security\PermissionCrudPolicy;
 use Cat\Policies\Security\RolCrudPolicy;
 use Cat\Policies\Security\UserCrudPolicy;
+use Cat\Policies\Configuracion\Areas\ConfiguracionPermisosPolicy;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
@@ -93,20 +94,28 @@ class AuthServiceProvider extends ServiceProvider
             PresentismoPorAgente::class        => PorAgentePolicy::class,
             RegistroPresentismo::class         => RegistroPresentismoPolicy::class,
             JustificacionController::class     => JustificacionPolicy::class,
+            
             HaberesGeneral::class              => HaberesGeneralPolicy::class,
             HaberesReporte::class              => HaberesReportePolicy::class,
             HaberesConfirmar::class            => HaberesConfirmarPolicy::class,
+            
             ReporteAgentes::class              => AgentesReportePolicy::class,
             ReportePresentismos::class         => PresentismosReportePolicy::class,
+            
             ExportarReporteAgentes::class      => AgentesExportarReportePolicy::class,
             ExprotarReportePresentismos::class => PresentismosExportarReportePolicy::class,
-            AreasCrud::class                   => AreasCrudPolicy::class,
-            BasesCrud::class                   => BasesCrudPolicy::class,
-            TurnosCrud::class                  => TurnosCrudPolicy::class,
-            PermissionCrudController::class    => PermissionCrudPolicy::class,
-            RoleCrudController::class          => RolCrudPolicy::class,
-            UserCrudController::class          => UserCrudPolicy::class,
-            TipoPresentismosCrud::class        => TipoPresentismosCrudPolicy::class,
+            
+            AreasCrud::class                   => ConfiguracionPolicy::class,
+            BasesCrud::class                   => ConfiguracionPolicy::class,
+            TurnosCrud::class                  => ConfiguracionPolicy::class,
+            TipoPresentismosCrud::class        => ConfiguracionPolicy::class,
+            
+            PermissionCrudController::class    => ConfiguracionPermisosPolicy::class,
+            RoleCrudController::class          => ConfiguracionPermisosPolicy::class,
+            UserCrudController::class          => ConfiguracionPermisosPolicy::class,
+            
+            ReporteIndividual::class           => IndividualPolicy::class,
+            ReporteIndividualSearch::class     => IndividualPolicy::class,
         
         
         ];

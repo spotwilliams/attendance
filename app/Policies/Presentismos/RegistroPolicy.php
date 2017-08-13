@@ -10,7 +10,7 @@ class RegistroPolicy extends SecurityPolicy
     
     public function store(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Registrar presentismo');
+        return $this->verifyOnlyControllerPermission($user, 'Cargar presentismo individual');
     }
     
     public function update(User $user)
@@ -20,7 +20,12 @@ class RegistroPolicy extends SecurityPolicy
     
     public function comentario(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Comentar presentismo');
+        return (
+            $this->verifyOnlyControllerPermission($user, 'Cargar presentismo individual')
+            or
+            $this->verifyOnlyControllerPermission($user, 'Modificar presentismo')
+        );
+//        return $this->verifyOnlyControllerPermission($user, 'Comentar presentismo');
     }
-
+    
 }

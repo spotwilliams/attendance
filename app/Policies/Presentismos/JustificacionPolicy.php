@@ -11,12 +11,12 @@ class JustificacionPolicy extends SecurityPolicy
     public function justificar(User $user)
     {
         return $this->verifyOnlyControllerPermission($user, 'Justificar presentismo');
-    
+        
     }
     
     public function injustificar(User $user)
     {
-        return $this->verifyOnlyControllerPermission($user, 'Injustificar presentismo');
-    
+        return $this->verifyOnlyControllerPermission($user, 'Justificar presentismo');
+        
     }
 }

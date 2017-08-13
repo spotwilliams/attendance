@@ -18,12 +18,16 @@ class IndividualSearch extends BusquedaController
     
     public function index(Request $request)
     {
+        $this->authorize('index', $this);
+        
         return view('Reportes::presentismos.por-agente.index')
             ->with('agentes', Agente::where('id', '=', -1)->paginate(25));
     }
     
     public function search(Request $request)
     {
+        $this->authorize('search', $this);
+        
         /** @var View $result */
         $result = parent::search($request);
         /** @var LengthAwarePaginator $agentes */

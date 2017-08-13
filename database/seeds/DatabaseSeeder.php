@@ -21,7 +21,7 @@ use Cat\Database\Security\RolSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 2500;
+    const SIZE_AGENTE = 500;
     const SIZE_AREAS  = 10;
     
     /**
