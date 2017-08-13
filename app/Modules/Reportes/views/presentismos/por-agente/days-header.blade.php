@@ -3,8 +3,8 @@
 <th>CUIT</th>
 <th>Base</th>
 <th>Turno</th>
-<th>&Aacute;rea</th>
-<th>Tipo de contrato</th>
+{{--<th>&Aacute;rea</th>--}}
+{{--<th>Tipo de contrato</th>--}}
 
 <?php
 $presentismos = $agentes->get(0)->presentismos->keyBy('fecha');

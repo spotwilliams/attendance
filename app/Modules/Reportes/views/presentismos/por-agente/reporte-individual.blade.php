@@ -14,15 +14,14 @@ if (!isset($agentes)) {
         @include('flash::message')
 
         <div class="clearfix"></div>
+        @include('Reportes::presentismos.por-agente.resumen')
+
+        <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header with-border">
                 <h3 class="box-title">Reporte de asistencias</h3>
             </div>
             <div class="box-body">
-                <div class="col-md-12 col-xs-12 col-lg-12">
-                    {{--@include('Reportes::presentismos.form-general')--}}
-                </div>
-                <hr/>
                 <div class="col-md-12 col-xs-12 table-responsive">
 
                     <table class="table table-hover">
@@ -42,6 +41,9 @@ if (!isset($agentes)) {
                 @endif
             </div>
         </div>
+
+
+
     </div>
 @endsection
 
