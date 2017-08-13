@@ -13,6 +13,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
+use Cat\Modules\Reportes\Services\Formatters\Presentismo;
+use Cat\Modules\Reportes\Services\Reporte;
+use Laracasts\Flash\Flash;
 
 class Individual extends ReporteController
 {
@@ -53,6 +56,22 @@ class Individual extends ReporteController
             ->with('links', $this->getLinksLikeForm($return, $request))
             ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoIndividualExport'));
         
+    }
+    
+    public function export(Request $request)
+    {
+        
+        $this->setupParams($request)
+            ->setupQuery();
+        
+        $service = new Reporte($this->query, Presentismo::class, true);
+        try {
+            $service->execute();
+        } catch (\Exception $e) {
+            Flash::error($e->getMessage());
+            
+            return redirect(route('reportesPresentismoIndividualIndex'));
+        }
     }
     
     protected function setupParams(Request $request)

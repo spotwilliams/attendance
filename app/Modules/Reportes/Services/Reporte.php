@@ -15,16 +15,18 @@ class Reporte extends Service
     /** @var  Builder */
     protected $eloquent;
     protected $rowFormatter;
+    protected $includeResume;
     
     /**
      * Reporte constructor.
      * @param Builder $eloquent
      * @param string $whoDecideWhatToShow Class name of formmater Must be RowDataFormatter
      */
-    public function __construct(Builder $eloquent, $whoDecideWhatToShow)
+    public function __construct(Builder $eloquent, $whoDecideWhatToShow, $includeResume = false)
     {
-        $this->eloquent     = $eloquent;
-        $this->rowFormatter = new $whoDecideWhatToShow();
+        $this->eloquent      = $eloquent;
+        $this->rowFormatter  = new $whoDecideWhatToShow();
+        $this->includeResume = $includeResume;
     }
     
     
@@ -36,13 +38,7 @@ class Reporte extends Service
         Excel::create('Reporte', function ($writer) {
             /** @var LaravelExcelWriter $writer */
             $writer->sheet('Reporte', function ($sheet) {
-
-//                /** @var  LaravelExcelWorksheet $sheet */
-//                $data = [];
-//                foreach ($this->eloquent as $model) {
-//                    $data [] = $this->rowFormatter->format($model);
-//                }
-//                $sheet->fromArray($data);
+                
                 /** @var Paginator $models */
                 $page = 1;
                 do {
@@ -55,23 +51,54 @@ class Reporte extends Service
                     }
                     $sheet->fromArray($data);
                     
-//                    die('hola');
                 } while ($models->hasMorePages());
-//                $this->eloquent->chunk(500, function ($models) use ($sheet) {
-//                    /** @var Agente $model */
-//                    $data = [];
-//                    dd($models);
-//                    foreach ($models as $model) {
-//                        $data [] = $this->rowFormatter->format($model);
-//                    }
-//                    $sheet->fromArray($data);
-//
-//                });
-                
             });
+            
+            if ($this->includeResume) {
+                $writer->sheet('Resumen', function ($sheet) {
+                    $models  = $this->eloquent->get();
+                    $resumen = [];
+                    foreach ($models as $model) {
+                        
+                        $resumen[$model->id]
+                        ['presentismos']
+                                                      = $model->presentismos->groupBy(
+                            function ($presentismo, $key) {
+                                if ($presentismo->injustificado == true) {
+                                    $name = '_injustificados';
+                                } else {
+                                    $name = '_justificados';
+                                    
+                                }
+                                
+                                return $presentismo->tipoPresentismo->codigo . $name;
+                            });
+                        $resumen[$model->id]['owner'] = $model;
+                        
+                    }
+                    $data = [];
+                    foreach ($resumen as $item) {
+                        $agente       = $item['owner'];
+                        $temp         = [
+                            'nombre' => $agente->nombre . ', ' . $agente->apellido,
+                            'cuit'   => $agente->cuit,
+                            'base'   => $agente->operativo->base->nombre,
+                            'turno'  => $agente->operativo->turno->codigo,
+                        ];
+                        $presentismos = $item['presentismos']->toArray();
+
+                        foreach ($presentismos as $codigo => $dias) {
+                            $temp[$codigo] = count($dias);
+                        }
+                        $data [] = $temp;
+                    }
+                    $sheet->fromArray($data);
+                });
+                
+            }
         })->export('xls');
-        
-    }
+    
+}
     
     
 }
