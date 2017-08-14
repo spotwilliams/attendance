@@ -3,7 +3,10 @@
 namespace Cat\Providers;
 
 // Crud Agentes
+use Cat\Models\Agente;
+use Cat\Models\TipoPresentismo;
 use Cat\Policies\RequestGatePolicy;
+use Cat\Policies\TipoPresentismoGatePolicy;
 use Cat\User;
 use function foo\func;
 use Illuminate\Auth\Access\AuthorizationException;
@@ -72,9 +75,6 @@ use Cat\Modules\Security\Controllers\PermissionCrudController;
 use Cat\Modules\Security\Controllers\RoleCrudController;
 use Cat\Modules\Security\Controllers\UserCrudController;
 use Cat\Policies\RequestPolicy;
-use Cat\Policies\Security\PermissionCrudPolicy;
-use Cat\Policies\Security\RolCrudPolicy;
-use Cat\Policies\Security\UserCrudPolicy;
 use Cat\Policies\Configuracion\Areas\ConfiguracionPermisosPolicy;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -158,6 +158,13 @@ class AuthServiceProvider extends ServiceProvider
             } catch (AuthorizationException $e) {
                 abort(403);
             }
+        });
+        
+        Gate::define('work-licencia', function (User $user, Agente $agente, TipoPresentismo $tipo) {
+            
+            $policy = new TipoPresentismoGatePolicy();
+            
+            return $policy->licencia($user, $agente, $tipo);
         });
     }
 }

@@ -22,7 +22,7 @@ use Cat\Database\Security\RolSeeder;
 class DatabaseSeeder extends Seeder
 {
     const SIZE_AGENTE = 500;
-    const SIZE_AREAS  = 10;
+//    const SIZE_AREAS  = 10;
     
     /**
      * Run the database seeds.
@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
     private function agentes()
     {
         $this->call(AgentesSeeder::class);
-        $this->call(PresentismoSeeder::class);
+//        $this->call(PresentismoSeeder::class);
         $this->call(EstudiosSeeder::class);
     }
     

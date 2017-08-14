@@ -20,6 +20,7 @@ use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
 
 class JustificacionController extends AppBaseController
@@ -40,7 +41,17 @@ class JustificacionController extends AppBaseController
         try {
             try {
                 $this->authorize('justificar', $this);
+                /** @var Presentismo $presentismo */
+                $presentismo = Presentismo::with('tipoPresentismo')->findOrFail($request->input('id'));
+                
+                $agente = Agente::findOrFail($request->input('id_agente'));
+                
+                if (!Gate::allows('work-licencia', [$agente, $presentismo->tipoPresentismo])) {
+                    throw new AuthorizationException('No tiene acceso a la licencia especificada');
+                }
+                
             } catch (AuthorizationException $e) {
+
                 $presentismo = Presentismo::findOrFail($request->input('id'));
                 
                 return Response::json([
@@ -53,9 +64,7 @@ class JustificacionController extends AppBaseController
                 ], 403);
             }
             
-            /** @var Presentismo $presentismo */
-            $presentismo = Presentismo::findOrFail($request->input('id'));
-            $service     = new Justificar($presentismo);
+            $service = new Justificar($presentismo);
             
             $service->execute();
             
@@ -103,8 +112,15 @@ class JustificacionController extends AppBaseController
         try {
             try {
                 $this->authorize('injustificar', $this);
+                /** @var Presentismo $presentismo */
+                $presentismo = Presentismo::with('tipoPresentismo')->findOrFail($request->input('id'));
+    
+                $agente = Agente::findOrFail($request->input('id_agente'));
+                if (!Gate::allows('work-licencia', [$agente, $presentismo->tipoPresentismo])) {
+                    throw new AuthorizationException('No tiene acceso a la licencia especificada');
+                }
             } catch (AuthorizationException $e) {
-                dd($e);
+                
                 $presentismo = Presentismo::findOrFail($request->input('id'));
                 
                 return Response::json([
@@ -118,7 +134,7 @@ class JustificacionController extends AppBaseController
             }
             
             /** @var Presentismo $presentismo */
-            $presentismo = Presentismo::findOrFail($request->input('id'));
+//            $presentismo = Presentismo::findOrFail($request->input('id'));
             $service     = new Injustificar($presentismo);
             
             $service->execute();
