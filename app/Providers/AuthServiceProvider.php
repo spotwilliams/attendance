@@ -3,6 +3,11 @@
 namespace Cat\Providers;
 
 // Crud Agentes
+use Cat\Policies\RequestGatePolicy;
+use Cat\User;
+use function foo\func;
+use Illuminate\Auth\Access\AuthorizationException;
+use Illuminate\Http\Request;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
 use Cat\Modules\Agentes\Controllers\Registro\LaboralesController;
 use Cat\Modules\Agentes\Controllers\Registro\OperativosController;
@@ -66,6 +71,7 @@ use Cat\Policies\Configuracion\Areas\ConfiguracionPolicy;
 use Cat\Modules\Security\Controllers\PermissionCrudController;
 use Cat\Modules\Security\Controllers\RoleCrudController;
 use Cat\Modules\Security\Controllers\UserCrudController;
+use Cat\Policies\RequestPolicy;
 use Cat\Policies\Security\PermissionCrudPolicy;
 use Cat\Policies\Security\RolCrudPolicy;
 use Cat\Policies\Security\UserCrudPolicy;
@@ -73,6 +79,7 @@ use Cat\Policies\Configuracion\Areas\ConfiguracionPermisosPolicy;
 
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Foundation\Support\Providers\AuthServiceProvider as ServiceProvider;
+use Illuminate\Support\Facades\Gate;
 
 class AuthServiceProvider extends ServiceProvider
 {
@@ -83,40 +90,41 @@ class AuthServiceProvider extends ServiceProvider
      */
     protected $policies
         = [
-            BusquedaController::class          => SearchAgentePolicy::class,
-            LaboralesController::class         => CrudLaboralesPolicy::class,
-            OperativosController::class        => CrudOperativosPolicy::class,
-            PersonalesController::class        => CrudPersonalesPolicy::class,
-            AgentesGeneral::class              => GeneralPolicy::class,
-            AgenteMasivo::class                => AgenteMasivoPolicy::class,
-            PresentismoMasivo::class           => PresentismoMasivoPolicy::class,
-            PresentismoGeneral::class          => PresentismoGeneralPolicy::class,
-            PresentismoPorAgente::class        => PorAgentePolicy::class,
-            RegistroPresentismo::class         => RegistroPresentismoPolicy::class,
-            JustificacionController::class     => JustificacionPolicy::class,
+            BusquedaController::class      => SearchAgentePolicy::class,
+            LaboralesController::class     => CrudLaboralesPolicy::class,
+            OperativosController::class    => CrudOperativosPolicy::class,
+            PersonalesController::class    => CrudPersonalesPolicy::class,
+            AgentesGeneral::class          => GeneralPolicy::class,
+            AgenteMasivo::class            => AgenteMasivoPolicy::class,
+            PresentismoMasivo::class       => PresentismoMasivoPolicy::class,
+            PresentismoGeneral::class      => PresentismoGeneralPolicy::class,
+            PresentismoPorAgente::class    => PorAgentePolicy::class,
+            RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
+            JustificacionController::class => JustificacionPolicy::class,
             
-            HaberesGeneral::class              => HaberesGeneralPolicy::class,
-            HaberesReporte::class              => HaberesReportePolicy::class,
-            HaberesConfirmar::class            => HaberesConfirmarPolicy::class,
+            HaberesGeneral::class   => HaberesGeneralPolicy::class,
+            HaberesReporte::class   => HaberesReportePolicy::class,
+            HaberesConfirmar::class => HaberesConfirmarPolicy::class,
             
-            ReporteAgentes::class              => AgentesReportePolicy::class,
-            ReportePresentismos::class         => PresentismosReportePolicy::class,
+            ReporteAgentes::class      => AgentesReportePolicy::class,
+            ReportePresentismos::class => PresentismosReportePolicy::class,
             
             ExportarReporteAgentes::class      => AgentesExportarReportePolicy::class,
             ExprotarReportePresentismos::class => PresentismosExportarReportePolicy::class,
             
-            AreasCrud::class                   => ConfiguracionPolicy::class,
-            BasesCrud::class                   => ConfiguracionPolicy::class,
-            TurnosCrud::class                  => ConfiguracionPolicy::class,
-            TipoPresentismosCrud::class        => ConfiguracionPolicy::class,
+            AreasCrud::class            => ConfiguracionPolicy::class,
+            BasesCrud::class            => ConfiguracionPolicy::class,
+            TurnosCrud::class           => ConfiguracionPolicy::class,
+            TipoPresentismosCrud::class => ConfiguracionPolicy::class,
             
-            PermissionCrudController::class    => ConfiguracionPermisosPolicy::class,
-            RoleCrudController::class          => ConfiguracionPermisosPolicy::class,
-            UserCrudController::class          => ConfiguracionPermisosPolicy::class,
+            PermissionCrudController::class => ConfiguracionPermisosPolicy::class,
+            RoleCrudController::class       => ConfiguracionPermisosPolicy::class,
+            UserCrudController::class       => ConfiguracionPermisosPolicy::class,
             
-            ReporteIndividual::class           => IndividualPolicy::class,
-            ReporteIndividualSearch::class     => IndividualPolicy::class,
-        
+            ReporteIndividual::class       => IndividualPolicy::class,
+            ReporteIndividualSearch::class => IndividualPolicy::class,
+            
+            Request::class => RequestPolicy::class,
         
         ];
     
@@ -130,5 +138,26 @@ class AuthServiceProvider extends ServiceProvider
     {
         $this->registerPolicies($gate);
         
+        Gate::define('work-bases', function (User $user, array $basesIds) {
+            
+            try {
+                $policy = new RequestGatePolicy();
+                
+                return $policy->base($user, $basesIds);
+            } catch (AuthorizationException $e) {
+                abort(403);
+            }
+        });
+        
+        Gate::define('work-turnos', function (User $user, array $turnoIds) {
+            
+            try {
+                $policy = new RequestGatePolicy();
+                
+                return $policy->turno($user, $turnoIds);
+            } catch (AuthorizationException $e) {
+                abort(403);
+            }
+        });
     }
 }

@@ -53,6 +53,9 @@ class GeneralController extends AppBaseController
         
         $this->validate($request, ['base' => 'not_in:-1', 'turno' => 'not_in:-1']);
         
+        $this->authorize('base', $request);
+        $this->authorize('turno', $request);
+        
         $base  = Base::find($request->input('base'));
         $turno = Turno::find($request->input('turno'));
         

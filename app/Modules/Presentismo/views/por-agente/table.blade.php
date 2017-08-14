@@ -5,6 +5,7 @@
     {{--<th>DNI</th>--}}
     <th>CUIT</th>
     <th>Base</th>
+    <th>Turno</th>
     <th>Rango fechas</th>
     <th>Ir</th>
     </thead>

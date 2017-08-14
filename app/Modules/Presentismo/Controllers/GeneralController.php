@@ -10,6 +10,7 @@ use Cat\Models\Turno;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Repositories\PeriodoRepository;
+use Cat\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -48,19 +49,25 @@ class GeneralController extends AppBaseController
     
     public function prepareListaAgentes(Request $request)
     {
+        // Se autoriza la vista
         $this->authorize('prepareListaAgentes', $this);
+        // Se autorizan las bases
+        $this->authorize('base', $request);
+        // Se autorizan los turnos
+        $this->authorize('turno', $request);
+        
         $this->validate($request, [
-            'base'   => 'required|not_in:-1',
-//            'turnos' => 'required',
-            //            'areas'  => 'required',
+            'base' => 'required|not_in:-1',
         ]);
         
-        $input = $request->all();
+        $input  = $request->all();
+        // Se proveen los turnos autorizados
+        $turnos = UserRepository::getTurnosAllowed((isset($input['turnos']) ? $input['turnos'] : []));
         
         return $this->listaAgentes(
             $request,
             $input['base'],
-            (isset($input['turnos']) ? $input['turnos'] : []),
+            $turnos,
             (isset($input['areas']) ? $input['areas'] : []),
 //            $input['areas'],
             $input['desde'],
@@ -104,7 +111,7 @@ class GeneralController extends AppBaseController
             if (!empty($turnos)) {
                 $agentes->whereIn('operativos.id_turno', $turnos);
             }
-
+            
             if (!empty($areas)) {
                 $agentes->whereIn('operativos.id_area', $areas);
             }

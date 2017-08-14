@@ -45,9 +45,12 @@ class Registro extends AppBaseController
             'turno' => 'not_in:-1',
         
         ];
-        
         $this->validate($request, $rule);
-        
+
+        // Se autorizan las bases y turnos
+        $this->authorize('base', $request);
+        $this->authorize('turno', $request);
+    
         try {
             $input = $request->all();
             $base  = Base::findOrFail($input['base']);

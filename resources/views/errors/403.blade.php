@@ -4,6 +4,7 @@
 
 
     <section class="content">
+
         <div class="error-page">
             <div class="box-body">
                 <div class="jumbotron">
@@ -13,7 +14,9 @@
                 </div>
 
             </div>
+        @include('flash::message')
         </div>
+
     </section>
 
 @endsection

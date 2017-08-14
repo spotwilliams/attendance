@@ -6,6 +6,10 @@
                 {{$agente->operativo->base->nombre}}
             @endif
         </td>
+        <td>@if(isset($agente->operativo))
+                {{$agente->operativo->turno->codigo}}
+            @endif
+        </td>
         <td>
             <div class="input-group">
                 <div class="input-group-addon">

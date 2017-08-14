@@ -13,6 +13,8 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Input;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 
@@ -58,6 +60,10 @@ class PorAgenteController extends BusquedaController
             /** @var Agente $agente */
             $agente = Agente::findOrFail($input['agente']);
             $base   = $agente->base();
+            // Se autorizan las bases y turnos
+            Gate::allows('work-bases', [[$base->id]]);
+            Gate::allows('work-turnos', [[$agente->operativo()->first()->turno()->first()->id]]);
+            
             // Controlamos que solo existan 10 dias como maximo
             $dateRange = Calculation::prepareTenDaysDiff($input['desde'], $input['hasta']);
             // Repo

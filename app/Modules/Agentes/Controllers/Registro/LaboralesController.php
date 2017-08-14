@@ -10,7 +10,9 @@ use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Laborales as Update;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
@@ -37,7 +39,7 @@ class LaboralesController extends AppBaseController
     public function create($id)
     {
         $this->authorize('create', $this);
-    
+        
         $agente = Agente::find($id);
         
         if (empty($agente)) {
@@ -62,7 +64,7 @@ class LaboralesController extends AppBaseController
     public function store(Request $request)
     {
         $this->authorize('store', $this);
-    
+        
         $input = $request->all();
         
         $this->validate($request, Validation::getContratoRules($request));
@@ -101,11 +103,14 @@ class LaboralesController extends AppBaseController
     public function edit($id)
     {
         $this->authorize('edit', $this);
-    
-        /** @var Agente $agente */
-        $agente = Agente::find($id);
         
-        if (empty($agente)) {
+        try {
+            $agente = Agente::with('operativo.turno')
+                ->with('operativo.base')
+                ->findOrFail($id);
+            Gate::allows('work-bases', [[$agente->operativo->base->id]]);
+            Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
+        } catch (ModelNotFoundException $e) {
             Flash::error('Agente no encontrado');
             
             return redirect(route('agentesIndex', ['base' => 1]));
@@ -127,7 +132,7 @@ class LaboralesController extends AppBaseController
     public function update(Request $request)
     {
         $this->authorize('update', $this);
-    
+        
         $this->validate($request, Validation::getContratoRules($request));
         
         $input = $request->all();
@@ -168,7 +173,7 @@ class LaboralesController extends AppBaseController
     public function destroy($id)
     {
         $this->authorize('destroy', $this);
-    
+        
         $presentismo = $this->agenteRepository->findWithoutFail($id);
         
         if (empty($presentismo)) {

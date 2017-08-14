@@ -7,6 +7,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Masivo\Services\Agentes\Procesador;
 use Cat\Models\Base;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
+use Illuminate\Support\Facades\Gate;
 use Symfony\Component\HttpFoundation\File\Exception\FileNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Storage;
@@ -40,17 +41,19 @@ class Registro extends AppBaseController
     public function upload(Request $request)
     {
         $this->authorize('upload', $this);
-    
+        
         $rule = [
-            'archivo' => 'required|mimetypes:application/vnd.ms-excel',
+            'archivo' => 'required',
             'base'    => 'not_in:-1',
         
         ];
         $this->validate($request, $rule);
         
+        $input = $request->all();
+        $base  = Base::find($input['base']);
+        Gate::allows('work-bases', [[$base->id]]);
+        
         try {
-            $input   = $request->all();
-            $base    = Base::find($input['base']);
             $file    = $request->file('archivo');
             $service = new Procesador($base, $file);
             
@@ -66,7 +69,7 @@ class Registro extends AppBaseController
     public function downloadErrores(Request $request)
     {
         $this->authorize('downloadErrores', $this);
-    
+        
         try {
             return response()->download($request->input('file'));
         } catch (FileNotFoundException $e) {
@@ -81,7 +84,7 @@ class Registro extends AppBaseController
     public function downloadTemplate(Request $request)
     {
         $this->authorize('downloadTemplate', $this);
-    
+        
         return response()
             ->download(Storage::disk('masivos_template')
                     ->getDriver()
