@@ -262,7 +262,7 @@ $control = 0;
                                 @if($dom['constituido'] == true)
                                     Constituido
                                 @else
-                                    Nominal
+                                    Real
                                 @endif
                             </span>
                         </h4>
