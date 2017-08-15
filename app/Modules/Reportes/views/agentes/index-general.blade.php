@@ -59,37 +59,37 @@ if (!isset($agentes)) {
                 scrollCollapse: true,
                 fixedColumns:   true,
                 dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Datos personales',
-                        show: [0, 1, 2, 3, 5, 7],
-                        hide: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-                    },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Datos laborales',
-                        show: [8, 9, 10, 11, 12, 13, 14],
-                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-                    },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Datos operativos',
-                        show: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-                    },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Mostrar todo',
-                        show: ':hidden'
-                    },
-                ]
+//                buttons: [
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Datos personales',
+//                        show: [0, 1, 2, 3, 5, 7],
+//                        hide: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+//                    },
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Datos laborales',
+//                        show: [8, 9, 10, 11, 12, 13, 14],
+//                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
+//                    },
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Datos operativos',
+//                        show: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
+//                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
+//                    },
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Mostrar todo',
+//                        show: ':hidden'
+//                    },
+//                ]
             });
-            @if(isset($exportar))
-                var exportButton = $('{!! $exportar !!}');
-                exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
-                $('.dt-buttons').append(exportButton);
-            @endif
+            {{--@if(isset($exportar))--}}
+                {{--var exportButton = $('{!! $exportar !!}');--}}
+//                exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
+//                $('.dt-buttons').append(exportButton);
+            {{--@endif--}}
         })
     </script>
 @append

@@ -22,32 +22,49 @@ class General extends ReporteController
     /** @var  Collection */
     protected $areas;
     
-    /** @var  Turno */
-    protected $turno;
+    /** @var  Collection */
+    protected $turnos;
     
-    /** @var  Base */
-    protected $base;
+    /** @var  Collection */
+    protected $bases;
     
-    /** @var  \DateTime */
+    /** @var  array */
     protected $fechaContrato;
     
-    /** @var  TipoContrato */
-    protected $tipoContrato;
+    /** @var  array */
+    protected $fechaIngreso;
     
-    /** @var  EstadoContrato */
-    protected $estadoContrato;
+    /** @var  Collection */
+    protected $tipoContratos;
     
-    /** @var  Cargo */
-    protected $cargo;
+    /** @var  Collection */
+    protected $estadoContratos;
     
-    /** @var  Funcion */
+    /** @var  Collection */
+    protected $cargos;
+    
+    /** @var  Collection */
     protected $funcion;
     
+    /** @var  string */
+    protected $sexo;
+    
+    /** @var  Collection */
+    protected $nivelEstudio;
+    
+    /** @var  Collection */
+    protected $estadoEstudio;
+    
+    /** @var  Collection */
+    protected $gerencias;
+    
+    /** @var  Collection */
+    protected $iibbs;
     
     public function index()
     {
         $this->authorize('index', $this);
-    
+        
         return view('Reportes::agentes.index-general');
     }
     
@@ -60,7 +77,7 @@ class General extends ReporteController
     public function search(Request $request)
     {
         $this->authorize('search', $this);
-    
+        
         $this->setupParams($request)
             ->setupQuery();
         
@@ -69,33 +86,49 @@ class General extends ReporteController
         
         return View::make('Reportes::agentes.index-general')
             ->with('agentes', $return)
-            ->with('base', $this->base)
-            ->with('turno', $this->turno)
+            ->with('bases', $this->bases)
+            ->with('turnos', $this->turnos)
             ->with('areas', $this->areas)
             ->with('fechaContrato', $this->fechaContrato)
-            ->with('cargo', $this->cargo)
+            ->with('cargos', $this->cargos)
             ->with('funcion', $this->funcion)
-            ->with('tipoContrato', $this->tipoContrato)
-            ->with('estadoContrato', $this->estadoContrato)
+            ->with('tipoContratos', $this->tipoContratos)
+            ->with('estadoContratos', $this->estadoContratos)
+            ->with('iibbs', $this->iibbs)
+            ->with('gerencias', $this->gerencias)
+            ->with('nivel_estudios', $this->nivelEstudio)
+            ->with('estado_estudios', $this->estadoEstudio)
             ->with('links', $this->getLinksLikeForm($return, $request))
-            ->with('exportar', $this->getExportForm($return, $request, 'reportesAgentesGeneralExport'))
-            ;
+            ->with('exportar', $this->getExportForm($return, $request, 'reportesAgentesGeneralExport'));
         
     }
     
     protected function setupParams(Request $request)
     {
-        if (!$request->input('fechaContrato') === '') {
-            $this->fechaContrato = new \DateTime($request->input('fechaContrato'));
+        if ((!$request->input('fecha_contrato_desde') === '') and (!$request->input('fecha_contrato_hasta') === '')) {
+            $this->fechaContrato['desde'] = new \DateTime($request->input('fecha_contrato_desde'));
+            $this->fechaContrato['hasta'] = new \DateTime($request->input('fecha_contrato_hasta'));
         }
-        $this->areas          = new Collection($request->input('areas'));
-        $this->page           = (($request->input('page') !== null) ? $request->input('page') : 1);
-        $this->base           = Base::find($request->input('base'));
-        $this->turno          = Turno::find($request->input('turno'));
-        $this->cargo          = Cargo::find($request->input('cargo'));
-        $this->funcion        = Funcion::find($request->input('funcion'));
-        $this->tipoContrato   = TipoContrato::find($request->input('tipoContrato'));
-        $this->estadoContrato = EstadoContrato::find($request->input('estadoContrato'));
+        if ((!$request->input('fecha_contrato_desde') === '') and (!$request->input('fecha_ingreso_hasta') === '')) {
+            $this->fechaIngreso['desde'] = new \DateTime($request->input('fecha_ingreso_desde'));
+            $this->fechaIngreso['hasta'] = new \DateTime($request->input('fecha_ingreso_hasta'));
+        }
+        $this->nivelEstudio  = new Collection($request->input('nivel_estudios'));
+        $this->estadoEstudio = new Collection($request->input('estado_estudios'));
+        
+        $this->sexo      = (($request->input('sexo') == -1) ? null : $request->input('sexo'));
+        $this->bases     = new Collection($request->input('bases'));
+        $this->areas     = new Collection($request->input('areas'));
+        $this->turnos    = new Collection($request->input('turnos'));
+        $this->funcion   = new Collection($request->input('funcion'));
+        $this->cargos    = new Collection($request->input('cargos'));
+        $this->gerencias = new Collection($request->input('gerencias'));
+        $this->iibbs = new Collection($request->input('iibbs'));
+        
+        $this->tipoContratos   = new Collection($request->input('tipoContratos'));
+        $this->estadoContratos = new Collection($request->input('estadoContratos'));
+        
+        $this->page = (($request->input('page') !== null) ? $request->input('page') : 1);
         
         return $this;
     }
@@ -114,25 +147,33 @@ class General extends ReporteController
             ->with('contrato.tipoContrato')
             ->with('contrato.estadoContrato');
         
-        $this->query->leftJoin('operativos', function ($join) {
+        if ($this->sexo !== null) {
+            $this->query->where('sexo', '=', $this->sexo);
+        }
+        $this->query->join('operativos', function ($join) {
             /** @var JoinClause $join */
             $join->on('operativos.id_agente', '=', 'agentes.id');
-            if ($this->base !== null) {
+            if (!$this->bases->isEmpty()) {
                 $join
-                    ->where('id_base', '=', $this->base->id);
+                    ->whereIn('id_base', $this->bases->all());
             }
             
-            if ($this->turno !== null) {
+            if (!$this->turnos->isEmpty()) {
                 $join
-                    ->where('id_turno', '=', $this->turno->id);
+                    ->whereIn('id_turno', $this->turnos->all());
             }
-            if ($this->cargo !== null) {
+            if (!$this->cargos->isEmpty()) {
                 $join
-                    ->where('id_cargo', '=', $this->cargo->id);
+                    ->whereIn('id_cargo', $this->cargos->all());
             }
-            if ($this->funcion !== null) {
+            if (!$this->funcion->isEmpty()) {
                 $join
-                    ->where('id_funcion', '=', $this->funcion->id);
+                    ->whereIn('id_funcion', $this->funcion->all());
+            }
+            
+            if (!$this->gerencias->isEmpty()) {
+                $join
+                    ->whereIn('id_gerencia', $this->gerencias->all());
             }
             
             if (!$this->areas->isEmpty()) {
@@ -140,25 +181,50 @@ class General extends ReporteController
                     ->whereIn('id_area', $this->areas->all());
             }
             
+            
         });
         
         $this->query->leftJoin('contratos', function ($join) {
             /** @var JoinClause $join */
             $join->on('contratos.id_agente', '=', 'agentes.id');
             
+            if ($this->fechaIngreso !== null) {
+                $join
+                    ->whereDate('fecha_ingreso_gobierno', '<=', $this->fechaIngreso['desde'])
+                    ->whereDate('fecha_ingreso_gobierno', '>=', $this->fechaIngreso['hasta']);
+            }
             if ($this->fechaContrato !== null) {
                 $join
-                    ->whereDate('fecha_ingreso', '<=', $this->fechaContrato);
+                    ->whereDate('fecha_ingreso', '<=', $this->fechaContrato['desde'])
+                    ->whereDate('fecha_ingreso', '>=', $this->fechaContrato['hasta']);
             }
             
-            if ($this->tipoContrato !== null) {
+            if (!$this->tipoContratos->isEmpty()) {
                 $join
-                    ->where('id_tipo_contrato', '=', $this->tipoContrato->id);
+                    ->whereIn('id_tipo_contrato', $this->tipoContratos->all());
             }
             
-            if ($this->estadoContrato !== null) {
+            if (!$this->estadoContratos->isEmpty()) {
                 $join
-                    ->where('id_estado_contrato', '=', $this->estadoContrato->id);
+                    ->whereIn('id_estado_contrato', $this->estadoContratos->all());
+            }
+            if (!$this->iibbs->isEmpty()) {
+                $join
+                    ->whereIn('tipo_inscripcion', $this->iibbs->all());
+            }
+        });
+        
+        $this->query->leftJoin('estudios', function ($join) {
+            /** @var JoinClause $join */
+            $join->on('estudios.id_agente', '=', 'agentes.id');
+            
+            if (!$this->estadoEstudio->isEmpty()) {
+                $join
+                    ->whereIn('estado', $this->estadoEstudio->all());
+            }
+            if (!$this->nivelEstudio->isEmpty()) {
+                $join
+                    ->whereIn('nivel', $this->nivelEstudio->all());
             }
         });
         

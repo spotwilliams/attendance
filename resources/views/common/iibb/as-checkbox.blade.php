@@ -1,12 +1,17 @@
 <?php
-$areasToDraw = \Cat\Repositories\AreaRepository::getAll();
-/** @var \Illuminate\Support\Collection $areas */
-$aSelected   = (isset($areas) ? ($areas->toArray()) : []);
+$iibbsToDraw = [
+    'Regimen simplificado'  => 'R&eacute;gimen simplificado',
+    'Convenio multilareral' => 'Convenio multilareral',
+    'Regimen general'       => 'R&eacute;gimen general'
+];
+
+/** @var \Illuminate\Support\Collection $iibbs */
+$aSelected   = (isset($iibbs) ? ($iibbs->toArray()) : []);
 $col_label   = (isset($labelCol) ? $labelCol : 3);
 $col_content = (isset($contentCol) ? $contentCol : 9);
 ?>
 
-<div class="form-group @if($errors->has('areas')) has-error @endif">
+<div class="form-group @if($errors->has('iibbs')) has-error @endif">
     <label class="col-sm-{{$col_label}} col-xs-{{$col_label}} control-label">
         @if(isset($label))
             {{$label}}
@@ -16,39 +21,39 @@ $col_content = (isset($contentCol) ? $contentCol : 9);
     </label>
 
     <div class="col-sm-{{$col_content}} col-xs-{{$col_content}}">
-        @if($errors->has('areas'))
-            <span class="help-block">{{$errors->first('areas')}}</span>
+        @if($errors->has('iibbs'))
+            <span class="help-block">{{$errors->first('iibbs')}}</span>
         @endif
 
         <div class="box-tools col-md-12 pull-left">
-            <a class="btn btn-default all-areas">Marcar todas</a>
-            <a class="btn btn-default none-areas">Desmarcar todas</a>
+            <a class="btn btn-default all-iibbs">Marcar todas</a>
+            <a class="btn btn-default none-iibbs">Desmarcar todas</a>
             <button
                     class="btn btn-box-tool"
                     type="button"
                     data-toggle="collapse"
-                    data-target="#collapseAreas"
+                    data-target="#collapseiibbs"
                     aria-expanded="true"
                     aria-controls="collapseExample">
                 <i class="fa fa-minus"></i>/ <i class="fa fa-plus"></i>
             </button>
         </div>
 
-        <div class="collapse" id="collapseAreas">
+        <div class="collapse" id="collapseiibbs">
 
-            @foreach ($areasToDraw as $area)
+            @foreach ($iibbsToDraw as $key => $iibb)
                 <div class="checkbox checkbox-info checkbox-circle col-md-4 col-xs-6 col-lg-4">
                     <input type="checkbox"
-                           class="area-option"
-                           value="{{$area->id}}"
-                           id="chk_area_{{$area->id}}"
-                           name="areas[]"
-                           @if(in_array($area->id,$aSelected))
+                           class="iibb-option"
+                           value="{{$key}}"
+                           id="chk_iibb_{{$key}}"
+                           name="iibbs[]"
+                           @if(in_array($key, $aSelected))
                            checked
                             @endif
                     >
-                    <label for="chk_area_{{$area->id}}">
-                        {{$area->nombre}}
+                    <label for="chk_iibb_{{$key}}">
+                        {{$iibb}}
                     </label>
                 </div>
             @endforeach
@@ -58,11 +63,11 @@ $col_content = (isset($contentCol) ? $contentCol : 9);
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function (event, element) {
-            $('.all-areas').on('click', function () {
-                $('.area-option').prop('checked', true);
+            $('.all-iibbs').on('click', function () {
+                $('.iibb-option').prop('checked', true);
             })
-            $('.none-areas').on('click', function () {
-                $('.area-option').prop('checked', false);
+            $('.none-iibbs').on('click', function () {
+                $('.iibb-option').prop('checked', false);
             })
         })
     </script>

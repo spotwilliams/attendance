@@ -11,7 +11,7 @@ $col_content = (isset($contentCol) ? $contentCol : 9);
         @if(isset($label))
             {{$label}}
         @else
-            Seleccione la/las funciones *
+            Seleccione la/las funciones
         @endif
     </label>
 

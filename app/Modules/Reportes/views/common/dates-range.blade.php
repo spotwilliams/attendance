@@ -1,35 +1,29 @@
+<?php
+$desdeName = (isset($nombreCampo) ? $nombreCampo . '_desde' : 'desde');
+$hastaName = (isset($nombreCampo) ? $nombreCampo . '_hasta' : 'hasta')
+?>
+
 <div class="input-group">
     <div class="input-group-addon">
         <i class="fa fa-calendar"></i>
     </div>
-    <input type="text" class="form-control pull-right" id="rango" readonly>
-    <input type="hidden" name="desde" class="form-control pull-right" id="desde" readonly>
-    <input type="hidden" name="hasta" class="form-control pull-right" id="hasta" readonly>
+    <input type="text" class="form-control pull-right rango_{{$nombreCampo}}" readonly>
+    <input type="hidden" name="{{$desdeName}}" class="form-control pull-right" id="{{$desdeName}}" readonly>
+    <input type="hidden" name="{{$hastaName}}" class="form-control pull-right" id="{{$hastaName}}" readonly>
 </div>
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-//            var today = moment();
-                    @if(isset($desde) and $desde !== null)
-            var startDate = moment('{{$desde->format('Ymd')}}', 'YYYYMMDD');
-                    @else
             var startDate = moment().subtract(5, 'day');
-                    @endif
-
-                    @if(isset($desde) and $hasta !== null)
-            var endDate = moment('{{$hasta->format('Ymd')}}', 'YYYYMMDD');
-                    @else
             var endDate = moment().add(5, 'day');
-            @endif
-            $('#desde').val(startDate.format('Y-MM-DD'));
-            $('#hasta').val(endDate.format('Y-MM-DD'));
+
             $('select').selectpicker({});
-            $('#rango').daterangepicker({
+            $('.rango_{{$nombreCampo}}').daterangepicker({
                     locale: {
                         format: 'DD/MM/YYYY',
                         separator: " - ",
                         applyLabel: "Aplicar",
-                        cancelLabel: "Cancelar",
+                        cancelLabel: "Limpiar",
                         fromLabel: "Desde",
                         toLabel: "Hasta",
                         weekLabel: "W",
@@ -61,6 +55,7 @@
                         days: 31
                     },
                     showDropdowns: true,
+                    autoUpdateInput: false,
                     startDate: startDate.format('DD/MM/Y'),
                     endDate: endDate.format('DD/MM/Y'),
                     maxDate: moment(),
@@ -68,9 +63,21 @@
 
                 },
                 function (start, end, label) {
-                    $('#desde').val(start.format('Y-MM-DD'));
-                    $('#hasta').val(end.format('Y-MM-DD'));
+                    $('#{{$desdeName}}').val(start.format('Y-MM-DD'));
+                    $('#{{$hastaName}}').val(end.format('Y-MM-DD'));
                 });
+
+            $('.rango_{{$nombreCampo}}').on('apply.daterangepicker', function(ev, picker) {
+                $('#{{$desdeName}}').val(picker.startDate.format('Y-MM-DD'));
+                $('#{{$hastaName}}').val(picker.endDate.format('Y-MM-DD'));
+                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+            });
+
+            $('.rango_{{$nombreCampo}}').on('cancel.daterangepicker', function(ev, picker) {
+                $('#{{$desdeName}}').val('');
+                $('#{{$hastaName}}').val('');
+                $(this).val('');
+            });
 
         })
     </script>
