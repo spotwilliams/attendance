@@ -2,7 +2,6 @@
 
 namespace Cat\Database\Security;
 
-use Cat\Models\Agente;
 use Cat\Modules\Security\Models\Role;
 use Cat\User;
 use Illuminate\Database\Seeder;
@@ -17,7 +16,9 @@ class UsersTableSeeder extends Seeder
     public function run()
     {
         foreach ($this->getUsuariosAndPasswords() as $user) {
-            User::create($user);
+            $new = User::create($user);
+            $new->syncRoles(Role::findByName('Permisos full'));
+    
         }
         $user = User::create([
             'name'           => 'developer',

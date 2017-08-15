@@ -23,7 +23,9 @@ if (!isset($agentes)) {
             </div>
             <div class="box-body">
                 <div class="col-md-12 col-xs-12 table-responsive">
-
+                    @if(isset($exportar))
+                      {!! $exportar !!}
+                    @endif
                     <table class="table table-hover">
 
                         <thead>
@@ -50,41 +52,36 @@ if (!isset($agentes)) {
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('table').dataTable({
-                paging: false,
-                ordering: false,
-                info: false,
-                searching: false,
-                scrollY:        "700px",
-                scrollX:        true,
-                scrollCollapse: true,
-                fixedColumns:   true,
-                dom: 'Bfrtip',
-                buttons: [
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Datos personales',
-                        show: [0, 1],
-                        hide: [2, 3, 4, 5],
-                    },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Datos operativos',
-                        show: [2, 3, 4, 5],
-                        hide: [0, 1],
-                    },
-                    {
-                        extend: 'colvisGroup',
-                        text: 'Mostrar todo',
-                        show: ':hidden'
-                    },
-                ]
-            });
-                    @if(isset($exportar))
-            var exportButton = $('{!! $exportar !!}');
-            exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
-            $('.dt-buttons').append(exportButton);
-            @endif
+//            $('table').dataTable({
+//                paging: false,
+//                ordering: false,
+//                info: false,
+//                searching: false,
+//                scrollY:        "700px",
+//                scrollX:        true,
+//                scrollCollapse: true,
+//                fixedColumns:   true,
+//                dom: 'Bfrtip',
+//                buttons: [
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Datos personales',
+//                        show: [0, 1],
+//                        hide: [2, 3, 4, 5],
+//                    },
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Datos operativos',
+//                        show: [2, 3, 4, 5],
+//                        hide: [0, 1],
+//                    },
+//                    {
+//                        extend: 'colvisGroup',
+//                        text: 'Mostrar todo',
+//                        show: ':hidden'
+//                    },
+//                ]
+//            });
         })
     </script>
 @append

@@ -53,7 +53,7 @@ class Individual extends ReporteController
             ->with('agentes', $return)
             ->with('desde', $this->desde)
             ->with('hasta', $this->hasta)
-            ->with('links', $this->getLinksLikeForm($return, $request))
+            ->with('links', $this->getLinksLikeForm($return, $request, 'reportesPresentismoIndividualSearch'))
             ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoIndividualExport'));
         
     }

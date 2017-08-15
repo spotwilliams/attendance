@@ -123,7 +123,7 @@ class General extends ReporteController
         $this->funcion   = new Collection($request->input('funcion'));
         $this->cargos    = new Collection($request->input('cargos'));
         $this->gerencias = new Collection($request->input('gerencias'));
-        $this->iibbs = new Collection($request->input('iibbs'));
+        $this->iibbs     = new Collection($request->input('iibbs'));
         
         $this->tipoContratos   = new Collection($request->input('tipoContratos'));
         $this->estadoContratos = new Collection($request->input('estadoContratos'));
@@ -150,83 +150,104 @@ class General extends ReporteController
         if ($this->sexo !== null) {
             $this->query->where('sexo', '=', $this->sexo);
         }
-        $this->query->join('operativos', function ($join) {
-            /** @var JoinClause $join */
-            $join->on('operativos.id_agente', '=', 'agentes.id');
-            if (!$this->bases->isEmpty()) {
-                $join
-                    ->whereIn('id_base', $this->bases->all());
-            }
+        if (
+            (!$this->bases->isEmpty()) or
+            (!$this->turnos->isEmpty()) or
+            (!$this->cargos->isEmpty()) or
+            (!$this->funcion->isEmpty()) or
+            (!$this->gerencias->isEmpty()) or
+            (!$this->areas->isEmpty())
+        ) {
             
-            if (!$this->turnos->isEmpty()) {
-                $join
-                    ->whereIn('id_turno', $this->turnos->all());
-            }
-            if (!$this->cargos->isEmpty()) {
-                $join
-                    ->whereIn('id_cargo', $this->cargos->all());
-            }
-            if (!$this->funcion->isEmpty()) {
-                $join
-                    ->whereIn('id_funcion', $this->funcion->all());
-            }
-            
-            if (!$this->gerencias->isEmpty()) {
-                $join
-                    ->whereIn('id_gerencia', $this->gerencias->all());
-            }
-            
-            if (!$this->areas->isEmpty()) {
-                $join
-                    ->whereIn('id_area', $this->areas->all());
-            }
-            
-            
-        });
+            $this->query->join('operativos', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('operativos.id_agente', '=', 'agentes.id');
+                if (!$this->bases->isEmpty()) {
+                    $join
+                        ->whereIn('id_base', $this->bases->all());
+                }
+                
+                if (!$this->turnos->isEmpty()) {
+                    $join
+                        ->whereIn('id_turno', $this->turnos->all());
+                }
+                if (!$this->cargos->isEmpty()) {
+                    $join
+                        ->whereIn('id_cargo', $this->cargos->all());
+                }
+                if (!$this->funcion->isEmpty()) {
+                    $join
+                        ->whereIn('id_funcion', $this->funcion->all());
+                }
+                
+                if (!$this->gerencias->isEmpty()) {
+                    $join
+                        ->whereIn('id_gerencia', $this->gerencias->all());
+                }
+                
+                if (!$this->areas->isEmpty()) {
+                    $join
+                        ->whereIn('id_area', $this->areas->all());
+                }
+            });
+        }
         
-        $this->query->join('contratos', function ($join) {
-            /** @var JoinClause $join */
-            $join->on('contratos.id_agente', '=', 'agentes.id');
-            
-            if ($this->fechaIngreso !== null) {
-                $join
-                    ->whereDate('fecha_ingreso_gobierno', '<=', $this->fechaIngreso['desde'])
-                    ->whereDate('fecha_ingreso_gobierno', '>=', $this->fechaIngreso['hasta']);
-            }
-            if ($this->fechaContrato !== null) {
-                $join
-                    ->whereDate('fecha_ingreso', '<=', $this->fechaContrato['desde'])
-                    ->whereDate('fecha_ingreso', '>=', $this->fechaContrato['hasta']);
-            }
-            
-            if (!$this->tipoContratos->isEmpty()) {
-                $join
-                    ->whereIn('id_tipo_contrato', $this->tipoContratos->all());
-            }
-            
-            if (!$this->estadoContratos->isEmpty()) {
-                $join
-                    ->whereIn('id_estado_contrato', $this->estadoContratos->all());
-            }
-            if (!$this->iibbs->isEmpty()) {
-                $join
-                    ->whereIn('tipo_inscripcion', $this->iibbs->all());
-            }
-        });
+        if (
+            ($this->fechaIngreso !== null) or
+            ($this->fechaContrato !== null) or
+            (!$this->tipoContratos->isEmpty()) or
+            (!$this->estadoContratos->isEmpty()) or
+            (!$this->iibbs->isEmpty())
+        ) {
+            $this->query->join('contratos', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('contratos.id_agente', '=', 'agentes.id');
+                
+                if ($this->fechaIngreso !== null) {
+                    $join
+                        ->whereDate('fecha_ingreso_gobierno', '<=', $this->fechaIngreso['desde'])
+                        ->whereDate('fecha_ingreso_gobierno', '>=', $this->fechaIngreso['hasta']);
+                }
+                if ($this->fechaContrato !== null) {
+                    $join
+                        ->whereDate('fecha_ingreso', '<=', $this->fechaContrato['desde'])
+                        ->whereDate('fecha_ingreso', '>=', $this->fechaContrato['hasta']);
+                }
+                
+                if (!$this->tipoContratos->isEmpty()) {
+                    $join
+                        ->whereIn('id_tipo_contrato', $this->tipoContratos->all());
+                }
+                
+                if (!$this->estadoContratos->isEmpty()) {
+                    $join
+                        ->whereIn('id_estado_contrato', $this->estadoContratos->all());
+                }
+                if (!$this->iibbs->isEmpty()) {
+                    $join
+                        ->whereIn('tipo_inscripcion', $this->iibbs->all());
+                }
+            });
+        }
         
-        $this->query->join('estudios', function ($join) {
-            /** @var JoinClause $join */
-            $join->on('estudios.id_agente', '=', 'agentes.id');
-            
-            if (!$this->estadoEstudio->isEmpty()) {
-                $join
-                    ->whereIn('estado', $this->estadoEstudio->all());
-            }
-            if (!$this->nivelEstudio->isEmpty()) {
-                $join
-                    ->whereIn('nivel', $this->nivelEstudio->all());
-            }
-        });
+        if (
+            (!$this->estadoEstudio->isEmpty()) or
+            (!$this->nivelEstudio->isEmpty())
+        ) {
+            $this->query->join('estudios', function ($join) {
+                /** @var JoinClause $join */
+                $join->on('estudios.id_agente', '=', 'agentes.id');
+                
+                if (!$this->estadoEstudio->isEmpty()) {
+                    $join
+                        ->whereIn('estado', $this->estadoEstudio->all());
+                }
+                if (!$this->nivelEstudio->isEmpty()) {
+                    $join
+                        ->whereIn('nivel', $this->nivelEstudio->all());
+                }
+            });
+        }
         
         return $this;
     }

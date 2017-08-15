@@ -31,9 +31,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->parametros();
+//        $this->parametros();
         $this->seguridad();
-        $this->agentes();
+//        $this->agentes();
         
     }
     
