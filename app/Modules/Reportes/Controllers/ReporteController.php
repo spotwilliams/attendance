@@ -34,13 +34,13 @@ abstract class ReporteController extends AppBaseController
     
     abstract protected function setupQuery();
     
-    protected function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request)
+    protected function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request,  $route)
     {
         /** @var FormPresenter $presenter */
-        $presenter = new FormPresenter($paginator, 'reportesAgentesGeneralSearch');
+        $presenter = new FormPresenter($paginator, $route);
         $presenter->setInputsParams($request->all());
-        
-        return $paginator->links($this->presenter);
+
+        return $paginator->links($presenter);
     }
     
     protected function getExportForm(LengthAwarePaginator $paginator, Request $request, $route)

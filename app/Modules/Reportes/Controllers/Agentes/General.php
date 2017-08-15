@@ -98,7 +98,7 @@ class General extends ReporteController
             ->with('gerencias', $this->gerencias)
             ->with('nivel_estudios', $this->nivelEstudio)
             ->with('estado_estudios', $this->estadoEstudio)
-            ->with('links', $this->getLinksLikeForm($return, $request))
+            ->with('links', $this->getLinksLikeForm($return, $request, 'reportesAgentesGeneralSearch'))
             ->with('exportar', $this->getExportForm($return, $request, 'reportesAgentesGeneralExport'));
         
     }
@@ -184,7 +184,7 @@ class General extends ReporteController
             
         });
         
-        $this->query->leftJoin('contratos', function ($join) {
+        $this->query->join('contratos', function ($join) {
             /** @var JoinClause $join */
             $join->on('contratos.id_agente', '=', 'agentes.id');
             
@@ -214,7 +214,7 @@ class General extends ReporteController
             }
         });
         
-        $this->query->leftJoin('estudios', function ($join) {
+        $this->query->join('estudios', function ($join) {
             /** @var JoinClause $join */
             $join->on('estudios.id_agente', '=', 'agentes.id');
             

@@ -40,7 +40,7 @@ class DatabaseSeeder extends Seeder
     private function agentes()
     {
         $this->call(AgentesSeeder::class);
-//        $this->call(PresentismoSeeder::class);
+        $this->call(PresentismoSeeder::class);
         $this->call(EstudiosSeeder::class);
     }
     

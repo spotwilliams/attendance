@@ -18,23 +18,34 @@ class General extends ReporteController
     /** @var  Collection */
     protected $areas;
     
-    /** @var  Turno */
-    protected $turno;
+    /** @var  Collection */
+    protected $turnos;
     
-    /** @var  Base */
-    protected $base;
+    /** @var  Collection */
+    protected $bases;
     
-    /** @var  \DateTime */
+    /** @var  Collection */
     protected $desde;
     
-    /** @var  \DateTime */
+    /** @var  Collection */
     protected $hasta;
     
+    /** @var  Collection */
+    protected $funciones;
+    
+    /** @var  Collection */
+    protected $estadoContratos;
+    
+    /** @var  Collection */
+    protected $tipoContratos;
+    
+    /** @var  bool */
+    protected $incluirComentarios;
     
     public function index()
     {
         $this->authorize('index', $this);
-    
+        
         return view('Reportes::presentismos.index-general');
     }
     
@@ -47,7 +58,7 @@ class General extends ReporteController
     public function search(Request $request)
     {
         $this->authorize('search', $this);
-    
+        
         $this->setupParams($request)
             ->setupQuery();
         
@@ -56,25 +67,32 @@ class General extends ReporteController
         
         return View::make('Reportes::presentismos.index-general')
             ->with('agentes', $return)
-            ->with('base', $this->base)
-            ->with('turno', $this->turno)
+            ->with('bases', $this->bases)
+            ->with('turnos', $this->turnos)
             ->with('areas', $this->areas)
+            ->with('funcion', $this->funciones)
+            ->with('estadoContratos', $this->estadoContratos)
+            ->with('tipoContratos', $this->tipoContratos)
             ->with('desde', $this->desde)
             ->with('hasta', $this->hasta)
-            ->with('links', $this->getLinksLikeForm($return, $request))
-            ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoGeneralExport'))
-            ;
+            ->with('incluir_comentarios', $this->incluirComentarios)
+            ->with('links', $this->getLinksLikeForm($return, $request, 'reportesPresentismoGeneralSearch'))
+            ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoGeneralExport'));
         
     }
     
     protected function setupParams(Request $request)
     {
-        $this->desde = new \DateTime($request->input('desde'));
-        $this->hasta = new \DateTime($request->input('hasta'));
-        $this->areas = new Collection($request->input('areas'));
-        $this->base  = Base::find($request->input('base'));
-        $this->turno = Turno::find($request->input('turno'));
-        $this->page  = (($request->input('page') !== null) ? $request->input('page') : 1);
+        $this->desde              = new \DateTime($request->input('rango_desde'));
+        $this->hasta              = new \DateTime($request->input('rango_hasta'));
+        $this->areas              = new Collection($request->input('areas'));
+        $this->bases              = new Collection($request->input('bases'));
+        $this->turnos             = new Collection($request->input('turnos'));
+        $this->funciones          = new Collection($request->input('funcion'));
+        $this->estadoContratos    = new Collection($request->input('estadoContratos'));
+        $this->tipoContratos      = new Collection($request->input('tipoContratos'));
+        $this->incluirComentarios = (($request->input('incluir_comentario') !== null) ? true : false);
+        $this->page               = (($request->input('page') !== null) ? $request->input('page') : 1);
         
         return $this;
     }
@@ -97,14 +115,19 @@ class General extends ReporteController
         $this->query->join('operativos', function ($join) {
             /** @var JoinClause $join */
             $join->on('operativos.id_agente', '=', 'agentes.id');
-            if ($this->base !== null) {
+            if (!$this->bases->isEmpty()) {
                 $join
-                    ->where('id_base', '=', $this->base->id);
+                    ->whereIn('id_base', $this->bases->all());
             }
             
-            if ($this->turno !== null) {
+            if (!$this->turnos->isEmpty()) {
                 $join
-                    ->where('id_turno', '=', $this->turno->id);
+                    ->whereIn('id_turno', $this->turnos->all());
+            }
+            
+            if (!$this->funciones->isEmpty()) {
+                $join
+                    ->whereIn('id_funcion', $this->funciones->all());
             }
             
             if (!$this->areas->isEmpty()) {
@@ -113,6 +136,23 @@ class General extends ReporteController
             }
             
         });
+        $this->query->join('contratos', function ($join) {
+            /** @var JoinClause $join */
+            $join->on('contratos.id_agente', '=', 'agentes.id');
+            
+            
+            if (!$this->tipoContratos->isEmpty()) {
+                $join
+                    ->whereIn('id_tipo_contrato', $this->tipoContratos->all());
+            }
+            
+            if (!$this->estadoContratos->isEmpty()) {
+                $join
+                    ->whereIn('id_estado_contrato', $this->estadoContratos->all());
+            }
+            
+        });
+        
         
         return $this;
     }

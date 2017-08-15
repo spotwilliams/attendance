@@ -67,13 +67,13 @@ $hastaName = (isset($nombreCampo) ? $nombreCampo . '_hasta' : 'hasta')
                     $('#{{$hastaName}}').val(end.format('Y-MM-DD'));
                 });
 
-            $('.rango_{{$nombreCampo}}').on('apply.daterangepicker', function(ev, picker) {
+            $('.rango_{{$nombreCampo}}').on('apply.daterangepicker', function (ev, picker) {
                 $('#{{$desdeName}}').val(picker.startDate.format('Y-MM-DD'));
                 $('#{{$hastaName}}').val(picker.endDate.format('Y-MM-DD'));
                 $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
             });
 
-            $('.rango_{{$nombreCampo}}').on('cancel.daterangepicker', function(ev, picker) {
+            $('.rango_{{$nombreCampo}}').on('cancel.daterangepicker', function (ev, picker) {
                 $('#{{$desdeName}}').val('');
                 $('#{{$hastaName}}').val('');
                 $(this).val('');

@@ -47,6 +47,7 @@ class Presentismo extends RowDataFormatter
         $pres = [];
         foreach ($presentismos as $p) {
             $pres[$p->fecha] = $p->tipoPresentismo->codigo . '(' . $p->tipoPresentismo->descripcion . ') - ' . (($p->injustificado == true) ? 'Injustificado' : 'Justificado');
+            $pres[$p->fecha.'_comentario'] = $p->comentario;
         }
         
         return new Collection($pres);
