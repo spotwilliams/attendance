@@ -119,5 +119,25 @@ class PeriodoRepository extends BaseRepository
             return new Collection();
         }
     }
+    /**
+     * @param Base $base
+     * @param Turno $turno
+     * @return Collection{EstadoPeriodo}
+     */
+    public static function getPeriodosParaBaseAndTurno(Base $base, Turno $turno, $limit = 1000)
+    {
+        try {
+            $periodos = EstadoPeriodo::where('id_base', '=', $base->id)
+                ->where('id_turno', '=', $turno->id)
+                ->with('periodo')
+                ->orderBy('id', 'desc')
+                ->limit($limit)
+                ->get();
+            return $periodos;
+            
+        } catch (ModelNotFoundException $e) {
+            return new Collection();
+        }
+    }
     
 }

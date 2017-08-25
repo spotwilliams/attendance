@@ -19,6 +19,7 @@ class TipoPresentismo extends Model
     protected $fillable
         = [
             'codigo',
+            'aplica',
             'descripcion',
             'color',
             'color_letra',

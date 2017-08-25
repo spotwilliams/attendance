@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: worker
- * Date: 5/5/17
- * Time: 11:19
- */
 
 namespace Cat\Modules\Reportes\Services\Formatters;
 

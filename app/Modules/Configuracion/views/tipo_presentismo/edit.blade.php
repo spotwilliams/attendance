@@ -9,13 +9,11 @@
                 </h3>
             </div>
             <div class="box-body">
-                <div class="row">
                     {!! Form::model($tipo, ['route' => ['configuracion.licencia.update', $tipo->id], 'method' => 'patch']) !!}
 
                     @include('Configuracion::tipo_presentismo.fields')
 
                     {!! Form::close() !!}
-                </div>
             </div>
         </div>
     </div>

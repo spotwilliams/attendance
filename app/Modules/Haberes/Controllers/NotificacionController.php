@@ -10,11 +10,14 @@ use Cat\Modules\Haberes\Services\Helpers\Facilitador;
 use Cat\Modules\Haberes\Services\Reporte\Reporte;
 use Cat\Modules\Reportes\Services\Formatters\RowDataFormatter;
 use Cat\Http\Controllers\AppBaseController;
+use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Http\Request;
+use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\Mail;
 use Laracasts\Flash\Flash;
 
-class ReporteController extends AppBaseController
+class NotificacionController extends AppBaseController
 {
     
     /** @var  Data */
@@ -28,9 +31,8 @@ class ReporteController extends AppBaseController
     }
     
     
-    public function reporte(Request $request)
+    public function send(Request $request)
     {
-        $this->authorize('reporte', $this);
         $input = $request->all();
         try {
             $periodo = Periodo::findOrFail($input['periodo']);
@@ -38,25 +40,42 @@ class ReporteController extends AppBaseController
             $turno   = Turno::findOrFail($input['turno']);
             
             /** @var Collection $agentes */
-            $agentes = $this->helper
-                ->getAgentesForHaberesReport($base, $turno, $periodo);
+            $agentes = $this->helper->getAgentesForHaberesReport($base, $turno, $periodo);
             
-            $service = new Reporte($agentes);
-            
-            $service->execute();
-            
+            foreach ($agentes as $haber) {
+                $data = [
+                    'Nombre'                         => $haber->agente->nombre,
+                    'Apellido'                       => $haber->agente->apellido,
+                    'CUIT'                           => $haber->agente->cuit,
+                    'monto'               => $haber->monto_facturado,
+                    'faltas' => (string)TipoPresentismosRepository::getCantFaltasInjustificadas($haber->agente,
+                        $haber->periodo),
+                ];
+                if ($haber->agente->email != '') {
+                    
+                    Mail::queue('Haberes::notification.mail', ['data' => $data, 'periodo' => $periodo], function ($message) use ($haber) {
+                        /** @var Message $message */
+                        $message->to($haber->agente->email);
+//                        $message->to('presentismo-cat@remain-it.com');
+                        $message->subject('Notificacion de haber');
+                    });
+                }
+            }
+            Flash::success('Notificaciones enviadas correctamente');
         } catch (\Exception $e) {
-
-            Flash::error('No se ha podido continuar. Intente nuevamente');
-            return view('Haberes::calculo.index-base');
+            dd($e);
+            Flash::error('No se han podido enviar las notificaciones. Intente nuevamente');
+            
         }
+        
+        return view('Haberes::calculo.index-base');
         
     }
     
     public function reportePreliminar(Request $request)
     {
         $this->authorize('reportePreliminar', $this);
-    
+        
         $input = $request->all();
         try {
             $periodo = Periodo::findOrFail($input['periodo']);
@@ -72,6 +91,7 @@ class ReporteController extends AppBaseController
             
         } catch (\Exception $e) {
             Flash::error('No se ha podido continuar. Intente nuevamente');
+            
             return view('Haberes::calculo.index-base');
         }
         

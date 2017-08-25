@@ -25,4 +25,9 @@ class Cache
         
         return $cacheElement;
     }
+    
+    public static function flush()
+    {
+        CacheEloquent::flush();
+    }
 }

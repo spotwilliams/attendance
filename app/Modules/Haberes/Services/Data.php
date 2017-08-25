@@ -55,7 +55,8 @@ class Data
     {
         $haberes = Haber::where('id_base', $base->id)
             ->where('id_turno', '=', $turno->id)
-            ->where('id_periodo', '=', $periodo->id);
+            ->where('id_periodo', '=', $periodo->id)
+            ->with('agente');
         
         try {
             return $haberes->get();

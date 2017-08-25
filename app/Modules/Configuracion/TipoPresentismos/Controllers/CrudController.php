@@ -2,6 +2,9 @@
 
 namespace Cat\Modules\Configuracion\TipoPresentismos\Controllers;
 
+use Cat\Helpers\Cache;
+use Cat\Models\DiaPermitido;
+use Cat\Models\TipoPresentismo;
 use Cat\Modules\Configuracion\TipoPresentismos\Requests\CreateTipoPresentismoRequest;
 use Cat\Modules\Configuracion\TipoPresentismos\Requests\UpdateTipoPresentismoRequest;
 use Cat\Modules\Configuracion\TipoPresentismos\Repositories\TipoPresentismoRepository;
@@ -16,6 +19,16 @@ class CrudController extends AppBaseController
 {
     /** @var  TipoPresentismoRepository */
     private $repository;
+    
+    protected $meses
+        = [
+            'JULY',
+            'AUGUST',
+            'SEPTEMBER',
+            'OCTOBER',
+            'NOVEMBER',
+            'DECEMBER',
+        ];
     
     public function __construct(TipoPresentismoRepository $repository)
     {
@@ -33,7 +46,8 @@ class CrudController extends AppBaseController
         $this->authorize('index', $this);
         
         $this->repository->pushCriteria(new RequestCriteria($request));
-        $tipos = $this->repository->all();
+        $tipos = TipoPresentismo::where('aplica', '<>', '')->get();
+        
         
         return view('Configuracion::tipo_presentismo.index')
             ->with('tipos', $tipos);
@@ -62,34 +76,38 @@ class CrudController extends AppBaseController
     {
         $this->authorize('store', $this);
         
-        $input = $request->all();
-        
-        $area = $this->repository->create($input);
-        
-        Flash::success('&Aacute;rea guardada correctamente.');
-        
-        return redirect(route('configuracion.area.index'));
-    }
+        try {
+            $input = $request->all();
+            $tp    = TipoPresentismo::create($input);
+            if ($input['tiene_tope'] == '1') {
+                $valueMonth = 6;
+                
+                foreach ($this->meses as $mes) {
+                    if ($mes == 'JULY') {
+                        $prop = $input['dias_permitidos'];
+                    } else {
+                        $prop = ceil(((int)$input['dias_permitidos']) / 12) * ($valueMonth);
+                    }
+                    
+                    DiaPermitido::create([
+                        'mes_ingreso'         => $mes,
+                        'cant_semanal'        => $prop,
+                        'cant_fin_semana'     => $prop,
+                        'id_tipo_presentismo' => $tp->id,
+                    ]);
+                }
+            }
+            Cache::flush();
     
-    /**
-     * Display the specified Area.
-     *
-     * @param  int $id
-     *
-     * @return View
-     */
-    public function show($id)
-    {
-        $area = $this->repository->findWithoutFail($id);
-        
-        if (empty($area)) {
-            Flash::error('&Aacute;rea no encontrada');
-            
-            return redirect(route('configuracion.area.index'));
+            Flash::success('Tipo presentismo guardado correctamente.');
+        } catch (\Exception $e) {
+            dd($e);
+            Flash::error('No se pudo guardar el tipo presentismo.');
         }
         
-        return view('Configuracion::tipo_presentismo.show')->with('area', $area);
+        return redirect(route('configuracion.licencia.index'));
     }
+    
     
     /**
      * Show the form for editing the specified Area.
@@ -105,39 +123,56 @@ class CrudController extends AppBaseController
         $tipo = $this->repository->findWithoutFail($id);
         
         if (empty($tipo)) {
-            Flash::error('&Aacute;rea no encontrada');
+            Flash::error('Tipo presentismo no encontrada');
             
-            return redirect(route('configuracion.area.index'));
+            return redirect(route('configuracion.licencia.index'));
         }
         
         return view('Configuracion::tipo_presentismo.edit')->with('tipo', $tipo);
     }
     
-    /**
-     * Update the specified Area in storage.
-     *
-     * @param  int $id
-     * @param UpdateAreaRequest $request
-     *
-     * @return Response
-     */
-    public function update($id, UpdateTipoPresentismoRequest $request)
+    
+    public function update(UpdateTipoPresentismoRequest $request)
     {
         $this->authorize('update', $this);
         
-        $area = $this->repository->findWithoutFail($id);
-        
-        if (empty($area)) {
-            Flash::error('&Aacute;rea no encontrada');
-            
-            return redirect(route('configuracion.area.index'));
+        try {
+            $input = $request->all();
+            $tp = TipoPresentismo::findOrFail($input['id']);
+            $tp->update([
+                'descripcion'   => $input['descripcion'],
+                'codigo'        => $input['codigo'],
+                'color'         => $input['color'],
+                'color_letra'   => $input['color_letra'],
+                'aplica'        => $input['aplica'],
+                'injustificado' => $input['injustificado'],
+            ]);
+            if ($input['tiene_tope'] == '1') {
+                $valueMonth = 6;
+                
+                foreach ($this->meses as $mes) {
+                    if ($mes == 'JULY') {
+                        $prop = $input['dias_permitidos'];
+                    } else {
+                        $prop = ceil(((int)$input['dias_permitidos']) / 12) * ($valueMonth);
+                    }
+                    DiaPermitido::firstOrCreate([
+                        'mes_ingreso'         => $mes,
+                        'id_tipo_presentismo' => $tp->id,
+                    ])
+                        ->update([
+                            'cant_semanal'    => $prop,
+                            'cant_fin_semana' => $prop,
+                        ]);
+                }
+            }
+            Cache::flush();
+            Flash::success('Tipo presentismo actualizado correctamente.');
+        } catch (\Exception $e) {
+            Flash::error('No se pudo guardar el tipo presentismo.');
         }
         
-        $area = $this->repository->update($request->all(), $id);
-        
-        Flash::success('&Aacute;rea actualizada correctamente.');
-        
-        return redirect(route('configuracion.area.index'));
+        return redirect(route('configuracion.licencia.index'));
     }
     
     /**
@@ -149,19 +184,19 @@ class CrudController extends AppBaseController
      */
     public function destroy($id)
     {
-        return redirect(route('configuracion.area.index'));
+        return redirect(route('configuracion.licencia.index'));
         
         $area = $this->repository->findWithoutFail($id);
         
         if (empty($area)) {
-            Flash::error('&Aacute;rea no encontrada');
+            Flash::error('Tipo presentismo no encontrada');
             
-            return redirect(route('configuracion.area.index'));
+            return redirect(route('configuracion.licencia.index'));
         }
         
         $this->repository->delete($id);
         
-        Flash::success('&Aacute;rea deleted correctamente.');
+        Flash::success('Tipo presentismo deleted correctamente.');
         
     }
 }

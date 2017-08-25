@@ -25,6 +25,17 @@ class UpdateTipoPresentismoRequest extends Request
      */
     public function rules()
     {
-        return Area::$rules;
+        $rules = [
+            'codigo'      => 'required',
+            'descripcion' => 'required',
+            'color'       => 'required',
+            'color_letra' => 'required',
+        ];
+    
+        if ($this->input('tiene_tope') == '1') {
+            $rules['dias_permitidos'] = 'required|integer|min:1';
+        }
+    
+        return $rules;
     }
 }

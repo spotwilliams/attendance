@@ -5,17 +5,15 @@
         <div class="box box-warning">
             <div class="box-header">
                 <h3 class="box-title">
-                    Agregar &aacute;rea
+                    Agregar tipo de presentismo
                 </h3>
             </div>
             <div class="box-body">
-                <div class="row">
-                    {!! Form::open(['route' => 'configuracion.area.store']) !!}
+                    {!! Form::open(['route' => 'configuracion.licencia.store']) !!}
 
-                    @include('Configuracion::areas.fields')
+                    @include('Configuracion::tipo_presentismo.fields')
 
                     {!! Form::close() !!}
-                </div>
             </div>
         </div>
     </div>

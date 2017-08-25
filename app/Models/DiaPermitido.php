@@ -17,9 +17,8 @@ class DiaPermitido extends Model
         = [
             'cant_semanal',
             'cant_fin_semana',
-            'id_tipo_presentimos',
-            'id_proporcional',
-            'corridos',
+            'id_tipo_presentismo',
+            'mes_ingreso',
         ];
     /**
      * Validation rules

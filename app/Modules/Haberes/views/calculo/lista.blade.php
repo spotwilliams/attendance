@@ -103,15 +103,31 @@ while ($fecha < $fechaToday) {
                                         <h4><i class="icon fa fa-info"></i> Aviso</h4>
                                         Los presentismos para esta base y turno ya han sido cerrados.
                                     </div>
-                                    {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
-                                    {!! Form::hidden('periodo', $periodo->id) !!}
-                                    {!! Form::hidden('turno', $turno->id) !!}
-                                    {!! Form::hidden('base', $base->id) !!}
-                                    <button type="submit" class="btn btn-success pull-right">
-                                        <i class="fa fa-download"></i> Obtener reporte
-                                    </button>
-                                    {!! Form::close() !!}
-                                    <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
+                                    <div class="col-md-4">
+                                        <a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>
+                                    </div>
+                                    <div class="col-md-4">
+
+                                        {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
+                                        {!! Form::hidden('periodo', $periodo->id) !!}
+                                        {!! Form::hidden('turno', $turno->id) !!}
+                                        {!! Form::hidden('base', $base->id) !!}
+                                        <button type="submit" class="btn btn-success pull-right">
+                                            <i class="fa fa-download"></i> Obtener reporte
+                                        </button>
+                                        {!! Form::close() !!}
+                                    </div>
+                                    <div class="col-md-4">
+                                        {!! Form::open(['route' => 'haberesNotificar']) !!}
+                                        {!! Form::hidden('periodo', $periodo->id) !!}
+                                        {!! Form::hidden('base', $base->id) !!}
+                                        {!! Form::hidden('turno', $turno->id) !!}
+                                        <input type="submit"
+                                               class="btn btn-primary"
+                                               value='Notificar via mail'/>
+                                        {!! Form::close() !!}
+                                    </div>
+
                                 </div>
                             </td>
                         </tr>
@@ -371,7 +387,7 @@ while ($fecha < $fechaToday) {
                     $('.modal-fecha').html(presentismo.fecha);
                     $('.modal-presentismo').html(tipoPresentismo);
                     $('.modal-comentario').val($(this).data('comentario'));
-                    if($(this).data('comentario')!== '') {
+                    if ($(this).data('comentario') !== '') {
                         $('.no-comment').removeClass('hidden');
                     }
                     // Hidden para ajax

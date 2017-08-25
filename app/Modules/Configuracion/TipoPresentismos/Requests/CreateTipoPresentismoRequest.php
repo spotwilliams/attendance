@@ -4,10 +4,11 @@ namespace Cat\Modules\Configuracion\TipoPresentismos\Requests;
 
 use Cat\Http\Requests\Request;
 use Cat\Models\Area;
+use Cat\Models\TipoPresentismo;
 
 class CreateTipoPresentismoRequest extends Request
 {
-
+    
     /**
      * Determine if the user is authorized to make this request.
      *
@@ -17,7 +18,7 @@ class CreateTipoPresentismoRequest extends Request
     {
         return true;
     }
-
+    
     /**
      * Get the validation rules that apply to the request.
      *
@@ -25,6 +26,17 @@ class CreateTipoPresentismoRequest extends Request
      */
     public function rules()
     {
-        return Area::$rules;
+        $rules = [
+            'codigo'      => 'required',
+            'descripcion' => 'required',
+            'color'       => 'required',
+            'color_letra' => 'required',
+        ];
+        
+        if ($this->input('tiene_tope') == '1') {
+            $rules['dias_permitidos'] = 'required|integer|min:1';
+        }
+        
+        return $rules;
     }
 }

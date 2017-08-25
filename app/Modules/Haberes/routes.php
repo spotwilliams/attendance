@@ -12,7 +12,7 @@ use Illuminate\Support\Facades\Route;
 use Cat\Modules\Haberes\Controllers\Registro\GeneralController;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController;
-
+use Cat\Modules\Haberes\Controllers\Registro\NotificacionController;
 Route::group(
     ['middleware' => ['web'], 'prefix' => 'administracion'],
     
@@ -48,6 +48,9 @@ Route::group(
             ->name('haberesReporte');
         Route::post('haberes/reporte/preliminar', ReporteController::class . '@reportePreliminar')
             ->name('haberesReportePreliminar');
+
+        Route::post('haberes/notificar', NotificacionController::class . '@send')
+            ->name('haberesNotificar');
         
     }
 );

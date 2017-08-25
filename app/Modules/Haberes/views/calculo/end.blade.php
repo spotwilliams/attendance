@@ -92,7 +92,20 @@ while ($fecha < $fechaToday) {
 
                 <tr>
                     <td colspan="10">
-                        <div class="col-md-offset-2 col-md-6">
+                        <div class="col-md-4">
+                            <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
+                        </div>
+                        <div class="col-md-4">
+                            {!! Form::open(['route' => 'haberesNotificar']) !!}
+                            {!! Form::hidden('periodo', $periodo->id) !!}
+                            {!! Form::hidden('base', $base->id) !!}
+                            {!! Form::hidden('turno', $turno->id) !!}
+                            <input type="submit"
+                                   class="btn btn-primary"
+                                   value='Notificar via mail'/>
+                            {!! Form::close() !!}
+                        </div>
+                        <div class="col-md-4">
                             {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
                             {!! Form::hidden('periodo', $periodo->id) !!}
                             {!! Form::hidden('turno', $turno->id) !!}
@@ -101,8 +114,9 @@ while ($fecha < $fechaToday) {
                                 <i class="fa fa-download"></i> Obtener reporte
                             </button>
                             {!! Form::close() !!}
-                            <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
                         </div>
+
+
                     </td>
                 </tr>
             </div>
