@@ -1,7 +1,7 @@
 <?php
 use Cat\Repositories\PeriodoRepository;
 
-$estadoPeriodos = PeriodoRepository::getPeriodosParaBaseAndTurno($base, $turno, 3);
+$estadoPeriodos = PeriodoRepository::getPeriodosParaBaseAndTurno($base, $turno);
 
 ?>
 @extends('layouts.app')
