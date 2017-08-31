@@ -21,3 +21,10 @@
     </div>
 @endsection
 
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#tp-table').dataTable({});
+        })
+    </script>
+    @append

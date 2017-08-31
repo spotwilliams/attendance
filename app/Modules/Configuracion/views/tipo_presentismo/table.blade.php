@@ -1,4 +1,4 @@
-<table class="table table-responsive dataTable table-hover" id="areas-table">
+<table class="table table-responsive dataTable table-hover" id="tp-table">
     <thead>
         <th>Codigo</th>
         <th>Descripcion</th>

@@ -80,13 +80,13 @@ class CrudController extends AppBaseController
             $input = $request->all();
             $tp    = TipoPresentismo::create($input);
             if ($input['tiene_tope'] == '1') {
-                $valueMonth = 6;
+                $valueMonth = 7;
                 
                 foreach ($this->meses as $mes) {
                     if ($mes == 'JULY') {
                         $prop = $input['dias_permitidos'];
                     } else {
-                        $prop = ceil(((int)$input['dias_permitidos']) / 12) * ($valueMonth);
+                        $prop = $this->calculate($valueMonth, (int)$input['dias_permitidos']);
                     }
                     
                     DiaPermitido::create([
@@ -98,10 +98,10 @@ class CrudController extends AppBaseController
                 }
             }
             Cache::flush();
-    
+            
             Flash::success('Tipo presentismo guardado correctamente.');
         } catch (\Exception $e) {
-            dd($e);
+            
             Flash::error('No se pudo guardar el tipo presentismo.');
         }
         
@@ -138,7 +138,7 @@ class CrudController extends AppBaseController
         
         try {
             $input = $request->all();
-            $tp = TipoPresentismo::findOrFail($input['id']);
+            $tp    = TipoPresentismo::findOrFail($input['id']);
             $tp->update([
                 'descripcion'   => $input['descripcion'],
                 'codigo'        => $input['codigo'],
@@ -154,7 +154,7 @@ class CrudController extends AppBaseController
                     if ($mes == 'JULY') {
                         $prop = $input['dias_permitidos'];
                     } else {
-                        $prop = ceil(((int)$input['dias_permitidos']) / 12) * ($valueMonth);
+                        $prop = $this->calculate($valueMonth, (int)$input['dias_permitidos']);
                     }
                     DiaPermitido::firstOrCreate([
                         'mes_ingreso'         => $mes,
@@ -164,39 +164,28 @@ class CrudController extends AppBaseController
                             'cant_semanal'    => $prop,
                             'cant_fin_semana' => $prop,
                         ]);
+                    $valueMonth++;
                 }
+            } else {
+                DiaPermitido::where('id_tipo_presentismo', '=', $tp->id)
+                    ->delete();
             }
             Cache::flush();
             Flash::success('Tipo presentismo actualizado correctamente.');
         } catch (\Exception $e) {
+            dd($e);
             Flash::error('No se pudo guardar el tipo presentismo.');
         }
         
         return redirect(route('configuracion.licencia.index'));
     }
     
-    /**
-     * Remove the specified Area from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
+    protected function calculate($mes, $montoReferencia)
     {
-        return redirect(route('configuracion.licencia.index'));
+        $prop = (float)((((int)$montoReferencia) / 12) * (12 - $mes));
         
-        $area = $this->repository->findWithoutFail($id);
         
-        if (empty($area)) {
-            Flash::error('Tipo presentismo no encontrada');
-            
-            return redirect(route('configuracion.licencia.index'));
-        }
-        
-        $this->repository->delete($id);
-        
-        Flash::success('Tipo presentismo deleted correctamente.');
+        return (int)ceil($prop);
         
     }
 }

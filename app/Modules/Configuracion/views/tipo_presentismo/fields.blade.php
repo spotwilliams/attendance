@@ -1,4 +1,7 @@
 <?php
+
+/** @var \Illuminate\Support\Collection $meses */
+
 $tipo = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
 if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
     $meses = $tipo->diasPermitidos;
@@ -37,6 +40,9 @@ if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
         ],
     ]);
 }
+
+$meses = $meses->keyBy('mes_ingreso')->toArray();
+
 ?>
 <input type="hidden" name="id" value="{{$tipo->id}}">
 <div class="row">
@@ -58,15 +64,28 @@ if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
         <div class="form-group @if($errors->has('color')) has-error @endif ">
 
             {!! Form::label('color', 'Color:') !!}
-            {!! Form::text('color', null, ['class' => 'form-control color-p']) !!}
-            @if($errors->has('color'))
-                <span class="help-block">{{$errors->first('color')}}</span>
-            @endif
+            <div class="checkbox checkbox-info checkbox-circle">
+                <input type="checkbox" class="selectable" id="colores_por_defecto">
+                <label for="colores_por_defecto">
+                    Usar colores por defecto
+                </label>
+            </div>
+            <div class="input-group colorpicker-component color-p">
+                {!! Form::text('color', null, ['class' => 'form-control']) !!}
+                <span class="input-group-addon"><i></i></span>
+
+                @if($errors->has('color'))
+                    <span class="help-block">{{$errors->first('color')}}</span>
+                @endif
+            </div>
         </div>
         <div class="form-group @if($errors->has('color_letra')) has-error @endif ">
 
             {!! Form::label('color_letra', 'Color de letra:') !!}
-            {!! Form::text('color_letra', null, ['class' => 'form-control color-p']) !!}
+            <div class="input-group colorpicker-component color-p">
+                {!! Form::text('color_letra', null, ['class' => 'form-control']) !!}
+                <span class="input-group-addon"><i></i></span>
+            </div>
             @if($errors->has('color_letra'))
                 <span class="help-block">{{$errors->first('color_letra')}}</span>
             @endif
@@ -97,19 +116,22 @@ if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
 
         <div class="form-group @if($errors->has('dias_permitidos')) has-error @endif ">
             {!! Form::label('dias_permitidos', 'Cantidad de d&iacute;as permitidos:') !!}
-            {!! Form::text('dias_permitidos', $meses[0]['cant_semanal'], ['class' => 'form-control']) !!}
+            {!! Form::text('dias_permitidos', $meses['JULY']['cant_semanal'], ['class' => 'form-control']) !!}
             @if($errors->has('dias_permitidos'))
                 <span class="help-block">{{$errors->first('dias_permitidos')}}</span>
             @endif
         </div>
+
         <div class="form-group @if($errors->has('tiene_tope')) has-error @endif ">
 
             {!! Form::label('tiene_tope', 'Tiene tope:') !!}
             <select name="tiene_tope" class="form-control">
-                <option value="1"
-                        @if((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) selected @endif>Si
+                <option value="1">Si
                 </option>
-                <option value="0">No</option>
+                <option value="0"
+                        @if((!isset($tipo->diasPermitidos) or ($tipo->diasPermitidos->isEmpty()))) selected @endif
+                >No
+                </option>
             </select>
 
             @if($errors->has('tiene_tope'))
@@ -133,12 +155,12 @@ if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
             </thead>
             <tbody>
 
-            @foreach($meses as $mes)
-                @if($mes['mes_ingreso'] !== 'JULY')
+            @foreach($meses as $mes => $dias)
+                @if($mes !== 'JULY')
                     <tr>
-                        <th>{{trans('month.'.$mes['mes_ingreso'])}}</th>
-                        <td class="{{trans('month.'.$mes['mes_ingreso'])}} semana">{{$mes['cant_semanal']}}</td>
-                        <td class="{{trans('month.'.$mes['mes_ingreso'])}} finde">{{$mes['cant_fin_semana']}}</td>
+                        <th>{{trans('month.'.$mes)}}</th>
+                        <td class="{{trans('month.'.$mes)}} semana">{{$dias['cant_semanal']}}</td>
+                        <td class="{{trans('month.'.$mes)}} finde">{{$dias['cant_fin_semana']}}</td>
                     </tr>
                 @endif
             @endforeach
@@ -156,29 +178,62 @@ if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+            // Primer control
+            updateScreem($('select[name="tiene_tope"]').val());
+
             $(".color-p").colorpicker();
 
-            $('select[name="tiene_tope"]').on('change', function (event) {
-                if ($(this).val() == 1) {
+            function updateScreem(tieneTope) {
+
+                if (tieneTope == 1) {
                     $('input[name="dias_permitidos"]').prop('disabled', false);
                     $('.table.meses').show();
                 } else {
-                    $('input[name="dias_permitidos"]').prop('disabled', true);
+                    $('input[name="dias_permitidos"]')
+                        .val(0)
+                        .prop('disabled', true);
                     $('.table.meses').hide();
                 }
-            })
+            }
+
+
+            $('select[name="tiene_tope"]').on('change', function (event) {
+                updateScreem($(this).val());
+
+            });
+
+            $('#colores_por_defecto').on('change', function (eve) {
+                if ($(this).prop('checked') === true) {
+                    $('input[name="color"]').val('#4d70a8');
+                    $('input[name="color_letra"]').val('#333');
+
+                    var colors = $('.color-p');
+
+                    $(colors[0]).colorpicker('setValue', '#4d70a8');
+                    $(colors[1]).colorpicker('setValue', '#333')
+                } else {
+                    $('input[name="color"]').val('');
+                    $('input[name="color_letra"]').val('');
+
+                    var colors = $('.color-p');
+
+                    $(colors[0]).colorpicker('setValue', '');
+                    $(colors[1]).colorpicker('setValue', '')
+                }
+
+            });
 
             $('input[name="dias_permitidos"]').on('keyup', function (event) {
 
                 var meses = [
-                    @foreach($meses as $mes)
-                        '{{trans('month.'.$mes['mes_ingreso'])}}',
+                    @foreach($meses as $mes => $dias)
+                        '{{trans('month.'.$mes)}}',
                     @endforeach
                 ];
                 var prop = 0;
-                for (var i = 0; i < meses.length; i++) {
+                for (var i = 1; i <= meses.length; i++) {
                     if ($.isNumeric($(this).val())) {
-                        prop = Math.ceil($(this).val() / 12) * (12 - (i + 6));
+                        prop = Math.ceil($(this).val() / 12 * (12 - (i + 6)));
                     } else {
                         prop = 0;
                     }
