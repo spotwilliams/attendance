@@ -50,7 +50,7 @@ class Reporte extends Service
                         $data [] = $this->rowFormatter->format($model);
                     }
                     $sheet->fromArray($data);
-                    
+
                 } while ($models->hasMorePages());
             });
             
