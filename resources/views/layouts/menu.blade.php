@@ -166,7 +166,7 @@
         <li>
             <a href="{!! route('configuracion.licencia.index') !!}">
                 <i class="fa fa-calendar"></i>
-                <span>Tipos presentismo</span>
+                <span>Tipos licencia</span>
             </a>
         </li>
         <li class="divider"></li>
