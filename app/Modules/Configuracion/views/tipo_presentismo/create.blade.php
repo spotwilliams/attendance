@@ -5,7 +5,7 @@
         <div class="box box-warning">
             <div class="box-header">
                 <h3 class="box-title">
-                    Agregar tipo de presentismo
+                    Agregar tipo de licencia
                 </h3>
             </div>
             <div class="box-body">

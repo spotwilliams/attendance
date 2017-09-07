@@ -184,7 +184,7 @@ class HtmlCustoms
             $buttonJustice     = ($p->injustificado == true ?
                 self::getButtonWithPopOver($p, true) :
                 self::getButtonWithPopOver($p, false));
-            $btnClass          = (!empty($p->comentario) ? 'bg-gray-active' : 'btn-default');
+            $btnClass          = (!empty($p->comentario) ? 'btn-warning' : 'btn-default');
         } else {
             $comentario    = null;
             $btnDisabled   = 'disabled';
@@ -221,7 +221,7 @@ class HtmlCustoms
         $icon        = '<i class=\'fa fa-check-square-o\'></i>';
         $toggles     = 'data-toggle=\'popover\' data-trigger=\'hover\'';
         
-        $classButton = ($injustificado ? 'bg-gray-active' : 'btn-default');
+        $classButton = ($injustificado ? 'btn-danger' : 'btn-default');
         $data        = 'data-presentismo=\'' . (($p === null) ? '' : $p->toJson()) . '\'';
         $disabled    = ($disabled ? 'disabled' : ($p->id_tipo_presentismo === -1) ? 'disabled' : '');
         $button      = "<button type='button' class='btn $classButton' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";

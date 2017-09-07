@@ -99,10 +99,10 @@ class CrudController extends AppBaseController
             }
             Cache::flush();
             
-            Flash::success('Tipo presentismo guardado correctamente.');
+            Flash::success('Licencia guardada correctamente.');
         } catch (\Exception $e) {
             
-            Flash::error('No se pudo guardar el tipo presentismo.');
+            Flash::error('No se pudo guardar el tipo de licencia.');
         }
         
         return redirect(route('configuracion.licencia.index'));
@@ -123,7 +123,7 @@ class CrudController extends AppBaseController
         $tipo = $this->repository->findWithoutFail($id);
         
         if (empty($tipo)) {
-            Flash::error('Tipo presentismo no encontrada');
+            Flash::error('Tipo de licencia no encontrada');
             
             return redirect(route('configuracion.licencia.index'));
         }
@@ -171,10 +171,10 @@ class CrudController extends AppBaseController
                     ->delete();
             }
             Cache::flush();
-            Flash::success('Tipo presentismo actualizado correctamente.');
+            Flash::success('Tipo de licencia actualizada correctamente.');
         } catch (\Exception $e) {
             dd($e);
-            Flash::error('No se pudo guardar el tipo presentismo.');
+            Flash::error('No se pudo guardar el tipo de licencia.');
         }
         
         return redirect(route('configuracion.licencia.index'));
