@@ -24,7 +24,7 @@ class Ausente extends Rule
         // Verificar para la categoria de ausentes
         // que el agente tenga dias disponibles
         // Verificar la cantidad de dia
-        $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente);
+        $diasDisponibles = $this->agente->getCantDiasDisponibles($this->tipoAusente, $this->fecha);
         
         if ($diasDisponibles > 0) {
             return true;

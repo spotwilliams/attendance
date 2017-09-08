@@ -87,9 +87,9 @@ class Contrato extends Model
         return strtoupper((new \DateTime($this->fecha_ingreso))->format('F'));
     }
     
-    public function mesIngresoProporcional()
+    public function mesIngresoProporcional(\DateTime $fechaReferencia)
     {
-        $meses = array(
+        $meses        = array(
             'JULY',
             'AUGUST',
             'SEPTEMBER',
@@ -97,7 +97,16 @@ class Contrato extends Model
             'NOVEMBER',
             'DECEMBER',
         );
-        $mes   = $this->mesIngreso();
+        $fIngreso     = new \DateTime($this->fecha_ingreso);
+        $yearIngreso  = (int)$fIngreso->format('Y');
+        $yearPresente = (int)$fechaReferencia->format('Y');
+        if ($yearIngreso === $yearPresente) {
+            $mes = $this->mesIngreso();
+        } else {
+            // Si el ingreso fue en otro year, entonces se toma como referencia julio (all year)
+            $mes = 'JANUARY';
+        }
+        
         if (in_array($mes, $meses)) {
             return $mes;
         } else {

@@ -139,13 +139,13 @@ class Agente extends Model
      * @return int
      * @throws SinTopeONoEstablecido
      */
-    public function getCantDiasDisponibles(TipoPresentismo $ausencia)
+    public function getCantDiasDisponibles(TipoPresentismo $ausencia, \DateTime $fechaReferencia)
     {
         /** @var Contrato $contrato */
         $contrato = $this->contrato()->first();
         
         /** @var string $mesProporcional */
-        $mesProporcional = $contrato->mesIngresoProporcional();
+        $mesProporcional = $contrato->mesIngresoProporcional($fechaReferencia);
         
         try {
             
@@ -160,7 +160,7 @@ class Agente extends Model
             $cantDiasPermitidos = $diasPermitidos->getCantidadDias($turno);
 
             /** @var int $cantDiasConsumidos */
-            $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia);
+            $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia, $fechaReferencia);
             
             return $cantDiasPermitidos - $cantDiasConsumidos;
         } catch (ModelNotFoundException $diaPermitidoNoCargado) {
@@ -170,13 +170,13 @@ class Agente extends Model
     }
     
     
-    public function getCantidadDiasConsumidos(TipoPresentismo $tipoPresentismo)
+    public function getCantidadDiasConsumidos(TipoPresentismo $tipoPresentismo, \DateTime $fechaReferencia)
     {
         $dias = $this->presentismos()
             ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
             ->where('injustificado', '=', 0)
-            ->whereDate('created_at', '>=', date('Y-01-01'))
-            ->whereDate('created_at', '<=', date('Y-m-d'))
+            ->whereDate('fecha', '>=', $fechaReferencia->format('Y-01-01'))
+            ->whereDate('fecha', '<=', $fechaReferencia->format('Y-m-d'))
             ->count();
         
         return $dias;
