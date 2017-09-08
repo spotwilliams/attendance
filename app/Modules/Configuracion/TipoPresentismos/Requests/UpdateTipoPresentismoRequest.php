@@ -27,7 +27,7 @@ class UpdateTipoPresentismoRequest extends Request
     {
         $rules = [
             'codigo'      => 'required',
-            'descripcion' => 'required',w
+            'descripcion' => 'required',
             'color'       => 'required',
             'color_letra' => 'required',
         ];
