@@ -2,7 +2,8 @@
 
 /** @var \Illuminate\Support\Collection $meses */
 
-$tipo = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
+$tipo                = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
+$tipo->injustificado = ($tipo->injustificado) ? 1 : 0;
 if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
     $meses = $tipo->diasPermitidos;
 } else {
