@@ -26,8 +26,10 @@ $idModal = 'comentarios-modal'
                     <h4 class="box-title"><span class="hidden-xs">Periodo actual:</span>
                         <span class="label label-info">{{$desde->format('d/m/Y')}}</span> hasta
                         <span class="label label-info">{{$hasta->format('d/m/Y')}}</span>
-
                     </h4>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <h3 class="box-title"><span class="hidden-xs">{{$agentes->total()}}</span> agentes</h3>
                 </div>
             </div>
 

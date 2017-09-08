@@ -1,6 +1,6 @@
 @foreach($agentes as $agente)
     <tr>
-        <td>{{$agente->nombre}}, {{$agente->apellido}}</td>
+        <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
         <td>{{$agente->cuit}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','base', 'nombre'])}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','turno', 'codigo'])}}</td>

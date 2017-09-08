@@ -89,7 +89,7 @@ class Contrato extends Model
     
     public function mesIngresoProporcional(\DateTime $fechaReferencia)
     {
-        $meses        = array(
+        $meses = array(
             'JULY',
             'AUGUST',
             'SEPTEMBER',
@@ -97,15 +97,24 @@ class Contrato extends Model
             'NOVEMBER',
             'DECEMBER',
         );
-        $fIngreso     = new \DateTime($this->fecha_ingreso);
-        $yearIngreso  = (int)$fIngreso->format('Y');
-        $yearPresente = (int)$fechaReferencia->format('Y');
-        if ($yearIngreso === $yearPresente) {
-            $mes = $this->mesIngreso();
-        } else {
-            // Si el ingreso fue en otro year, entonces se toma como referencia julio (all year)
+        
+        $tipoContrato = $this->tipoContrato()->first();
+        if ($tipoContrato and ($tipoContrato->codigo === TipoContrato::TIPO_SITUACION_REVISTA)) {
+            // Si es planta, ya no se actualiza el contrato por lo tanto se lo toma como enero
             $mes = 'JANUARY';
+        } else {
+            
+            $fIngreso     = new \DateTime($this->fecha_ingreso);
+            $yearIngreso  = (int)$fIngreso->format('Y');
+            $yearPresente = (int)$fechaReferencia->format('Y');
+            if ($yearIngreso === $yearPresente) {
+                $mes = $this->mesIngreso();
+            } else {
+                // Si el ingreso fue en otro year, entonces se toma como referencia julio (all year)
+                $mes = 'JANUARY';
+            }
         }
+        
         
         if (in_array($mes, $meses)) {
             return $mes;
