@@ -29,7 +29,7 @@ $idModal = 'comentarios-modal'
                     </h4>
                 </div>
                 <div class="col-md-4 col-xs-4">
-                    <h3 class="box-title"><span class="hidden-xs">{{$agentes->total()}}</span> agentes</h3>
+                    <h3 class="box-title">Agentes: <span class="label label-info">{{$agentes->total()}}</span></h3>
                 </div>
             </div>
 
