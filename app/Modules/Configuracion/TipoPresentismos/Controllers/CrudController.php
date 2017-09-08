@@ -84,15 +84,17 @@ class CrudController extends AppBaseController
                 
                 foreach ($this->meses as $mes) {
                     if ($mes == 'JULY') {
-                        $prop = $input['dias_permitidos'];
+                        $propSemana = $input['cant_semanal'];
+                        $propFinde  = $input['cant_fin_semana'];
                     } else {
-                        $prop = $this->calculate($valueMonth, (int)$input['dias_permitidos']);
+                        $propSemana = $this->calculate($valueMonth, (int)$input['cant_semanal']);
+                        $propFinde  = $this->calculate($valueMonth, (int)$input['cant_fin_semana']);
                     }
                     
                     DiaPermitido::create([
                         'mes_ingreso'         => $mes,
-                        'cant_semanal'        => $prop,
-                        'cant_fin_semana'     => $prop,
+                        'cant_semanal'        => $propSemana,
+                        'cant_fin_semana'     => $propFinde,
                         'id_tipo_presentismo' => $tp->id,
                     ]);
                 }
@@ -152,17 +154,19 @@ class CrudController extends AppBaseController
                 
                 foreach ($this->meses as $mes) {
                     if ($mes == 'JULY') {
-                        $prop = $input['dias_permitidos'];
+                        $propSemana = $input['cant_semanal'];
+                        $propFinde  = $input['cant_fin_semana'];
                     } else {
-                        $prop = $this->calculate($valueMonth, (int)$input['dias_permitidos']);
+                        $propSemana = $this->calculate($valueMonth, (int)$input['cant_semanal']);
+                        $propFinde  = $this->calculate($valueMonth, (int)$input['cant_fin_semana']);
                     }
                     DiaPermitido::firstOrCreate([
                         'mes_ingreso'         => $mes,
                         'id_tipo_presentismo' => $tp->id,
                     ])
                         ->update([
-                            'cant_semanal'    => $prop,
-                            'cant_fin_semana' => $prop,
+                            'cant_semanal'    => $propSemana,
+                            'cant_fin_semana' => $propFinde,
                         ]);
                     $valueMonth++;
                 }
@@ -173,7 +177,6 @@ class CrudController extends AppBaseController
             Cache::flush();
             Flash::success('Tipo de licencia actualizada correctamente.');
         } catch (\Exception $e) {
-            dd($e);
             Flash::error('No se pudo guardar el tipo de licencia.');
         }
         

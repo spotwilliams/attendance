@@ -74,10 +74,10 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 {!! Form::text('color', null, ['class' => 'form-control']) !!}
                 <span class="input-group-addon"><i></i></span>
 
-                @if($errors->has('color'))
-                    <span class="help-block">{{$errors->first('color')}}</span>
-                @endif
             </div>
+            @if($errors->has('color'))
+                <span class="help-block">{{$errors->first('color')}}</span>
+            @endif
         </div>
         <div class="form-group @if($errors->has('color_letra')) has-error @endif ">
 
@@ -114,22 +114,18 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             @endif
         </div>
 
-        <div class="form-group @if($errors->has('dias_permitidos')) has-error @endif ">
-            {!! Form::label('dias_permitidos', 'Cantidad de d&iacute;as permitidos:') !!}
-            {!! Form::text('dias_permitidos', $meses['JULY']['cant_semanal'], ['class' => 'form-control']) !!}
-            @if($errors->has('dias_permitidos'))
-                <span class="help-block">{{$errors->first('dias_permitidos')}}</span>
-            @endif
-        </div>
-
+    </div>
+    <div class="col-md-6">
         <div class="form-group @if($errors->has('tiene_tope')) has-error @endif ">
 
             {!! Form::label('tiene_tope', 'Tiene tope:') !!}
             <select name="tiene_tope" class="form-control">
-                <option value="1">Si
+                <option value="1"
+                        @if(old('tiene_tope')) selected @endif
+                >Si
                 </option>
                 <option value="0"
-                        @if((!isset($tipo->diasPermitidos) or ($tipo->diasPermitidos->isEmpty()))) selected @endif
+                        @if((!old('tiene_tope'))and (!isset($tipo->diasPermitidos) or ($tipo->diasPermitidos->isEmpty()))) selected @endif
                 >No
                 </option>
             </select>
@@ -140,11 +136,22 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
 
         </div>
 
+        <div class="form-group @if($errors->has('cant_semanal')) has-error @endif col-md-6">
+            {!! Form::label('cant_semanal', 'D&iacute;as para turno semanal:') !!}
+            {!! Form::text('cant_semanal', $meses['JULY']['cant_semanal'], ['class' => 'form-control']) !!}
+            @if($errors->has('cant_semanal'))
+                <span class="help-block">{{$errors->first('cant_semanal')}}</span>
+            @endif
+        </div>
 
-        <!-- Submit Field -->
+        <div class="form-group @if($errors->has('cant_fin_semana')) has-error @endif col-md-6">
+            {!! Form::label('cant_fin_semana', 'D&iacute;as para fin de semana:') !!}
+            {!! Form::text('cant_fin_semana', $meses['JULY']['cant_fin_semana'], ['class' => 'form-control']) !!}
+            @if($errors->has('cant_fin_semana'))
+                <span class="help-block">{{$errors->first('cant_fin_semana')}}</span>
+            @endif
+        </div>
 
-    </div>
-    <div class="col-md-6">
         <table class="table dataTable meses">
             <thead>
             <tr>
@@ -186,13 +193,35 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             function updateScreem(tieneTope) {
 
                 if (tieneTope == 1) {
-                    $('input[name="dias_permitidos"]').prop('disabled', false);
+                    $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
+                        .prop('disabled', false);
+                    updateProporcionales($('input[name="cant_semanal"]'))
+                    updateProporcionales($('input[name="cant_fin_semana"]'))
                     $('.table.meses').show();
                 } else {
-                    $('input[name="dias_permitidos"]')
+                    $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
                         .val(0)
                         .prop('disabled', true);
+
                     $('.table.meses').hide();
+                }
+            }
+
+            function updateProporcionales(element) {
+                var meses = [
+                    @foreach($meses as $mes => $dias)
+                        '{{trans('month.'.$mes)}}',
+                    @endforeach
+                ];
+                var prop = 0;
+                var who = $(element).prop('name') === 'cant_semanal' ? 'semana' : 'finde';
+                for (var i = 1; i <= meses.length; i++) {
+                    if ($.isNumeric($(element).val())) {
+                        prop = Math.ceil($(element).val() / 12 * (12 - (i + 6)));
+                    } else {
+                        prop = 0;
+                    }
+                    $('.table.meses').find('td.' + meses[i] + '.' + who).html(prop);
                 }
             }
 
@@ -223,23 +252,10 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
 
             });
 
-            $('input[name="dias_permitidos"]').on('keyup', function (event) {
-
-                var meses = [
-                    @foreach($meses as $mes => $dias)
-                        '{{trans('month.'.$mes)}}',
-                    @endforeach
-                ];
-                var prop = 0;
-                for (var i = 1; i <= meses.length; i++) {
-                    if ($.isNumeric($(this).val())) {
-                        prop = Math.ceil($(this).val() / 12 * (12 - (i + 6)));
-                    } else {
-                        prop = 0;
-                    }
-                    $('.table.meses').find('td.' + meses[i]).html(prop);
-                }
+            $('input[name="cant_semanal"], input[name="cant_fin_semana"]').on('keyup', function (event) {
+                updateProporcionales(this);
             })
+
 
         })
     </script>

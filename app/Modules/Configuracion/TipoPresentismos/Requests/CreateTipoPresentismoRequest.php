@@ -34,7 +34,8 @@ class CreateTipoPresentismoRequest extends Request
         ];
         
         if ($this->input('tiene_tope') == '1') {
-            $rules['dias_permitidos'] = 'required|integer|min:1';
+            $rules['cant_semanal'] = 'required|integer|min:1';
+            $rules['cant_fin_semana'] = 'required|integer|min:1';
         }
         
         return $rules;
