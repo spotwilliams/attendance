@@ -26,11 +26,18 @@ class TipoPresentismo extends Model
             'injustificado',
             'es_fijo',
         ];
-    
+    /**
+     * @var array
+     * @obsolete
+     */
     protected $noJustificables
         = [
             'A',
         ];
+    /**
+     * @var array
+     * @obsolete
+     */
     protected $noInjustificables
         = [
             'P',//Presente
