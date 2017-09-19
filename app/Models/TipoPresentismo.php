@@ -87,7 +87,7 @@ class TipoPresentismo extends Model
     
     public function puedoJustificarlo()
     {
-        if (in_array($this->codigo, $this->noJustificables)) {
+        if ($this->es_fijo) {
             // Significa que no puedo justificarlo
             return false;
         } else {
@@ -97,7 +97,7 @@ class TipoPresentismo extends Model
     
     public function puedoInjustificarlo()
     {
-        if (in_array($this->codigo, $this->noInjustificables)) {
+        if ($this->es_fijo) {
             // Significa que no puedo justificarlo
             return false;
         } else {
