@@ -4,6 +4,7 @@
 
 $tipo                = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
 $tipo->injustificado = ($tipo->injustificado) ? 1 : 0;
+$tipo->es_fijo = ($tipo->es_fijo) ? 1 : 0;
 if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
     $meses = $tipo->diasPermitidos;
 } else {
@@ -103,12 +104,33 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 <span class="help-block">{{$errors->first('aplica')}}</span>
             @endif
         </div>
-        <div class="form-group @if($errors->has('injustificado')) has-error @endif ">
+        <div class="form-group @if($errors->has('injustificado')) has-error @endif col-md-3">
 
-            {!! Form::label('injustificado', 'Injustificado:') !!}
+            <label
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    title="Estado"
+                    data-content="Indica en qu&eacute; estado se guardar&aacute; por defecto la licencia (como Justificada o Injustificada)"
+            >Por defecto: </label>
             {!! Form::select('injustificado', [
-            '1' => 'Si',
+            '1' => 'Injustificado',
+            '0' => 'Justificado',
+            ], null, ['class' => 'form-control']) !!}
+            @if($errors->has('injustificado'))
+                <span class="help-block">{{$errors->first('injustificado')}}</span>
+            @endif
+        </div>
+        <div class="form-group @if($errors->has('injustificado')) has-error @endif col-md-3">
+
+            <label
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    title="Justificabilidad"
+                    data-content="En caso de 'No', implica que la licencia puede ser justificable o no, caso contrario no podr&aacute; cambiarse su estado (similar a Ausente, Presente, Feriados, etc.)"
+            >Fijo: </label>
+            {!! Form::select('es_fijo', [
             '0' => 'No',
+            '1' => 'Si',
             ], null, ['class' => 'form-control']) !!}
             @if($errors->has('injustificado'))
                 <span class="help-block">{{$errors->first('injustificado')}}</span>
@@ -256,6 +278,8 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             $('input[name="cant_semanal"], input[name="cant_fin_semana"]').on('keyup', function (event) {
                 updateProporcionales(this);
             })
+
+            $('[data-toggle="popover"]').popover({});
 
 
         })

@@ -148,6 +148,7 @@ class CrudController extends AppBaseController
                 'color_letra'   => $input['color_letra'],
                 'aplica'        => $input['aplica'],
                 'injustificado' => $input['injustificado'],
+                'es_fijo'       => $input['es_fijo'],
             ]);
             if ($input['tiene_tope'] == '1') {
                 $valueMonth = 6;

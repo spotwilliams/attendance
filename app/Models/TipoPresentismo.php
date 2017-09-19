@@ -24,6 +24,7 @@ class TipoPresentismo extends Model
             'color',
             'color_letra',
             'injustificado',
+            'es_fijo',
         ];
     
     protected $noJustificables
