@@ -233,6 +233,7 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-smnull0">
+        <a href="{{route('agentesEditLaborales', ['id' => $agente])}}" class="btn btn-default">Atr&aacute;s</a>
         {!! Form::submit('Finalizar', ['class' => 'btn btn-primary']) !!}
     </div>
 </div>

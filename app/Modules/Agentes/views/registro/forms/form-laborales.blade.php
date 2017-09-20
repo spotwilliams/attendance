@@ -137,6 +137,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
+        <a href="{{route('agentesEditPersonales', ['id' => $agente])}}" class="btn btn-default">Atr&aacute;s</a>
         {!! Form::submit('Siguiente', ['class' => 'btn btn-primary']) !!}
     </div>
 </div>
