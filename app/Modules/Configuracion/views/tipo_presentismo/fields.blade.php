@@ -4,7 +4,7 @@
 
 $tipo                = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
 $tipo->injustificado = ($tipo->injustificado) ? 1 : 0;
-$tipo->es_fijo = ($tipo->es_fijo) ? 1 : 0;
+$tipo->es_fijo       = ($tipo->es_fijo) ? 1 : 0;
 if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
     $meses = $tipo->diasPermitidos;
 } else {
@@ -218,9 +218,14 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 if (tieneTope == 1) {
                     $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
                         .prop('disabled', false);
-                    updateProporcionales($('input[name="cant_semanal"]'))
-                    updateProporcionales($('input[name="cant_fin_semana"]'))
-                    $('.table.meses').show();
+                    updateProporcionales($('input[name="cant_semanal"]'));
+                    updateProporcionales($('input[name="cant_fin_semana"]'));
+                    if ($('select[name="aplica"]').val() == 'SITUACION_REVISTA') {
+                        // Los proporcionales solo son para locacion
+                        $('.table.meses').hide();
+                    } else {
+                        $('.table.meses').show();
+                    }
                 } else {
                     $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
                         .val(0)
@@ -251,6 +256,10 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
 
             $('select[name="tiene_tope"]').on('change', function (event) {
                 updateScreem($(this).val());
+
+            });
+            $('select[name="aplica"]').on('change', function (event) {
+                updateScreem($('select[name="tiene_tope"]').val());
 
             });
 
