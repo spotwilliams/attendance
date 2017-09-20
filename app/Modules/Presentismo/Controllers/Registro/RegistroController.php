@@ -8,6 +8,8 @@ use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
+use Cat\Modules\Presentismo\Services\Registro\Destroy;
+use Cat\Modules\Presentismo\Services\Validacion\ValidationNonType;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
@@ -37,7 +39,7 @@ class RegistroController extends AppBaseController
     }
     
     /**
-     * Indica que operacion ejecutar
+     * Indica que operacion ejecutar: CRUD
      *
      * @param Request $request
      * @return string
@@ -48,11 +50,16 @@ class RegistroController extends AppBaseController
         $agente = Agente::find($input['agente']);
         $fecha  = new \DateTime($input['fecha']);
         try {
-            Presentismo::where('id_agente', '=', $agente->id)
-                ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
-                ->firstOrFail();
+            if ($request->input('presentismo') == -1) {
+                $operation = 'destroy';
+            } else {
+                Presentismo::where('id_agente', '=', $agente->id)
+                    ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
+                    ->firstOrFail();
+                
+                $operation = 'update';
+            }
             
-            $operation = 'update';
             
         } catch (ModelNotFoundException $noHayPresentismoCargado) {
             $operation = 'store';
@@ -168,9 +175,8 @@ class RegistroController extends AppBaseController
             $message = $e->getMessage();
             $code    = 500;
             $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
-        }
-        catch (FechaFutura $e) {
-    
+        } catch (FechaFutura $e) {
+            
             $message = $e->getMessage();
             $code    = 500;
             $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
@@ -189,6 +195,74 @@ class RegistroController extends AppBaseController
         }
 
 //        $disabled = (isset($disabled) ? $disabled : false;
+        
+        return Response::json([
+            'message'     => $message,
+            'agente'      => $agente->id,
+            'presentismo' => $presentismo,
+            'button'      => $button,
+        ], $code);
+    }
+    
+    public function destroy(Request $request)
+    {
+        try {
+            
+            
+            /** @var array $input */
+            $input = $request->all();
+            /** @var Agente $agente */
+            $agente = Agente::find($input['agente']);
+            /** @var \DateTime $fecha */
+            $fecha = new \DateTime($input['fecha']);
+            /** @var Presentismo $presentismo */
+            $presentismo = new Presentismo(['id' => -1, 'id_tipo_presentismo' => -1]);
+            
+            $this->authorize('destroy', $this);
+            
+            try {
+                
+                $validador = new ValidationNonType(
+                    $agente,
+                    new TipoPresentismo(['id' => -1]),
+                    $fecha
+                );
+                // Valido lo necesario
+                $validador->execute();
+                
+                // Servicio de eliminarion
+                $destroyer = new Destroy($agente, $fecha);
+                $destroyer->execute();
+                
+                // Preparo el resultado para retornar
+                $message = 'El presentismo ha sido borrado.';
+                $code    = 200;
+                $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
+                
+                
+            } catch (PeriodoCerrado $e) {
+                
+                $message = $e->getMessage();
+                $code    = 500;
+                $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
+            } catch (FechaFutura $e) {
+                
+                $message = $e->getMessage();
+                $code    = 500;
+                $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
+            }
+            
+        } catch (AuthorizationException $e) {
+            
+            $message     = 'Sin permisos para borrar';
+            $code        = 403;
+            $presentismo = Presentismo::where('id_agente', '=', $agente->id)
+                ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
+                ->first();
+            $button      = HtmlCustoms::getButtonWithPopOver(null, false, true);
+            
+            
+        }
         
         return Response::json([
             'message'     => $message,

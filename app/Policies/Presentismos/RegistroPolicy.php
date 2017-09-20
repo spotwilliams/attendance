@@ -17,6 +17,11 @@ class RegistroPolicy extends SecurityPolicy
     {
         return $this->verifyOnlyControllerPermission($user, 'Modificar presentismo');
     }
+
+    public function destroy(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar presentismo');
+    }
     
     public function comentario(User $user)
     {

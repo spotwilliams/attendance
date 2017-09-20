@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: worker
- * Date: 6/14/17
- * Time: 15:00
- */
 
 namespace Cat\Modules\Presentismo\Exceptions\Validacion;
 
