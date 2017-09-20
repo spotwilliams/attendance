@@ -111,7 +111,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                     data-trigger="hover"
                     title="Estado"
                     data-content="Indica en qu&eacute; estado se guardar&aacute; por defecto la licencia (como Justificada o Injustificada)"
-            >Por defecto: </label>
+            >Valor inicial: </label>
             {!! Form::select('injustificado', [
             '1' => 'Injustificado',
             '0' => 'Justificado',

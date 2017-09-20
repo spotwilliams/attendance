@@ -142,7 +142,7 @@ $control = 0;
                     <input type="hidden" class="form-control" value="{{$est['id']}}" placeholder="Carrera"
                            name="estudio[id][]">
                     <div class="col-sm-3">
-                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="T&iacute;tutlo"
+                        <input type="text" class="form-control" value="{{$est['carrera']}}" placeholder="T&iacute;tulo"
                                name="estudio[carrera][]">
                     </div>
                     <div class="col-sm-3">
