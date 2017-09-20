@@ -108,8 +108,11 @@ class LaboralesController extends AppBaseController
             $agente = Agente::with('operativo.turno')
                 ->with('operativo.base')
                 ->findOrFail($id);
-            Gate::allows('work-bases', [[$agente->operativo->base->id]]);
-            Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
+
+            if ($agente->operativo) {
+                Gate::allows('work-bases', [[$agente->operativo->base->id]]);
+                Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
+            }
         } catch (ModelNotFoundException $e) {
             Flash::error('Agente no encontrado');
             

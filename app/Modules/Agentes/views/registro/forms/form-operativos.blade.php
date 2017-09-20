@@ -242,7 +242,7 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
 
         $(document).ready(function () {
             $('select').selectpicker({});
-            $('.horario').timepicker({});
+            $('.horario').timepicker({'timeFormat': 'H:i'});
 
             $('.hora-especial').on('change', function () {
 
