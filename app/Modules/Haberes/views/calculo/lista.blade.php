@@ -165,6 +165,7 @@ while ($fecha < $fechaToday) {
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+            var tablaComentario = null;
 
             $('table tbody').on('click', 'tr > td > a.details-control', function () {
                 var tr = $(this).closest('tr');
@@ -276,19 +277,92 @@ while ($fecha < $fechaToday) {
             }
 
             function renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
-                var contailerToolButtons = myParent.children('.tools-presentismo');
+                myParent.children('.tools-presentismo').remove();
 
-                $(contailerToolButtons).children('[data-toggle="popover"]').remove();
-                $(contailerToolButtons).append(button);
-
-                var btnComment = $(contailerToolButtons).children('.dialog-comentary');
-                $(btnComment).removeAttr('disabled');
+                $(myParent).append(button);
 
                 activarPopOver();
+                activarButtonComentario();
                 message(myParent, messageTxt, presentismo.id_tipo_presentismo, level);
             }
 
+            /**
+             *
+             * Accion para boton de modal
+             *
+             */
+            function activarButtonComentario() {
+
+                $('.dialog-comentary')
+                    .on('click', function () {
+
+                        var bro = $(this)
+                            .parent()
+                            .children('[data-toggle="popover"]');
+
+                        var presentismo = $(bro)
+                            .data('presentismo');
+
+                        var agenteData = $(this).parents().closest('.col-xs-2').children('input');
+                        var agente = $(agenteData).data('agente');
+
+                        var presentismoSelect = $(this).parents().closest('.form-group').children('.bootstrap-select').children('select');
+                        var tipoPresentismo = $(presentismoSelect).find(':selected').data('content');
+                        // Parte visible
+                        $('.modal-agente').html(agente.apellido + ',' + agente.nombre);
+                        $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
+                        $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
+                        $('.modal-cuit').html(agente.cuit);
+                        $('.modal-fecha').html(presentismo.fecha);
+                        $('.modal-presentismo').html(tipoPresentismo);
+                        $('.modal-comentario').val($(this).data('comentario'));
+                        // Hidden para ajax
+                        $('.modal-id-agente').val(presentismo.id_agente);
+                        $('.modal-id-presentismo').val($(this).data('id-presentismo'));
+
+                        $('#comentarios-modal').data('dialog-comentary', $(this));
+
+                        $('#comentarios-modal').modal();
+
+                        var tableUrl = '{{route('presentismoCommentLista', ['id' => 'id'])}}';
+                        var url = tableUrl.replace('id', $(this).data('id-presentismo'));
+                        if (tablaComentario == null) {
+                            tablaComentario = $('.table-comentario').DataTable({
+                                ajax: url,
+                                type: 'GET',
+                                columns: [
+                                    {
+                                        data: function (comentario) {
+                                            return comentario.comentario;
+                                        },
+
+                                    },
+                                    {
+                                        data: function (comentario) {
+                                            return moment(comentario.created_at).format('DD/MM/YYYY, h:mm a');
+                                        },
+                                    },
+                                    {
+                                        data: function (comentario) {
+                                            return comentario.user.email;
+                                        },
+                                    },
+                                ],
+                                paging: true,
+                                ordering: false,
+                                searching: false,
+                                pageLength: 4,
+                            });
+                        } else {
+                            tablaComentario.ajax.url(url).load();
+                        }
+
+
+                    });
+            }
+
             activarPopOver();
+            activarButtonComentario();
             /**
              *
              * Select picker
@@ -358,60 +432,15 @@ while ($fecha < $fechaToday) {
              *
              */
 
-            /**
-             *
-             * Accion para boton de modal
-             *
-             */
-            $('.dialog-comentary')
-                .on('click', function () {
-                    $('.no-comment').addClass('hidden');
 
-                    var bro = $(this)
-                        .parent()
-                        .children('[data-toggle="popover"]');
-
-                    var presentismo = $(bro)
-                        .data('presentismo');
-
-                    var agenteData = $(this).parents().closest('.col-xs-2').children('input');
-                    var agente = $(agenteData).data('agente');
-
-                    var presentismoSelect = $(this).parents().closest('.form-group').children('.bootstrap-select').children('select');
-                    var tipoPresentismo = $(presentismoSelect).find(':selected').data('content');
-                    // Parte visible
-                    $('.modal-agente').html(agente.apellido + ',' + agente.nombre);
-                    $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
-                    $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
-                    $('.modal-cuit').html(agente.cuit);
-                    $('.modal-fecha').html(presentismo.fecha);
-                    $('.modal-presentismo').html(tipoPresentismo);
-                    $('.modal-comentario').val($(this).data('comentario'));
-                    if ($(this).data('comentario') !== '') {
-                        $('.no-comment').removeClass('hidden');
-                    }
-                    // Hidden para ajax
-                    $('.modal-id-agente').val(presentismo.id_agente);
-                    $('.modal-id-tipo-presentismo').val(presentismo.id_tipo_presentismo);
-
-                    $('#comentarios-modal').data('dialog-comentary', $(this));
-
-                    $('#comentarios-modal').modal();
-
-
-                });
 
             $('.modal-save')
                 .off('click')
                 .on('click', function () {
-                    var fecha = $('.modal-fecha').html();
-                    var idTipoPresentismo = $('.modal-id-tipo-presentismo').val();
-                    var idAgente = $('.modal-id-agente').val();
+                    var idTipoPresentismo = $('.modal-id-presentismo').val();
 
                     var data = {
-                        'id_tipo_presentismo': idTipoPresentismo,
-                        'id_agente': idAgente,
-                        'fecha': fecha,
+                        'id_presentismo': idTipoPresentismo,
                         'comentario': $('.modal-comentario').val(),
                     };
                     $.ajax({
@@ -420,11 +449,10 @@ while ($fecha < $fechaToday) {
                         data: data,
                         success: function (xhr, other) {
                             var button = $('#comentarios-modal').data('dialog-comentary');
-                            button.addClass('bg-gray-active')
-                                .removeClass('btn-default')
-                                .data('comentario', xhr.presentismo.comentario)
-                                .data('usuario-comentario', xhr.usuario.name)
-                                .data('usuario-fecha', xhr.fecha_comentario);
+                            button.children('i')
+                                .removeClass('fa-comment-o')
+                                .addClass('fa-comment text-yellow text-warning');
+
                             $('.no-comment').removeClass('hidden');
 
 

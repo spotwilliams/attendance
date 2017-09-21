@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Cat\User;
 use Illuminate\Database\Eloquent\Model;
 
 
@@ -16,7 +17,7 @@ class Comentario extends Model
     protected $fillable
         = [
             'id_presentismo',
-            'id_usuario',
+            'id_user',
             'comentario',
         ];
     
@@ -27,6 +28,6 @@ class Comentario extends Model
     }
     public function user()
     {
-        return $this->belongsTo(Presentismo::class, 'id_user');
+        return $this->belongsTo(User::class, 'id_user');
     }
 }

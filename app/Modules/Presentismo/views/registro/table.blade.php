@@ -41,6 +41,7 @@ $idModal = 'comentarios-modal'
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+            var tablaComentario = null;
             $.ajaxSetup({
                 headers: {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
@@ -76,7 +77,7 @@ $idModal = 'comentarios-modal'
                                 var presentismo = xhr.presentismo;
                                 var button = xhr.button;
                                 var level = 'success';
-                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                                renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                             },
                             error: function (xhr, other) {
@@ -84,7 +85,7 @@ $idModal = 'comentarios-modal'
                                 var presentismo = xhr.responseJSON.presentismo;
                                 var button = xhr.responseJSON.button;
                                 var level = 'error';
-                                renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                                renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                             }
 
@@ -103,8 +104,6 @@ $idModal = 'comentarios-modal'
                     .selectpicker('refresh');
                 $(obj).children('.overlay-td').remove();
 
-//                $(ref).hide();
-//                var messenger = $(ref).parents('.input-group.margin')[0];
                 $(obj).notify(message,
                     {
                         autoHide: true,
@@ -116,20 +115,82 @@ $idModal = 'comentarios-modal'
                     });
             }
 
-            function renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
-                var contailerToolButtons = myParent.children('.tools-presentismo');
+            function renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level) {
+                myParent.children('.tools-presentismo').remove();
 
-                $(contailerToolButtons).children('[data-toggle="popover"]').remove();
-                $(contailerToolButtons).append(button);
-
-                var btnComment = $(contailerToolButtons).children('.dialog-comentary');
-                $(btnComment).removeAttr('disabled');
+                $(myParent).append(button);
 
                 activarPopOver();
+                activarButtonComentario();
                 message(myParent, messageTxt, presentismo.id_tipo_presentismo, level);
             }
 
+            function activarButtonComentario() {
+                $('.dialog-comentary')
+                    .on('click', function () {
+                        var myParent = $(this).parent().parent();
+                        var idAgente = $(this).parents().closest('td').data('agente');
+                        var fecha = datatableColumnHeaderValue(myParent, dataTable);
+                        var agente = datatableCellValue(myParent, dataTable);
+                        var presentismoParent = $(myParent).children('div');
+                        var presentismoSelected = $(presentismoParent[0]).children('select');
+                        var comentario = $(this).data('comentario');
+                        // Parte visible
+
+                        $('.modal-agente').html(agente[0]);
+                        $('.modal-cuit').html(agente[1]);
+                        $('.modal-fecha').html(fecha);
+                        $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
+                        $('.modal-comentario').val(comentario);
+                        $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
+                        $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
+
+                        // Hidden para ajax
+                        $('.modal-id-agente').val(idAgente);
+                        $('.modal-id-presentismo').val($(this).data('id-presentismo'));
+
+                        $('#{{$idModal}}').data('dialog-comentary', $(this));
+                        $('#{{$idModal}}').modal();
+
+
+                        var tableUrl = '{{route('presentismoCommentLista', ['id' => 'id'])}}';
+                        var url = tableUrl.replace('id', $(this).data('id-presentismo'));
+                        if (tablaComentario == null) {
+                            tablaComentario = $('.table-comentario').DataTable({
+                                ajax: url,
+                                type: 'GET',
+                                columns: [
+                                    {
+                                        data: function (comentario) {
+                                            return comentario.comentario;
+                                        },
+
+                                    },
+                                    {
+                                        data: function (comentario) {
+                                            return moment(comentario.created_at).format('DD/MM/YYYY, h:mm a');
+                                        },
+                                    },
+                                    {
+                                        data: function (comentario) {
+                                            return comentario.user.email;
+                                        },
+                                    },
+                                ],
+                                paging: true,
+                                ordering: false,
+                                searching: false,
+                                pageLength: 4,
+                            });
+                        } else {
+                            tablaComentario.ajax.url(url).load();
+                        }
+                    });
+            }
+
             activarPopOver();
+
+            activarButtonComentario();
             /**
              *
              * Select picker
@@ -179,7 +240,7 @@ $idModal = 'comentarios-modal'
                             var presentismo = xhr.presentismo;
                             var button = xhr.button;
                             var level = 'success';
-                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                            renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                         },
                         error: function (xhr, other) {
@@ -187,7 +248,7 @@ $idModal = 'comentarios-modal'
                             var presentismo = xhr.responseJSON.presentismo;
                             var button = xhr.responseJSON.button;
                             var level = 'error';
-                            renderAgaingButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
+                            renderAgainButtonsAndSelect(myParent, messageTxt, presentismo, button, level)
 
                         }
 
@@ -230,51 +291,15 @@ $idModal = 'comentarios-modal'
              * Accion para boton de modal
              *
              */
-            $('.dialog-comentary')
-                .on('click', function () {
-                    $('.no-comment').addClass('hidden');
 
-                    var myParent = $(this).parent().parent();
-
-                    var idAgente = $(this).parents().closest('td').data('agente');
-                    var fecha = datatableColumnHeaderValue(myParent, dataTable);
-                    var agente = datatableCellValue(myParent, dataTable);
-                    var presentismoParent = $(myParent).children('div');
-                    var presentismoSelected = $(presentismoParent[0]).children('select');
-                    var comentario = $(this).data('comentario');
-                    // Parte visible
-
-                    $('.modal-agente').html(agente[0]);
-                    $('.modal-cuit').html(agente[1]);
-                    $('.modal-fecha').html(fecha);
-                    $('.modal-presentismo').html($(presentismoSelected).find(':selected').data('content'));
-                    $('.modal-comentario').val(comentario);
-                    $('.modal-comentario-usuario').html($(this).data('usuario-comentario'));
-                    $('.modal-comentario-fecha').html($(this).data('fecha-comentario'));
-                    if ($(this).data('comentario') !== '') {
-                        $('.no-comment').removeClass('hidden');
-                    }
-                    // Hidden para ajax
-                    $('.modal-id-agente').val(idAgente);
-                    $('.modal-id-tipo-presentismo').val($(presentismoSelected).val());
-
-                    $('#{{$idModal}}').data('dialog-comentary', $(this));
-                    $('#{{$idModal}}').modal();
-
-
-                });
 
             $('.modal-save')
                 .off('click')
                 .on('click', function () {
-                    var fecha = $('.modal-fecha').html();
-                    var idTipoPresentismo = $('.modal-id-tipo-presentismo').val();
-                    var idAgente = $('.modal-id-agente').val();
+                    var idTipoPresentismo = $('.modal-id-presentismo').val();
 
                     var data = {
-                        'id_tipo_presentismo': idTipoPresentismo,
-                        'id_agente': idAgente,
-                        'fecha': fecha,
+                        'id_presentismo': idTipoPresentismo,
                         'comentario': $('.modal-comentario').val(),
                     };
                     $.ajax({
@@ -284,13 +309,9 @@ $idModal = 'comentarios-modal'
                         success: function (xhr, other) {
 
                             var button = $('#{{$idModal}}').data('dialog-comentary');
-                            button.addClass('bg-gray-active')
-                                .removeClass('btn-default')
-                                .data('comentario', xhr.presentismo.comentario)
-                                .data('usuario-comentario', xhr.usuario.name)
-                                .data('usuario-fecha', xhr.fecha_comentario)
-                            $('.no-comment').removeClass('hidden');
-                            ;
+                            button.children('i')
+                                .removeClass('fa-comment-o')
+                                .addClass('fa-comment text-yellow text-warning');
 
                             $('#{{$idModal}}').modal('toggle');
                             message(button, xhr.message, idTipoPresentismo, 'success');

@@ -51,16 +51,14 @@ class JustificacionController extends AppBaseController
                 }
                 
             } catch (AuthorizationException $e) {
-
+                
                 $presentismo = Presentismo::findOrFail($request->input('id'));
                 
                 return Response::json([
                     'message'     => 'No tiene permisos para ejecutar',
                     'agente'      => $presentismo->agente()->first()->id,
                     'presentismo' => $presentismo,
-                    'button'      => HtmlCustoms::getButtonWithPopOver($presentismo,
-                        ($presentismo->injustificado == true),
-                        (isset($disabled) ? $disabled : false)),
+                    'button'      => HtmlCustoms::getButtonsTools($presentismo),
                 ], 403);
             }
             
@@ -99,8 +97,7 @@ class JustificacionController extends AppBaseController
             'message'     => $message,
             'agente'      => $presentismo->agente()->first()->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado == true),
-                (isset($disabled) ? $disabled : false)),
+            'button'      => HtmlCustoms::getButtonsTools($presentismo),
         ], $code);
         
         
@@ -114,7 +111,7 @@ class JustificacionController extends AppBaseController
                 $this->authorize('injustificar', $this);
                 /** @var Presentismo $presentismo */
                 $presentismo = Presentismo::with('tipoPresentismo')->findOrFail($request->input('id'));
-    
+                
                 $agente = Agente::findOrFail($request->input('id_agente'));
                 if (!Gate::allows('work-licencia', [$agente, $presentismo->tipoPresentismo])) {
                     throw new AuthorizationException('No tiene acceso a la licencia especificada');
@@ -127,15 +124,12 @@ class JustificacionController extends AppBaseController
                     'message'     => 'No tiene permisos para ejecutar',
                     'agente'      => $presentismo->agente()->first()->id,
                     'presentismo' => $presentismo,
-                    'button'      => HtmlCustoms::getButtonWithPopOver($presentismo,
-                        ($presentismo->injustificado == true),
-                        (isset($disabled) ? $disabled : false)),
+                    'button'      => HtmlCustoms::getButtonsTools($presentismo),
+
                 ], 403);
             }
             
-            /** @var Presentismo $presentismo */
-//            $presentismo = Presentismo::findOrFail($request->input('id'));
-            $service     = new Injustificar($presentismo);
+            $service = new Injustificar($presentismo);
             
             $service->execute();
             
@@ -152,8 +146,7 @@ class JustificacionController extends AppBaseController
             'message'     => $message,
             'agente'      => $presentismo->agente()->first()->id,
             'presentismo' => $presentismo,
-            'button'      => HtmlCustoms::getButtonWithPopOver($presentismo, ($presentismo->injustificado == true),
-                (isset($disabled) ? $disabled : false)),
+            'button'      => HtmlCustoms::getButtonsTools($presentismo),
         ], $code);
         
         

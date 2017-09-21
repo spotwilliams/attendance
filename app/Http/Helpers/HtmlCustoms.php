@@ -155,8 +155,18 @@ class HtmlCustoms
         TipoContrato $tipoContrato,
         $selector = 'selectpicker'
     ) {
-        /** @var array $tiposPresentismos */
         
+        $select = self::getSelect($p, $tipoContrato, $selector);
+        $tools  = self::getButtonsTools($p);
+        
+        $html = "<div class='form-group'>$select $tools</div>";
+        
+        return $html;
+    }
+    
+    
+    public static function getSelect(Presentismo $p = null, TipoContrato $tipoContrato, $selector = 'selectpicker')
+    {
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
         
@@ -174,65 +184,56 @@ class HtmlCustoms
             $option       .= ">$tp->descripcion</option>";
             $select       .= $option;
         }
-        $usuarioComentario = null;
-        $fechaComentario   = null;
-        if ($p !== null) {
-            $btnDisabled       = '';
-            $comentario        = $p->comentario;
-            $usuarioComentario = $p->usuario;
-            $fechaComentario   = (new \DateTime($p->fecha_comentario))->format('Y-m-d');
-            $buttonJustice     = ($p->injustificado == true ?
-                self::getButtonWithPopOver($p, true) :
-                self::getButtonWithPopOver($p, false));
-            $btnClass          = (!empty($p->comentario) ? 'btn-warning' : 'btn-default');
-        } else {
-            $comentario    = null;
-            $btnDisabled   = 'disabled';
-            $btnClass      = 'btn-default';
-            $buttonJustice = self::getButtonWithPopOver($p, false, true);
-        }
         
-        if ($usuarioComentario == null) {
-            $usuarioComentario = Auth::user()->email;
-        }
-        if ($fechaComentario == null) {
-            $fechaComentario = (new \DateTime())->format('Y-m-d');
-        }
         
-        $select        .= '</select>';
-        $buttonComment = "<button type='button' data-comentario='$comentario' data-usuario-comentario='$usuarioComentario' data-fecha-comentario='$fechaComentario' class='btn $btnClass dialog-comentary' $btnDisabled><i class='fa fa-comment-o'></i></button>";
-        $buttonGroup   = "<div class=\"btn-group tools-presentismo\">$buttonComment$buttonJustice</div>";
-        $select        .= $buttonGroup;
+        $select .= '</select>';
         
-        $html = '<div class="form-group">';
-        
-        $html .= $select
-            .= '</div>';
-        
-        return $html;
+        return $select;
     }
     
-    public static function getButtonWithPopOver(Presentismo $p = null, $injustificado = false, $disabled = false)
+    public static function getButtonsTools(Presentismo $p = null)
     {
-        $title       = ($injustificado ? '<label class="label label-danger"> Injustificado</label>' : '<label class="label label-info"> Justificado</label>');
-        $label       = ($injustificado ? 'Justificado' : 'Injustificado');
-        $classToggle = ($injustificado ? 'label-info' : 'label-danger');
-        $message     = "Click para marcar el presentismo como <label class=\"label $classToggle\">$label</label>";
-        $icon        = '<i class=\'fa fa-check-square-o\'></i>';
-        $toggles     = 'data-toggle=\'popover\' data-trigger=\'hover\'';
+        $buttonJustice = self::getButtonWithPopOver($p);
+        $buttonComment = self::getCommentButton($p);
+        $buttonGroup   = "<div class=\"btn-group tools-presentismo\">$buttonComment$buttonJustice</div>";
         
-        $classButton = ($injustificado ? 'btn-danger' : 'btn-default');
-        $data        = 'data-presentismo=\'' . (($p === null) ? '' : $p->toJson()) . '\'';
-        $disabled    = ($disabled ? 'disabled' : ($p->id_tipo_presentismo === -1) ? 'disabled' : '');
-        $button      = "<button type='button' class='btn $classButton' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
+        return $buttonGroup;
+    }
+    
+    public static function getCommentButton(Presentismo $p = null)
+    {
+        $tildeClass    = ($p && ($p->comentario == 'SI')) ? 'fa-comment text-yellow' : 'fa-comment-o';
+        $idPresentismo = $p ? $p->id : -1;
+        $btnDisabled   = ($p == null || ($p->id_tipo_presentismo == -1) )  ? 'disabled' : '';
+        
+        
+        $buttonComment = "<button type='button' data-id-presentismo='$idPresentismo' class='btn btn-default dialog-comentary' $btnDisabled><i class='fa $tildeClass'></i></button>";
+        
+        return $buttonComment;
+    }
+    
+    public static function getButtonWithPopOver(Presentismo $p = null)
+    {
+        $injustificado = ($p && ($p->injustificado == true)) ? true : false;
+        $disabled      = (($p != null) && ($p->id_tipo_presentismo != -1)) ? '' : 'disabled';
+        $title         = ($injustificado ? '<label class="label label-danger"> Injustificado</label>' : '<label class="label label-info"> Justificado</label>');
+        $label         = ($injustificado ? 'Justificado' : 'Injustificado');
+        $classToggle   = ($injustificado ? 'label-info' : 'label-danger');
+        $message       = "Click para marcar el presentismo como <label class=\"label $classToggle\">$label</label>";
+        $toggles       = 'data-toggle=\'popover\' data-trigger=\'hover\'';
+        
+        if ($p) {
+            $classButton = ($injustificado ? 'fa-check-square text-red' : 'fa-check-square text-green');
+        } else {
+            $classButton = 'fa-check-square-o';
+        }
+        $icon   = "<i class='fa $classButton'></i>";
+        $data   = 'data-presentismo=\'' . (($p === null) ? '' : $p->toJson()) . '\'';
+        $button = "<button type='button' class='btn btn-default' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
         
         return $button;
     }
     
-    
-    public static function translateDay()
-    {
-    }
     
     public static function getSelectByTipoContrato(
         TipoContrato $tipoContrato,

@@ -15,9 +15,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Response;
 
 class RegistroController extends AppBaseController
@@ -116,41 +114,6 @@ class RegistroController extends AppBaseController
         }
     }
     
-    public function comentario(Request $request)
-    {
-        $this->authorize('comentario', $this);
-        
-        $this->validate($request, ['comentario' => 'required|max:255',]);
-        $input   = $request->all();
-        $jornada = new \DateTime($input['fecha']);
-        
-        $presentismo = Presentismo::where('id_agente', '=', $input['id_agente'])
-            ->whereDate('fecha', '=', $jornada->format('Y-m-d'))
-            ->where('id_tipo_presentismo', '=', $input['id_tipo_presentismo'])
-            ->first();
-        
-        try {
-            
-            $presentismo->comentario       = $input['comentario'];
-            $presentismo->usuario          = Auth::user()->email;
-            $presentismo->fecha_comentario = (new \DateTime());
-            $presentismo->save();
-            session()->flash('message', 'Guardado correctamente');
-            session()->flash('code', 200);
-        } catch (QueryException $e) {
-            session()->flash('message', $e->getMessage());
-            session()->flash('code', 500);
-        }
-        
-        return Response::json([
-            'message'          => session('message'),
-            'presentismo'      => $presentismo,
-            'usuario'          => $presentismo->usuario,
-            'fecha_comentario' => $presentismo->fecha_comentario->format('Y-m-d'),
-        ], session('code'));
-        
-    }
-    
     public function saveOrUpdate(Request $request)
     {
         $input  = $request->all();
@@ -174,27 +137,23 @@ class RegistroController extends AppBaseController
             
             $message = $e->getMessage();
             $code    = 500;
-            $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
         } catch (FechaFutura $e) {
             
             $message = $e->getMessage();
             $code    = 500;
-            $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
         }
         try {
             
             $presentismo = Presentismo::where('id_agente', '=', $agente->id)
                 ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
                 ->firstOrFail();
-            $button      = HtmlCustoms::getButtonWithPopOver($presentismo, $presentismo->injustificado == true);
             
         } catch (ModelNotFoundException $noHayPresentismoCargado) {
-            $button      = HtmlCustoms::getButtonWithPopOver(null, false, true);
             $presentismo = new Presentismo(['id' => -1, 'id_tipo_presentismo' => -1]);
             
         }
 
-//        $disabled = (isset($disabled) ? $disabled : false;
+        $button = HtmlCustoms::getButtonsTools($presentismo);
         
         return Response::json([
             'message'     => $message,
@@ -237,7 +196,6 @@ class RegistroController extends AppBaseController
                 // Preparo el resultado para retornar
                 $message = 'El presentismo ha sido borrado.';
                 $code    = 200;
-                $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
                 
                 
             } catch (PeriodoCerrado $e) {
@@ -249,7 +207,6 @@ class RegistroController extends AppBaseController
                 
                 $message = $e->getMessage();
                 $code    = 500;
-                $button  = HtmlCustoms::getButtonWithPopOver(null, false, true);
             }
             
         } catch (AuthorizationException $e) {
@@ -259,10 +216,10 @@ class RegistroController extends AppBaseController
             $presentismo = Presentismo::where('id_agente', '=', $agente->id)
                 ->whereDate('fecha', '=', $fecha->format('Y-m-d'))
                 ->first();
-            $button      = HtmlCustoms::getButtonWithPopOver(null, false, true);
             
             
         }
+        $button = HtmlCustoms::getButtonsTools(null);
         
         return Response::json([
             'message'     => $message,

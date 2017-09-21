@@ -13,6 +13,8 @@ use Cat\Modules\Presentismo\Controllers\Registro\RegistroController;
 use Cat\Modules\Presentismo\Controllers\Registro\GeneralController;
 use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Modules\Presentismo\Controllers\Registro\PorAgenteController;
+use Cat\Modules\Presentismo\Controllers\Registro\ComentarioController;
+
 Route::group(
     ['middleware' => ['web']],
     function () {
@@ -41,10 +43,15 @@ Route::group(
          */
         Route::post('presentismo/registro', RegistroController::class . '@registro')
             ->name('presentismoStore');
-        
-        Route::post('presentismo/store/comentario', RegistroController::class . '@comentario')
+    
+        /**
+         * Comentarios
+         */
+        Route::get('presentismo/comentario/presentismo/{id}', ComentarioController::class . '@lista')
+            ->name('presentismoCommentLista');
+        Route::post('presentismo/store/comentario', ComentarioController::class . '@store')
             ->name('presentismoComment');
-        
+    
         Route::post('presentismo/update/justificar', JustificacionController::class . '@justificar')
             ->name('presentismoJustificar');
         Route::post('presentismo/update/injustificar', JustificacionController::class . '@injustificar')
