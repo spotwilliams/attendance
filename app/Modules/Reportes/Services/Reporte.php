@@ -35,6 +35,9 @@ class Reporte extends Service
      */
     public function execute()
     {
+        // 5 hs threshold
+        ini_set('max_execution_time', 18000);
+    
         Excel::create('Reporte', function ($writer) {
             /** @var LaravelExcelWriter $writer */
             $writer->sheet('Reporte', function ($sheet) {

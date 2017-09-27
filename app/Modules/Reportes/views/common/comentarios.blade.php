@@ -7,7 +7,7 @@
               <p class='text-muted well well-sm no-shadow'>
                 {{$comment->comentario}}
                 (<span class='label label-info'>{{$comment->user->email}}</span>)
-                (<span class='label label-info'>{{(new DateTime($comment->created_at))->format('d/m/Y')}}</span>
+                (<span class='label label-info'>{{(new DateTime($comment->created_at))->format('d/m/Y')}}</span>)
               </p>
 
       @endforeach

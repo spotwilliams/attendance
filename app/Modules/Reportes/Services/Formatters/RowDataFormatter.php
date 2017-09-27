@@ -51,21 +51,21 @@ abstract class  RowDataFormatter
             'zz_domicilio_2_provincia'    => '',
             'zz_domicilio_2_constituido'  => '',
             'zz_domicilio_2_libre'        => '',
-            'zz_estudios_1_institucion'    => '',
-            'zz_estudios_1_carrera'        => '',
-            'zz_estudios_1_estado'         => '',
-            'zz_estudios_1_nivel'          => '',
-            'zz_estudios_1_comentario'     => '',
-            'zz_estudios_2_institucion'    => '',
-            'zz_estudios_2_carrera'        => '',
-            'zz_estudios_2_estado'         => '',
-            'zz_estudios_2_nivel'          => '',
-            'zz_estudios_2_comentario'     => '',
-            'zz_estudios_3_institucion'    => '',
-            'zz_estudios_3_carrera'        => '',
-            'zz_estudios_3_estado'         => '',
-            'zz_estudios_3_nivel'          => '',
-            'zz_estudios_3_comentario'     => '',
+            'zz_estudios_1_institucion'   => '',
+            'zz_estudios_1_carrera'       => '',
+            'zz_estudios_1_estado'        => '',
+            'zz_estudios_1_nivel'         => '',
+            'zz_estudios_1_comentario'    => '',
+            'zz_estudios_2_institucion'   => '',
+            'zz_estudios_2_carrera'       => '',
+            'zz_estudios_2_estado'        => '',
+            'zz_estudios_2_nivel'         => '',
+            'zz_estudios_2_comentario'    => '',
+            'zz_estudios_3_institucion'   => '',
+            'zz_estudios_3_carrera'       => '',
+            'zz_estudios_3_estado'        => '',
+            'zz_estudios_3_nivel'         => '',
+            'zz_estudios_3_comentario'    => '',
         
         ];
     
@@ -85,11 +85,20 @@ abstract class  RowDataFormatter
      * @param array $excludeAttributes
      * @return array
      */
-    protected function toExcelRow(Model $data, $excludeAttributes = [], $excludeRelations = [])
-    {
+    protected function toExcelRow(
+        Model $data,
+        $excludeAttributes = [],
+        $includeEstudios = true,
+        $includeDomicilios = true
+    ) {
         $allData = $data->toArray();
-        $this->tieneEstudios($allData, $excludeAttributes);
-        $this->tieneDomicilios($allData, $excludeAttributes);
+        if ($includeEstudios) {
+            $this->tieneEstudios($allData, $excludeAttributes);
+        }
+        if ($includeDomicilios) {
+            $this->tieneDomicilios($allData, $excludeAttributes);
+        }
+        
         $result = array();
         array_walk_recursive($allData, function ($v, $k) use (&$result) {
             $v = ($v == '-1') ? 'sin datos' : $v;
@@ -123,7 +132,6 @@ abstract class  RowDataFormatter
     
     protected function tieneEstudios(&$data, $exclude)
     {
-        
         if (key_exists('estudio', $data)) {
             foreach ($data['estudio'] as $keyEstudio => $estudio) {
                 foreach (array_diff_key($estudio, $exclude) as $nombre => $valor) {

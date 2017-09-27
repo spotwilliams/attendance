@@ -62,7 +62,7 @@ class Exportar extends General
             ])
             ->with([
                 'operativo.turno' => function ($turno) {
-                    $turno->select(['id', 'descripcion as turno']);
+                    $turno->select(['id', 'codigo as turno']);
                 },
             ])
             ->with([

@@ -7,47 +7,41 @@ use Illuminate\Support\Collection;
 
 class Presentismo extends RowDataFormatter
 {
+    protected $allDataAvaliable
+        = [
+            'nombre'   => '',
+            'apellido' => '',
+            'dni'      => '',
+            'email'    => '',
+            'cuit'     => '',
+            'turno'    => '',
+            'base'     => '',
+        ];
+    
     public function format(Model $agente)
     {
-        $attributes   = [
-            'id',
-            'id_agente',
-            'fecha_nacimiento',
-            'sexo',
-            'estado_civil',
-            'created_at',
-            'updated_at',
-            'deleted_at',
-            'id_base',
-            'id_gerencia',
-            'id_turno',
-            'id_horario',
-            'id_funcion',
-            'id_area',
-            'id_cargo',
-            'id_estado_contrato',
-            'id_tipo_contrato',
-            'id_padre',
-            'id_tipo_presentismo',
-            'id_periodo',
-        ];
-        $relations    = [
-            'operativo',
-            'contrato',
+        $agenteReturn = [
+            'nombre'   => $agente->nombre,
+            'apellido' => $agente->apellido,
+            'dni'      => $agente->dni,
+            'email'    => $agente->dni,
+            'cuit'     => $agente->cuit,
+            'turno'    => $agente->operativo->turno->turno,
+            'base'     => $agente->operativo->base->nombre_base,
         ];
         $presentismos = $this->transformPresentismo($agente->presentismos);
-
-        $agente->setRelation('presentismos', $presentismos);
-
-        return parent::toExcelRow($agente, $attributes, $relations);
+        
+        return array_merge($agenteReturn, $presentismos->toArray());
     }
     
     private function transformPresentismo(Collection $presentismos)
     {
         $pres = [];
         foreach ($presentismos as $p) {
-            $pres[$p->fecha] = $p->tipoPresentismo->codigo . '(' . $p->tipoPresentismo->descripcion . ') - ' . (($p->injustificado == true) ? 'Injustificado' : 'Justificado');
-            $pres[$p->fecha.'_comentario'] = $p->comentario;
+            $pres[$p->fecha . ' (dia)']         = $p->fecha;
+            $pres[$p->fecha . ' (codigo)']      = $p->tipoPresentismo->codigo;
+            $pres[$p->fecha . ' (estado)']      = (($p->injustificado == true) ? 'Injustificado' : 'Justificado');
+            $pres[$p->fecha . ' (comentario)']  = $p->comentario;
         }
         
         return new Collection($pres);
