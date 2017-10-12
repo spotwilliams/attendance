@@ -174,7 +174,7 @@ class Agente extends Model
     {
         $dias = $this->presentismos()
             ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
-            ->where('injustificado', '=', 0)
+            ->where('injustificado', '=', false)
             ->whereDate('fecha', '>=', $fechaReferencia->format('Y-01-01'))
             ->whereDate('fecha', '<=', $fechaReferencia->format('Y-m-d'))
             ->count();
