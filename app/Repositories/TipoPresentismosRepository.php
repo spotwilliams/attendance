@@ -51,20 +51,38 @@ class TipoPresentismosRepository
         return $bases;
     }
     
-    
-    public static function getCantFaltasInjustificadas(Agente $agente, Periodo $periodo)
+    /**
+     * @param Agente $agente
+     * @param Periodo $periodo
+     * @param bool $excluirTardanza
+     * @return Collection
+     */
+    public static function getFaltasInjustificadas(Agente $agente, Periodo $periodo, $excluirTardanza = true)
     {
         
-        /** @var TipoPresentismo $tipoTardanza codigo de los injustifados */
-        $tipoTardanza = TipoPresentismo::tardanzas();
-        
-        /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
-        $diasADescontar = $agente
+        /** @var Collection $faltas Cantidad de dias con faltas no justificadas */
+        $faltas = $agente
             ->presentismos()
             ->where('id_periodo', '=', $periodo->id)
             ->where('injustificado', '=', true)
-            ->where('id_tipo_presentismo', '<>', $tipoTardanza->id)
-            ->count();
+            ->with('tipoPresentismo');
+        
+        if ($excluirTardanza) {
+            /** @var TipoPresentismo $tipoTardanza codigo de los injustifados */
+            $tipoTardanza = TipoPresentismo::tardanzas();
+            $agente->where('id_tipo_presentismo', '<>', $tipoTardanza->id);
+        }
+        
+        return $faltas->get();
+        
+    }
+    
+    public static function getCantFaltasInjustificadas(Agente $agente, Periodo $periodo)
+    {
+        /** @var Collection $faltas */
+        $faltas = self::getFaltasInjustificadas($agente, $periodo, true);
+        /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
+        $diasADescontar = $faltas->count();
         /** @var Collection $tardanzas */
         $tardanzas = self::getTardanzasGroupedByNRows($agente, $periodo);
         /** @var Collection $tardanzaRegistrada */

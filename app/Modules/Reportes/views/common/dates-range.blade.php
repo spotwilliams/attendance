@@ -14,10 +14,21 @@ $hastaName = (isset($nombreCampo) ? $nombreCampo . '_hasta' : 'hasta')
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+                    {{--            {{dd($fechaContrato)}}--}}
+                    @if(isset($desde))
+            var startDate = moment('{{$desde->format('Y-m-d')}}');
+                    @else
             var startDate = moment().subtract(5, 'day');
-            var endDate = moment().add(5, 'day');
+                    @endif
 
-            $('select').selectpicker({});
+                    @if(isset($hasta))
+            var endDate = moment('{{$hasta->format('Y-m-d')}}');
+                    @else
+            var endDate = moment().add(5, 'day');
+            @endif
+
+
+$('select').selectpicker({});
             $('.rango_{{$nombreCampo}}').daterangepicker({
                     locale: {
                         format: 'DD/MM/YYYY',
@@ -51,12 +62,17 @@ $hastaName = (isset($nombreCampo) ? $nombreCampo . '_hasta' : 'hasta')
                             "Diciembre"
                         ],
                     },
-                    dateLimit: {
-                        days: 31
-                    },
+
+//                    dateLimit: {
+//                        days: 31
+//                    },
                     showDropdowns: true,
-                    autoUpdateInput: false,
-                    startDate: startDate.format('DD/MM/Y'),
+                        @if(isset($desde) or isset($hasta))
+                        autoUpdateInput: true,
+                        @else
+                        autoUpdateInput: false,
+                        @endif
+                        startDate: startDate.format('DD/MM/Y'),
                     endDate: endDate.format('DD/MM/Y'),
                     maxDate: moment(),
                     opens: 'center',

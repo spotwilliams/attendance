@@ -3,12 +3,7 @@
 namespace Cat\Modules\Reportes\Controllers\Agentes;
 
 use Cat\Models\Agente;
-use Cat\Models\Base;
-use Cat\Models\Cargo;
-use Cat\Models\EstadoContrato;
-use Cat\Models\Funcion;
-use Cat\Models\TipoContrato;
-use Cat\Models\Turno;
+use Cat\Models\Contrato;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -61,6 +56,12 @@ class General extends ReporteController
     /** @var  Collection */
     protected $iibbs;
     
+    /** @var  Collection */
+    protected $contratosEnFechaIngreso;
+    
+    /** @var  Collection */
+    protected $contratosEnFechaContrato;
+    
     public function index()
     {
         $this->authorize('index', $this);
@@ -105,13 +106,24 @@ class General extends ReporteController
     
     protected function setupParams(Request $request)
     {
-        if ((!$request->input('fecha_contrato_desde') === '') and (!$request->input('fecha_contrato_hasta') === '')) {
-            $this->fechaContrato['desde'] = new \DateTime($request->input('fecha_contrato_desde'));
-            $this->fechaContrato['hasta'] = new \DateTime($request->input('fecha_contrato_hasta'));
+        if (($request->input('fecha_contrato_desde') !== '') and ($request->input('fecha_contrato_hasta') !== '')) {
+            $this->fechaContrato['desde']   = new \DateTime($request->input('fecha_contrato_desde'));
+            $this->fechaContrato['hasta']   = new \DateTime($request->input('fecha_contrato_hasta'));
+            $this->contratosEnFechaContrato = Contrato::select('id')
+                ->whereDate('fecha_ingreso', '>=', $this->fechaContrato['desde']->format('Y-m-d'))
+                ->whereDate('fecha_ingreso', '<=', $this->fechaContrato['hasta']->format('Y-m-d'))
+                ->get();
+            
         }
-        if ((!$request->input('fecha_contrato_desde') === '') and (!$request->input('fecha_ingreso_hasta') === '')) {
+        if (($request->input('fecha_contrato_desde') !== '') and ($request->input('fecha_ingreso_hasta') !== '')) {
             $this->fechaIngreso['desde'] = new \DateTime($request->input('fecha_ingreso_desde'));
             $this->fechaIngreso['hasta'] = new \DateTime($request->input('fecha_ingreso_hasta'));
+            
+            $this->contratosEnFechaIngreso = Contrato::select('id')
+                ->whereDate('fecha_ingreso_gobierno', '>=', $this->fechaIngreso['desde']->format('Y-m-d'))
+                ->whereDate('fecha_ingreso_gobierno', '<=', $this->fechaIngreso['hasta']->format('Y-m-d'))
+                ->get();
+            
         }
         $this->nivelEstudio  = new Collection($request->input('nivel_estudios'));
         $this->estadoEstudio = new Collection($request->input('estado_estudios'));
@@ -204,16 +216,25 @@ class General extends ReporteController
                 $join->on('contratos.id_agente', '=', 'agentes.id');
                 
                 if ($this->fechaIngreso !== null) {
+                    if ($this->contratosEnFechaIngreso->isEmpty()) {
+                        $ids = [-1];
+                        
+                    } else {
+                        
+                        $ids = array_keys($this->contratosEnFechaIngreso->keyBy('id')->toArray());
+                    }
                     $join
-                        ->whereDate('fecha_ingreso_gobierno', '<=', $this->fechaIngreso['desde'])
-                        ->whereDate('fecha_ingreso_gobierno', '>=', $this->fechaIngreso['hasta']);
+                        ->whereIn('contratos.id', $ids);
                 }
                 if ($this->fechaContrato !== null) {
+                    if ($this->contratosEnFechaContrato->isEmpty()) {
+                        $ids = [-1];
+                    } else {
+                        $ids = array_keys($this->contratosEnFechaContrato->keyBy('id')->toArray());
+                    }
                     $join
-                        ->whereDate('fecha_ingreso', '<=', $this->fechaContrato['desde'])
-                        ->whereDate('fecha_ingreso', '>=', $this->fechaContrato['hasta']);
+                        ->whereIn('contratos.id', $ids);
                 }
-                
                 if (!$this->tipoContratos->isEmpty()) {
                     $join
                         ->whereIn('id_tipo_contrato', $this->tipoContratos->all());

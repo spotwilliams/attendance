@@ -25,7 +25,9 @@ if (isset($desde) and isset($hasta)) {
         @foreach($fechasToShow as $fecha)
             @if($pByFecha->get($fecha)!==null)
                 <td>{!! $pByFecha->get($fecha)->tipoPresentismo->getMyLabel() !!}
-                @if(($incluir_comentarios == true)and ($pByFecha->get($fecha)->comentario!==null)) <span class="label label-default" data-toggle="popover" title="Comentarios" data-placement="bottom" data-content="{{$pByFecha->get($fecha)->comentario}}" ><i class="fa fa-comment-o"></i> </span>@endif
+                    @if(($incluir_comentarios == true)and ($pByFecha->get($fecha)->comentario!==null))
+                        @include('Reportes::common.comentarios', ['comentarios' => $pByFecha->get($fecha)->comentarios])
+                    @endif
                 </td>
             @else
                 <td>S/D</td>
