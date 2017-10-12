@@ -5,7 +5,6 @@
             name="{{ $field['name'] }}"
             @include('Security::crud.inc.field_attributes')
     >
-{{dd($field['options'])}}
         @if (isset($field['allows_null']) && $field['allows_null']==true)
             <option value="">-</option>
         @endif

@@ -5,6 +5,9 @@ $classLabel     = 'col-md-4 col-xs-4';
 $classField     = 'col-sm-8 col-xs-8';
 
 $classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
+
+$fechaContrato = isset($fechaContrato) ? $fechaContrato : ['desde' => null, 'hasta' => null];
+$fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta' => null];
 ?>
 {!! Form::open(['route' => 'reportesAgentesGeneralSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 <div class="box-body">
@@ -13,7 +16,12 @@ $classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
         <div class="form-group">
             <label class="{{$classLabel}} control-label">Fecha contrato</label>
             <div class="{{$classField}}">
-                @include('Reportes::common.dates-range', ['nombreCampo' => 'fecha_contrato'])
+                @include('Reportes::common.dates-range',
+                [
+                    'nombreCampo' => 'fecha_contrato',
+                    'desde' => $fechaContrato['desde'],
+                    'hasta' => $fechaContrato['hasta']
+                ])
             </div>
         </div>
     </div>
@@ -21,7 +29,12 @@ $classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
         <div class="form-group">
             <label class="{{$classLabel}} control-label">Fecha ingreso</label>
             <div class="{{$classField}}">
-                @include('Reportes::common.dates-range', ['nombreCampo' => 'fecha_ingreso'])
+                @include('Reportes::common.dates-range',
+                [
+                    'nombreCampo' => 'fecha_ingreso',
+                    'desde' => $fechaIngreso['desde'],
+                    'hasta' => $fechaIngreso['hasta']
+                ])
             </div>
         </div>
 
@@ -77,7 +90,7 @@ $classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
 </div>
 <div class="box-footer">
     {!! Form::submit('Buscar', ['class' => 'btn btn-primary pull-right']) !!}
-{!! Form::close() !!}
+    {!! Form::close() !!}
     @if(isset($exportar))
         {!! $exportar !!}
     @endif

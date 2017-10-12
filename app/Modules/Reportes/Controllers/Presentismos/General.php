@@ -24,10 +24,10 @@ class General extends ReporteController
     /** @var  Collection */
     protected $bases;
     
-    /** @var  Collection */
+    /** @var  \DateTime */
     protected $desde;
     
-    /** @var  Collection */
+    /** @var  \DateTime */
     protected $hasta;
     
     /** @var  Collection */
@@ -106,6 +106,9 @@ class General extends ReporteController
                         ->whereDate('fecha', '<=', $this->hasta)
                         ->orderBy('fecha', 'ASC')
                         ->with('tipoPresentismo');
+                    if($this->incluirComentarios) {
+                        $query->with('comentarios.user');
+                    }
                 },
             ])
             ->with('operativo.base')

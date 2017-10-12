@@ -63,7 +63,7 @@ class NotificacionController extends AppBaseController
             }
             Flash::success('Notificaciones enviadas correctamente');
         } catch (\Exception $e) {
-            dd($e);
+            
             Flash::error('No se han podido enviar las notificaciones. Intente nuevamente');
             
         }

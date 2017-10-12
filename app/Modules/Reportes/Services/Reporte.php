@@ -3,6 +3,7 @@
 namespace Cat\Modules\Reportes\Services;
 
 use Cat\Modules\Reportes\Services\Formatters\Agente;
+use Cat\Modules\Reportes\Services\Formatters\RowDataFormatter;
 use Cat\Modules\Service;
 use Illuminate\Database\Eloquent\Builder;
 use Illuminate\Pagination\Paginator;
@@ -14,18 +15,20 @@ class Reporte extends Service
     
     /** @var  Builder */
     protected $eloquent;
+    /** @var  RowDataFormatter */
     protected $rowFormatter;
     protected $includeResume;
     
     /**
      * Reporte constructor.
      * @param Builder $eloquent
-     * @param string $whoDecideWhatToShow Class name of formmater Must be RowDataFormatter
+     * @param RowDataFormatter $whoDecideWhatToShow
+     * @param bool $includeResume
      */
-    public function __construct(Builder $eloquent, $whoDecideWhatToShow, $includeResume = false)
+    public function __construct(Builder $eloquent, RowDataFormatter $whoDecideWhatToShow, $includeResume = false)
     {
         $this->eloquent      = $eloquent;
-        $this->rowFormatter  = new $whoDecideWhatToShow();
+        $this->rowFormatter  = $whoDecideWhatToShow;
         $this->includeResume = $includeResume;
     }
     
@@ -37,7 +40,7 @@ class Reporte extends Service
     {
         // 5 hs threshold
         ini_set('max_execution_time', 18000);
-    
+        
         Excel::create('Reporte', function ($writer) {
             /** @var LaravelExcelWriter $writer */
             $writer->sheet('Reporte', function ($sheet) {
@@ -53,7 +56,7 @@ class Reporte extends Service
                         $data [] = $this->rowFormatter->format($model);
                     }
                     $sheet->fromArray($data);
-
+                    
                 } while ($models->hasMorePages());
             });
             
@@ -89,7 +92,7 @@ class Reporte extends Service
                             'turno'  => $agente->operativo->turno->codigo,
                         ];
                         $presentismos = $item['presentismos']->toArray();
-
+                        
                         foreach ($presentismos as $codigo => $dias) {
                             $temp[$codigo] = count($dias);
                         }
@@ -100,8 +103,8 @@ class Reporte extends Service
                 
             }
         })->export('xls');
-    
-}
+        
+    }
     
     
 }

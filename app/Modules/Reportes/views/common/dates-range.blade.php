@@ -14,15 +14,16 @@ $hastaName = (isset($nombreCampo) ? $nombreCampo . '_hasta' : 'hasta')
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-                    {{--            {{dd($fechaContrato)}}--}}
                     @if(isset($desde))
             var startDate = moment('{{$desde->format('Y-m-d')}}');
+            $('#{{$desdeName}}').val(startDate.format('Y-MM-DD'));
                     @else
             var startDate = moment().subtract(5, 'day');
                     @endif
 
                     @if(isset($hasta))
             var endDate = moment('{{$hasta->format('Y-m-d')}}');
+            $('#{{$hastaName}}').val(endDate.format('Y-MM-DD'));
                     @else
             var endDate = moment().add(5, 'day');
             @endif
@@ -86,7 +87,7 @@ $('select').selectpicker({});
             $('.rango_{{$nombreCampo}}').on('apply.daterangepicker', function (ev, picker) {
                 $('#{{$desdeName}}').val(picker.startDate.format('Y-MM-DD'));
                 $('#{{$hastaName}}').val(picker.endDate.format('Y-MM-DD'));
-                $(this).val(picker.startDate.format('MM/DD/YYYY') + ' - ' + picker.endDate.format('MM/DD/YYYY'));
+                $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
             });
 
             $('.rango_{{$nombreCampo}}').on('cancel.daterangepicker', function (ev, picker) {

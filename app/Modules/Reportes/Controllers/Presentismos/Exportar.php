@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
+use Cat\Helpers\Calculation;
 use Cat\Modules\Reportes\Services\Formatters\Presentismo;
 use Cat\Modules\Reportes\Services\Reporte;
 use Illuminate\Http\Request;
@@ -21,11 +22,12 @@ class Exportar extends General
     public function export(Request $request)
     {
 //        $this->authorize('export', $this);
-
+        
         $this->setupParams($request)
             ->setupQuery();
         
-        $service = new Reporte($this->query, Presentismo::class);
+        $formatter = new Presentismo($this->desde, $this->hasta);
+        $service   = new Reporte($this->query, $formatter);
         try {
             $service->execute();
         } catch (\Exception $e) {
@@ -52,7 +54,8 @@ class Exportar extends General
                                     'descripcion',
                                 ]);
                             },
-                        ]);
+                        ])
+                        ->with('comentarios.user');
                 },
             ])
             ->with([

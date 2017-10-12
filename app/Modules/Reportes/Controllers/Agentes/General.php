@@ -91,6 +91,7 @@ class General extends ReporteController
             ->with('turnos', $this->turnos)
             ->with('areas', $this->areas)
             ->with('fechaContrato', $this->fechaContrato)
+            ->with('fechaIngreso', $this->fechaIngreso)
             ->with('cargos', $this->cargos)
             ->with('funcion', $this->funcion)
             ->with('tipoContratos', $this->tipoContratos)
@@ -115,7 +116,7 @@ class General extends ReporteController
                 ->get();
             
         }
-        if (($request->input('fecha_contrato_desde') !== '') and ($request->input('fecha_ingreso_hasta') !== '')) {
+        if (($request->input('fecha_ingreso_desde') !== '') and ($request->input('fecha_ingreso_hasta') !== '')) {
             $this->fechaIngreso['desde'] = new \DateTime($request->input('fecha_ingreso_desde'));
             $this->fechaIngreso['hasta'] = new \DateTime($request->input('fecha_ingreso_hasta'));
             

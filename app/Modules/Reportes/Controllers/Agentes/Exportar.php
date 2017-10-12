@@ -25,8 +25,8 @@ class Exportar extends General
         $this->setupParams($request)
             ->setupQuery();
         
-        
-        $service = new Reporte($this->query, Agente::class);
+        $formatter = new Agente();
+        $service = new Reporte($this->query, $formatter);
         try {
             $service->execute();
         } catch (\Exception $e) {
