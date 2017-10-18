@@ -62,12 +62,12 @@ class Presentismo extends RowDataFormatter
             
             if (is_array($p)) {
                 
-                $pres[$fecha . '_dia']        = $p['fecha'];
+//                $pres[$fecha . '_dia']        = $p['fecha'];
                 $pres[$fecha . '_codigo']     = $p['tipo_presentismo']['codigo'];
                 $pres[$fecha . '_estado']     = (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
                 $pres[$fecha . '_comentario'] = $this->prepareComentarios($p['comentarios']);
             } else {
-                $pres[$fecha . '_dia']        = '';
+//                $pres[$fecha . '_dia']        = '';
                 $pres[$fecha . '_codigo']     = '';
                 $pres[$fecha . '_estado']     = '';
                 $pres[$fecha . '_comentario'] = '';
