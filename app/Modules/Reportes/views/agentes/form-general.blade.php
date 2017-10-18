@@ -1,10 +1,10 @@
 <?php
 
-$classContainer = 'col-md-4';
+$classContainer = 'col-md-6';
 $classLabel     = 'col-md-4 col-xs-4';
 $classField     = 'col-sm-8 col-xs-8';
 
-$classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
+$classMultiSelectContainer = 'col-md-6';
 
 $fechaContrato = isset($fechaContrato) ? $fechaContrato : ['desde' => null, 'hasta' => null];
 $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta' => null];
@@ -14,7 +14,7 @@ $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta
 
     <div class="{{$classContainer}}">
         <div class="form-group">
-            <label class="{{$classLabel}} control-label">Fecha contrato</label>
+            <label class="{{$classLabel}} control-label">Fecha de ingreso modalidad actual</label>
             <div class="{{$classField}}">
                 @include('Reportes::common.dates-range',
                 [
@@ -27,7 +27,7 @@ $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta
     </div>
     <div class="{{$classContainer}}">
         <div class="form-group">
-            <label class="{{$classLabel}} control-label">Fecha ingreso</label>
+            <label class="{{$classLabel}} control-label">Fecha de ingreso al GCBA</label>
             <div class="{{$classField}}">
                 @include('Reportes::common.dates-range',
                 [

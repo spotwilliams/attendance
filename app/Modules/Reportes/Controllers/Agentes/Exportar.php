@@ -44,42 +44,42 @@ class Exportar extends General
             ->with('estudio')
             ->with([
                 'operativo.base' => function ($with) {
-                    $with->select(['id', 'nombre as nombre_base']);
+                    $with->select(['id', 'nombre']);
                 },
             ])
             ->with([
                 'operativo.turno' => function ($turno) {
-                    $turno->select(['id', 'descripcion as turno']);
+                    $turno->select(['id', 'descripcion', 'codigo']);
                 },
             ])
             ->with([
                 'operativo.cargo' => function ($cargo) {
-                    $cargo->select(['id', 'nombre as cargo']);
+                    $cargo->select(['id', 'nombre']);
                 },
             ])
             ->with([
                 'operativo.funcion' => function ($funcion) {
-                    $funcion->select(['id', 'nombre as funcion']);
+                    $funcion->select(['id', 'nombre']);
                 },
             ])
             ->with([
                 'operativo.area' => function ($area) {
-                    $area->select(['id', 'nombre as area']);
+                    $area->select(['id', 'nombre']);
                 },
             ])
             ->with([
                 'operativo.gerencia' => function ($gerencia) {
-                    $gerencia->select(['id', 'nombre as gerencia']);
+                    $gerencia->select(['id', 'nombre']);
                 },
             ])
             ->with([
                 'contrato.tipoContrato' => function ($tipo) {
-                    $tipo->select(['id', 'descripcion as tipo_contrato']);
+                    $tipo->select(['id', 'descripcion']);
                 },
             ])
             ->with([
                 'contrato.estadoContrato' => function ($estado) {
-                    $estado->select(['id', 'descripcion as estado']);
+                    $estado->select(['id', 'descripcion']);
                 },
             ]);
     }
