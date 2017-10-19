@@ -104,7 +104,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 <span class="help-block">{{$errors->first('aplica')}}</span>
             @endif
         </div>
-        <div class="form-group @if($errors->has('injustificado')) has-error @endif col-md-3">
+        <div class="form-group @if($errors->has('injustificado')) has-error @endif col-md-4">
 
             <label
                     data-toggle="popover"
@@ -117,10 +117,10 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             '0' => 'Justificado',
             ], null, ['class' => 'form-control']) !!}
             @if($errors->has('injustificado'))
-                <span class="help-block">{{$errors->first('injustificado')}}</span>
+                <span class="help-block">{{$errors->first('es_fijo')}}</span>
             @endif
         </div>
-        <div class="form-group @if($errors->has('injustificado')) has-error @endif col-md-3">
+        <div class="form-group @if($errors->has('es_fijo')) has-error @endif col-md-4">
 
             <label
                     data-toggle="popover"
@@ -132,8 +132,27 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             '0' => 'No',
             '1' => 'Si',
             ], null, ['class' => 'form-control']) !!}
-            @if($errors->has('injustificado'))
-                <span class="help-block">{{$errors->first('injustificado')}}</span>
+            @if($errors->has('es_fijo'))
+                <span class="help-block">{{$errors->first('es_fijo')}}</span>
+            @endif
+        </div>
+
+        <div class="form-group @if($errors->has('tiene_proporcional')) has-error @endif col-md-4"
+             style="display: none;">
+
+            <label
+                    data-toggle="popover"
+                    data-trigger="hover"
+                    title="Justificabilidad"
+                    data-content="En caso de 'No', implica que la licencia no tiene valores proporcionales a los meses de ingreso"
+            >Tiene proporcional: </label>
+            {!! Form::select('tiene_proporcional', [
+            '-1' => 'N/A',
+            '0' => 'No',
+            '1' => 'Si',
+            ], null, ['class' => 'form-control']) !!}
+            @if($errors->has('tiene_proporcional'))
+                <span class="help-block">{{$errors->first('tiene_proporcional')}}</span>
             @endif
         </div>
 
@@ -175,7 +194,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             @endif
         </div>
 
-        <table class="table dataTable meses">
+        <table class="table dataTable meses" style="display: none;">
             <thead>
             <tr>
                 <th>Mes ingreso</th>
@@ -184,16 +203,32 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             </tr>
             </thead>
             <tbody>
+            <tr>
+                <th>Agosto</th>
+                <td class="Agosto semana">{{$meses['AUGUST']['cant_semanal']}}</td>
+                <td class="Agosto finde">{{$meses['AUGUST']['cant_fin_semana']}}</td>
+            </tr>
+            <tr>
+                <th>Septiembre</th>
+                <td class="Septiembre semana">{{$meses["SEPTEMBER"]['cant_semanal']}}</td>
+                <td class="Septiembre finde">{{$meses["SEPTEMBER"]['cant_fin_semana']}}</td>
+            </tr>
+            <tr>
+                <th>Octubre</th>
+                <td class="Octubre semana">{{$meses["OCTOBER"]['cant_semanal']}}</td>
+                <td class="Octubre finde">{{$meses["OCTOBER"]['cant_fin_semana']}}</td>
+            </tr>
+            <tr>
+                <th>Noviembre</th>
+                <td class="Noviembre semana">{{$meses["NOVEMBER"]['cant_semanal']}}</td>
+                <td class="Noviembre finde">{{$meses["NOVEMBER"]['cant_fin_semana']}}</td>
+            </tr>
+            <tr>
+                <th>Diciembre</th>
+                <td class="Diciembre semana">{{$meses["DECEMBER"]['cant_semanal']}}</td>
+                <td class="Diciembre finde">{{$meses["DECEMBER"]['cant_fin_semana']}}</td>
+            </tr>
 
-            @foreach($meses as $mes => $dias)
-                @if($mes !== 'JULY')
-                    <tr>
-                        <th>{{trans('month.'.$mes)}}</th>
-                        <td class="{{trans('month.'.$mes)}} semana">{{$dias['cant_semanal']}}</td>
-                        <td class="{{trans('month.'.$mes)}} finde">{{$dias['cant_fin_semana']}}</td>
-                    </tr>
-                @endif
-            @endforeach
             </tbody>
 
 
@@ -208,44 +243,71 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+
+            var esFijo = verificarSiEsFijo();
             // Primer control
-            updateScreem($('select[name="tiene_tope"]').val());
+
+            updateScreem($('select[name="tiene_tope"]').val(), false, esFijo);
 
             $(".color-p").colorpicker();
 
-            function updateScreem(tieneTope) {
+            function updateScreem(tieneTope, actualizarProporcional, esFijoOn) {
 
                 if (tieneTope == 1) {
                     $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
                         .prop('disabled', false);
-                    updateProporcionales($('input[name="cant_semanal"]'));
-                    updateProporcionales($('input[name="cant_fin_semana"]'));
+                    if (actualizarProporcional === undefined || actualizarProporcional !== false) {
+                        updateProporcionales($('input[name="cant_semanal"]'));
+                        updateProporcionales($('input[name="cant_fin_semana"]'));
+                    }
                     if ($('select[name="aplica"]').val() == 'SITUACION_REVISTA') {
                         // Los proporcionales solo son para locacion
                         $('.table.meses').hide();
+                        $('select[name="tiene_proporcional"]').parent().hide();
                     } else {
+                        $('select[name="tiene_proporcional"]').parent().show();
                         $('.table.meses').show();
                     }
+                        $('select[name="tiene_proporcional"]').val(-1);
                 } else {
                     $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
                         .val(0)
                         .prop('disabled', true);
 
+                    $('select[name="tiene_proporcional"]').parent().hide();
+                    $('select[name="tiene_proporcional"]').val(-1);
                     $('.table.meses').hide();
                 }
+                if (esFijoOn !== undefined && esFijoOn !== false) {
+
+                    $('select[name="tiene_proporcional"]')
+                        .val(0)
+                        .trigger('change')
+                    ;
+                    $('.table.meses').hide();
+                }
+
             }
 
-            function updateProporcionales(element) {
+            function updateProporcionales(element, esFijo) {
                 var meses = [
-                    @foreach($meses as $mes => $dias)
-                        '{{trans('month.'.$mes)}}',
-                    @endforeach
+                    'Julio',
+                    'Agosto',
+                    'Septiembre',
+                    'Octubre',
+                    'Noviembre',
+                    'Diciembre',
                 ];
+
                 var prop = 0;
                 var who = $(element).prop('name') === 'cant_semanal' ? 'semana' : 'finde';
                 for (var i = 1; i <= meses.length; i++) {
                     if ($.isNumeric($(element).val())) {
-                        prop = Math.ceil($(element).val() / 12 * (12 - (i + 6)));
+                        if (esFijo !== undefined && esFijo === true) {
+                            prop = Math.ceil($(element).val());
+                        } else {
+                            prop = Math.ceil($(element).val() / 12 * (12 - (i + 6)));
+                        }
                     } else {
                         prop = 0;
                     }
@@ -253,6 +315,29 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 }
             }
 
+            function verificarSiEsFijo() {
+                var findeValues = $('td.finde');
+                var semanaValues = $('td.semana');
+
+                var reference = $(findeValues[0]).html();
+                var changeValue = false;
+                for (var i = 0; i < findeValues.length; i++) {
+                    if (reference !== $(findeValues[0]).html()) {
+                        changeValue = true;
+                        break;
+                    }
+                }
+
+                var reference2 = $(semanaValues[0]).html();
+                var changeValue2 = false;
+                for (var i = 0; i < semanaValues.length; i++) {
+                    if (reference2 !== $(semanaValues[0]).html()) {
+                        changeValue2 = true;
+                    }
+                }
+                // el valor se establacio como fijo
+                return (!changeValue || !changeValue2);
+            }
 
             $('select[name="tiene_tope"]').on('change', function (event) {
                 updateScreem($(this).val());
@@ -260,6 +345,32 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             });
             $('select[name="aplica"]').on('change', function (event) {
                 updateScreem($('select[name="tiene_tope"]').val());
+
+            });
+            $('select[name="tiene_proporcional"]').on('change', function (event) {
+                // Debo calcular los proporcionales
+                switch ($(this).val()) {
+                    case '1' : {
+                        updateProporcionales($('input[name="cant_semanal"]'));
+                        updateProporcionales($('input[name="cant_fin_semana"]'));
+                        $('.table.meses').show();
+                        break;
+                    }
+                    case '0' : {
+                        $('.table.meses').hide();
+                        // Debo mantener los valores fijos
+                        updateProporcionales($('input[name="cant_semanal"]'), true);
+                        updateProporcionales($('input[name="cant_fin_semana"]'), true);
+                        break;
+                    }
+                    case '-1': {
+//                        $('.table.meses').show();
+                        break;
+                    }
+                    default: {
+                        break;
+                    }
+                }
 
             });
 

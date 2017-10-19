@@ -87,8 +87,14 @@ class CrudController extends AppBaseController
                         $propSemana = $input['cant_semanal'];
                         $propFinde  = $input['cant_fin_semana'];
                     } else {
-                        $propSemana = $this->calculate($valueMonth, (int)$input['cant_semanal']);
-                        $propFinde  = $this->calculate($valueMonth, (int)$input['cant_fin_semana']);
+                        if ($input['tiene_proporcional'] === '0') {
+                            $propSemana = (int)$input['cant_semanal'];
+                            $propFinde  = (int)$input['cant_fin_semana'];
+                        } else {
+                            $propSemana = $this->calculate($valueMonth, (int)$input['cant_semanal']);
+                            $propFinde  = $this->calculate($valueMonth, (int)$input['cant_fin_semana']);
+                            
+                        }
                     }
                     
                     DiaPermitido::create([
@@ -137,7 +143,6 @@ class CrudController extends AppBaseController
     public function update(UpdateTipoPresentismoRequest $request)
     {
         $this->authorize('update', $this);
-        
         try {
             $input = $request->all();
             $tp    = TipoPresentismo::findOrFail($input['id']);
@@ -158,8 +163,14 @@ class CrudController extends AppBaseController
                         $propSemana = $input['cant_semanal'];
                         $propFinde  = $input['cant_fin_semana'];
                     } else {
-                        $propSemana = $this->calculate($valueMonth, (int)$input['cant_semanal']);
-                        $propFinde  = $this->calculate($valueMonth, (int)$input['cant_fin_semana']);
+                        if ($input['tiene_proporcional'] === '0') {
+                            $propSemana = (int)$input['cant_semanal'];
+                            $propFinde  = (int)$input['cant_fin_semana'];
+                        } else {
+                            $propSemana = $this->calculate($valueMonth, (int)$input['cant_semanal']);
+                            $propFinde  = $this->calculate($valueMonth, (int)$input['cant_fin_semana']);
+                            
+                        }
                     }
                     DiaPermitido::firstOrCreate([
                         'mes_ingreso'         => $mes,
