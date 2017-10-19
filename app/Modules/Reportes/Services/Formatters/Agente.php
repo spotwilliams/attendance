@@ -16,8 +16,8 @@ class Agente extends RowDataFormatter
     protected function toExcelRow(Model $agente)
     {
         $data = [
-            'Nombre'                            => $agente->nombre,
             'Apellido'                          => $agente->apellido,
+            'Nombre'                            => $agente->nombre,
             'CUIT'                              => $agente->cuit,
             'Email'                             => $agente->email,
             'Sexo'                              => ($agente->sexo === 'F') ? 'Mujer' : ($agente->sexo === 'M' ? 'Hombre' : $agente->sexo),

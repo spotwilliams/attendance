@@ -38,5 +38,19 @@ class Haber extends Model
     {
         return $this->belongsTo(Periodo::class, 'id_periodo');
     }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function base()
+    {
+        return $this->belongsTo(Base::class, 'id_base');
+    }
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function turno()
+    {
+        return $this->belongsTo(Turno::class, 'id_turno');
+    }
     
 }

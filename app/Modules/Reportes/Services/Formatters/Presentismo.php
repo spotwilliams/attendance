@@ -39,12 +39,12 @@ class Presentismo extends RowDataFormatter
     public function format(Model $agente)
     {
         $agenteReturn = [
-            'nombre'   => $agente->nombre,
-            'apellido' => $agente->apellido,
-            'dni'      => $agente->dni,
-            'cuit'     => $agente->cuit,
-            'turno'    => $agente->operativo->turno->turno,
-            'base'     => $agente->operativo->base->nombre_base,
+            'Apellido' => $agente->apellido,
+            'Nombre'   => $agente->nombre,
+            'CUIT'     => $agente->cuit,
+            'DNI'      => $agente->dni,
+            'Turno'    => $agente->operativo->turno->turno,
+            'Base'     => $agente->operativo->base->nombre_base,
         ];
         
         $presentismos = $this->transformPresentismo($agente->presentismos);

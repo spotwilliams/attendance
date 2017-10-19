@@ -15,6 +15,8 @@ use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as Presentism
 use Cat\Modules\Reportes\Controllers\Presentismos\Exportar as PresentismoExport;
 use Cat\Modules\Reportes\Controllers\Agentes\General as AgentesGeneral;
 use Cat\Modules\Reportes\Controllers\Agentes\Exportar as AgentesExport;
+use Cat\Modules\Reportes\Controllers\Haberes\General as HaberesGeneral;
+use Cat\Modules\Reportes\Controllers\Haberes\Exportar as HaberesExport;
 
 Route::group(
     ['middleware' => ['web']],
@@ -61,5 +63,17 @@ Route::group(
         // Descarga
         Route::post('reportes/presentismo/individual/export', PresentismosIndividual::class . '@export')
             ->name('reportesPresentismoIndividualExport');
+
+        /**
+         * Haberes
+         */
+        Route::get('reportes/haberes/general', HaberesGeneral::class . '@index')
+            ->name('reportesHaberesGeneralIndex');
+        
+        Route::post('reportes/haberes/general', HaberesGeneral::class . '@search')
+            ->name('reportesHaberesGeneralSearch');
+        
+        Route::post('reportes/haberes/general/export', HaberesExport::class . '@export')
+            ->name('reportesHaberesGeneralExport');
     }
 );

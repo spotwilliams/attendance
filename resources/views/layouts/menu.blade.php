@@ -130,6 +130,12 @@
                 <span>Licencias</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('reportesHaberesGeneralIndex') !!}">
+                <i class="fa fa-money"></i>
+                <span>Haberes</span>
+            </a>
+        </li>
     </ul>
 </li>
 

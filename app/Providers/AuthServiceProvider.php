@@ -62,7 +62,10 @@ use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarRep
 use Cat\Modules\Reportes\Controllers\Presentismos\Individual as ReporteIndividual;
 use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as ReporteIndividualSearch;
 use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
-
+use Cat\Modules\Reportes\Controllers\Haberes\General as ReporteHaberes;
+use Cat\Modules\Reportes\Controllers\Haberes\Exportar as ExportarHaberes;
+use Cat\Policies\Reportes\Haberes\ReportePolicy as ReportePolicyHaber;
+use Cat\Policies\Reportes\Haberes\ExportarPolicy as ExportarPolicyHaber;
 // Configuracion
 use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
 use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
@@ -125,6 +128,10 @@ class AuthServiceProvider extends ServiceProvider
             ReporteIndividualSearch::class => IndividualPolicy::class,
             
             Request::class => RequestPolicy::class,
+            
+            ReporteHaberes::class  => ReportePolicyHaber::class,
+            ExportarHaberes::class => ExportarPolicyHaber::class,
+        
         
         ];
     
