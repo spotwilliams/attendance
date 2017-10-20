@@ -10,7 +10,7 @@
         <tr>
             <td>{!! $tipo->codigo !!}</td>
             <td>{!! $tipo->descripcion !!}</td>
-            <td>{!! $tipo->aplica !!}</td>
+            <td>{!! trans('aplica.'.$tipo->aplica) !!}</td>
             <td>
                 <div class='btn-group'>
                     <a href="{!! route('configuracion.licencia.edit', [$tipo->id]) !!}" class='btn btn-primary btn-sm'><i class="fa fa-edit"></i></a>

@@ -51,6 +51,9 @@ $classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
     <div class="{{$classMultiSelectContainer}}">
         @include('common.tipo-contratos.as-checkbox', ['label' => 'Tipo contrato'])
     </div>
+    {{--<div class="{{$classMultiSelectContainer}}">--}}
+        {{--@include('common.tipo-presentismos.as-select', ['label' => 'Tipo licencia', 'multiple' => 'multiple'])--}}
+    {{--</div>--}}
 </div>
 <div class="box-footer">
     {!! Form::submit('Buscar', ['class' => 'btn btn-primary pull-right']) !!}

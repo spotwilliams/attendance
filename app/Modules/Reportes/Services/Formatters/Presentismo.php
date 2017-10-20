@@ -26,16 +26,6 @@ class Presentismo extends RowDataFormatter
     }
     
     
-    protected $allDataAvaliable
-        = [
-            'nombre'   => '',
-            'apellido' => '',
-            'dni'      => '',
-            'cuit'     => '',
-            'turno'    => '',
-            'base'     => '',
-        ];
-    
     public function format(Model $agente)
     {
         $agenteReturn = [

@@ -35,8 +35,9 @@ class Agente extends RowDataFormatter
                 'fecha_ingreso_gobierno'),
             'ID Sial'                           => $this->getIfYouCan($agente, 'contrato', 'id_sial'),
             'Ficha'                             => $this->getIfYouCan($agente, 'contrato', 'ficha'),
-            'Tipo de contrato'                  => $this->getIfYouCan($agente->contrato, 'tipoContrato',
-                'descripcion'),
+            'Tipo de contrato'                  => $this->cleanAcentos($this->getIfYouCan($agente->contrato,
+                'tipoContrato',
+                'descripcion')),
             'Tipo de inscripcion'               => $this->getIfYouCan($agente, 'contrato', 'tipo_inscripcion'),
             'Monto factura'                     => $this->getIfYouCan($agente, 'contrato', 'monto'),
             'Estado'                            => $this->getIfYouCan($agente->contrato, 'estadoContrato',
@@ -58,7 +59,7 @@ class Agente extends RowDataFormatter
         
         $data['Horario'] = $horario;
         
-        $domicilios      = $this->tieneDomicilios($agente->domicilios);
+        $domicilios = $this->tieneDomicilios($agente->domicilios);
         
         return array_merge($data, $domicilios);
         

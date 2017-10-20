@@ -92,14 +92,14 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 <span class="help-block">{{$errors->first('color_letra')}}</span>
             @endif
         </div>
-        <div class="form-group @if($errors->has('aplica')) has-error @endif ">
+        <div class="form-group @if($errors->has('aplica')) has-error @endif">
 
             {!! Form::label('aplica', 'Aplica a:') !!}
             {!! Form::select('aplica', [
             'TODOS' => 'Todos los tipos de contratos',
             'SITUACION_REVISTA' => 'Contratos situaci&oacute;n de revista',
             'LOCACION' => 'Contratos de locaci&oacute;n',
-            ], null, ['class' => 'form-control']) !!}
+            ], null, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
             @if($errors->has('aplica'))
                 <span class="help-block">{{$errors->first('aplica')}}</span>
             @endif

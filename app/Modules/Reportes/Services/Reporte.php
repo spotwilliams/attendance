@@ -47,17 +47,17 @@ class Reporte extends Service
                 
                 /** @var Paginator $models */
                 $page = 1;
+                $data = [];
                 do {
                     $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
                     
                     $page++;
-                    $data = [];
                     foreach ($models->items() as $model) {
                         $data [] = $this->rowFormatter->format($model);
                     }
-                    $sheet->fromArray($data);
                     
                 } while ($models->hasMorePages());
+                $sheet->fromArray($data);
             });
             
             if ($this->includeResume) {
@@ -102,6 +102,7 @@ class Reporte extends Service
                 });
                 
             }
+            
         })->export('xls');
         
     }
