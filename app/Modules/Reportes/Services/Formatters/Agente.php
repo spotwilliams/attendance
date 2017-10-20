@@ -31,19 +31,34 @@ class Agente extends RowDataFormatter
             'Funcion'                           => $this->getIfYouCan($agente->operativo, 'funcion', 'nombre'),
             'Funcion especifica'                => $this->getIfYouCan($agente, 'operativo', 'funcion_especifica'),
             'Fecha de ingreso modalidad actual' => $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_ingreso'),
-            'Fecha de ingreso al GCBA'          => $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_ingreso_gobierno'),
+            'Fecha de ingreso al GCBA'          => $this->getIfYouCanAsDate($agente, 'contrato',
+                'fecha_ingreso_gobierno'),
             'ID Sial'                           => $this->getIfYouCan($agente, 'contrato', 'id_sial'),
             'Ficha'                             => $this->getIfYouCan($agente, 'contrato', 'ficha'),
             'Tipo de contrato'                  => $this->getIfYouCan($agente->contrato, 'tipoContrato',
                 'descripcion'),
             'Tipo de inscripcion'               => $this->getIfYouCan($agente, 'contrato', 'tipo_inscripcion'),
             'Monto factura'                     => $this->getIfYouCan($agente, 'contrato', 'monto'),
-            'Estado'                            => $this->getIfYouCan($agente->contrato, 'estadoContrato', 'descripcion'),
+            'Estado'                            => $this->getIfYouCan($agente->contrato, 'estadoContrato',
+                'descripcion'),
             'Fecha baja'                        => $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_baja'),
             'Comentario baja'                   => $this->getIfYouCan($agente, 'contrato', 'comentario_baja'),
             'Estudios'                          => $this->tieneEstudios($agente->estudio),
         ];
-        $domicilios = $this->tieneDomicilios($agente->domicilios);
+        
+        $horario = $this->getIfYouCan($agente->operativo, 'horario',
+                'hora_entrada') . ' - ' . $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada');
+        
+        if ($this->getIfYouCan($agente->operativo, 'horario', 'eximido') === true) {
+            $horario .= ' (Eximido)';
+        }
+        if ($this->getIfYouCan($agente->operativo, 'horario', 'rotativo') === true) {
+            $horario .= ' (Rotativo)';
+        }
+        
+        $data['Horario'] = $horario;
+        
+        $domicilios      = $this->tieneDomicilios($agente->domicilios);
         
         return array_merge($data, $domicilios);
         
