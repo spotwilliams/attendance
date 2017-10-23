@@ -26,7 +26,7 @@ if (!isset($data)) {
                         <th>Base</th>
                         <th>Turno</th>
                         <th>Estado</th>
-                        <th>Monto facturado</th>
+                        <th>Monto total</th>
                     </tr>
                     @foreach($periodo as $estado)
                         <tr>
