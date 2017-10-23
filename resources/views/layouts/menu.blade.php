@@ -134,7 +134,13 @@
         <li>
             <a href="{!! route('reportesHaberesEstadoIndex') !!}">
                 <i class="fa fa-money"></i>
-                <span>Estado periodos</span>
+                <span>Res&uacute;men de haberes</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('reportesHaberesAgentesIndex') !!}">
+                <i class="fa fa-money"></i>
+                <span>Res&uacute;men de haberes por persona</span>
             </a>
         </li>
     </ul>

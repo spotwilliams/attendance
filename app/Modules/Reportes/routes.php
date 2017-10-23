@@ -17,63 +17,106 @@ use Cat\Modules\Reportes\Controllers\Agentes\General as AgentesGeneral;
 use Cat\Modules\Reportes\Controllers\Agentes\Exportar as AgentesExport;
 use Cat\Modules\Reportes\Controllers\Haberes\Estado\General as HaberesEstado;
 use Cat\Modules\Reportes\Controllers\Haberes\Estado\Exportar as HaberesEstadoExport;
+use Cat\Modules\Reportes\Controllers\Haberes\Agentes\General as HaberesAgentes;
+use Cat\Modules\Reportes\Controllers\Haberes\Agentes\Exportar as HaberesAgentesExport;
 
-Route::group(
-    ['middleware' => ['web']],
-    function () {
+Route::group([
+    'middleware' => ['web'],
+    'prefix'     => 'reportes',
+], function () {
+    
+    /**
+     * Agentes
+     */
+    Route::group(['prefix' => 'agentes'], function () {
         
-        /**
-         * Agentes
-         */
-        Route::get('reportes/agentes/general', AgentesGeneral::class . '@index')
-            ->name('reportesAgentesGeneralIndex');
+        Route::group(['prefix' => 'general'], function () {
+            
+            
+            Route::get('/', AgentesGeneral::class . '@index')
+                ->name('reportesAgentesGeneralIndex');
+            
+            Route::post('/', AgentesGeneral::class . '@search')
+                ->name('reportesAgentesGeneralSearch');
+            
+            Route::post('export', AgentesExport::class . '@export')
+                ->name('reportesAgentesGeneralExport');
+        });
+    });
+    
+    /**
+     * Presentismos
+     */
+    Route::group(['prefix' => 'presentismo'], function () {
         
-        Route::post('reportes/agentes/general', AgentesGeneral::class . '@search')
-            ->name('reportesAgentesGeneralSearch');
+        Route::group(['prefix' => 'general'], function () {
+            
+            Route::get('/', PresentismosGeneral::class . '@index')
+                ->name('reportesPresentismoGeneralIndex');
+            
+            Route::post('/', PresentismosGeneral::class . '@search')
+                ->name('reportesPresentismoGeneralSearch');
+            
+            Route::post('export', PresentismoExport::class . '@export')
+                ->name('reportesPresentismoGeneralExport');
+        });
+    });
+    
+    /**
+     * Individuales
+     */
+    Route::group(['prefix' => 'individual'], function () {
         
-        Route::post('reportes/agentes/general/export', AgentesExport::class . '@export')
-            ->name('reportesAgentesGeneralExport');
-        
-        /**
-         * Presentismos
-         */
-        Route::get('reportes/presentismo/general', PresentismosGeneral::class . '@index')
-            ->name('reportesPresentismoGeneralIndex');
-        
-        Route::post('reportes/presentismo/general', PresentismosGeneral::class . '@search')
-            ->name('reportesPresentismoGeneralSearch');
-        
-        Route::post('reportes/presentismo/general/export', PresentismoExport::class . '@export')
-            ->name('reportesPresentismoGeneralExport');
-        /**
-         * Individuales
-         */
         // Muestra el index
-        Route::get('reportes/presentismo/individual', PresentismosIndividualSearch::class . '@index')
+        Route::get('/', PresentismosIndividualSearch::class . '@index')
             ->name('reportesPresentismoIndividualIndex');
-    
+        
         // Busca
-        Route::post('reportes/presentismo/individual/search/agente', PresentismosIndividualSearch::class . '@search')
+        Route::post('search/agente',
+            PresentismosIndividualSearch::class . '@search')
             ->name('reportesPresentismoIndividualSearch');
-
+        
         // Reporte
-        Route::post('reportes/presentismo/individual/search/presentismo', PresentismosIndividual::class . '@reporte')
+        Route::post('individual/search/presentismo',
+            PresentismosIndividual::class . '@reporte')
             ->name('reportesPresentismoIndividualReportePresentismos');
-    
+        
         // Descarga
-        Route::post('reportes/presentismo/individual/export', PresentismosIndividual::class . '@export')
+        Route::post('export', PresentismosIndividual::class . '@export')
             ->name('reportesPresentismoIndividualExport');
-
-        /**
-         * Haberes
-         */
-        Route::get('reportes/haberes/estado', HaberesEstado::class . '@index')
-            ->name('reportesHaberesEstadoIndex');
+    });
+    
+    
+    /**
+     * Haberes
+     */
+    Route::group(['prefix' => 'haberes'], function () {
         
-        Route::post('reportes/haberes/estado', HaberesEstado::class . '@search')
-            ->name('reportesHaberesEstadoSearch');
+        Route::group(['prefix' => 'estado'], function () {
+            
+            Route::get('/', HaberesEstado::class . '@index')
+                ->name('reportesHaberesEstadoIndex');
+            
+            Route::post('/', HaberesEstado::class . '@search')
+                ->name('reportesHaberesEstadoSearch');
+            
+            Route::post('export', HaberesEstadoExport::class . '@export')
+                ->name('reportesHaberesEstadoExport');
+        });
         
-        Route::post('reportes/haberes/estado/export', HaberesEstadoExport::class . '@export')
-            ->name('reportesHaberesEstadoExport');
-    }
+        Route::group(['prefix' => 'agentes'], function () {
+            
+            Route::get('/', HaberesAgentes::class . '@index')
+                ->name('reportesHaberesAgentesIndex');
+            
+            Route::post('/', HaberesAgentes::class . '@search')
+                ->name('reportesHaberesAgentesSearch');
+            
+            Route::post('export', HaberesAgentesExport::class . '@export')
+                ->name('reportesHaberesAgentesExport');
+        });
+        
+        
+    });
+}
 );

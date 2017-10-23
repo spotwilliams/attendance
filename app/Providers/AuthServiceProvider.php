@@ -62,8 +62,11 @@ use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarRep
 use Cat\Modules\Reportes\Controllers\Presentismos\Individual as ReporteIndividual;
 use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as ReporteIndividualSearch;
 use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
+// Reportes de Haberes
 use Cat\Modules\Reportes\Controllers\Haberes\Estado\General as ReporteHaberes;
 use Cat\Modules\Reportes\Controllers\Haberes\Estado\Exportar as ExportarHaberes;
+use Cat\Modules\Reportes\Controllers\Haberes\Agentes\General as ReporteHaberesAgentes;
+use Cat\Modules\Reportes\Controllers\Haberes\Agentes\Exportar as ExportarHaberesAgentes;
 use Cat\Policies\Reportes\Haberes\ReportePolicy as ReportePolicyHaber;
 use Cat\Policies\Reportes\Haberes\ExportarPolicy as ExportarPolicyHaber;
 // Configuracion
@@ -131,6 +134,9 @@ class AuthServiceProvider extends ServiceProvider
             
             ReporteHaberes::class  => ReportePolicyHaber::class,
             ExportarHaberes::class => ExportarPolicyHaber::class,
+            
+            ReporteHaberesAgentes::class  => ReportePolicyHaber::class,
+            ExportarHaberesAgentes::class => ExportarPolicyHaber::class,
         
         
         ];

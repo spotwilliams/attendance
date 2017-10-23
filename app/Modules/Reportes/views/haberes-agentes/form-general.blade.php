@@ -10,27 +10,27 @@ $fechaContrato = isset($fechaContrato) ? $fechaContrato : ['desde' => null, 'has
 $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta' => null];
 
 ?>
-{!! Form::open(['route' => 'reportesHaberesGeneralSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+{!! Form::open(['route' => 'reportesHaberesAgentesSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 <div class="box-body">
 
 
     <div class="{{$classMultiSelectContainer}}">
-        @include('common.bases.as-select-sin-btn', ['label' => 'Bases', 'baseSeleccionada' => (isset($base)?$base->id: -1)])
+        @include('common.bases.as-select-sin-btn', ['label' => 'Bases', 'multiple' => 'multiple', 'baseSeleccionada' => (isset($base)?$base: [])])
     </div>
 
     <div class="{{$classMultiSelectContainer}}">
-        @include('common.turnos.as-select', ['label' => 'Turnos'])
+        @include('common.turnos.as-select', ['label' => 'Turnos', 'multiple' => 'multiple', isset($turno)?$turno: []])
     </div>
     <div class="{{$classMultiSelectContainer}}">
-        @include('common.periodos.as-select', ['label' => 'Periodos', 'multiple' => 'multiple', 'periodosSeleccionados' => (isset($periodosSelecciados)?$periodosSelecciados:[])])
+        @include('common.periodos.as-select', ['label' => 'Periodos', 'periodosSeleccionados' => (isset($periodo)?[$periodo]:[-1])])
     </div>
 </div>
 <div class="box-footer">
     {!! Form::submit('Buscar', ['class' => 'btn btn-primary pull-right']) !!}
     {!! Form::close() !!}
-    @if(isset($exportar))
-        {!! $exportar !!}
-    @endif
+    {{--@if(isset($exportar))--}}
+        {{--{!! $exportar !!}--}}
+    {{--@endif--}}
 </div>
 
 @section('scripts')
