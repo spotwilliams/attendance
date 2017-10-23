@@ -3,6 +3,7 @@
 namespace Cat\Modules\Reportes\Controllers\Haberes\Estado;
 
 use Cat\Models\Base;
+use Cat\Models\EstadoPeriodo;
 use Cat\Models\Haber;
 use Cat\Models\Periodo;
 use Cat\Models\Turno;
@@ -53,19 +54,18 @@ class General extends ReporteController
                 ->setupQuery();
             /** @var LengthAwarePaginator $return */
             $return = $this->query->paginate(25, ['*'], 'pagina', $this->page);
-            
-            return View::make('Reportes::haberes.index-general')
-                ->with('haberes', $return)
+
+            return View::make('Reportes::haberes-estado.index-general')
+                ->with('data', $return)
                 ->with('base', $this->base)
                 ->with('turno', $this->turno)
                 ->with('periodosSelecciados', $this->periodos)
-                ->with('periodosResumen', $this->queryPeriodos->get())
-                ->with('links', $this->getLinksLikeForm($return, $request, 'reportesHaberesGeneralSearch'))
-                ->with('exportar', $this->getExportForm($return, $request, 'reportesHaberesGeneralExport'));
+                ->with('links', $this->getLinksLikeForm($return, $request, 'reportesHaberesEstadoSearch'))
+                ->with('exportar', $this->getExportForm($return, $request, 'reportesHaberesEstadoExport'));
         } catch (\Exception $e) {
             Flash::error('No se pudo generar el reporte, intente nuevamente: ' . $e->getMessage());
             
-            return view('Reportes::haberes.index-general');
+            return view('Reportes::haberes-estado.index-general');
             
         }
         
@@ -94,62 +94,15 @@ class General extends ReporteController
     
     protected function setupQuery()
     {
-        $this->query = Haber::select(['haberes.*'])
-            ->whereIn('id_base', $this->base)
-            ->whereIn('id_turno', $this->turno)
-            ->whereIn('id_periodo', $this->periodos)
-            ->with([
-                'agente' => function ($with) {
-                    /** @var Builder $with */
-                    $with->with('operativo.base');
-                    $with->with('operativo.turno');
-                },
-            ])
+        
+        $this->query = EstadoPeriodo::select(['*'])
+            ->with('periodo')
             ->with('base')
             ->with('turno')
-            ->with([
-                'periodo.estados' => function ($with) {
-                    /** @var Builder $with */
-                    $with->whereIn('id_base', $this->base)
-                        ->whereIn('id_turno', $this->turno);
-                },
-            ]);
-        
-        
-        $this->query = Periodo::select([
-            'periodos.*',
-            'estado_periodos.id_base',
-            'estado_periodos.id_periodo',
-            'estado_periodos.id_turno',
-            'estado_periodos.abierto',
-        ])
-            ->join('estado_periodos', function ($join) {
-                /** @var JoinClause $join */
-                $join->on('periodos.id', '=', 'estado_periodos.id_periodo');
-            })
-            ->whereIn('periodos.id', $this->periodos)
-            ->whereIn('id_base', $this->base)
-            ->whereIn('id_turno', $this->turno)
-            ->with([
-                'haberes' => function ($query) {
-                    /** @var Builder */
-                    $query
-                        ->whereIn('id_base', $this->base)
-                        ->whereIn('id_turno', $this->turno)
-                        ->with('agente');
-                    
-                },
-            ]);
-        
-        $this->queryPeriodos = Periodo::select(['periodos.*', 'estado_periodos.*'])
-            ->join('estado_periodos', function ($join) {
-                /** @var JoinClause $join */
-                $join->on('periodos.id', '=', 'estado_periodos.id_periodo');
-            })
-            ->whereIn('periodos.id', $this->periodos)
+            ->whereIn('id_periodo', $this->periodos)
             ->whereIn('id_base', $this->base)
             ->whereIn('id_turno', $this->turno);
-        
+
         return $this;
     }
     

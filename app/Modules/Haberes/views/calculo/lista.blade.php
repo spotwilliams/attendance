@@ -28,8 +28,19 @@ while ($fecha < $fechaToday) {
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
+                    <div class="col-md-2">
+
+                        {!! Form::open(['route' => 'haberesSelectPeriodo']) !!}
+                        {!! Form::hidden('base', $base->id) !!}
+                        {!! Form::hidden('turno', $turno->id) !!}
+                        <input type="submit"
+                               class="btn btn-default"
+                               value='Volver'/>
+                        {!! Form::close() !!}
+                    </div>
+
                     @if($estadoPeriodo->estaAbierto())
-                        <div class="col-md-6">
+                        <div class="col-md-4">
 
                             {!! Form::open(['route' => 'haberesReportePreliminar']) !!}
                             {!! Form::hidden('periodo', $periodo->id) !!}
@@ -41,7 +52,7 @@ while ($fecha < $fechaToday) {
                             {!! Form::close() !!}
                         </div>
                     @endif
-                    <div class="col-md-6">
+                    <div class="col-md-4">
                         @if($estadoPeriodo->estaAbierto())
                             {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}
                             {!! Form::hidden('periodo', $periodo->id) !!}
@@ -53,7 +64,6 @@ while ($fecha < $fechaToday) {
                             {!! Form::close() !!}
                         @endif
                     </div>
-
                 </div>
             </div>
 
@@ -103,9 +113,9 @@ while ($fecha < $fechaToday) {
                                         <h4><i class="icon fa fa-info"></i> Aviso</h4>
                                         Los presentismos para esta base y turno ya han sido cerrados.
                                     </div>
-                                    <div class="col-md-4">
-                                        <a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>
-                                    </div>
+                                    {{--<div class="col-md-4">--}}
+                                        {{--<a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>--}}
+                                    {{--</div>--}}
                                     <div class="col-md-4">
 
                                         {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}

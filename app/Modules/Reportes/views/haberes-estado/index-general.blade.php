@@ -1,9 +1,3 @@
-<?php
-if (!isset($agentes)) {
-    $agentes = new \Illuminate\Support\Collection();
-}
-
-?>
 @extends('layouts.app')
 
 @section('content')
@@ -15,7 +9,7 @@ if (!isset($agentes)) {
 
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">Reporte de haberes y peri&oacute;dos</h3>
+                <h3 class="box-title">Reporte de peri&oacute;dos y estado</h3>
             </div>
             <div class="box-body">
                 <div class="col-md-12 col-xs-12 col-lg-12">
@@ -40,31 +34,6 @@ if (!isset($agentes)) {
                 scrollCollapse: true,
                 fixedColumns: true,
                 dom: 'Bfrtip',
-//                buttons: [
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Datos personales',
-//                        show: [0, 1, 2, 3, 5, 7],
-//                        hide: [8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-//                    },
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Datos laborales',
-//                        show: [8, 9, 10, 11, 12, 13, 14],
-//                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 15, 16, 17, 18, 19, 20, 21, 22, 23, 24]
-//                    },
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Datos operativos',
-//                        show: [15, 16, 17, 18, 19, 20, 21, 22, 23, 24],
-//                        hide: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14]
-//                    },
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Mostrar todo',
-//                        show: ':hidden'
-//                    },
-//                ]
             });
             {{--@if(isset($exportar))--}}
             {{--var exportButton = $('{!! $exportar !!}');--}}

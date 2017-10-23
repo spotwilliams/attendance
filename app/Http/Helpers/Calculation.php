@@ -4,8 +4,13 @@ namespace Cat\Helpers;
 
 
 use Cat\Models\Agente;
+use Cat\Models\Base;
+use Cat\Models\Haber;
+use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
+use Cat\Models\Turno;
 use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Calculation
 {
@@ -78,8 +83,8 @@ class Calculation
     public static function getDays(\DateTime $start, \DateTime $end, $days)
     {
         // Se crean nuevamente los objetos para evitar cambiarlos
-        $start      = new \DateTime($start->format('Y-m-d'));
-        $end        = new \DateTime($end->format('Y-m-d'));
+        $start = new \DateTime($start->format('Y-m-d'));
+        $end   = new \DateTime($end->format('Y-m-d'));
         
         $compulsory = [];
         
@@ -168,5 +173,16 @@ class Calculation
         }
         
         return $presentismos;
+    }
+    
+    
+    public static function getMontoAcumulado(Periodo $periodo, Base $base, Turno $turno)
+    {
+        $haberes = Haber::select(DB::raw('sum(monto_facturado) as total'))
+            ->where('id_periodo', $periodo->id)
+            ->where('id_base', $base->id)
+            ->where('id_turno', $turno->id);
+        
+        return $haberes->first();
     }
 }

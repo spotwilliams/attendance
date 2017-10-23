@@ -1,6 +1,14 @@
 <?php
 
-$turnos = \Cat\Repositories\TurnosRepository::getAll();
+$turnos   = \Cat\Repositories\TurnosRepository::getAll();
+$multiple = (!isset($multiple) ? '' : $multiple);
+$name     = ($multiple !== '') ? 'turno[]' : 'turno';
+if(!isset($turno)) {
+    $turno = [];
+}
+if (!$multiple or !isset($turno) or !is_array($turno)) {
+    $turno = [$turno];
+}
 ?>
 
 <div class="form-group @if($errors->has('turno')) has-error @endif">
@@ -12,12 +20,13 @@ $turnos = \Cat\Repositories\TurnosRepository::getAll();
         @endif
     </label>
     <div class="col-sm-9 col-xs-9">
-        <select class="form-control" name="turno" data-live-search="true">
-            <option value="-1">...</option>
+        <select class="form-control" {{$multiple}} name="{{$name}}" data-live-search="true">
+            @if(!$multiple)
+                <option value="-1">...</option>
+            @endif
             @foreach ($turnos as $t)
                 <option value="{{ $t->id }}"
-                        @if(isset($turno) and ($turno->id === $t->id)) selected @endif>{{$t->codigo}}
-                    {{--({{$t->descripcion}})--}}
+                        @if(isset($turno) and in_array($t->id, $turno)) selected @endif>{{$t->codigo}}
                 </option>
             @endforeach
         </select>

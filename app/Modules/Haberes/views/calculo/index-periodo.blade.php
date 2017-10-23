@@ -68,6 +68,7 @@ $estadoPeriodos = PeriodoRepository::getPeriodosParaBaseAndTurno($base, $turno);
             </div>
             <div class="box-footer">
                 {!! Form::submit('Siguiente', ['class' => 'btn btn-primary pull-right']) !!}
+                <a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>
             </div>
             {!! Form::close() !!}
         </div>

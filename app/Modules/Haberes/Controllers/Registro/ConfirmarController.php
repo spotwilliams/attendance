@@ -38,7 +38,7 @@ class ConfirmarController extends AppBaseController
             $turno   = Turno::findOrFail($input['turno']);
             
             if ($periodo->fechaComprendida(new \DateTime('now'))) {
-                Flash::error('No se puede cerrrar el periodo actual');
+                Flash::error('No se puede cerrrar el periodo actual, debe seleccionar un peri&oacute;do que no incluya la fecha actual');
                 
                 return redirect(route('haberesListaAgentes', [
                     'base'    => $base,

@@ -31,6 +31,11 @@ class EstadoPeriodo extends Model
         return $this->belongsTo(Base::class, 'id_base');
     }
     
+    public function turno()
+    {
+        return $this->belongsTo(Turno::class, 'id_turno');
+    }
+    
     public function estaAbierto()
     {
         return $this->abierto == true;

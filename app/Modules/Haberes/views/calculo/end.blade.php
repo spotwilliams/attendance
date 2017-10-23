@@ -93,7 +93,7 @@ while ($fecha < $fechaToday) {
                 <tr>
                     <td colspan="10">
                         <div class="col-md-4">
-                            <a class="btn btn-primary" href="{{route('haberesSelectBase')}}">Volver</a>
+                            <a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>
                         </div>
                         <div class="col-md-4">
                             {!! Form::open(['route' => 'haberesNotificar']) !!}
