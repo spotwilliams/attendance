@@ -184,6 +184,7 @@
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.colVis.js') !!}
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') !!}
 {!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
+{{--{!! Html::script('plugins/datatables-double-scroll/js/datatables-double-scroll.js') !!}--}}
 
 
 

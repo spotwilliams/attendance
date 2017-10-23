@@ -23,7 +23,7 @@ if (!isset($agentes)) {
                     @include('Reportes::presentismos.form-general')
                 </div>
                 <hr/>
-                <div class="col-md-12 col-xs-12 table-responsive">
+                <div class="col-md-12 col-xs-12 table-responsive large-table-fake-top-scroll-container-3">
                     @if(!$agentes->isEmpty())
                         <h4 class="box-tools pull-left">Se encontraron <span class="label label-info">{{$agentes->total()}}</span> agentes</h4>
                     @endif
@@ -57,27 +57,8 @@ if (!isset($agentes)) {
                 scrollY:        "700px",
                 scrollX:        true,
                 scrollCollapse: true,
-                fixedColumns:   true,
-                dom: 'Bfrtip',
-//                buttons: [
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Datos personales',
-//                        show: [0, 1],
-//                        hide: [2, 3, 4, 5],
-//                    },
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Datos operativos',
-//                        show: [2, 3, 4, 5],
-//                        hide: [0, 1],
-//                    },
-//                    {
-//                        extend: 'colvisGroup',
-//                        text: 'Mostrar todo',
-//                        show: ':hidden'
-//                    },
-//                ]
+                fixedColumns: true,
+
             });
         })
     </script>
