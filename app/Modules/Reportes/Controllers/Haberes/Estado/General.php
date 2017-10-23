@@ -53,15 +53,14 @@ class General extends ReporteController
             $this->setupParams($request)
                 ->setupQuery();
             /** @var LengthAwarePaginator $return */
-            $return = $this->query->paginate(25, ['*'], 'pagina', $this->page);
+            $return = $this->query->get();
 
             return View::make('Reportes::haberes-estado.index-general')
                 ->with('data', $return)
                 ->with('base', $this->base)
                 ->with('turno', $this->turno)
                 ->with('periodosSelecciados', $this->periodos)
-                ->with('links', $this->getLinksLikeForm($return, $request, 'reportesHaberesEstadoSearch'))
-                ->with('exportar', $this->getExportForm($return, $request, 'reportesHaberesEstadoExport'));
+                ;
         } catch (\Exception $e) {
             Flash::error('No se pudo generar el reporte, intente nuevamente: ' . $e->getMessage());
             

@@ -3,9 +3,8 @@
 if (!isset($data)) {
     $periodos = new \Illuminate\Support\Collection();
 } else {
-    $periodos = new \Illuminate\Support\Collection($data->items());
+    $periodos = $data;
 }
-//dd($periodos->groupBy('periodo.id'));
 ?>
 
 <div class="box box-warning">
@@ -53,10 +52,5 @@ if (!isset($data)) {
                 @endforeach
             </table>
         </div>
-    </div>
-    <div class="box-footer text-center">
-        @if(isset($periodos) and  !$periodos->isEmpty())
-            {{$links}}
-        @endif
     </div>
 </div>
