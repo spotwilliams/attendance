@@ -130,10 +130,11 @@
                 <span>Licencias</span>
             </a>
         </li>
+        <li class="divider"></li>
         <li>
-            <a href="{!! route('reportesHaberesGeneralIndex') !!}">
+            <a href="{!! route('reportesHaberesEstadoIndex') !!}">
                 <i class="fa fa-money"></i>
-                <span>Haberes</span>
+                <span>Estado periodos</span>
             </a>
         </li>
     </ul>

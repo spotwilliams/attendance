@@ -62,8 +62,8 @@ use Cat\Policies\Reportes\Presentismos\ExportarPolicy as PresentismosExportarRep
 use Cat\Modules\Reportes\Controllers\Presentismos\Individual as ReporteIndividual;
 use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as ReporteIndividualSearch;
 use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
-use Cat\Modules\Reportes\Controllers\Haberes\General as ReporteHaberes;
-use Cat\Modules\Reportes\Controllers\Haberes\Exportar as ExportarHaberes;
+use Cat\Modules\Reportes\Controllers\Haberes\Estado\General as ReporteHaberes;
+use Cat\Modules\Reportes\Controllers\Haberes\Estado\Exportar as ExportarHaberes;
 use Cat\Policies\Reportes\Haberes\ReportePolicy as ReportePolicyHaber;
 use Cat\Policies\Reportes\Haberes\ExportarPolicy as ExportarPolicyHaber;
 // Configuracion

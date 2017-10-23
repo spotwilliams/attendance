@@ -6,7 +6,7 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 
-class Haberes extends RowDataFormatter
+class HaberesEstado extends RowDataFormatter
 {
     public function format(Model $agente)
     {

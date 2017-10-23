@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Reportes\Controllers\Haberes;
+namespace Cat\Modules\Reportes\Controllers\Haberes\Estado;
 
 use Cat\Modules\Reportes\Services\Formatters\Haberes;
 use Cat\Modules\Reportes\Services\Reporte;
