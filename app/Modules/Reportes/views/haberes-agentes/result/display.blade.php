@@ -2,8 +2,9 @@
 /** @var \Illuminate\Support\Collection $haberes */
 if (!isset($data)) {
     $haberes = new \Illuminate\Support\Collection();
+
 } else {
-    $haberes = $data->items();
+    $haberes = new \Illuminate\Support\Collection($data->items());
 }
 ?>
 <div class="box box-warning">
@@ -20,7 +21,7 @@ if (!isset($data)) {
                     <th>Turno</th>
                     <th>Monto</th>
                 </tr>
-                @if(!$data->isEmpty())
+                @if(!$haberes->isEmpty())
                     @foreach($haberes as $h)
                         <tr>
                             <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($h, ['agente', 'apellido'])}}
