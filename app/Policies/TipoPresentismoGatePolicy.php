@@ -19,6 +19,7 @@ class TipoPresentismoGatePolicy extends SecurityPolicy
                 'N'    => 'Justificar licencia N - LOCACION',
                 'AT'   => 'Justificar licencia AT',
                 'EXMA' => 'Justificar licencia EXMA - LOCACION',
+                'ML'    => 'Justificar licencia M - LOCACION',
             ],
             'SITUACION_REVISTA' => [],
             'TODOS'             => [
@@ -43,6 +44,7 @@ class TipoPresentismoGatePolicy extends SecurityPolicy
                         $user,
                         $this->specialPermissions[$tipoContrato->codigo][$tipo->codigo]
                     );
+                    
                     return $hasAccess;
                 } else {
                     return true;
