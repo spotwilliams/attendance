@@ -33,24 +33,25 @@ class Registro extends AppBaseController
     public function index(Request $request)
     {
         $this->authorize('index', $this);
+        
         return view('Masivo::presentismos.index-params');
     }
     
     public function selectFile(Request $request)
     {
         $this->authorize('selectFile', $this);
-    
+        
         $rule = [
             'base'  => 'not_in:-1',
             'turno' => 'not_in:-1',
         
         ];
         $this->validate($request, $rule);
-
+        
         // Se autorizan las bases y turnos
         $this->authorize('base', $request);
         $this->authorize('turno', $request);
-    
+        
         try {
             $input = $request->all();
             $base  = Base::findOrFail($input['base']);
@@ -86,6 +87,7 @@ class Registro extends AppBaseController
             
             $input   = $request->all();
             $base    = Base::find($input['base']);
+            $turno   = Turno::find($input['turno']);
             $file    = $request->file('archivo');
             $service = new Procesador($base, $file);
             
@@ -102,20 +104,22 @@ class Registro extends AppBaseController
             
         }
         
-        return view('Masivo::presentismos.end-process');
+        return view('Masivo::presentismos.end-process')
+            ->with('base', $base)
+            ->with('turno', $turno);
     }
     
     public function downloadErrores(Request $request)
     {
         $this->authorize('downloadErrores', $this);
-    
+        
         return response()->download($request->input('file'));
     }
     
     public function downloadTemplate(Request $request, $fileName)
     {
         $this->authorize('downloadTemplate', $this);
-    
+        
         try {
             
             $route = Storage::disk('masivo')

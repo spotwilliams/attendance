@@ -71,6 +71,8 @@
                     {{--<a class="btn btn-default btn-xs">Ver instrucciones</a>--}}
                 {{--</p>--}}
                 {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
+                <a href="{{route('presentismosMasivoIndex')}}" class="btn btn-default col-sm-offset-2">Atr&aacute;s</a>
+
             </div>
             {!! Form::close() !!}
         </div>

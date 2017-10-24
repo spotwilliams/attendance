@@ -20,11 +20,14 @@ if (!isset($agentes)) {
         <div class="box box-warning">
             <div class="box-header with-border">
                 <h3 class="box-title">Reporte de asistencias</h3>
+                <div class="box-tools pull-right">
+                    <a href="{{route('reportesPresentismoIndividualIndex')}}" class="btn btn-default">Atr&aacute;s</a>
+                </div>
             </div>
             <div class="box-body">
                 <div class="col-md-12 col-xs-12 table-responsive">
                     @if(isset($exportar))
-                      {!! $exportar !!}
+                        {!! $exportar !!}
                     @endif
                     <table class="table table-hover">
 
@@ -43,7 +46,6 @@ if (!isset($agentes)) {
                 @endif
             </div>
         </div>
-
 
 
     </div>
