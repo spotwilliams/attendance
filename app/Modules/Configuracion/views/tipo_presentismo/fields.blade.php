@@ -2,9 +2,9 @@
 
 /** @var \Illuminate\Support\Collection $meses */
 
-$tipo                = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
+$tipo = (isset($tipo) ? $tipo : new \Cat\Models\TipoPresentismo());
 $tipo->injustificado = ($tipo->injustificado) ? 1 : 0;
-$tipo->es_fijo       = ($tipo->es_fijo) ? 1 : 0;
+$tipo->es_fijo = ($tipo->es_fijo) ? 1 : 0;
 if ((isset($tipo->diasPermitidos) and !$tipo->diasPermitidos->isEmpty())) {
     $meses = $tipo->diasPermitidos;
 } else {
@@ -92,6 +92,13 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 <span class="help-block">{{$errors->first('color_letra')}}</span>
             @endif
         </div>
+        <?php
+        $attrs = ['class' => 'form-control'];
+        if (isset($aplicaDisabled) and $aplicaDisabled == true) {
+            $attrs ['disabled'] = 'disabled';
+
+        }
+        ?>
         <div class="form-group @if($errors->has('aplica')) has-error @endif">
 
             {!! Form::label('aplica', 'Aplica a:') !!}
@@ -99,7 +106,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             'TODOS' => 'Todos los tipos de contratos',
             'SITUACION_REVISTA' => 'Contratos situaci&oacute;n de revista',
             'LOCACION' => 'Contratos de locaci&oacute;n',
-            ], null, ['class' => 'form-control', 'disabled' => 'disabled']) !!}
+            ], null, $attrs) !!}
             @if($errors->has('aplica'))
                 <span class="help-block">{{$errors->first('aplica')}}</span>
             @endif
@@ -268,7 +275,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                         $('select[name="tiene_proporcional"]').parent().show();
                         $('.table.meses').show();
                     }
-                        $('select[name="tiene_proporcional"]').val(-1);
+                    $('select[name="tiene_proporcional"]').val(-1);
                 } else {
                     $('input[name="cant_semanal"], input[name="cant_fin_semana"]')
                         .val(0)

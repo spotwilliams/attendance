@@ -11,7 +11,7 @@
             <div class="box-body">
                     {!! Form::model($tipo, ['route' => ['configuracion.licencia.update', $tipo->id], 'method' => 'patch']) !!}
 
-                    @include('Configuracion::tipo_presentismo.fields')
+                    @include('Configuracion::tipo_presentismo.fields', ['aplicaDisabled' => true])
 
                     {!! Form::close() !!}
             </div>
