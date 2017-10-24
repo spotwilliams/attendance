@@ -1,8 +1,8 @@
 <?php
 
 $funciones = \Cat\Models\TipoPresentismo::all();
-$multiple = (!isset($multiple) ? '' : $multiple);
-$name     = ($multiple !== '') ? 'tipo_presentismo[]' : 'tipo_presentismo';
+$multiple  = (!isset($multiple) ? '' : $multiple);
+$name      = ($multiple !== '') ? 'tipo_presentismo[]' : 'tipo_presentismo';
 ?>
 
 <div class="form-group @if($errors->has('tipo_presentismo')) has-error @endif">
@@ -15,7 +15,9 @@ $name     = ($multiple !== '') ? 'tipo_presentismo[]' : 'tipo_presentismo';
     </label>
     <div class="col-sm-9 col-xs-9">
         <select class="form-control" {{$multiple}} name="{{$name}}" data-live-search="true">
-            <option value="-1">...</option>
+            @if(!$multiple)
+                <option value="-1">...</option>
+            @endif
             @foreach ($funciones->groupBy('aplica') as $tipo => $grupo)
                 <optgroup label="{{trans('aplica.'.$tipo)}}">
                     @foreach($grupo as $tp)

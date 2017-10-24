@@ -42,6 +42,9 @@ class General extends ReporteController
     /** @var  bool */
     protected $incluirComentarios;
     
+    /** @var Collection */
+    protected $tiposPresentismos;
+    
     public function index()
     {
         $this->authorize('index', $this);
@@ -73,6 +76,7 @@ class General extends ReporteController
             ->with('funcion', $this->funciones)
             ->with('estadoContratos', $this->estadoContratos)
             ->with('tipoContratos', $this->tipoContratos)
+            ->with('tiposPresentismos', $this->tiposPresentismos->toArray())
             ->with('desde', $this->desde)
             ->with('hasta', $this->hasta)
             ->with('incluir_comentarios', $this->incluirComentarios)
@@ -90,6 +94,7 @@ class General extends ReporteController
         $this->turnos             = new Collection($request->input('turnos'));
         $this->funciones          = new Collection($request->input('funcion'));
         $this->estadoContratos    = new Collection($request->input('estadoContratos'));
+        $this->tiposPresentismos  = new Collection($request->input('tipo_presentismo'));
         $this->tipoContratos      = new Collection($request->input('tipoContratos'));
         $this->incluirComentarios = (($request->input('incluir_comentario') !== null) ? true : false);
         $this->page               = (($request->input('page') !== null) ? $request->input('page') : 1);
@@ -106,8 +111,11 @@ class General extends ReporteController
                         ->whereDate('fecha', '<=', $this->hasta)
                         ->orderBy('fecha', 'ASC')
                         ->with('tipoPresentismo');
-                    if($this->incluirComentarios) {
+                    if ($this->incluirComentarios) {
                         $query->with('comentarios.user');
+                    }
+                    if(!$this->tiposPresentismos->isEmpty()) {
+                        $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
                     }
                 },
             ])

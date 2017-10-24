@@ -23,7 +23,7 @@ if (!isset($agentes)) {
                     @include('Reportes::presentismos.form-general')
                 </div>
                 <hr/>
-                <div class="col-md-12 col-xs-12 table-responsive large-table-fake-top-scroll-container-3">
+                <div class="col-md-12 col-xs-12 table-responsive">
                     @if(!$agentes->isEmpty())
                         <h4 class="box-tools pull-left">Se encontraron <span class="label label-info">{{$agentes->total()}}</span> agentes</h4>
                     @endif
