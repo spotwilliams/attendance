@@ -141,15 +141,25 @@ class Calculation
             $fechasQueFaltan  = array_diff($fechas, $fechasResigradas);
             /** @var Collection $presentismosGroupBy */
             $presentismosGroupBy = self::getPresentismoGroupByJustificacion($agente);
-            
+
             foreach ($fechasQueFaltan as $fecha) {
                 $presentismoARegistrar                  = new Presentismo([
                     'id_tipo_presentismo' => -1,
                     'fecha'               => $fecha,
                 ]);
-                $presentismosGroupBy['injustificado'][] = $presentismoARegistrar;
+                
+                $presentismosGroupBy['injustificado']->push($presentismoARegistrar);
             }
             $agente->presentismos = $presentismosGroupBy->get('injustificado');
+            
+//            if($agente->id == 3645) {
+//                dd(
+////                    $fechasResigradas,
+////                    $fechasQueFaltan,
+////                    self::getPresentismoGroupByJustificacion($agente)
+//                    $agente->presentismos
+//                );
+//            }
         }
         
         return $agentesConPresentsimos;

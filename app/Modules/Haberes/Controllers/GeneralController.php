@@ -113,13 +113,11 @@ class GeneralController extends AppBaseController
             
             $agentesYaConfirmados = Haber::where('id_periodo', '=', $periodo->id)
                 ->get(['id_agente'])->toArray();
-            $desde                = new \DateTime($periodo->fecha_comienzo);
-            $hasta                = new \DateTime($periodo->fecha_fin);
             
             $agentes = $this
                 ->presentismoRepository
                 ->getEloquentAgentes($base->id, $periodo);
-            
+
             $agentes
                 ->select([
                     'agentes.id as id',
@@ -129,10 +127,9 @@ class GeneralController extends AppBaseController
                 ])
                 // Override the condition
                 ->with([
-                    'presentismos' => function ($presentismos) use ($desde, $hasta) {
+                    'presentismos' => function ($presentismos) use ($periodo) {
                         $presentismos
-                            ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
-                            ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))
+                            ->where('id_periodo', '=', $periodo->id)
 //                            ->where('injustificado', '=', true)
                             ->orderBy('fecha', 'ASC');
                     },

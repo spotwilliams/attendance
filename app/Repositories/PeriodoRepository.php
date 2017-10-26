@@ -37,15 +37,29 @@ class PeriodoRepository extends BaseRepository
             // Buscar el ultimo periodo creado y crear uno a partir de este
             $ultimoPeriodo = Periodo::getUltimoPeriodo();
             
-            $fechaInicio = new \DateTime($ultimoPeriodo->fecha_fin);
-            $fechaInicio->modify("+1day");
+            $fInicioUltimoPeriodo = new \DateTime($ultimoPeriodo->fecha_comienzo);
+            $fInicioUltimoPeriodo->modify('+1month');// me ayuda a cambiar de año
             
-            $fechaFin = new \DateTime($fechaInicio->format('Y-m-d'));
-            $fechaFin->modify("+$ultimoPeriodo->cant_dias day");
+            $fechaInicioNuevoPeriodo = new \DateTime();
+            $fechaInicioNuevoPeriodo->setDate(
+                $fInicioUltimoPeriodo->format('Y'),
+                $fInicioUltimoPeriodo->format('m'),
+                16
+            );
+            
+            $fFinUltimoPeriodo = new \DateTime($ultimoPeriodo->fecha_fin);
+            $fFinUltimoPeriodo->modify('+1month');// me ayuda a cambiar de año
+            
+            $fechaFinNuevoPeriodo = new \DateTime();
+            $fechaFinNuevoPeriodo->setDate(
+                $fFinUltimoPeriodo->format('Y'),
+                $fFinUltimoPeriodo->format('m'),
+                15
+            );
             
             $periodo = Periodo::create([
-                'fecha_comienzo' => $fechaInicio->format('Y-m-d'),
-                'fecha_fin'      => $fechaFin->format('Y-m-d'),
+                'fecha_comienzo' => $fechaInicioNuevoPeriodo->format('Y-m-d'),
+                'fecha_fin'      => $fechaFinNuevoPeriodo->format('Y-m-d'),
                 'cant_dias'      => $ultimoPeriodo->cant_dias,
             ]);
             static::activarPeriodoEnBasesYTurnos($periodo);
@@ -119,6 +133,7 @@ class PeriodoRepository extends BaseRepository
             return new Collection();
         }
     }
+    
     /**
      * @param Base $base
      * @param Turno $turno
@@ -133,6 +148,7 @@ class PeriodoRepository extends BaseRepository
                 ->orderBy('id', 'desc')
                 ->limit($limit)
                 ->get();
+            
             return $periodos;
             
         } catch (ModelNotFoundException $e) {
