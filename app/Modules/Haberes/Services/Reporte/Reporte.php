@@ -37,10 +37,11 @@ class Reporte extends Service
             $writer->sheet('Haberes', function ($sheet) {
                 
                 /** @var  LaravelExcelWorksheet $sheet */
-                $data = [];
+                $data  = [];
                 $index = 0;
                 foreach ($this->haberes as $haber) {
                     $data [$index] = [
+                        'id'                             => $haber->agente->id,
                         'Nombre'                         => $haber->agente->nombre,
                         'Apellido'                       => $haber->agente->apellido,
                         'CUIT'                           => $haber->agente->cuit,
@@ -48,10 +49,11 @@ class Reporte extends Service
                         'Cantidad faltas Injustificadas' => (string)TipoPresentismosRepository::getCantFaltasInjustificadas($haber->agente,
                             $haber->periodo),
                     ];
-                    $detalleFaltas = TipoPresentismosRepository::getFaltasInjustificadas($haber->agente, $haber->periodo);
+                    $detalleFaltas = TipoPresentismosRepository::getFaltasInjustificadas($haber->agente,
+                        $haber->periodo, false);
                     
                     foreach ($detalleFaltas as $falta) {
-                        $data[$index][$falta->fecha . ' (fecha)'] = $falta->fecha;
+                        $data[$index][$falta->fecha . ' (fecha)']  = $falta->fecha;
                         $data[$index][$falta->fecha . ' (codigo)'] = $falta->tipoPresentismo->codigo;
                     }
                     $index++;

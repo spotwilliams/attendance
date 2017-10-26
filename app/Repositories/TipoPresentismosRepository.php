@@ -5,8 +5,10 @@ namespace Cat\Repositories;
 use Cat\Helpers\Cache;
 use Cat\Models\Agente;
 use Cat\Models\Periodo;
+use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
 class TipoPresentismosRepository
@@ -60,9 +62,8 @@ class TipoPresentismosRepository
     public static function getFaltasInjustificadas(Agente $agente, Periodo $periodo, $excluirTardanza = true)
     {
         
-        /** @var Collection $faltas Cantidad de dias con faltas no justificadas */
-        $faltas = $agente
-            ->presentismos()
+        /** @var Builder $faltas Cantidad de dias con faltas no justificadas */
+        $faltas = Presentismo::where('id_agente', '=', $agente->id)
             ->where('id_periodo', '=', $periodo->id)
             ->where('injustificado', '=', true)
             ->with('tipoPresentismo');
@@ -70,7 +71,7 @@ class TipoPresentismosRepository
         if ($excluirTardanza) {
             /** @var TipoPresentismo $tipoTardanza codigo de los injustifados */
             $tipoTardanza = TipoPresentismo::tardanzas();
-            $agente->where('id_tipo_presentismo', '<>', $tipoTardanza->id);
+            $faltas->where('id_tipo_presentismo', '<>', $tipoTardanza->id);
         }
         
         return $faltas->get();
