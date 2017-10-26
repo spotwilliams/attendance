@@ -33,7 +33,7 @@ class PeriodoRepository extends BaseRepository
         $periodo = Periodo::findActivo($fecha);
         
         
-        if (true) {
+        if ($periodo == null) {
             // Buscar el ultimo periodo creado y crear uno a partir de este
             $ultimoPeriodo = Periodo::getUltimoPeriodo();
             

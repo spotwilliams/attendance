@@ -21,7 +21,7 @@ $diasSemana = Calculation::getWeekDays(
 );
 
 $agentesCompletos = Calculation::addFaltasNoRegistradas($agentes->getCollection(), $diasSemana);
-
+//dd($agentesCompletos->keyBy('apellido')->get('COPPOLA'));
 ?>
 @foreach($agentesCompletos as $a)
     <tr>
