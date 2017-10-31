@@ -38,24 +38,25 @@ class ReporteAsStream extends Service
         // 5 hs threshold
         ini_set('max_execution_time', 18000);
         ini_set('memory_limit', '-1');
-        
-        
+
+
         return Response::stream(function () {
+        
+        $page = 1;
+            echo (implode(',', $this->rowFormatter->getEncabezado())) . PHP_EOL;
+        do {
+            $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
             
-            $page = 1;
-            do {
-                $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
-                
-                $page++;
-                foreach ($models->items() as $model) {
-                    $data = $this->rowFormatter->format($model);
-                    echo (implode(',', $data)) . PHP_EOL;
-                }
-                flush();
-            } while ($models->hasMorePages());
-            
+            $page++;
+            foreach ($models->items() as $model) {
+                $data = $this->rowFormatter->format($model);
+                echo (str_replace( '\r\n','',implode(',', $data))) . PHP_EOL;
+            }
+            flush();
+        } while (false);
+
         }, 200, [
-            // Stream headers
+//             Stream headers
             'Content-type'        => 'text/csv',
             'Content-disposition' => 'attachment;filename=ReportePresentismo.csv',
             'Pragma'              => 'no-cache',
