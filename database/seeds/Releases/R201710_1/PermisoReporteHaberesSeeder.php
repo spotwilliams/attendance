@@ -1,5 +1,7 @@
 <?php
 
+namespace Cat\Database\Releases\R201710_1;
+
 use Illuminate\Database\Seeder;
 
 class PermisoReporteHaberesSeeder extends Seeder

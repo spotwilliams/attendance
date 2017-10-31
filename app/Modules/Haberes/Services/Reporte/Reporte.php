@@ -41,7 +41,7 @@ class Reporte extends Service
                 $index = 0;
                 foreach ($this->haberes as $haber) {
                     $data [$index] = [
-                        'id'                             => $haber->agente->id,
+//                        'id'                             => $haber->agente->id,
                         'Nombre'                         => $haber->agente->nombre,
                         'Apellido'                       => $haber->agente->apellido,
                         'CUIT'                           => $haber->agente->cuit,

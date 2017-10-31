@@ -93,20 +93,20 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
             @endif
         </div>
         <?php
-        $attrs = ['class' => 'form-control'];
+        $attrs = '';
         if (isset($aplicaDisabled) and $aplicaDisabled == true) {
-            $attrs ['disabled'] = 'disabled';
+            $attrs  = 'style=" display:none;"';
 
         }
         ?>
-        <div class="form-group @if($errors->has('aplica')) has-error @endif">
+        <div class="form-group @if($errors->has('aplica')) has-error @endif" {!! $attrs !!}>
 
             {!! Form::label('aplica', 'Aplica a:') !!}
             {!! Form::select('aplica', [
             'TODOS' => 'Todos los tipos de contratos',
             'SITUACION_REVISTA' => 'Contratos situaci&oacute;n de revista',
             'LOCACION' => 'Contratos de locaci&oacute;n',
-            ], null, $attrs) !!}
+            ], null, ['class' => 'form-control']) !!}
             @if($errors->has('aplica'))
                 <span class="help-block">{{$errors->first('aplica')}}</span>
             @endif
