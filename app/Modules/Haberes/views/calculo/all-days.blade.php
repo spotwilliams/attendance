@@ -3,25 +3,23 @@ use Cat\Helpers\Calculation;
 use Illuminate\Support\Facades\Gate;
 
 /** @var \Cat\Models\Periodo $periodo */
+$turnosFinSemana = ['FSN', 'FSD', 'FSI'];
+if (in_array($turno->codigo, $turnosFinSemana)) {
 
-$authDays = [
-    'Mon',
-    'Tue',
-    'Wed',
-    'Thu',
-    'Fri',
-    'Sat',
-    'Sun',
-];
+    $diasSemana = Calculation::getWeekends(
+        new DateTime($periodo->fecha_comienzo),
+        new DateTime($periodo->fecha_fin)
+    );
+} else {
 
-$diasSemana = Calculation::getWeekDays(
-    new DateTime($periodo->fecha_comienzo),
-    new DateTime($periodo->fecha_fin),
-    $authDays
-);
+    $diasSemana = Calculation::getWeekDays(
+        new DateTime($periodo->fecha_comienzo),
+        new DateTime($periodo->fecha_fin)
+    );
+}
 
 $agentesCompletos = Calculation::addFaltasNoRegistradas($agentes->getCollection(), $diasSemana);
-//dd($agentesCompletos->keyBy('apellido')->get('COPPOLA'));
+
 ?>
 @foreach($agentesCompletos as $a)
     <tr>

@@ -51,7 +51,7 @@ class Presentismo extends RowDataFormatter
         foreach ($temp as $fecha => $p) {
             
             if (is_array($p)) {
-                
+
 //                $pres[$fecha . '_dia']        = $p['fecha'];
                 $pres[$fecha . '_codigo']     = $p['tipo_presentismo']['codigo'];
                 $pres[$fecha . '_estado']     = (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
@@ -80,5 +80,25 @@ class Presentismo extends RowDataFormatter
         return $comentario;
         
         
+    }
+    
+    public function getEncabezado()
+    {
+        $encabezadoToReturn = [
+            'Apellido',
+            'Nombre',
+            'CUIT',
+            'DNI',
+            'Turno',
+            'Base',
+        ];
+        foreach ($this->encabezado as $fecha => $empty) {
+            $encabezadoToReturn[] = $fecha . '_codigo';
+            $encabezadoToReturn[] = $fecha . '_estado';
+            $encabezadoToReturn[] = $fecha . '_comentario';
+            
+        }
+        
+        return ($encabezadoToReturn);
     }
 }
