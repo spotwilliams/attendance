@@ -36,7 +36,11 @@ $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('select').selectpicker({});
+            $('select')
+                .data('actions-box', true)
+                .selectpicker({
+                });
+
         })
     </script>
 @append

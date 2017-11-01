@@ -10,7 +10,7 @@
         <div class="clearfix"></div>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">Reporte de haberes y peri&oacute;dos</h3>
+                <h3 class="box-title">Resumen de haberes por persona</h3>
             </div>
             <div class="box-body">
                 <div class="col-md-12 col-xs-12 col-lg-12">
