@@ -49,7 +49,7 @@
                         </ul>
                     </div>
 
-                    <div class="navbar-custom-menu pull-right">
+                    <div class="navbar-custom-menu">
                         <ul class="nav navbar-nav">
                             <!-- User Account Menu -->
                             <li class="dropdown user user-menu">
@@ -83,28 +83,56 @@
                                     </li>
                                 </ul>
                             </li>
+                            <li>
+                                <a href="#" data-toggle="control-sidebar"><i class="fa fa-gears"></i></a>
+                            </li>
+
                         </ul>
                     </div>
 
                 </div>
+
             </nav>
         </header>
 
         <!-- Content Wrapper. Contains page content -->
         <div class="content-wrapper">
             {{--<section class="content-header" style="min-height: 50px!important;">--}}
-                {{--<ul class="breadcrumb">--}}
-                    {{--<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>--}}
-                    {{--<li class="active">Dashboard</li>--}}
-                {{--</ul>--}}
+            {{--<ul class="breadcrumb">--}}
+            {{--<li><a href="#"><i class="fa fa-dashboard"></i> Home</a></li>--}}
+            {{--<li class="active">Dashboard</li>--}}
+            {{--</ul>--}}
             {{--</section>--}}
             @yield('content')
         </div>
 
         <!-- Main Footer -->
-        {{--<footer class="main-footer" style="max-height: 100px;text-align: center">--}}
-        {{--<strong>Copyright © 2017 <a>CAT</a>.</strong>--}}
-        {{--</footer>--}}
+    {{--<footer class="main-footer" style="max-height: 100px;text-align: center">--}}
+    {{--<strong>Copyright © 2017 <a>CAT</a>.</strong>--}}
+    {{--</footer>--}}
+    <!-- The Right Sidebar -->
+        <aside class="control-sidebar control-sidebar-dark">
+            <ul class="nav nav-tabs nav-justified control-sidebar-tabs">
+                <li class="active">
+                    <a href="#colores-referencia"
+                       data-toggle="tab"
+                       aria-expanded="true">
+                        <i class="fa fa-slack"></i>
+                    </a>
+                </li>
+            </ul>
+            <div class="tab-content">
+                <div class="tab-pane active" id="colores-referencia">
+                    <div>
+                        @include('common.tipo-presentismos.as-list')
+                    </div>
+                </div>
+            </div>
+            <!-- Content of the sidebar goes here -->
+        </aside>
+        <!-- The sidebar's background -->
+        <!-- This div must placed right after the sidebar for it to work-->
+        <div class="control-sidebar-bg"></div>
 
     </div>
 @else
