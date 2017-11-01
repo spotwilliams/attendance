@@ -44,10 +44,15 @@ if (!isset($data)) {
 
                                 $monto = \Cat\Helpers\Calculation::getMontoAcumulado($estado->periodo, $estado->base,
                                     $estado->turno);
-                                if (!$monto->total) {
-                                    echo '$ 0';
+                                if ($estado->abierto) {
+
+                                    echo 'Periodo no cerrado';
                                 } else {
-                                    echo '$' . $monto->total;
+                                    if (!$monto->total) {
+                                        echo '$ 0';
+                                    } else {
+                                        echo '$' . $monto->total;
+                                    }
                                 }
                                 ?>
                             </td>
