@@ -28,8 +28,13 @@
                             </div>
                         </div>
                     </div>
-                        @include('common.bases.as-select-sin-btn' ,[ 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
-                        @include('common.turnos.as-select' ,[ 'label'=> 'Seleccione el turno', 'baseSeleccionada' => -1])
+                    <blockquote>
+                        <p class="help-block class-col-md-10">Solo se listan aquellas bases que tienen
+                            agentes con contratos del tipo Locaci&oacute;n de servicios y obra</p>
+                    </blockquote>
+
+                    @include('Haberes::calculo.bases-as-select' ,[ 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
+                    @include('Haberes::calculo.turnos-as-select' ,[ 'label'=> 'Seleccione el turno', 'baseSeleccionada' => -1])
                 </div>
             </div>
             <div class="box-footer">

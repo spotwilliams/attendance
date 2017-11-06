@@ -25,7 +25,7 @@
     @yield('css')
 </head>
 
-<body class="layout-top-nav skin-yellow-light">
+<body class="layout-top-nav skin-yellow-light fixed">
 @if (!Auth::guest())
     <div class="wrapper">
         <!-- Main Header -->
