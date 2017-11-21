@@ -14,24 +14,32 @@
             </div>
             <div class="box-body">
 
+
                 <div class="row">
                     <div class="col-md-10 col-xs-10">
                         {{ Form::open(['route' => 'agentesSearchIndex', 'method' => 'GET'])}}
-                        <div class="input-group input-group-sm">
-                            {{--<input type="text" class="form-control">--}}
-                            {{ Form::text('search', Request::input('search'), ['id' => 'search', 'placeholder' => 'Ingrese un nombre o CUIT o DNI', 'class' => 'form-control']) }}
-                            <span class="input-group-btn">
-                                {{--<button type="button" class="btn btn-info btn-flat">Buscar!</button>--}}
+                        <div class="col-md-4">
+                            {{ Form::text('apellido', Request::input('apellido'), ['id' => 'apellido', 'placeholder' => 'Apellido', 'class' => 'col-md-3 form-control']) }}
+                        </div>
+                        <div class="col-md-4">
+                            {{ Form::text('nombre', Request::input('nombre'), ['id' => 'nombre', 'placeholder' => 'Nombre', 'class' => 'col-md-3 form-control']) }}
+                        </div>
+                        <div class="col-md-4">
+                            <div class="input-group">
+                                {{ Form::text('cuit', Request::input('cuit'), ['id' => 'cuit', 'placeholder' => 'CUIT', 'class' => 'form-control']) }}
+                                <span class="input-group-btn">
                                 {{ Form::submit('Buscar', ['class' => 'btn btn-info btn-flat']) }}
                             </span>
+                            </div>
                         </div>
                         {{ Form::close() }}
+
                     </div>
                     <div class="col-md-2 col-xs-2">
                         @include('Agentes::registro.commons.nuevo-btn')
-
                     </div>
-                    <hr/>
+                    <br>
+                    <br>
                     <div class="col-md-12 col-xs-12">
 
                         <table class="table table-hover">
