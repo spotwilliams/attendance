@@ -3,14 +3,10 @@
 namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
 use Cat\Models\Agente;
-use Cat\Models\Base;
 use Cat\Models\TipoPresentismo;
-use Cat\Models\Turno;
 use Cat\Modules\Reportes\Controllers\ReporteController;
-use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
 use Cat\Modules\Reportes\Services\Formatters\Presentismo;
@@ -65,7 +61,7 @@ class Individual extends ReporteController
         $this->setupParams($request)
             ->setupQuery();
         
-        $service = new Reporte($this->query, Presentismo::class, true);
+        $service = new Reporte($this->query, new Presentismo($this->desde, $this->hasta), true);
         try {
             $service->execute();
         } catch (\Exception $e) {
@@ -99,7 +95,9 @@ class Individual extends ReporteController
                     }
                     
                     $query->orderBy('fecha', 'ASC')
-                        ->with('tipoPresentismo');
+                        ->with('tipoPresentismo')
+                        ->with('comentarios.user')
+                    ;
                 },
             ])
             ->where('agentes.id', '=', $this->agente->id)
