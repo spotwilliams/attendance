@@ -16,7 +16,8 @@
 
                 {!! Form::hidden('file', session('agentes_new_file')) !!}
 
-                {!! Form::submit('Descargar archivo de errores', ['class' => 'btn btn-primary']) !!}
+                <a class="btn btn-default pull-left" href="{{URL::previous()}}"><i class="fa fa-arrow-left"></i>Volver</a>
+                {!! Form::submit('Descargar archivo de errores', ['class' => 'btn btn-primary pull-right']) !!}
 
                 {!! Form::close() !!}
             </div>

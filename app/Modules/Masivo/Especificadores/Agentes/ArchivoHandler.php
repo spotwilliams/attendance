@@ -48,21 +48,20 @@ class ArchivoHandler extends ExcelHandler
                     $agente = $this->handlePersonales($row);
                     $this->handleLaborales($row, $agente);
                     $this->handleOperativos($row, $agente, $base);
-//                    Log::info($row->cuit);
                 } else {
                     break;
                 }
             } catch (\Exception $e) {
-//                Log::error($e->getMessage());
+                Log::error($e);
                 $this->clearPossibleMistakes($row);
                 
                 $listaErrores[] = [
-                    '#'                => $i + 2,
-                    'nombre'           => $row->nombre,
-                    'apellido'         => $row->apellido,
-                    'dni'              => $row->dni,
-                    'cuit'             => $row->cuit,
-                    'technical_reason' => $e->getMessage(),
+                    '#'        => $i + 2,
+                    'nombre'   => $row->nombre,
+                    'apellido' => $row->apellido,
+                    'dni'      => $row->dni,
+                    'cuit'     => $row->cuit,
+                    'mensaje'  => 'Los datos provistos no se han podido procesar, por favor reviselos e intente nuevamente',
                 ];
             }
         }
