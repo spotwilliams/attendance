@@ -52,7 +52,7 @@ class Agente extends Model
             'nombre'           => 'required|max:255',
             'apellido'         => 'required|max:255',
             'fecha_nacimiento' => 'required|date',
-            'cuit'             => 'required|integer',
+            'cuit'             => 'required|digits_between:4,20',
             'dni'              => 'required|integer',
             'telefono'         => 'required|digits_between:1,20',
             'email'            => 'required|email',
