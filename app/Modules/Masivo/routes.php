@@ -70,6 +70,23 @@ Route::group(
             InicialMasivoController::class . '@downloadTemplate')
             ->name('presentismosInicialMasivoTemplate');
          */
-        
+    
+        /**
+         *
+         * Update Agentes
+         *
+         */
+    
+        Route::get('agentes/masivo/update', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@index')
+            ->name('agentesMasivoIndex');
+    
+        Route::post('agentes/masivo/update/upload', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@upload')
+            ->name('agentesMasivoUpload');
+    
+        Route::post('agentes/masivo/update/download/errores', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@downloadErrores')
+            ->name('agentesMasivoDownload');
+    
+        Route::get('agentes/masivo/update/download/template', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@downloadTemplate')
+            ->name('agentesMasivoTemplate');
     }
 );
