@@ -28,8 +28,10 @@ class DataCleaner
         if (empty($value)) {
             $value = '1900-01-01';
         } else {
-
-            $date = explode('/', $value);
+            
+            $delimiter = (strpos('/', $value) === false) ? '-' : '/';
+            
+            $date = explode($delimiter, $value);
             if (!is_array($date) or count($date) < 3) {
                 $value = '1900-01-01';
             } else {
