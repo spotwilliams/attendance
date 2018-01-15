@@ -39,6 +39,12 @@
                 <span>Alta masiva</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('agentesMasivoUpdateIndex') !!}">
+                <i class="fa fa-file-excel-o"></i>
+                <span>Update masiva</span>
+            </a>
+        </li>
     </ul>
 </li>
 

@@ -9,11 +9,13 @@ use Cat\Models\Agente;
 use Cat\Models\Area;
 use Cat\Models\Base;
 use Cat\Models\Cargo;
+use Cat\Models\Contrato;
 use Cat\Models\Domicilio;
 use Cat\Models\EstadoContrato;
 use Cat\Models\Estudio;
 use Cat\Models\Funcion;
 use Cat\Models\Gerencia;
+use Cat\Models\Operativo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Agentes\Services\Registro\Update\Operativos as OperativosStore;
@@ -22,6 +24,7 @@ use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Laborales as LaboralesD
 use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Operativos as OperativosDestroy;
 use Cat\Masivo\Especificadores\Mappers\Operativos as OperativosMapper;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Maatwebsite\Excel\Collections\CellCollection;
@@ -52,11 +55,16 @@ class ModificacionHandler extends ExcelHandler
             try {
                 if ($row->cuit !== 'empty') {
                     /** @var Agente $model */
-                    $model = Agente::where('cuit', '=', $row->cuit)->firstOrFail();
+                    try {
+                        $model = Agente::where('cuit', '=', $row->cuit)->firstOrFail();
+                    } catch (ModelNotFoundException $exception) {
+                        $model = Agente::create($row->toArray());
+                    }
                     
                     $this->handlePersonales($model, $row)
                         ->handleLaborales($model, $row)
                         ->handleOperativos($model, $row);
+                    Log::info('Se realizo el cambio con cuit final: ' . $row->cuit);
                 } else {
                     break;
                 }
@@ -165,8 +173,12 @@ class ModificacionHandler extends ExcelHandler
             }
         }
         
-        dd($agente->contrato()->toSql(), $agente);
-        $agente->contrato()->firstOrFail()->update($laboral);
+        try {
+            $agente->contrato()->firstOrFail()->update($laboral);
+        } catch (ModelNotFoundException $e) {
+            $laboral['id_agente'] = $agente->id;
+            Contrato::create($laboral);
+        }
         
         return $this;
     }
@@ -187,8 +199,9 @@ class ModificacionHandler extends ExcelHandler
         
         if ($subGerencia == null) {
             $subGerencia = Gerencia::find(DataCleaner::cleanPossibleEmptyValue($collection->gerencia, true));
-            
-            $operativo['id_gerencia'] = ($subGerencia === null) ? -1 : $subGerencia->id;
+            if ($subGerencia) {
+                $operativo['id_gerencia'] = $subGerencia->id;
+            }
         }
         
         
@@ -242,7 +255,15 @@ class ModificacionHandler extends ExcelHandler
             $operativo['rotativo'] = (int)DataCleaner::cleanPossibleEmptyValue($collection->rotativo);
         }
         
-        $agente->operativo()->firstOrFail()->update($operativo);
+        try {
+            $agente->operativo()->firstOrFail()->update($operativo);
+        } catch (ModelNotFoundException $e) {
+            $operativo['id_agente'] = $agente->id;
+            try {
+                Operativo::create($operativo);
+            } catch (\Exception $exception) {
+            }
+        }
         
         return $this;
     }

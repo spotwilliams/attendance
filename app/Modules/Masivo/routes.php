@@ -78,15 +78,15 @@ Route::group(
          */
     
         Route::get('agentes/masivo/update', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@index')
-            ->name('agentesMasivoIndex');
+            ->name('agentesMasivoUpdateIndex');
     
         Route::post('agentes/masivo/update/upload', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@upload')
-            ->name('agentesMasivoUpload');
+            ->name('agentesMasivoUpdateUpload');
     
         Route::post('agentes/masivo/update/download/errores', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@downloadErrores')
-            ->name('agentesMasivoDownload');
+            ->name('agentesMasivoUpdateDownload');
     
         Route::get('agentes/masivo/update/download/template', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@downloadTemplate')
-            ->name('agentesMasivoTemplate');
+            ->name('agentesMasivoUpdateTemplate');
     }
 );

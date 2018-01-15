@@ -34,7 +34,7 @@ class Modificacion extends AppBaseController
     {
 //        $this->authorize('index', $this);
         
-        return view('Masivo::agentes.index');
+        return view('Masivo::agentes.update.index');
     }
     
     public function upload(Request $request)
@@ -43,18 +43,18 @@ class Modificacion extends AppBaseController
         
         $rule = [
             'archivo' => 'required',
-            'base'    => 'not_in:-1',
+//            'base'    => 'not_in:-1',
         
         ];
         $this->validate($request, $rule);
         
         $input = $request->all();
-        $base  = Base::find($input['base']);
-        Gate::allows('work-bases', [[$base->id]]);
+//        $base  = Base::find($input['base']);
+//        Gate::allows('work-bases', [[$base->id]]);
         
         try {
             $file    = $request->file('archivo');
-            $service = new ModificacionProcesador($base, $file);
+            $service = new ModificacionProcesador(new Base(), $file);
             
             $service->execute();
             
@@ -62,7 +62,7 @@ class Modificacion extends AppBaseController
             Flash::error($e->getMessage());
         }
         
-        return view('Masivo::agentes.end-process');
+        return view('Masivo::agentes.update.end-process');
     }
     
     public function downloadErrores(Request $request)
@@ -74,7 +74,7 @@ class Modificacion extends AppBaseController
         } catch (FileNotFoundException $e) {
             Flash::error('No se pudo descargar el archivo');
             
-            return redirect(route('agentesMasivoIndex'));
+            return redirect(route('agentesMasivoUpdateIndex'));
         }
         
     }
