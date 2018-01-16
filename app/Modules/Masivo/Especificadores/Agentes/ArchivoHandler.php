@@ -53,7 +53,7 @@ class ArchivoHandler extends ExcelHandler
                 }
             } catch (\Exception $e) {
                 Log::error($e);
-//                $this->clearPossibleMistakes($row);
+                $this->clearPossibleMistakes($row);
                 
                 $listaErrores[] = [
                     '#'        => $i + 2,
@@ -100,10 +100,10 @@ class ArchivoHandler extends ExcelHandler
     
     private function handleOperativos(CellCollection $row, Agente $agente, Base $base)
     {
-        if (isset($row->base)) {
-            
-            $base = Base::where('nombre', '=', $row->base)->firstOrFail();
-        }
+//        if (isset($row->base)) {
+//
+//            $base = Base::where('nombre', '=', $row->base)->firstOrFail();
+//        }
         $input        = OperativosMapper::toInput($row, $agente, $base);
         $storeService = new OperativosStore($input);
         
