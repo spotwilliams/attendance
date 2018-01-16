@@ -141,11 +141,11 @@ class ModificacionHandler extends ExcelHandler
         if (DataCleaner::cleanPossibleEmptyValue($collection->ficha)) {
             $laboral['ficha'] = DataCleaner::cleanPossibleEmptyValue($collection->ficha);
         }
-        if (DataCleaner::cleanPossibleEmptyValue($collection->fecha_ingreso)) {
-            $laboral['fecha_ingreso'] = DataCleaner::cleanPossibleEmptyValue($collection->fecha_ingreso);
+        if (DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso)) {
+            $laboral['fecha_ingreso'] = DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso);
         }
-        if (DataCleaner::cleanPossibleEmptyValue($collection->fecha_ingreso_gobierno)) {
-            $laboral['fecha_ingreso_gobierno'] = DataCleaner::cleanPossibleEmptyValue($collection->fecha_ingreso_gobierno);
+        if (DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso_gobierno)) {
+            $laboral['fecha_ingreso_gobierno'] = DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso_gobierno);
         }
         if (DataCleaner::cleanPossibleEmptyValue($collection->tipo_inscripcion)) {
             $laboral['tipo_inscripcion'] = DataCleaner::cleanPossibleEmptyValue($collection->tipo_inscripcion);
