@@ -34,7 +34,7 @@ class AddForeignKeysToComentariosTable extends Migration
      */
     public function down()
     {
-        chema::table('comentarios', function (Blueprint $table) {
+        Schema::table('comentarios', function (Blueprint $table) {
             $table->dropForeign('comentario_es_de_user');
             $table->dropForeign('comentario_es_para_conpceto');
         });

@@ -88,5 +88,23 @@ Route::group(
     
         Route::get('agentes/masivo/update/download/template', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@downloadTemplate')
             ->name('agentesMasivoUpdateTemplate');
+    
+        /**
+         *
+         * Duplicado Agentes
+         *
+         */
+    
+        Route::get('agentes/masivo/duplicado', \Cat\Masivo\Controllers\Agentes\Duplicados::class . '@index')
+            ->name('agentesMasivoDuplicadoIndex');
+    
+        Route::post('agentes/masivo/duplicado/upload', \Cat\Masivo\Controllers\Agentes\Duplicados::class . '@upload')
+            ->name('agentesMasivoDuplicadoUpload');
+    
+        Route::post('agentes/masivo/duplicado/download/errores', \Cat\Masivo\Controllers\Agentes\Duplicados::class . '@downloadErrores')
+            ->name('agentesMasivoDuplicadoDownload');
+    
+        Route::get('agentes/masivo/duplicado/download/template', \Cat\Masivo\Controllers\Agentes\Duplicados::class . '@downloadTemplate')
+            ->name('agentesMasivoDuplicadoTemplate');
     }
 );

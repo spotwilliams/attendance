@@ -45,6 +45,12 @@
                 <span>Update masiva</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('agentesMasivoDuplicadoIndex') !!}">
+                <i class="fa fa-file-excel-o"></i>
+                <span>Duplicado masiva</span>
+            </a>
+        </li>
     </ul>
 </li>
 
