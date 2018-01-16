@@ -70,7 +70,15 @@ class DuplicadoHandler extends ExcelHandler
                                 ->delete();
                             $presentismo->delete();
                         }
-                        
+                    }
+
+                    foreach ($modelMalo->haberes()->get() as $haber) {
+                        try {
+                            $haber->update(['id_agente' => $modelBueno->id]);
+                        } catch (QueryException $duplicado) {
+                            // Si esta duplicado el bueno mantiene lo que tiene
+                            $haber->delete();
+                        }
                     }
                     
                     $this->delete(Contrato::class, $modelMalo);
