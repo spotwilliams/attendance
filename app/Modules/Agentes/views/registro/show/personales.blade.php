@@ -57,7 +57,7 @@ $estudios = $agente->estudio()->get();
                         <th>T&iacute;tulo:</th>
                         <td>{{$e->carrera}}</td>
 
-                        <th>Institucu&oacute;n:</th>
+                        <th>Instituci&oacute;n:</th>
                         <td>{{$e->institucion}}</td>
                     </tr>
                     <tr>

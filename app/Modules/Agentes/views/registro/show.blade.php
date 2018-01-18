@@ -58,7 +58,7 @@
                     <!-- /.box-body -->
                 </div>
                 <div class="box-body">
-                    <a href="{!! route('agentesIndex', ['base' => $base->id]) !!}"
+                    <a href="{!! URL::previous() !!}"
                        class="btn btn-primary">Volver</a>
                     <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
                        class="btn btn-primary"

@@ -29,15 +29,19 @@ try {
                 @endif
                 <tr>
                     <th>Fecha alta contrato:</th>
-                    @if($tipoContrato->isLocacion())
-                        <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
+                    @if($contrato->fecha_ingreso === '1900-01-01')
+                        <td>No definido</td>
                     @else
-                        <td>N/A</td>
+                        <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
                     @endif
                 </tr>
                 <tr>
                     <th>Fecha de ingreso al GCBA:</th>
+                    @if($contrato->fecha_ingreso_gobierno === '1900-01-01')
+                        <td>No definido</td>
+                    @else
                     <td>{{(new DateTime($contrato->fecha_ingreso_gobierno))->format('d/m/Y')}}</td>
+                    @endif
                 </tr>
                 <tr>
                     <th>Tipo contrato:</th>
