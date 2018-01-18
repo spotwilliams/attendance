@@ -4,15 +4,8 @@
 try {
     /** @var \Cat\Models\Contrato $contrato */
     $contrato = $agente->contrato()->firstOrFail();
-} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-}
-try {
     /** @var \Cat\Models\TipoContrato $tipoContrato */
-    $tipoContrato = $contrato->tipoContrato()->firstOrFail();
-} catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-}
-try {
-    /** @var \Cat\Models\EstadoContrato $estadoContrato */
+    $tipoContrato   = $contrato->tipoContrato()->firstOrFail();
     $estadoContrato = $contrato->estadoContrato()->firstOrFail();
 } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 }

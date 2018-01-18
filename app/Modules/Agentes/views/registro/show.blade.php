@@ -17,7 +17,7 @@
     </section>
     <section class="content">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
 
                 <!-- Profile Image -->
                 <div class="box box-warning">
@@ -70,7 +70,7 @@
                 <!-- /.box -->
             </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-8">
             @include('Agentes::registro.show.tabs')
 
             <!-- /.nav-tabs-custom -->

@@ -16,15 +16,20 @@
         </td>
 
         <td>
-            {{ Form::open(['route' => 'reportesPresentismoIndividualReportePresentismos', 'method' => 'POST'])}}
+            @if($agente->contrato)
+                {{ Form::open(['route' => 'reportesPresentismoIndividualReportePresentismos', 'method' => 'POST'])}}
 
-            <input type="hidden" name="desde" class="desde">
-            <input type="hidden" name="hasta" class="hasta">
-            <input type="hidden" name="agente" value="{{$agente->id}}">
-            {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true) !!}
-            {{ Form::submit('Reporte', ['class' => 'btn btn-primary']) }}
+                <input type="hidden" name="desde" class="desde">
+                <input type="hidden" name="hasta" class="hasta">
+                <input type="hidden" name="agente" value="{{$agente->id}}">
+                {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true) !!}
+                {{ Form::submit('Reporte', ['class' => 'btn btn-primary']) }}
 
-            {{ Form::close() }}
+                {{ Form::close() }}
+            @else
+                <p class="help-block">El agente no tiene datos laborales u operativos para poder trabajar</p>
+            @endif
+
         </td>
     </tr>
 @endforeach
