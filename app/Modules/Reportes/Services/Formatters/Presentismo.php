@@ -3,6 +3,7 @@
 namespace Cat\Modules\Reportes\Services\Formatters;
 
 use Cat\Helpers\Calculation;
+use Cat\Helpers\ModelCreator;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -33,8 +34,8 @@ class Presentismo extends RowDataFormatter
             'Nombre'   => $agente->nombre,
             'CUIT'     => $agente->cuit,
             'DNI'      => $agente->dni,
-            'Turno'    => $agente->operativo->turno->turno,
-            'Base'     => $agente->operativo->base->nombre_base,
+            'Turno'    => ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'turno']),
+            'Base'     => ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']),
         ];
         
         $presentismos = $this->transformPresentismo($agente->presentismos);
