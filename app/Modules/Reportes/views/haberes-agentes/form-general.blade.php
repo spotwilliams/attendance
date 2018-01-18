@@ -15,14 +15,14 @@ $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta
 
 
     <div class="{{$classMultiSelectContainer}}">
-        @include('common.bases.as-select-sin-btn', ['label' => 'Bases', 'multiple' => 'multiple', 'baseSeleccionada' => (isset($base)?$base: [])])
+        @include('common.bases.as-select-sin-btn', ['label' => 'Bases *', 'multiple' => 'multiple', 'baseSeleccionada' => (isset($base)?$base: [])])
     </div>
 
     <div class="{{$classMultiSelectContainer}}">
-        @include('common.turnos.as-select', ['label' => 'Turnos', 'multiple' => 'multiple', isset($turno)?$turno: []])
+        @include('common.turnos.as-select', ['label' => 'Turnos *', 'multiple' => 'multiple', isset($turno)?$turno: []])
     </div>
     <div class="{{$classMultiSelectContainer}}">
-        @include('common.periodos.as-select', ['label' => 'Periodos', 'periodosSeleccionados' => (isset($periodo)?[$periodo]:[-1])])
+        @include('common.periodos.as-select', ['label' => 'Periodos *', 'periodosSeleccionados' => (isset($periodo)?[$periodo]:[-1])])
     </div>
 </div>
 <div class="box-footer">
