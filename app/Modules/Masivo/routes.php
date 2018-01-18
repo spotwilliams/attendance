@@ -50,7 +50,20 @@ Route::group(
         Route::get('presentismo/masivo/download/template/file/{fileName}',
             PresentismosMasivoController::class . '@downloadTemplate')
             ->name('presentismosMasivoTemplate');
-        
+    
+        /**
+         * Migracion Masiva
+         *
+         */
+        Route::get('presentismo/masivo/migracion/select/params', \Cat\Masivo\Controllers\Presentismos\Migracion::class . '@index')
+            ->name('presentismosMasivoMigracionIndex');
+    
+        Route::post('presentismo/masivo/migracion/upload', \Cat\Masivo\Controllers\Presentismos\Migracion::class . '@upload')
+            ->name('presentismosMasivoMigracionUpload');
+    
+        Route::post('presentismo/masivo/migracion/download/errores', \Cat\Masivo\Controllers\Presentismos\Migracion::class . '@downloadErrores')
+            ->name('presentismosMasivoMigracionDownload');
+    
         /**
          * Incial temporal
 
@@ -75,7 +88,6 @@ Route::group(
          *
          * Update Agentes
          *
-         */
     
         Route::get('agentes/masivo/update', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@index')
             ->name('agentesMasivoUpdateIndex');
@@ -88,12 +100,12 @@ Route::group(
     
         Route::get('agentes/masivo/update/download/template', \Cat\Masivo\Controllers\Agentes\Modificacion::class . '@downloadTemplate')
             ->name('agentesMasivoUpdateTemplate');
+         */
     
         /**
          *
          * Duplicado Agentes
          *
-         */
     
         Route::get('agentes/masivo/duplicado', \Cat\Masivo\Controllers\Agentes\Duplicados::class . '@index')
             ->name('agentesMasivoDuplicadoIndex');
@@ -106,5 +118,6 @@ Route::group(
     
         Route::get('agentes/masivo/duplicado/download/template', \Cat\Masivo\Controllers\Agentes\Duplicados::class . '@downloadTemplate')
             ->name('agentesMasivoDuplicadoTemplate');
+         */
     }
 );
