@@ -2,6 +2,9 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
+use Cat\Exceptions\AgenteSinBase;
+use Cat\Exceptions\AgenteSinTurno;
+use Cat\Exceptions\FaltanDatosObligatorios;
 use Cat\Helpers\Calculation;
 use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Agente;
@@ -59,10 +62,20 @@ class PorAgenteController extends BusquedaController
         try {
             /** @var Agente $agente */
             $agente = Agente::findOrFail($input['agente']);
-            $base   = $agente->base();
+            
             // Se autorizan las bases y turnos
-            Gate::allows('work-bases', [[$base->id]]);
-            Gate::allows('work-turnos', [[$agente->operativo()->first()->turno()->first()->id]]);
+            try {
+                $base = $agente->base();
+                Gate::allows('work-bases', [[$base->id]]);
+            } catch (ModelNotFoundException $sinBase) {
+                throw new AgenteSinBase($agente);
+            }
+            try {
+                Gate::allows('work-turnos', [[$agente->operativo()->firstOrFail()->turno()->firstOrFail()->id]]);
+            } catch (ModelNotFoundException $sinBase) {
+                throw new AgenteSinTurno($agente);
+            }
+            
             
             // Controlamos que solo existan 10 dias como maximo
             $dateRange = Calculation::prepareTenDaysDiff($input['desde'], $input['hasta']);
@@ -80,8 +93,15 @@ class PorAgenteController extends BusquedaController
             /** @var LengthAwarePaginator $result */
             $result = $agentes->paginate(25);
             
+        } catch (FaltanDatosObligatorios $faltaAlgo) {
+            
+            Flash::error($faltaAlgo->getMessage());
+            
+            return redirect(route('presentismoPorAgenteIndex'));
+            
         } catch (ModelNotFoundException $e) {
-            Flash::error('El agente o la base no se enctraron');
+            
+            Flash::error('Sucedi&oacute; un error inesperado');
             
             return redirect(route('presentismoPorAgenteIndex'));
         }

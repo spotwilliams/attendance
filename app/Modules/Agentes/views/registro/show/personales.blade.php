@@ -48,7 +48,7 @@ $estudios = $agente->estudio()->get();
     <div class="col-md-12">
         <h4>Estudios</h4>
         @if($estudios->isEmpty())
-            <p class="help-block">No se registraron domicilios</p>
+            <p class="help-block">No se registraron estudios</p>
         @else
             @foreach($estudios as $e)
                 <table class="table">
@@ -57,7 +57,7 @@ $estudios = $agente->estudio()->get();
                         <th>T&iacute;tulo:</th>
                         <td>{{$e->carrera}}</td>
 
-                        <th>Institucu&oacute;n:</th>
+                        <th>Instituci&oacute;n:</th>
                         <td>{{$e->institucion}}</td>
                     </tr>
                     <tr>

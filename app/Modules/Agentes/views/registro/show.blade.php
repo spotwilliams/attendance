@@ -17,7 +17,7 @@
     </section>
     <section class="content">
         <div class="row">
-            <div class="col-md-3">
+            <div class="col-md-4">
 
                 <!-- Profile Image -->
                 <div class="box box-warning">
@@ -58,7 +58,7 @@
                     <!-- /.box-body -->
                 </div>
                 <div class="box-body">
-                    <a href="{!! route('agentesIndex', ['base' => $base->id]) !!}"
+                    <a href="{!! URL::previous() !!}"
                        class="btn btn-primary">Volver</a>
                     <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
                        class="btn btn-primary"
@@ -70,7 +70,7 @@
                 <!-- /.box -->
             </div>
             <!-- /.col -->
-            <div class="col-md-9">
+            <div class="col-md-8">
             @include('Agentes::registro.show.tabs')
 
             <!-- /.nav-tabs-custom -->

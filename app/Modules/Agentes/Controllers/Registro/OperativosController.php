@@ -106,7 +106,7 @@ class OperativosController extends AppBaseController
                 ->with('operativo.base')
                 ->findOrFail($id);
     
-            if ($agente->operativo) {
+            if (($agente->operativo) and ($agente->operativo->base) and ($agente->operativo->turno)) {
                 Gate::allows('work-bases', [[$agente->operativo->base->id]]);
                 Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
             }

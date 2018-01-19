@@ -2,8 +2,11 @@
 
 namespace Cat\Modules\Validation\Rules;
 
+use Cat\Exceptions\AgenteSinBase;
+use Cat\Exceptions\AgenteSinTurno;
 use Cat\Models\Periodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PeriodoActivo extends Rule
 {
@@ -11,8 +14,17 @@ class PeriodoActivo extends Rule
     {
         
         $periodo = Periodo::findActivo($this->fecha);
-        $base    = $this->agente->base();
-        $turno   = $this->agente->operativo()->first()->turno()->first();
+        try {
+            
+            $base = $this->agente->base();
+        } catch (ModelNotFoundException $sinBase) {
+            throw new AgenteSinBase($this->agente);
+        }
+        try {
+            $turno = $this->agente->operativo()->firstOrFail()->turno()->firstOrFail();
+        } catch (ModelNotFoundException $sinTurno) {
+            throw new AgenteSinTurno($this->agente);
+        }
         
         if ($periodo !== null and $periodo->estaActivo($base, $turno)) {
             return true;

@@ -95,16 +95,22 @@ class Operativos extends Service
                     ->operativo()
                     ->firstOrFail();
                 $operativo->update($preliminarData);
+                
+            } catch (ModelNotFoundException $e) {
+                $operativo = Operativo::create($preliminarData);
+            }
+            
+            // A partir de aqui Operativo siempre existe
+            try {
                 $operativo
                     ->horario()
-                    ->first()
+                    ->firstOrFail()
                     ->update(
                         $this->horario
                     );
-            } catch (ModelNotFoundException $e) {
-                $horario                       = Horario::create($this->horario);
-                $preliminarData ['id_horario'] = $horario->id;
-                $operativo                     = Operativo::create($preliminarData);
+            } catch (ModelNotFoundException $sinHorario) {
+                $horario = Horario::create($this->horario);
+                $operativo->update(['id_horario' => $horario->id]);
             }
             
             DB::commit();

@@ -6,8 +6,12 @@
                 {{$agente->operativo->base->nombre}}
             @endif
         </td>
-        <td>@if(isset($agente->operativo))
+        <td>@if(isset($agente->operativo) and $agente->operativo->turno)
                 {{$agente->operativo->turno->codigo}}
+            @else
+                <p class="help-block">
+                    No tiene asignado un turno
+                </p>
             @endif
         </td>
         <td>
@@ -21,11 +25,11 @@
         </td>
         <td>
             {{ Form::open(['route' => 'presentismoPorAgenteRegistro', 'method' => 'POST'])}}
-                {{--<input type="text" class="form-control">--}}
-                <input type="hidden" name="desde" class="desde">
-                <input type="hidden" name="hasta" class="hasta">
-                <input type="hidden" name="agente" value="{{$agente->id}}">
-                    {{ Form::submit('Ir a presentismo', ['class' => 'btn btn-primary']) }}
+            {{--<input type="text" class="form-control">--}}
+            <input type="hidden" name="desde" class="desde">
+            <input type="hidden" name="hasta" class="hasta">
+            <input type="hidden" name="agente" value="{{$agente->id}}">
+            {{ Form::submit('Ir a presentismo', ['class' => 'btn btn-primary']) }}
             {{ Form::close() }}
         </td>
     </tr>

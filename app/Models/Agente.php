@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Cat\Exceptions\AgenteSinTurno;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -154,11 +155,15 @@ class Agente extends Model
                 ->where('mes_ingreso', '=', $mesProporcional)
                 ->firstOrFail();
             
-            /**  */
-            $turno = $this->operativo()->first()->turno()->first();
+            try {
+                
+                $turno = $this->operativo()->firstOrFail()->turno()->firstOrFail();
+            } catch (ModelNotFoundException $sinTurno) {
+                throw new AgenteSinTurno($this);
+            }
             /** @var int $cantDiasPermitidos */
             $cantDiasPermitidos = $diasPermitidos->getCantidadDias($turno);
-
+            
             /** @var int $cantDiasConsumidos */
             $cantDiasConsumidos = $this->getCantidadDiasConsumidos($ausencia, $fechaReferencia);
             

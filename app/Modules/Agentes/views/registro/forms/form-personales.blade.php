@@ -287,7 +287,7 @@ $control = 0;
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
         {!! Form::submit('Siguiente', ['class' => 'btn btn-primary']) !!}
-        <a href="{{route('agentesSearchIndex')}}" class="btn btn-default col-sm-offset-8">Volver</a>
+        <a href="{{URL::previous()}}" class="btn btn-default col-sm-offset-8">Volver</a>
     </div>
 </div>
 

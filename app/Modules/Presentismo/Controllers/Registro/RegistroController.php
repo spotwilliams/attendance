@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
+use Cat\Exceptions\FaltanDatosObligatorios;
 use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
@@ -32,7 +33,29 @@ class RegistroController extends AppBaseController
     
     public function registro(Request $request)
     {
-        return $this->{$this->routeMePlease($request)}($request);
+        try {
+            return $this->{$this->routeMePlease($request)}($request);
+            
+        } catch (FaltanDatosObligatorios $faltanDatos) {
+            $agente = Agente::find($request->input('agente'));
+            
+            return Response::json([
+                'message'     => $faltanDatos->getMessage(),
+                'agente'      => $agente->id,
+                'presentismo' => new Presentismo(['id_tipo_presentismo' => -1]),
+                'button'      => HtmlCustoms::getButtonWithPopOver(null, false, true),
+            ], 403);
+        } catch (\Exception $exception) {
+            $agente = Agente::find($request->input('agente'));
+    
+            return Response::json([
+                'message'     => 'Hubo un error inesperado.',
+                'agente'      => $agente->id,
+                'presentismo' => new Presentismo(['id_tipo_presentismo' => -1]),
+                'button'      => HtmlCustoms::getButtonWithPopOver(null, false, true),
+            ], 403);
+        }
+        
         
     }
     
@@ -152,7 +175,7 @@ class RegistroController extends AppBaseController
             $presentismo = new Presentismo(['id' => -1, 'id_tipo_presentismo' => -1]);
             
         }
-
+        
         $button = HtmlCustoms::getButtonsTools($presentismo);
         
         return Response::json([
