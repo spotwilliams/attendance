@@ -45,6 +45,8 @@ class MigracionHandler extends ExcelHandler
         
         $fechas = $this->getFechas($sheet->get(0));
         
+        $idErrorAgente = 0;
+        $this->createErrorRow($fechas, $idErrorAgente);
         for ($i = 1; $i < $sheet->count(); $i++) {
             /** @var CellCollection $row */
             $row = $sheet->get($i);
@@ -67,40 +69,75 @@ class MigracionHandler extends ExcelHandler
                             /** @var Registro $servicio */
                             $servicio = new Registro($agente, $tipoPresentismo, $fechas[$j]);
                             $servicio->execute();
-                        } catch (\Exception $e) {
+                        } catch (ModelNotFoundException $e) {
                             
-                            $this->listaErrores[] = [
-                                'agente'           => $row[0],
-                                'cuit'             => $row[1],
-                                'fecha'            => ($fechas[$j])->format('d/m/Y'),
-                                'tipo_presentismo' => $row[$j],
-                                'mensaje'          => $e->getMessage(),
-                            ];
+                            
+                            if (isset($this->listaErrores[$idErrorAgente]) and ($this->listaErrores[$idErrorAgente]['cuit'] !== $row[1])) {
+                                $idErrorAgente++;
+                            }
+                            
+                            $this->listaErrores[$idErrorAgente]['agente'] = $row[0];
+                            $this->listaErrores[$idErrorAgente]['cuit']   = $row[1];
+                            $this->listaErrores[$idErrorAgente]['error_agente']   = '';
+                            $this->listaErrores[$idErrorAgente][($fechas[$j])->format('d-m-Y')]
+                                                                          = 'Tipo: ' . $row[$j] . '. Error: el tipo de presentismo no esta registrado';
                         }
                         
                     }
                 }
-            } catch (\Exception $e) {
-                $this->listaErrores[] = [
-                    'agente'           => $row[0],
-                    'cuit'             => $row[1],
-                    'fecha'            => 'N/A',
-                    'tipo_presentismo' => 'N/A',
-                    'mensaje'          => $e->getMessage(),
+            } catch (ModelNotFoundException $e) {
+                if (isset($this->listaErrores[$idErrorAgente]) and ($this->listaErrores[$idErrorAgente]['cuit'] !== $row[1])) {
+                    $idErrorAgente++;
+                    
+                }
+                $this->listaErrores[$idErrorAgente] = [
+                    'agente'       => $row[0],
+                    'cuit'         => $row[1],
+                    'error_agente' => 'No se encontro el agente con ese CUIT',
                 ];
+                $idErrorAgente++;
+                
             }
-            
-            
         }
         
-        $fileErrores->sheet('Errores', function ($sheet) {
+        $fileErrores->sheet('Errores', function ($sheet) use ($fechas) {
             
-            $sheet->fromArray($this->listaErrores);
+            $sheet->fromArray($this->createErrorList($fechas));
             
         })->store('xls', $this->location, true);
         
         Flash::warning('Se finaliz&oacute; el proceso de importaci&oacute;n');
         
+    }
+    
+    
+    private function createErrorList($fechas)
+    {
+        $errores = [];
+        $index   = 0;
+        foreach ($this->listaErrores as $error) {
+            $aux =array_merge($this->createErrorRow($fechas, $index++), $error);
+            unset($aux[0]);
+            $errores[] = $aux;
+        }
+        
+        return $errores;
+    }
+    
+    private function createErrorRow($fechas, $index)
+    {
+        $return                         = [];
+        $return[$index]['agente']       = '';
+        $return[$index]['cuit']         = '';
+        $return[$index]['error_agente'] = '';
+        /** @var \DateTime $f */
+        foreach ($fechas as $f) {
+            if ($f->format('d-m-Y') !== '01-01-1900') {
+                $return[$f->format('d-m-Y')] = '';
+            }
+        }
+        
+        return $return;
     }
     
     private function getAgente($cuit)
@@ -110,51 +147,6 @@ class MigracionHandler extends ExcelHandler
             ->firstOrFail();
     }
 
-//    private function getDatesWithPresentismos(CellCollection $row, Agente $agente, $fechas)
-//    {
-//        $data = $row->all();
-//        unset($data['nombre']);
-//        unset($data['apellido']);
-//        unset($data['cuit']);
-//        $return = [];
-//        foreach ($data as $fecha => $codigoPresentismo) {
-//
-//            try {
-//                $tipoPresentismo = TipoPresentismo::where('codigo', '=', $codigoPresentismo)
-//                    ->where('aplica', '=', $agente->contrato->TipoContrato->codigo)
-//                    ->firstOrFail();
-//
-//                $return [] = [
-//                    'fecha'            => new \DateTime($fechas[$fecha]),
-//                    'tipo_presentismo' => $tipoPresentismo,
-//                ];
-//            } catch (ModelNotFoundException $noEncontratoPrimerIntento) {
-//                try {
-//
-//                    $tipoPresentismo = TipoPresentismo::where('codigo', '=', $codigoPresentismo)
-//                        ->where('aplica', '=', 'TODOS')
-//                        ->firstOrFail();
-//
-//                    $return [] = [
-//                        'fecha'            => new \DateTime($fechas[$fecha]),
-//                        'tipo_presentismo' => $tipoPresentismo,
-//                    ];
-//                } catch (ModelNotFoundException $noEncontratoSegundoIntento) {
-//
-//                    $this->listaErrores[] = [
-//                        'cuit'             => $row->cuit,
-//                        'fecha'            => $fechas[$fecha],
-//                        'tipo_presentismo' => $codigoPresentismo,
-//                        'mensaje'          => 'El tipo de presentismo no se corresponde con el tipo de contrato. Intente manualmente desde la interfaz',
-//                    ];
-//                }
-//            }
-//
-//        }
-//
-//        return $return;
-//    }
-    
     private function getFechas(CellCollection $collection)
     {
         $fechas = [];
