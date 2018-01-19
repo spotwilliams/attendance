@@ -19,6 +19,7 @@ use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Excel;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador as StoreService;
+use Cat\Modules\Presentismo\Services\Registro\Registro;
 
 class MigracionHandler extends ExcelHandler
 {
@@ -32,8 +33,8 @@ class MigracionHandler extends ExcelHandler
     {
         ini_set('max_execution_time', 18000);
         ini_set('memory_limit', '-1');
-    
-    
+        
+        
         /** @var LaravelExcelWriter $fileErrores */
         $fileErrores = $this->generateOutFile($file->getFileName(), 'presentismos');
         
@@ -54,10 +55,18 @@ class MigracionHandler extends ExcelHandler
                     if ($row[$j]) {
                         try {
                             
-                            /** @var TipoPresentismo $presentismo */
-                            $presentismo = TipoPresentismo::where('codigo', '=', $row[$j])->firstOrFail();
+                            /** @var TipoPresentismo $tipoPresentismo */
+                            $tipoPresentismo = TipoPresentismo::where('codigo', '=', $row[$j])
+                                ->firstOrFail();
                             
-                            StoreService::validarDespuesGuardar($agente, $presentismo, $fechas[$j]);
+                            $tipoPresentismo->injustificado = false;
+                            // Con validaciones
+//                            StoreService::validarDespuesGuardar($agente, $tipoPresentismo, $fechas[$j]);
+                            
+                            // Sin validaciones
+                            /** @var Registro $servicio */
+                            $servicio = new Registro($agente, $tipoPresentismo, $fechas[$j]);
+                            $servicio->execute();
                         } catch (\Exception $e) {
                             
                             $this->listaErrores[] = [
