@@ -39,18 +39,6 @@
                 <span>Alta masiva</span>
             </a>
         </li>
-        {{--<li>--}}
-            {{--<a href="{!! route('agentesMasivoUpdateIndex') !!}">--}}
-                {{--<i class="fa fa-file-excel-o"></i>--}}
-                {{--<span>Update masiva</span>--}}
-            {{--</a>--}}
-        {{--</li>--}}
-        {{--<li>--}}
-            {{--<a href="{!! route('agentesMasivoDuplicadoIndex') !!}">--}}
-                {{--<i class="fa fa-file-excel-o"></i>--}}
-                {{--<span>Duplicado masiva</span>--}}
-            {{--</a>--}}
-        {{--</li>--}}
     </ul>
 </li>
 
@@ -84,18 +72,6 @@
                 <span>Registro por agente</span>
             </a>
         </li>
-        <li>
-            <a href="{!! route('presentismosMasivoMigracionIndex') !!}">
-                <i class="fa fa-truck"></i>
-                <span>Migraci&oacute;n</span>
-            </a>
-        </li>
-        {{--<li>--}}
-        {{--<a href="{!! route('presentismosInicialMasivoIndex') !!}">--}}
-        {{--<i class="fa fa-desktop"></i>--}}
-        {{--<span>Incial</span>--}}
-        {{--</a>--}}
-        {{--</li>--}}
     </ul>
 </li>
 
