@@ -37,6 +37,9 @@ class ModificacionHandler extends ExcelHandler
     
     public function handle($file)
     {
+        ini_set('max_execution_time', 18000);
+        ini_set('memory_limit', '-1');
+        
         /** @var Archivo $file */
         $listaErrores = [];
         
@@ -141,10 +144,10 @@ class ModificacionHandler extends ExcelHandler
         if (DataCleaner::cleanPossibleEmptyValue($collection->ficha)) {
             $laboral['ficha'] = DataCleaner::cleanPossibleEmptyValue($collection->ficha);
         }
-        if (DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso)) {
+        if (DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso) !== '1900-01-01') {
             $laboral['fecha_ingreso'] = DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso);
         }
-        if (DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso_gobierno)) {
+        if (DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso_gobierno) !== '1900-01-01') {
             $laboral['fecha_ingreso_gobierno'] = DataCleaner::cleanPossibleEmptyDate($collection->fecha_ingreso_gobierno);
         }
         if (DataCleaner::cleanPossibleEmptyValue($collection->tipo_inscripcion)) {
