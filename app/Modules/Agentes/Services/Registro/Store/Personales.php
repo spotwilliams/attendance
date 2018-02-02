@@ -49,15 +49,16 @@ class Personales extends Service
                 for ($i = 0; $i < count($this->domicilios['calle']); $i++) {
                     if ($this->hasSomeUsefullData($this->domicilios, $i, ['constituido'])) {
                         Domicilio::create([
-                            'calle'        => $this->domicilios['calle'][$i],
-                            'libre'        => $this->domicilios['libre'][$i],
-                            'numero'       => $this->domicilios['numero'][$i],
-                            'departamento' => $this->domicilios['departamento'][$i],
-                            'piso'         => $this->domicilios['piso'][$i],
-                            'barrio'       => $this->domicilios['barrio'][$i],
-                            'provincia'    => $this->domicilios['provincia'][$i],
-                            'constituido'  => ($this->domicilios['constituido'][$i] == 1) ? true : false,
-                            'id_agente'    => $this->agente->id,
+                            'calle'         => $this->domicilios['calle'][$i],
+                            'libre'         => $this->domicilios['libre'][$i],
+                            'numero'        => $this->domicilios['numero'][$i],
+                            'departamento'  => $this->domicilios['departamento'][$i],
+                            'piso'          => $this->domicilios['piso'][$i],
+                            'barrio'        => $this->domicilios['barrio'][$i],
+                            'provincia'     => $this->domicilios['provincia'][$i],
+                            'codigo_postal' => $this->domicilios['codigo_postal'][$i],
+                            'constituido'   => ($this->domicilios['constituido'][$i] == 1) ? true : false,
+                            'id_agente'     => $this->agente->id,
                         ]);
                     }
                 }
@@ -83,7 +84,7 @@ class Personales extends Service
             return $this->agente;
         } catch (QueryException $e) {
             DB::rollBack();
-            if (str_contains($e->getMessage(),'Duplicate')) {
+            if (str_contains($e->getMessage(), 'Duplicate')) {
                 throw new EntidadDuplicada($this->agente);
             }
             throw $e;

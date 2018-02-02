@@ -25,6 +25,7 @@ class Domicilio extends Model
             'provincia',
             'constituido',
             'libre',
+            'codigo_postal',
             'id_agente',
         ];
     
@@ -36,6 +37,7 @@ class Domicilio extends Model
     protected $casts
         = [
             'id'            => 'integer',
+            'codigo_postal' => 'integer',
             'calle'         => 'string',
             'numero'        => 'string',
             'deptartamento' => 'string',

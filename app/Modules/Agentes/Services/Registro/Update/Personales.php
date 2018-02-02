@@ -77,28 +77,30 @@ class Personales extends Service
                         
                         /** @var Domicilio $domicilio */
                         $domicilio->update([
-                            'calle'        => $this->domicilios['calle'][$i],
-                            'numero'       => $this->domicilios['numero'][$i],
-                            'departamento' => $this->domicilios['departamento'][$i],
-                            'piso'         => $this->domicilios['piso'][$i],
-                            'barrio'       => $this->domicilios['barrio'][$i],
-                            'provincia'    => $this->domicilios['provincia'][$i],
-                            'constituido'  => ($this->domicilios['constituido'][$i] == 1) ? true : false,
-                            'libre'        => $this->domicilios['libre'][$i],
+                            'calle'         => $this->domicilios['calle'][$i],
+                            'numero'        => $this->domicilios['numero'][$i],
+                            'departamento'  => $this->domicilios['departamento'][$i],
+                            'piso'          => $this->domicilios['piso'][$i],
+                            'barrio'        => $this->domicilios['barrio'][$i],
+                            'provincia'     => $this->domicilios['provincia'][$i],
+                            'codigo_postal' => $this->domicilios['codigo_postal'][$i],
+                            'constituido'   => ($this->domicilios['constituido'][$i] == 1) ? true : false,
+                            'libre'         => $this->domicilios['libre'][$i],
                         ]);
                         
                     }
                 } else {
                     Domicilio::create([
-                        'id_agente'    => $this->agente->id,
-                        'calle'        => $this->domicilios['calle'][$i],
-                        'numero'       => $this->domicilios['numero'][$i],
-                        'departamento' => $this->domicilios['departamento'][$i],
-                        'piso'         => $this->domicilios['piso'][$i],
-                        'barrio'       => $this->domicilios['barrio'][$i],
-                        'provincia'    => $this->domicilios['provincia'][$i],
-                        'constituido'  => $this->domicilios['constituido'][$i],
-                        'libre'        => $this->domicilios['libre'][$i],
+                        'id_agente'     => $this->agente->id,
+                        'calle'         => $this->domicilios['calle'][$i],
+                        'numero'        => $this->domicilios['numero'][$i],
+                        'departamento'  => $this->domicilios['departamento'][$i],
+                        'piso'          => $this->domicilios['piso'][$i],
+                        'barrio'        => $this->domicilios['barrio'][$i],
+                        'provincia'     => $this->domicilios['provincia'][$i],
+                        'codigo_postal' => $this->domicilios['codigo_postal'][$i],
+                        'constituido'   => $this->domicilios['constituido'][$i],
+                        'libre'         => $this->domicilios['libre'][$i],
                     ]);
                 }
             }

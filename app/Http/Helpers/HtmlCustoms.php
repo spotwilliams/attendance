@@ -21,18 +21,19 @@ class HtmlCustoms
         ]
     ) {
         $domicilioTemplate = [
-            'id'           => '',
-            'id_agente'    => '',
-            'calle'        => '',
-            'numero'       => '',
-            'departamento' => '',
-            'piso'         => '',
-            'barrio'       => '',
-            'provincia'    => '',
-            'constituido'  => true,
-            'libre'        => '',
-            'created_at'   => '',
-            'updated_at'   => '',
+            'id'            => '',
+            'id_agente'     => '',
+            'calle'         => '',
+            'numero'        => '',
+            'departamento'  => '',
+            'piso'          => '',
+            'barrio'        => '',
+            'provincia'     => '',
+            'constituido'   => true,
+            'libre'         => '',
+            'codigo_postal' => '',
+            'created_at'    => '',
+            'updated_at'    => '',
         ];
         
         $return                           = [];
@@ -46,7 +47,7 @@ class HtmlCustoms
         (isset($input['model'])) {
             self::getMultiDomicilioFromModel($input['model'], $return);
         }
-
+        
         
         return $return;
     }
@@ -106,15 +107,16 @@ class HtmlCustoms
                 $key = 'nominal';
             }
             $salida[$key] = [
-                'calle'        => $input['calle'][$i],
-                'libre'        => $input['libre'][$i],
-                'numero'       => $input['numero'][$i],
-                'departamento' => $input['departamento'][$i],
-                'piso'         => $input['piso'][$i],
-                'barrio'       => $input['barrio'][$i],
-                'provincia'    => $input['provincia'][$i],
-                'constituido'  => $input['constituido'][$i],
-                'id'           => $input['id'][$i],
+                'calle'         => $input['calle'][$i],
+                'libre'         => $input['libre'][$i],
+                'numero'        => $input['numero'][$i],
+                'departamento'  => $input['departamento'][$i],
+                'piso'          => $input['piso'][$i],
+                'barrio'        => $input['barrio'][$i],
+                'provincia'     => $input['provincia'][$i],
+                'codigo_postal' => $input['codigo_postal'][$i],
+                'constituido'   => $input['constituido'][$i],
+                'id'            => $input['id'][$i],
             
             ];
         }
@@ -203,7 +205,7 @@ class HtmlCustoms
     {
         $tildeClass    = ($p && ($p->comentario == 'SI')) ? 'fa-comment text-yellow' : 'fa-comment-o';
         $idPresentismo = $p ? $p->id : -1;
-        $btnDisabled   = ($p == null || ($p->id_tipo_presentismo == -1) )  ? 'disabled' : '';
+        $btnDisabled   = ($p == null || ($p->id_tipo_presentismo == -1)) ? 'disabled' : '';
         
         
         $buttonComment = "<button type='button' data-id-presentismo='$idPresentismo' class='btn btn-default dialog-comentary' $btnDisabled><i class='fa $tildeClass'></i></button>";

@@ -19,16 +19,18 @@ class Validation
     public static function getDomicilioRules(Request $request)
     {
         $rules           = [
-            'domicilio.constituido.0' => 'not_in:0',
-            'domicilio.calle.0'       => 'required',
-            'domicilio.numero.0'      => 'required|integer',
+            'domicilio.constituido.0'   => 'not_in:0',
+            'domicilio.calle.0'         => 'required',
+            'domicilio.numero.0'        => 'required|integer',
+            'domicilio.codigo_postal.0' => 'integer',
         ];
         $domiciliosInput = $request->input('domicilio');
         
         if (!empty($domiciliosInput['numero'][1])) {
             
-            $rules['domicilio.calle.1']  = 'required';
-            $rules['domicilio.numero.1'] = 'required|integer';
+            $rules['domicilio.calle.1']         = 'required';
+            $rules['domicilio.numero.1']        = 'required|integer';
+            $rules['domicilio.codigo_postal.1'] = 'integer';
         }
         
         return $rules;

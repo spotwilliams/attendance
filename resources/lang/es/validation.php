@@ -93,10 +93,10 @@ return [
     */
     
     'custom' => [
-        'attribute-name' => [
+        'attribute-name'      => [
             'rule-name' => 'custom-message',
         ],
-        'domicilio'      => [
+        'domicilio'           => [
             'calle'       => [
                 0 => [
                     'required' => 'Debe existir al menos un domicilio.',
@@ -107,7 +107,7 @@ return [
             ],
             'numero'      => [
                 0 => [
-                    'integer' => 'Debe ser un n&uacute;mero.',
+                    'integer'  => 'Debe ser un n&uacute;mero.',
                     'required' => 'Es obligatorio.',
                 ],
             ],
@@ -117,13 +117,22 @@ return [
                 ],
             ],
         ],
-        'turnos' => [
-            'required' => 'Debe seleccionar al menos uno'
+        'turnos'              => [
+            'required' => 'Debe seleccionar al menos uno',
         ],
-        'areas' => [
-            'required' => 'Debe seleccionar al menos uno'
+        'areas'               => [
+            'required' => 'Debe seleccionar al menos uno',
         ],
-        
+        'telefono_particular' => [
+            'digits_between' => 'El tel&eacute;fono debe ser un n&uacute;mero v&aacute;lido',
+        ],
+        'telefono_casa' => [
+            'digits_between' => 'El tel&eacute;fono debe ser un n&uacute;mero v&aacute;lido',
+        ],
+        'telefono_ht' => [
+            'digits_between' => 'El tel&eacute;fono debe ser un n&uacute;mero v&aacute;lido',
+        ],
+    
     ],
     
     /*

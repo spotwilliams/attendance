@@ -35,6 +35,13 @@ class Agente extends Model
             'id_contrato',
             'id_dias_disponibles',
             'id_estudio',
+            'photo',
+            'observacion',
+            'profesion',
+            'email_gobierno',
+            'telefono_particular',
+            'telefono_casa',
+            'telefono_ht',
         ];
     
     /**
@@ -50,14 +57,17 @@ class Agente extends Model
      */
     public static $rules
         = [
-            'nombre'           => 'required|max:255',
-            'apellido'         => 'required|max:255',
-            'fecha_nacimiento' => 'required|date',
-            'cuit'             => 'required|digits_between:4,20',
-            'dni'              => 'required|integer',
-//            'telefono'         => 'required|digits_between:1,20',
-            'telefono'         => 'required',
-            'email'            => 'required|email',
+            'nombre'              => 'required|max:255',
+            'apellido'            => 'required|max:255',
+            'fecha_nacimiento'    => 'required|date',
+            'cuit'                => 'required|digits_between:4,20',
+            'dni'                 => 'required|integer',
+            //            'telefono'         => 'required|digits_between:1,20',
+            'telefono_particular' => 'required|digits_between:1,50',
+            'telefono_casa'       => 'digits_between:1,50',
+            'telefono_ht'         => 'digits_between:1,50',
+            'email'               => 'required|email',
+            'email_gobierno'       => 'email',
         
         
         ];

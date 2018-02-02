@@ -75,13 +75,42 @@
         @endif
     </div>
 </div>
-
-<div class="form-group @if($errors->has('telefono')) has-error @endif">
-    {!! Form::label('telefono', 'Telefono de contacto *', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group @if($errors->has('email_gobierno')) has-error @endif">
+    {!! Form::label('email_gobierno', 'Email gobierno', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
-        {!! Form::text('telefono', null, ['class' => 'form-control']) !!}
-        @if($errors->has('telefono'))
-            <span class="help-block">{{$errors->first('telefono')}}</span>
+        {!! Form::text('email_gobierno', null, ['class' => 'form-control']) !!}
+        @if($errors->has('email_gobierno'))
+            <span class="help-block">{{$errors->first('email_gobierno')}}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('telefono_particular')) has-error @endif">
+    {!! Form::label('telefono_particular', 'Tel&eacute;fono particular *', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono_particular', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono_particular'))
+            <span class="help-block">{{$errors->first('telefono_particular')}}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('telefono_casa')) has-error @endif">
+    {!! Form::label('telefono_casa', 'Tel&eacute;fono de casa', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono_casa', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono_casa'))
+            <span class="help-block">{{$errors->first('telefono_casa')}}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('telefono_ht')) has-error @endif">
+    {!! Form::label('telefono_ht', 'Tel&eacute;fono HT', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono_ht', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono_ht'))
+            <span class="help-block">{{$errors->first('telefono_ht')}}</span>
         @endif
     </div>
 </div>
@@ -111,6 +140,15 @@
          'F' => 'Mujer',
          'M' => 'Hombre',
           ], null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group @if($errors->has('profesion')) has-error @endif">
+    {!! Form::label('profesion', 'Profesi&oacute;n', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('profesion', null, ['class' => 'form-control']) !!}
+        @if($errors->has('profesion'))
+            <span class="help-block">{{$errors->first('profesion')}}</span>
+        @endif
     </div>
 </div>
 {{-- Estudios --}}
@@ -257,6 +295,22 @@ $control = 0;
                     </div>
 
 
+                    <div class="col-sm-2 @if($errors->has("domicilio.codigo_postal.$control" )) has-error @endif">
+                        <input type="text" class="form-control" value="{{$dom['codigo_postal']}}"
+                               placeholder="C&oacute;digo postal"
+                               name="domicilio[codigo_postal][]">
+                        @if($errors->has("domicilio.codigo_postal.$control"))
+                            <span class="help-block">{{$errors->first("domicilio.codigo_postal.$control")}}</span>
+                        @endif
+                    </div>
+
+
+                </div>
+                <div class="row">
+                    <div class="col-sm-10">
+                        <input type="text" class="form-control" value="{{$dom['libre']}}" placeholder="Otro"
+                               name="domicilio[libre][]">
+                    </div>
                     <div class="col-sm-2">
                         <h4> <span class="label label-default">
                                 @if($dom['constituido'] == true)
@@ -268,14 +322,6 @@ $control = 0;
                         </h4>
                         <input type="hidden" name="domicilio[constituido][]" value="{{$dom['constituido']== true ?1:0}}"/>
                     </div>
-
-
-                </div>
-                <div class="row">
-                    <div class="col-sm-10">
-                        <input type="text" class="form-control" value="{{$dom['libre']}}" placeholder="Otro"
-                               name="domicilio[libre][]">
-                    </div>
                 </div>
                 <hr>
             </div>
@@ -283,6 +329,15 @@ $control = 0;
     </div>
 </div>
 
+<div class="form-group @if($errors->has('observacion')) has-error @endif">
+    {!! Form::label('observacion', 'Observaci&oacute;n', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::textarea('observacion', null, ['class' => 'form-control']) !!}
+        @if($errors->has('observacion'))
+            <span class="help-block">{{$errors->first('observacion')}}</span>
+        @endif
+    </div>
+</div>
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
