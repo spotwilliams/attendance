@@ -55,7 +55,8 @@ class Agente extends Model
             'fecha_nacimiento' => 'required|date',
             'cuit'             => 'required|digits_between:4,20',
             'dni'              => 'required|integer',
-            'telefono'         => 'required|digits_between:1,20',
+//            'telefono'         => 'required|digits_between:1,20',
+            'telefono'         => 'required',
             'email'            => 'required|email',
         
         
