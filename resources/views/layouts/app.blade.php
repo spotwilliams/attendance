@@ -54,10 +54,9 @@
                             <!-- User Account Menu -->
                             <li class="dropdown user user-menu">
                                 <!-- Menu Toggle Button -->
-                                <a href="#" class="dropdown-toggle clearfix" data-toggle="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <!-- The user image in the navbar-->
-                                    <img src="{{URL::asset('images/CABA1.png')}}"
-                                         class="user-image" alt="User Image"/>
+                                    <img src="{{URL::asset('images/CABA1.png')}}" class="user-image" alt="User Image"/>
                                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                     <span class="hidden-xs">{!! Auth::user()->name !!}</span>
                                 </a>
