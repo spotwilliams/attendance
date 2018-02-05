@@ -470,6 +470,9 @@ $control = 0;
 //                    console.log($('[name="fecha_nacimiento"]').val())
                     });
 
+            var im = new Inputmask("99-99999999-9");
+            im.mask('input[name="cuit"]');
+
         });
 
     </script>

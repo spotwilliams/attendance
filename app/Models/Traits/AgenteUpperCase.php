@@ -22,6 +22,11 @@ trait AgenteUpperCase
         $this->attributes['dni'] = strtoupper(StringHelper::removeAccents($value));
     }
     
+    public function setCuitAttribute($value)
+    {
+        $this->attributes['cuit'] = str_replace('-', '', $value);
+    }
+    
     public function setEmailAttribute($value)
     {
         $this->attributes['email'] = strtoupper(StringHelper::removeAccents($value));

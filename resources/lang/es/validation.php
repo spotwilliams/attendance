@@ -80,6 +80,7 @@ return [
     'timezone'             => 'El :attribute debe ser a valid zone.',
     'unique'               => 'El :attribute has already been taken.',
     'url'                  => 'El :attribute format is invalid.',
+    'cuit'                 => 'El CUIT provisto no es v&aacute;lido.',
     
     /*
     |--------------------------------------------------------------------------
@@ -126,10 +127,10 @@ return [
         'telefono_particular' => [
             'digits_between' => 'El tel&eacute;fono debe ser un n&uacute;mero v&aacute;lido',
         ],
-        'telefono_casa' => [
+        'telefono_casa'       => [
             'digits_between' => 'El tel&eacute;fono debe ser un n&uacute;mero v&aacute;lido',
         ],
-        'telefono_ht' => [
+        'telefono_ht'         => [
             'digits_between' => 'El tel&eacute;fono debe ser un n&uacute;mero v&aacute;lido',
         ],
     
