@@ -1,6 +1,16 @@
 @foreach ($agentes as $agente)
     <tr>
-        <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
+        <td>@if($agente->observacion !== null)
+                <span
+                        class="observacion-agente"
+                        data-toggle="popover"
+                        data-placement="top"
+                        data-content="{{$agente->observacion}}">
+                <i class="fa fa-comment-o"></i>
+                </span>
+            @endif
+            {{$agente->apellido}}, {{$agente->nombre}}
+        </td>
         <td>{{$agente->cuit}}</td>
         <td>@if(isset($agente->operativo))
                 {{$agente->operativo->base->nombre}}
@@ -38,6 +48,9 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+            $('[data-toggle="popover"].observacion-agente').popover({
+                trigger: 'hover'
+            });
             var startDate = moment().subtract(5, 'day');
             var endDate = moment().add(5, 'day');
             $('.desde').val(startDate.format('Y-MM-DD'));
