@@ -14,7 +14,7 @@ class AddNewColumnsToDomiciliosTable extends Migration
     public function up()
     {
         Schema::table('domicilios', function (Blueprint $table) {
-            $table->integer('codigo_postal', false)->nullable();
+            $table->string('codigo_postal', 25)->nullable();
         
         });
     }

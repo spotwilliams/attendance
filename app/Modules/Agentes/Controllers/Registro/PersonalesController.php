@@ -58,7 +58,7 @@ class PersonalesController extends AppBaseController
         $agente = new Agente($input);
         
         try {
-            $service = new Store($agente, $input['domicilio'], $input['estudio']);
+            $service = new Store($agente, $input['domicilio'], $input['estudio'], $request->file('avatar'));
             $service->execute();
             
             return redirect(route('agentesCreateLaborales', ['id' => $agente->id]));
@@ -133,7 +133,7 @@ class PersonalesController extends AppBaseController
         
         try {
             
-            $service = new Update($agente, $input);
+            $service = new Update($agente, $input, $request->file('avatar'));
             $service->execute();
             Flash::success('Datos personales actualizados correctamente.');
             

@@ -35,7 +35,7 @@ class Agente extends Model
             'id_contrato',
             'id_dias_disponibles',
             'id_estudio',
-            'photo',
+            'avatar',
             'observacion',
             'profesion',
             'email_gobierno',
@@ -71,7 +71,8 @@ class Agente extends Model
         
         
         ];
-    
+    public static $avatar = 'default.jpg';
+
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/

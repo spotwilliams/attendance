@@ -3,18 +3,15 @@
 namespace Cat\Modules\Agentes\Services\Registro\Store;
 
 
+use Cat\Helpers\ImageHelper;
 use Cat\Models\Agente;
-use Cat\Models\DiaDisponible;
 use Cat\Models\Domicilio;
 use Cat\Models\Estudio;
-use Cat\Models\JornadaLaborable;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoPresentismo;
 use Cat\Modules\Agentes\Exceptions\Registro\EntidadDuplicada;
 use Cat\Modules\Agentes\Services\Registro\CheckEstudiosAndDomicilio;
 use Cat\Modules\Service;
-use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\QueryException;
+use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\DB;
 
 class Personales extends Service
@@ -29,12 +26,13 @@ class Personales extends Service
     /** @var array */
     protected $estudios;
     
-    
-    public function __construct(Agente $agente, $domicilios = [], $estudios = [])
+    public function __construct(Agente $agente, $domicilios = [], $estudios = [], UploadedFile $avatar = null)
     {
-        $this->agente     = $agente;
-        $this->domicilios = $domicilios;
-        $this->estudios   = $estudios;
+        $this->agente         = $agente;
+        $this->domicilios     = $domicilios;
+        $this->estudios       = $estudios;
+        $this->agente->avatar = ImageHelper::storeAvatar($agente, $avatar);
+        
     }
     
     public function execute()
@@ -84,6 +82,7 @@ class Personales extends Service
             return $this->agente;
         } catch (QueryException $e) {
             DB::rollBack();
+            ImageHelper::resetAvatar($this->agente);
             if (str_contains($e->getMessage(), 'Duplicate')) {
                 throw new EntidadDuplicada($this->agente);
             }

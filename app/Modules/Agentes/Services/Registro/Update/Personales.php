@@ -3,18 +3,15 @@
 namespace Cat\Modules\Agentes\Services\Registro\Update;
 
 
+use Cat\Helpers\ImageHelper;
 use Cat\Models\Agente;
-use Cat\Models\DiaDisponible;
 use Cat\Models\Domicilio;
 use Cat\Models\Estudio;
-use Cat\Models\JornadaLaborable;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoPresentismo;
 use Cat\Modules\Agentes\Services\Registro\CheckEstudiosAndDomicilio;
 use Cat\Modules\Service;
-use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\UploadedFile;
 
 class Personales extends Service
 {
@@ -31,12 +28,17 @@ class Personales extends Service
     protected $input;
     
     
-    public function __construct(Agente $agente, $input)
+    public function __construct(Agente $agente, $input, UploadedFile $avatar = null)
     {
         $this->agente     = $agente;
         $this->domicilios = $input['domicilio'];
         $this->estudios   = $input['estudio'];
         $this->input      = $input;
+        if ($avatar) {
+            $this->input['avatar'] = ImageHelper::storeAvatar($agente, $avatar);
+        }
+        
+        
     }
     
     public function execute()

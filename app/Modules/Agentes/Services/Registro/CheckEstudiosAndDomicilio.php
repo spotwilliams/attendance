@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: worker
- * Date: 6/22/17
- * Time: 10:20
- */
 
 namespace Cat\Modules\Agentes\Services\Registro;
 

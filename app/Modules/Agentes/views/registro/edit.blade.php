@@ -58,7 +58,7 @@
 
                         @if($tab === 'personales')
                             <div class="tab-pane  active" id="personales">
-                                {!! Form::model($agente, ['route' => ['agentesUpdatePersonales'], 'method' => 'post', 'class' => 'form-horizontal']) !!}
+                                {!! Form::model($agente, ['route' => ['agentesUpdatePersonales'], 'method' => 'post', 'class' => 'form-horizontal', 'files' => true]) !!}
                                 @include('Agentes::registro.forms.form-personales')
                                 {!! Form::close() !!}
                             </div>

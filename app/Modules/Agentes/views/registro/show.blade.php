@@ -22,7 +22,7 @@
                 <!-- Profile Image -->
                 <div class="box box-warning">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="{{URL::asset('images/CABA1.png')}}"
+                        <img class="profile-user-img img-responsive img-circle" src="{{URL::asset('uploads/avatars/'.$agente->avatar)}}"
                              alt="User profile picture">
 
                         <h3 class="profile-username text-center">{{$agente->apellido}}, {{$agente->nombre}}</h3>
