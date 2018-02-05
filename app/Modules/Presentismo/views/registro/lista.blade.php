@@ -19,21 +19,21 @@ $idModal = 'comentarios-modal'
 
         <div class="box box-warning">
             <div class="box-header with-border">
-                <div class="col-md-4 col-xs-4">
-                    <h4 class="box-title"><span class="hidden-xs">Base</span> <span class="label label-info">{{$baseActual->nombre}}</span></h4>
-                </div>
-                <div class="col-md-4 col-xs-6">
-                    <h4 class="box-title"><span class="hidden-xs">Periodo actual:</span>
+                <div class="col-md-12 col-xs-12 d-flex align-items-center">
+                    <h4 class="box-title">
                         <span class="label label-info">{{$desde->format('d/m/Y')}}</span> hasta
                         <span class="label label-info">{{$hasta->format('d/m/Y')}}</span>
                     </h4>
                 </div>
-                <div class="col-md-4 col-xs-4">
-                    <h3 class="box-title">Agentes: <span class="label label-info">{{$agentes->total()}}</span></h3>
-                </div>
             </div>
-
             <div class="box-body">
+                <div class="col-md-4 col-xs-4">
+                    <h4 class="box-title"><span class="hidden-xs">Base</span> <span class="label label-info">{{$baseActual->nombre}}</span></h4>
+                </div>
+                <div class="col-md-4 col-xs-4">
+                    <h4 class="box-title">Agentes: <span class="label label-info">{{$agentes->total()}}</span></h4>
+                </div>
+
                 @include('Presentismo::registro.table')
             </div>
             <div class="box-footer">
