@@ -2,13 +2,14 @@
 
 namespace Cat\Models;
 
+use Cat\Models\Traits\EstudioUpperCase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Estudio extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, EstudioUpperCase;
     
     public $table = 'estudios';
     

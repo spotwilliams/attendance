@@ -2,12 +2,13 @@
 
 namespace Cat\Models;
 
+use Cat\Models\Traits\DomicilioUpperCase;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Domicilio extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, DomicilioUpperCase;
     public $table = 'domicilios';
     
     const CREATED_AT = 'created_at';

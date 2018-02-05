@@ -3,6 +3,7 @@
 namespace Cat\Models;
 
 use Cat\Exceptions\AgenteSinTurno;
+use Cat\Models\Traits\AgenteUpperCase;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -11,7 +12,8 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Agente extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, AgenteUpperCase;
+
     public $table = 'agentes';
     
     const CREATED_AT = 'created_at';

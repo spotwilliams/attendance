@@ -22,7 +22,8 @@
                 <!-- Profile Image -->
                 <div class="box box-warning">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="{{URL::asset('uploads/avatars/'.$agente->avatar)}}"
+                        <img class="profile-user-img img-responsive img-circle"
+                             src="{{URL::asset('uploads/avatars/'.$agente->avatar)}}"
                              alt="User profile picture">
 
                         <h3 class="profile-username text-center">{{$agente->apellido}}, {{$agente->nombre}}</h3>
@@ -53,6 +54,12 @@
                                     {{($agente->sexo === ''?'':($agente->sexo ==='F'? 'Femenimo': 'Masculino'))}}
                                 </a>
                             </li>
+                            @if($agente->observacion)
+                                <li class="list-group-item">
+                                <b>Observaci&oacute;n: </b>
+                                        {{$agente->observacion}}
+                                </li>
+                            @endif
                         </ul>
                     </div>
                     <!-- /.box-body -->
