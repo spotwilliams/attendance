@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Configuracion\Areas\Controllers;
 
+use Cat\Models\Area;
 use Cat\Modules\Configuracion\Areas\Requests\CreateAreaRequest;
 use Cat\Modules\Configuracion\Areas\Requests\UpdateAreaRequest;
 use Cat\Modules\Configuracion\Areas\Repositories\AreaRepository;
@@ -23,10 +24,10 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Display a listing of the Area.
-     *
      * @param Request $request
-     * @return View
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
@@ -40,9 +41,8 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Show the form for creating a new Area.
-     *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -52,11 +52,9 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Store a newly created Area in storage.
-     *
      * @param CreateAreaRequest $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(CreateAreaRequest $request)
     {
@@ -92,11 +90,9 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Show the form for editing the specified Area.
-     *
-     * @param  int $id
-     *
-     * @return View
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
@@ -114,12 +110,10 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Update the specified Area in storage.
-     *
-     * @param  int $id
+     * @param $id
      * @param UpdateAreaRequest $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update($id, UpdateAreaRequest $request)
     {
@@ -141,7 +135,30 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Remove the specified Area from storage.
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function delete($id)
+    {
+//        $this->authorize('delete', $this);
+        
+        $area = Area::where('id', '=', $id)
+            ->with('operativos.agente')
+            ->first();
+
+        if (empty($area)) {
+            Flash::error('&Aacute;rea no encontrada');
+            
+            return redirect(route('configuracion.area.index'));
+        }
+        
+        return view('Configuracion::areas.delete')
+            ->with('area', $area);
+    }
+    
+    
+    /**
+     * Remove the specified BaseModel from storage.
      *
      * @param  int $id
      *
@@ -149,19 +166,29 @@ class CrudController extends AppBaseController
      */
     public function destroy($id)
     {
-        return redirect(route('configuracion.area.index'));
         
-        $area = $this->areaRepository->findWithoutFail($id);
+        $area = Area::where('id', '=', $id)
+            ->with('operativos.agente')
+            ->first();
         
         if (empty($area)) {
             Flash::error('&Aacute;rea no encontrada');
             
             return redirect(route('configuracion.area.index'));
+        } else {
+            
+            if (!$area->operativos->isEmpty()) {
+                Flash::error('No se pueden eliminar &aacute;reas con agentes asignados.');
+                
+                return redirect(route('configuracion.area.delete', ['id' => $area->id]));
+            } else {
+                $this->areaRepository->delete($id);
+                Flash::success('&Aacute;rea eliminada correctamente.');
+                
+                return redirect(route('configuracion.area.index'));
+            }
         }
         
-        $this->areaRepository->delete($id);
-        
-        Flash::success('&Aacute;rea deleted correctamente.');
         
     }
 }

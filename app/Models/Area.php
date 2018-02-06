@@ -30,4 +30,10 @@ class Area extends Model
         = [
             'nombre' => 'required',
         ];
+    
+    public function operativos()
+    {
+        return $this->hasMany(Operativo::class, 'id_area');
+        
+    }
 }

@@ -13,7 +13,7 @@
     </tr>
     </thead>
     <tbody>
-    @foreach($baseModel->operativos as $agente)
+    @foreach($area->operativos as $agente)
         <tr>
             <td><a href="{{route('agentesEditOperativos', ['id' => $agente->agente->id])}}" data-toggle="popover"
                    title="Editar datos operativos"
@@ -51,4 +51,4 @@
             });
         })
     </script>
-    @append
+@append

@@ -134,6 +134,10 @@ class CrudController extends AppBaseController
         return redirect(route('configuracion.base.index'));
     }
     
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
     public function delete($id)
     {
 //        $this->authorize('delete', $this);

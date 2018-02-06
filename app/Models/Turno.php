@@ -44,4 +44,10 @@ class Turno extends Model
     {
         return $this->belongsToMany(Role::class, 'turno_roles', 'turno_id', 'role_id');
     }
+    
+    public function operativos()
+    {
+        return $this->hasMany(Operativo::class, 'id_base');
+        
+    }
 }
