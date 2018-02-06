@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Configuracion\Bases\Controllers;
 
+use Cat\Models\Base;
 use Cat\Modules\Configuracion\Bases\Requests\CreateBaseModelRequest;
 use Cat\Modules\Configuracion\Bases\Requests\UpdateBaseModelRequest;
 use Cat\Modules\Configuracion\Bases\Repositories\CrudRepository;
@@ -23,15 +24,15 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Display a listing of the BaseModel.
-     *
      * @param Request $request
-     * @return View
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
         $this->authorize('index', $this);
-    
+        
         $this->baseModelRepository->pushCriteria(new RequestCriteria($request));
         $baseModels = $this->baseModelRepository->all();
         
@@ -40,28 +41,25 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Show the form for creating a new BaseModel.
-     *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
         $this->authorize('create', $this);
-    
+        
         return view('Configuracion::bases.create');
     }
     
     /**
-     * Store a newly created BaseModel in storage.
-     *
      * @param CreateBaseModelRequest $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(CreateBaseModelRequest $request)
     {
         $this->authorize('store', $this);
-    
+        
         $input = $request->all();
         
         $baseModel = $this->baseModelRepository->create($input);
@@ -92,16 +90,14 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Show the form for editing the specified BaseModel.
-     *
-     * @param  int $id
-     *
-     * @return View
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
         $this->authorize('edit', $this);
-    
+        
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
@@ -114,17 +110,15 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Update the specified BaseModel in storage.
-     *
-     * @param  int $id
+     * @param $id
      * @param UpdateBaseModelRequest $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update($id, UpdateBaseModelRequest $request)
     {
         $this->authorize('update', $this);
-    
+        
         $baseModel = $this->baseModelRepository->findWithoutFail($id);
         
         if (empty($baseModel)) {
@@ -140,19 +134,13 @@ class CrudController extends AppBaseController
         return redirect(route('configuracion.base.index'));
     }
     
-    /**
-     * Remove the specified BaseModel from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    private function destroy($id)
+    public function delete($id)
     {
-        // Para evitar hacks
-        return redirect(route('configuracion.base.index'));
+//        $this->authorize('delete', $this);
         
-        $baseModel = $this->baseModelRepository->findWithoutFail($id);
+        $baseModel = Base::where('id', '=', $id)
+            ->with('operativos.agente')
+            ->first();
         
         if (empty($baseModel)) {
             Flash::error('Base no encontrada');
@@ -160,9 +148,42 @@ class CrudController extends AppBaseController
             return redirect(route('configuracion.base.index'));
         }
         
-        $this->baseModelRepository->delete($id);
+        return view('Configuracion::bases.delete')->with('baseModel', $baseModel);
+    }
+    
+    
+    /**
+     * Remove the specified BaseModel from storage.
+     *
+     * @param  int $id
+     *
+     * @return Response
+     */
+    public function destroy($id)
+    {
         
-        Flash::success('Base eliminada correctamente.');
+        $baseModel = Base::where('id', '=', $id)
+            ->with('operativos.agente')
+            ->first();
+        
+        if (empty($baseModel)) {
+            Flash::error('Base no encontrada');
+            
+            return redirect(route('configuracion.base.index'));
+        } else {
+            
+            if (!$baseModel->operativos->isEmpty()) {
+                Flash::error('No se pueden eliminar bases con agentes asignados.');
+                
+                return redirect(route('configuracion.base.delete', ['id' => $baseModel->id]));
+            } else {
+                $this->baseModelRepository->delete($id);
+                Flash::success('Base eliminada correctamente.');
+                
+                return redirect(route('configuracion.base.index'));
+            }
+        }
+        
         
     }
 }

@@ -13,6 +13,10 @@
                        class='btn btn-primary btn-sm'>
                         <i class="fa fa-edit"></i>
                     </a>
+                    <a href="{!! route('configuracion.base.delete', [$baseModel->id]) !!}"
+                       class='btn btn-danger btn-sm'>
+                        <i class="fa fa-trash"></i>
+                    </a>
                 </div>
             </td>
         </tr>
