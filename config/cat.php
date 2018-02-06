@@ -25,5 +25,6 @@ return [
      * Cantidad de dias permitidos para cargar una fecha de contrato
      */
     'fecha_contrato_registro' => 30,
+    'cant_dias_navegacion' => 5,
 
 ];
