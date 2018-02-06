@@ -1,4 +1,5 @@
 
+<th></th>
 <th>Personal</th>
 <th>CUIT</th>
 <th>Base</th>

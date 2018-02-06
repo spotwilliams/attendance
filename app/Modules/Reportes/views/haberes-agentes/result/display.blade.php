@@ -15,6 +15,7 @@ if (!isset($data)) {
         <div class="col-md-12 col-xs-12 table-responsive">
             <table>
                 <tr>
+                    <th></th>
                     <th>Personal</th>
                     <th>CUIT</th>
                     <th>Base</th>
@@ -24,6 +25,8 @@ if (!isset($data)) {
                 @if(!$haberes->isEmpty())
                     @foreach($haberes as $h)
                         <tr>
+                            <td><a href="{{route('agentesShow', ['id' => $h->agente->id])}}" data-toggle="popover" title="Ver datos" data-content="Abre la ficha del agente en otra pesta&ntilde;a" target="_blank" class="label label-success"><i class="fa fa-eye"></i></a></td>
+
                             <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($h, ['agente', 'apellido'])}}
                                 , {{\Cat\Helpers\ModelCreator::getDataFromModel($h, ['agente', 'nombre'])}}
                             </td>
@@ -47,3 +50,12 @@ if (!isset($data)) {
         @endif
     </div>
 </div>
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('[data-toggle="popover"]').popover({
+                trigger: 'hover'
+            });
+        })
+    </script>
+@append

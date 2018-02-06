@@ -4,6 +4,7 @@
     {{--<th colspan="10">Datos operativos</th>--}}
 {{--</tr>--}}
 <tr>
+    <th></th>
     <th>Personal</th>
     <th>CUIT</th>
     {{--<th>DNI</th>--}}

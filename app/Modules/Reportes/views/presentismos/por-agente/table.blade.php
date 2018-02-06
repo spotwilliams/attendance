@@ -1,6 +1,7 @@
 <table class="table table-hover">
 
     <thead>
+    <th></th>
     <th>Personal</th>
     {{--<th>DNI</th>--}}
     <th>CUIT</th>
