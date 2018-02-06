@@ -38,10 +38,19 @@
                                 <b>DNI</b> <a class="pull-right">{{$agente->dni}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Telefono</b> <a class="pull-right">{{$agente->telefono}}</a>
+                                <b>Tel&eacute;fono particular</b> <a class="pull-right">{{$agente->telefono_particular}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Tel&eacute;fono casa</b> <a class="pull-right">{{$agente->telefono_casa}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Tel&eacute;fono HT</b> <a class="pull-right">{{$agente->telefono_ht}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>Email</b> <a class="pull-right">{{$agente->email}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Email gobierno</b> <a class="pull-right">{{$agente->email_gobierno}}</a>
                             </li>
 
                             <li class="list-group-item">
@@ -52,6 +61,12 @@
                                 <b>Sexo</b><a class="pull-right">
 
                                     {{($agente->sexo === ''?'':($agente->sexo ==='F'? 'Femenimo': 'Masculino'))}}
+                                </a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Profesi&oacute;n</b><a class="pull-right">
+
+                                    {{$agente->profesion}}
                                 </a>
                             </li>
                             @if($agente->observacion)

@@ -8,6 +8,7 @@ use Cat\Models\Operativo;
 use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Pagination\LengthAwarePaginator;
 use InfyOm\Generator\Common\BaseRepository;
 
 class AgenteRepository extends BaseRepository
@@ -21,7 +22,7 @@ class AgenteRepository extends BaseRepository
     public function getAgentesByBase($idBase)
     {
         
-        $agentes = [];
+        $agentes = new LengthAwarePaginator([], 0, 1);
         try {
             /** @var Base $base */
             $base    = Base::findOrFail($idBase);
