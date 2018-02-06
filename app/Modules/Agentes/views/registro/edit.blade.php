@@ -19,8 +19,8 @@
                                 <a href="#personales" data-toggle="tab" aria-expanded="true">Personales</a>
                             </li>
                         @else
-                            <li class="disabled">
-                                <a>Personales</a>
+                            <li>
+                                <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}">Personales</a>
                             </li>
                         @endif
                         @if($tab === 'laborales')
@@ -28,8 +28,8 @@
                                 <a href="#laborales" data-toggle="tab" aria-expanded="true">Laborales</a>
                             </li>
                         @else
-                            <li class="disabled">
-                                <a>Laborales</a>
+                            <li>
+                                <a href="{{route('agentesEditLaborales', ['id' => $agente->id])}}">Laborales</a>
                             </li>
                         @endif
                         @if($tab === 'operativos')
@@ -37,10 +37,13 @@
                                 <a href="#operativos" data-toggle="tab" aria-expanded="true">Operativos</a>
                             </li>
                         @else
-                            <li class="disabled">
-                                <a>Operativos</a>
+                            <li>
+                                <a href="{{route('agentesEditOperativos', ['id' => $agente->id])}}">Operativos</a>
                             </li>
                         @endif
+                            <li>
+                                <a href="{{route('agentesShow', ['id' => $agente->id])}}">Ver datos</a>
+                            </li>
                     </ul>
                     <div class="tab-content">
                         {{--

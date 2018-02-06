@@ -117,7 +117,7 @@ class LaboralesController extends AppBaseController
         }
         
         return view('Agentes::registro.edit')
-            ->with('agente', $agente->id)
+            ->with('agente', $agente)
             ->with('contrato', $agente->contrato()->first())
             ->with('tab', 'laborales');
     }

@@ -28,7 +28,7 @@ if (!isset($contrato)) {
         </div>
     </div>
 </div>
-<input type="hidden" name="agente" value="{{$agente}}">
+<input type="hidden" name="agente" value="{{$agente->id}}">
 <?php
 $tipos[-1] = 'Seleccione';
 foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est) {

@@ -113,7 +113,7 @@ class OperativosController extends AppBaseController
         }
         
         return view('Agentes::registro.edit')
-            ->with('agente', $agente->id)
+            ->with('agente', $agente)
             ->with('operativo', $agente->operativo()->first())
             ->with('tab', 'operativos');
     }
