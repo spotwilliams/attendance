@@ -9,12 +9,13 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Contrato extends Model
 {
     use SoftDeletes;
+    
     const TIPO_LOCACION = 'LOCACION';
     
     public $table = 'contratos';
     
-    protected     $fillable
-                         = [
+    protected $fillable
+                     = [
             'fecha_ingreso',
             'fecha_ingreso_gobierno',
             'id_tipo_contrato',
@@ -28,11 +29,12 @@ class Contrato extends Model
             'fecha_baja',
             'comentario_baja',
         ];
-    protected     $dates = ['deleted_at'];
+    protected $dates = ['deleted_at'];
+    
     public static $rules
-                         = [
-            'fecha_ingreso'          => 'required|date',
-            'fecha_ingreso_gobierno' => 'date',
+        = [
+            'fecha_ingreso'          => 'required|date|fecha_contrato_futuro|fecha_contrato',
+            'fecha_ingreso_gobierno' => 'date|fecha_contrato_futuro',
             'fecha_baja'             => 'date',
             'id_tipo_contrato'       => 'not_in:-1',
             'id_estado_contrato'     => 'not_in:-1',

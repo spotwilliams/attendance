@@ -4,6 +4,7 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
 use Cat\Helpers\Validation;
+use Cat\Http\Requests\LaboralesRequest;
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
@@ -32,9 +33,9 @@ class LaboralesController extends AppBaseController
     
     
     /**
-     * Show the form for creating a new Presentismo.
-     *
-     * @return Response
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create($id)
     {
@@ -55,11 +56,9 @@ class LaboralesController extends AppBaseController
     
     
     /**
-     * Store a newly created Presentismo in storage.
-     *
      * @param Request $request
-     *
-     * @return Response
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -94,11 +93,9 @@ class LaboralesController extends AppBaseController
     
     
     /**
-     * Show the form for editing the specified Presentismo.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
@@ -126,17 +123,14 @@ class LaboralesController extends AppBaseController
     }
     
     /**
-     * Update the specified Presentismo in storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @param LaboralesRequest $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request)
+    public function update(LaboralesRequest $request)
     {
         $this->authorize('update', $this);
         
-        $this->validate($request, Validation::getContratoRules($request));
         
         $input = $request->all();
         
