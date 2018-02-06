@@ -47,7 +47,7 @@ class Turno extends Model
     
     public function operativos()
     {
-        return $this->hasMany(Operativo::class, 'id_base');
+        return $this->hasMany(Operativo::class, 'id_turno');
         
     }
 }

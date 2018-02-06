@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Configuracion\Turnos\Controllers;
 
+use Cat\Models\Turno;
 use Cat\Modules\Configuracion\Turnos\Requests\CreateTurnoModelRequest;
 use Cat\Modules\Configuracion\Turnos\Requests\UpdateTurnoModelRequest;
 use Cat\Modules\Configuracion\Turnos\Repositories\TurnoModelRepository;
@@ -23,10 +24,10 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Display a listing of the TurnoModel.
-     *
      * @param Request $request
-     * @return View
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
     public function index(Request $request)
     {
@@ -40,9 +41,8 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Show the form for creating a new TurnoModel.
-     *
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -52,11 +52,9 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Store a newly created TurnoModel in storage.
-     *
      * @param CreateTurnoModelRequest $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(CreateTurnoModelRequest $request)
     {
@@ -92,11 +90,9 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Show the form for editing the specified TurnoModel.
-     *
-     * @param  int $id
-     *
-     * @return View
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
@@ -114,12 +110,10 @@ class CrudController extends AppBaseController
     }
     
     /**
-     * Update the specified TurnoModel in storage.
-     *
-     * @param  int $id
+     * @param $id
      * @param UpdateTurnoModelRequest $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update($id, UpdateTurnoModelRequest $request)
     {
@@ -141,6 +135,28 @@ class CrudController extends AppBaseController
     }
     
     /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     */
+    public function delete($id)
+    {
+//        $this->authorize('delete', $this);
+        
+        $turnoModel = Turno::where('id', '=', $id)
+            ->with('operativos.agente')
+            ->first();
+        
+        if (empty($turnoModel)) {
+            Flash::error('Turno no encontrado');
+            
+            return redirect(route('configuracion.turno.index'));
+        }
+        
+        return view('Configuracion::turnos.delete')->with('turnoModel', $turnoModel);
+    }
+    
+    
+    /**
      * Remove the specified TurnoModel from storage.
      *
      * @param  int $id
@@ -149,19 +165,29 @@ class CrudController extends AppBaseController
      */
     public function destroy($id)
     {
-        return redirect(route('configuracion.turno.index'));
         
-        $turnoModel = $this->turnoModelRepository->findWithoutFail($id);
+        $turnoModel = Turno::where('id', '=', $id)
+            ->with('operativos.agente')
+            ->first();
         
         if (empty($turnoModel)) {
             Flash::error('Turno no encontrado');
             
             return redirect(route('configuracion.turno.index'));
+        } else {
+            
+            if (!$turnoModel->operativos->isEmpty()) {
+                Flash::error('No se pueden eliminar turnos con agentes asignados.');
+                
+                return redirect(route('configuracion.turno.delete', ['id' => $turnoModel->id]));
+            } else {
+                $this->turnoModelRepository->delete($id);
+                Flash::success('Turno eliminado correctamente.');
+                
+                return redirect(route('configuracion.turno.index'));
+            }
         }
         
-        $this->turnoModelRepository->delete($id);
-        
-        Flash::success('Turno borrado correctamente.');
         
     }
 }

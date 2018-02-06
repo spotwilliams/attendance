@@ -10,33 +10,34 @@
         <div class="box box-warning">
             <div class="box-header">
                 <h3 class="box-title">
-                    Eliminar &aacute;rea
+                    Eliminar turno
                 </h3>
             </div>
             <div class="box-body">
 
                 <div class="row">
                     <div class="col-md-4">
-                        @include('Configuracion::areas.show_fields')
+                        @include('Configuracion::turnos.show_fields')
                     </div>
                     <div class="col-md-8">
-                        {!! Form::open(['route' => ['configuracion.area.destroy', $area->id],'method' => 'delete']) !!}
+                        {!! Form::open(['route' => ['configuracion.turno.destroy', $turnoModel->id],'method' => 'delete']) !!}
 
-                        <button type="submit" class="btn btn-danger" @if(!$area->operativos->isEmpty()) disabled @endif>
+                        <button type="submit" class="btn btn-danger" @if(!$turnoModel->operativos->isEmpty()) disabled @endif>
                             <i class="fa fa-trash"></i> Eliminar
                         </button>
-                        <a class="btn btn-default" href="{{route('configuracion.area.index')}}">Volver</a>
-                        <p class="help-block">S&oacute;lo las &aacute;reas sin agentes asignados pueden ser eliminadas</p>
+                        <a class="btn btn-default" href="{{route('configuracion.turno.index')}}">Volver</a>
+
+                        <p class="help-block">S&oacute;lo los turnos sin agentes asignados pueden ser eliminados</p>
                         {!! Form::close() !!}
                     </div>
                     <div class="col-md-12">
                         <hr>
 
 
-                        <h4>Listado de agentes pertenecientes a la &aacute;rea</h4>
+                        <h4>Listado de agentes pertenecientes al turno</h4>
                         <div class="table-responsive">
 
-                            @include('Configuracion::areas.table-agentes')
+                            @include('Configuracion::turnos.table-agentes')
                         </div>
 
 

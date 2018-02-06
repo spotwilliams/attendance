@@ -25,7 +25,7 @@
                         <button type="submit" class="btn btn-danger" @if(!$baseModel->operativos->isEmpty()) disabled @endif>
                             <i class="fa fa-trash"></i> Eliminar
                         </button>
-                        <a class="btn btn-default" href="{{URL::previous()}}">Volver</a>
+                        <a class="btn btn-default" href="{{route('configuracion.base.index')}}">Volver</a>
 
                         <p class="help-block">S&oacute;lo las bases sin agentes asignados pueden ser eliminadas</p>
                         {!! Form::close() !!}

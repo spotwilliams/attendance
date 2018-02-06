@@ -9,11 +9,11 @@
         <th>Estado</th>
         <th>Gerencia/Subgerencia</th>
         <th>Base</th>
-        <th>Turno</th>
+        <th>&Aacute;rea</th>
     </tr>
     </thead>
     <tbody>
-    @foreach($area->operativos as $agente)
+    @foreach($turnoModel->operativos as $agente)
         <tr>
             <td><a href="{{route('agentesEditOperativos', ['id' => $agente->agente->id])}}" data-toggle="popover"
                    title="Editar datos operativos"
@@ -25,8 +25,8 @@
             <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','contrato','tipoContrato','descripcion'])}}</td>
             <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','contrato','estadoContrato', 'descripcion'])}}</td>
             <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','operativo','gerencia','nombre'])}}</td>
-            <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','operativo','base','nombre'])}}</td>
-            <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','operativo','turno', 'codigo'])}}</td>
+            <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','operativo','base', 'nombre'])}}</td>
+            <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['agente','operativo','area','nombre'])}}</td>
         </tr>
     @endforeach
     </tbody>
@@ -51,4 +51,4 @@
             });
         })
     </script>
-@append
+    @append
