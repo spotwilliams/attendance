@@ -8,7 +8,7 @@ use Cat\Models\TipoPresentismo;
 use Cat\Policies\RequestGatePolicy;
 use Cat\Policies\TipoPresentismoGatePolicy;
 use Cat\User;
-use function foo\func;
+
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;

@@ -21,6 +21,9 @@ class CrudPolicy extends SecurityPolicy
             $this->verifyOnlyControllerPermission($user, 'Crear area')
             or
             $this->verifyOnlyControllerPermission($user, 'Modificar area')
+            or
+            $this->verifyOnlyControllerPermission($user, 'Eliminar area')
+            
         );
     }
     
@@ -42,4 +45,12 @@ class CrudPolicy extends SecurityPolicy
         return $this->verifyOnlyControllerPermission($user, 'Modificar area');
     }
     
+    public function delete(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar area');
+    }
+    public function destroy(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar area');
+    }
 }

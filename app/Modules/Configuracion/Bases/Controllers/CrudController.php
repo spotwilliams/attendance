@@ -137,10 +137,11 @@ class CrudController extends AppBaseController
     /**
      * @param $id
      * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function delete($id)
     {
-//        $this->authorize('delete', $this);
+        $this->authorize('delete', $this);
         
         $baseModel = Base::where('id', '=', $id)
             ->with('operativos.agente')
@@ -157,15 +158,14 @@ class CrudController extends AppBaseController
     
     
     /**
-     * Remove the specified BaseModel from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
     {
-        
+        $this->authorize('destroy', $this);
+    
         $baseModel = Base::where('id', '=', $id)
             ->with('operativos.agente')
             ->first();

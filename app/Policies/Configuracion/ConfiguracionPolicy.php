@@ -42,4 +42,15 @@ class ConfiguracionPolicy extends SecurityPolicy
         return $this->verifyOnlyControllerPermission($user, 'Configurar sistema');
     }
     
+    public function delete(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Configurar sistema');
+    }
+    
+    
+    public function destroy(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Configurar sistema');
+    }
+    
 }
