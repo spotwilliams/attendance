@@ -188,6 +188,7 @@
 {!! Html::script('plugins/datatables/js/dataTables.fixedHeader.min.js') !!}
 {!! Html::script('plugins/datatables/js/dataTables.responsive.min.js') !!}
 {!! Html::script('plugins/bootstrap-select/js/bootstrap-select.min.js') !!}
+{!! Html::script('plugins/slimScroll/js/jquery.slimscroll.min.js') !!}
 {!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
 {!! Html::script('plugins/select2/js/select2.min.js') !!}
 {!! Html::script('plugins/iCheck/js/icheck.min.js') !!}

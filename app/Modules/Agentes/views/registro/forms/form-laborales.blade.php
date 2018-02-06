@@ -80,7 +80,8 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('fecha_baja')) has-error @endif">
     <label class="col-sm-2 control-label">Fecha de baja</label>
     <div class="col-sm-8">
-        {!! Form::date('fecha_baja', null, ['class' => 'form-control']) !!}
+        {!! Form::hidden('fecha_baja', null, ['class' => 'form-control']) !!}
+        <input type="text" name="fecha_baja_show" class="form-control">
         @if($errors->has('fecha_baja'))
             <span class="help-block">{{$errors->first('fecha_baja')}}</span>
         @endif
@@ -113,7 +114,8 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 <div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
     <label class="col-sm-2 control-label">Fecha de ingreso modalidad actual *</label>
     <div class="col-sm-8">
-        {!! Form::date('fecha_ingreso', null, ['class' => 'form-control']) !!}
+        {!! Form::hidden('fecha_ingreso', null, ['class' => 'form-control']) !!}
+        <input type="text" name="fecha_ingreso_show" class="form-control">
         @if($errors->has('fecha_ingreso'))
             <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
         @endif
@@ -122,8 +124,10 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
 <div class="form-group @if($errors->has('fecha_ingreso_gobierno')) has-error @endif">
     <label class="col-sm-2 control-label">Fecha de ingreso al GCBA</label>
     <div class="col-sm-8">
-        {!! Form::date('fecha_ingreso_gobierno', null, ['class' => 'form-control']) !!}
-        @if($errors->has('fecha_ingreso_gobierno'))
+        {!! Form::hidden('fecha_ingreso_gobierno', null, ['class' => 'form-control']) !!}
+        <input type="text" name="fecha_ingreso_gobierno_show" class="form-control">
+
+    @if($errors->has('fecha_ingreso_gobierno'))
             <span class="help-block">{{$errors->first('fecha_ingreso_gobierno')}}</span>
         @endif
     </div>
@@ -176,7 +180,66 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
                     }
                 }
             });
-            // Mostrar campos baja en caso que se retorne
+
+            setupDate($('[name="fecha_baja"]'), $('[name="fecha_baja_show"]'))
+            setupDate($('[name="fecha_ingreso"]'), $('[name="fecha_ingreso_show"]'))
+            setupDate($('[name="fecha_ingreso_gobierno"]'), $('[name="fecha_ingreso_gobierno_show"]'))
         });
+
+        function setupDate(element, complement) {
+            var day = moment('{{date('Y')}}-01-01');
+
+            if ($(element).val() === '') {
+                $(element).val(day.format('Y-MM-DD'));
+            } else {
+                day = moment($(element).val());
+            }
+
+            var locale = {
+                format: 'DD/MM/YYYY',
+                separator: " - ",
+                applyLabel: "Aplicar",
+                cancelLabel: "Cancelar",
+                fromLabel: "Desde",
+                toLabel: "Hasta",
+                weekLabel: "W",
+                daysOfWeek: [
+                    "Do",
+                    "Lu",
+                    "Ma",
+                    "Mie",
+                    "Ju",
+                    "Vi",
+                    "Sa"
+                ],
+                monthNames: [
+                    "Enero",
+                    "Febrero",
+                    "Marzo",
+                    "Abril",
+                    "Mayo",
+                    "Junio",
+                    "Julio",
+                    "Agosto",
+                    "Septiembre",
+                    "Octubre",
+                    "Noviembre",
+                    "Diciembre"
+                ],
+            };
+
+            $(complement)
+                .val(day.format('DD/MM/YYYY'))
+                .daterangepicker({
+                        locale: locale,
+                        showDropdowns: true,
+                        singleDatePicker: true,
+                        opens: 'center',
+                    },
+                    function (start, end, label) {
+                        $(element).val(start.format('Y-MM-DD'))
+                    });
+
+        }
     </script>
 @append

@@ -97,7 +97,9 @@ class Operativos extends Service
                 $operativo->update($preliminarData);
                 
             } catch (ModelNotFoundException $e) {
-                $operativo = Operativo::create($preliminarData);
+                $horario                      = Horario::create($this->horario);
+                $preliminarData['id_horario'] = $horario->id;
+                $operativo                    = Operativo::create($preliminarData);
             }
             
             // A partir de aqui Operativo siempre existe
