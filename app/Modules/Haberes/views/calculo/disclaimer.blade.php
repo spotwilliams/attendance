@@ -22,8 +22,8 @@
 
                     <div class="form-group">
                         <div class="progress-group">
-                            <span class="progress-text">Paso 4</span>
-                            <span class="progress-number"><b>4</b>/4</span>
+                            <span class="progress-text">Paso 3</span>
+                            <span class="progress-number"><b>3</b>/3</span>
 
                             <div class="progress">
                                 <div class="progress-bar progress-bar-yellow" style="width: 100%"></div>
@@ -36,11 +36,7 @@
                     <div class="alert alert-danger alert-dismissible">
                         <button type="button" class="close" data-dismiss="alert" aria-hidden="true">×</button>
                         <h4><i class="icon fa fa-warning"></i> Aviso: Est&aacute; a punto de cerrar un periodo.</h4>
-                        Esto significa que s&oacute;lo alguien con los <span class="">privilegios suficientes</span>
-                        puede modificar los <span class="">presentismo</span> correspondientes a la
-                        <span class="">base</span>,
-                        <span class="">turno</span> y <span
-                                class="">periodos</span> listados.
+                        Esto significa que no se podran modificar los presentismocorrespondientes a la base, turno y periodos listados.
 
                     </div>
                     <div class="">
@@ -96,11 +92,16 @@
             </div>
 
             <div class="box-footer">
-                <a class="btn btn-default" href="{{URL::previous()}}">Volver</a>
 
                 {!! Form::submit('Finalizar', ['class' => 'btn btn-primary pull-right']) !!}
-            </div>
             {!! Form::close() !!}
+                {!! Form::open(['route' => 'haberesListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+                <input type="hidden" value="{{$estadoPeriodo->id}}" name="periodo">
+                <input type="submit"
+                       class="btn btn-default"
+                       value='Volver'/>
+                {!! Form::close() !!}
+            </div>
         </div>
     </div>
 @endsection

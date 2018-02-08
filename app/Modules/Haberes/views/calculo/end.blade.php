@@ -93,7 +93,12 @@ while ($fecha < $fechaToday) {
                 <tr>
                     <td colspan="10">
                         <div class="col-md-4">
-                            <a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>
+                            {!! Form::open(['route' => 'haberesListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+                            <input type="hidden" value="{{$estadoPeriodo->id}}" name="periodo">
+                            <input type="submit"
+                                   class="btn btn-default"
+                                   value='Volver'/>
+                            {!! Form::close() !!}
                         </div>
                         <div class="col-md-4">
                             {!! Form::open(['route' => 'haberesNotificar']) !!}
@@ -107,7 +112,7 @@ while ($fecha < $fechaToday) {
                         </div>
                         <div class="col-md-4">
                             {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
-                            {!! Form::hidden('periodo', $periodo->id) !!}
+                            {!! Form::hidden('id_periodo', $periodo->id) !!}
                             {!! Form::hidden('turno', $turno->id) !!}
                             {!! Form::hidden('base', $base->id) !!}
                             <button type="submit" class="btn btn-success pull-right">

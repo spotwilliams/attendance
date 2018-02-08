@@ -6,17 +6,18 @@ use Cat\Models\Base;
 use Cat\Models\Contrato;
 use Cat\Models\EstadoPeriodo;
 use Cat\Models\Haber;
-use Cat\Models\Periodo;
+use Cat\Models\Operativo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Illuminate\Support\Facades\Response;
 
 class GeneralController extends AppBaseController
 {
@@ -31,23 +32,68 @@ class GeneralController extends AppBaseController
     }
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function selectBase(Request $request)
+    public function index(Request $request)
     {
         $this->authorize('selectBase', $this);
         
-        return view('Haberes::calculo.index-base');
+        /** @var Collection $operativos */
+        $operativos = Operativo::select(['operativos.*'])
+            ->join('agentes', 'operativos.id_agente', '=', 'agentes.id')
+            ->join('contratos', function ($joinClause) {
+                /** @var \Illuminate\Support\Collection $tipo */
+                /** @var \Illuminate\Database\Query\JoinClause $joinClause */
+                
+                $tipo = TipoContrato::select('id')
+                    ->where('codigo', 'LOCACION')
+                    ->get();
+                
+                $joinClause->on('agentes.id', '=', 'contratos.id_agente')
+                    ->whereIn('id_tipo_contrato', array_keys($tipo->keyBy('id')->toArray()));
+            })
+            ->get();
+        
+        /** @var Builder $eloq */
+        $eloq = EstadoPeriodo::select(['estado_periodos.*'])
+            ->with('turno')
+            ->with('periodo')
+            ->where('abierto', '=', true)
+            ->orderBy('id_periodo', 'DESC');
+        
+        /**
+         * @var integer $idBase
+         * @var Collection $item
+         */
+        $eloq->where(function ($where) use($operativos ){
+            
+            foreach ($operativos->groupBy('id_base') as $idBase => $item) {
+                $idTurnos = array_keys($item->keyBy('id_turno')->toArray());
+                
+                foreach ($idTurnos as $idTurno) {
+                    $where->orWhere(function ($where) use ($idBase, $idTurno) {
+                        $where->where('id_base', $idBase)
+                            ->where('id_turno', $idTurno);
+                    });
+                }
+            }
+        });
+
+        $estadoPeriodo = $eloq->get();
+        
+        return view('Haberes::calculo.index-estados-periodos')
+            ->with('estadosPeriodos', $estadoPeriodo);
     }
     
     /**
      * @param Request $request
-     * @return View
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @deprecated
      */
-    public function selectPeriodo(Request $request)
+    private function selectPeriodo(Request $request)
     {
         $this->authorize('selectPeriodo', $this);
         
@@ -64,7 +110,13 @@ class GeneralController extends AppBaseController
             ->with('turno', $turno);
     }
     
-    public function prepareListaAgentes(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     * @deprecated
+     */
+    private function prepareListaAgentes(Request $request)
     {
         $this->authorize('prepareListaAgentes', $this);
         try {
@@ -94,19 +146,28 @@ class GeneralController extends AppBaseController
         
     }
     
-    public function listaAgentes(Request $request, $base, $periodo, $turno)
+    /**
+     * @param Request $request
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function listaAgentes(Request $request)
     {
         $this->authorize('listaAgentes', $this);
-        
+     
         try {
-            $periodo       = Periodo::findOrFail($periodo);
-            $base          = Base::findOrFail($base);
-            $turno         = Turno::findOrFail($turno);
-            $estadoPeriodo = EstadoPeriodo::where('id_periodo', '=', $periodo->id)
-                ->where('id_base', '=', $base->id)
-                ->where('id_turno', '=', $turno->id)
+            /** @var EstadoPeriodo $estadoPeriodo */
+            $estadoPeriodo = EstadoPeriodo::where('id', '=', $request->input('periodo'))
+                ->with('base')
+                ->with('turno')
+                ->with('periodo')
                 ->first();
-            $tipoLocacion  = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
+            
+            $periodo = $estadoPeriodo->periodo;
+            $base    = $estadoPeriodo->base;
+            $turno   = $estadoPeriodo->turno;
+            
+            $tipoLocacion = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
                 ->get(['id'])
                 ->keyBy('id')
                 ->toArray());
@@ -117,7 +178,7 @@ class GeneralController extends AppBaseController
             $agentes = $this
                 ->presentismoRepository
                 ->getEloquentAgentes($base->id, $periodo);
-
+            
             $agentes
                 ->select([
                     'agentes.id as id',
@@ -148,8 +209,7 @@ class GeneralController extends AppBaseController
         } catch (ModelNotFoundException $e) {
             Flash::error('No se ha podido continuar. Intente nuevamente');
             
-            return view('Haberes::calculo.index-base')
-                ->with('baseActual', 1);
+            return view('Haberes::calculo.index-estados-periodos');
         }
         
     }

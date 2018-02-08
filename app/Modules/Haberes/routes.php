@@ -20,16 +20,16 @@ Route::group(
         /**
          * Generales
          */
-        Route::get('haberes/select/base', GeneralController::class . '@selectBase')
+        Route::get('index', GeneralController::class . '@index')
             ->name('haberesSelectBase');
         
-        Route::post('haberes/select/periodo', GeneralController::class . '@selectPeriodo')
-            ->name('haberesSelectPeriodo');
+//        Route::post('haberes/select/periodo', GeneralController::class . '@selectPeriodo')
+//            ->name('haberesSelectPeriodo');
         
-        Route::post('haberes/lista/agentes', GeneralController::class . '@prepareListaAgentes')
-            ->name('haberesPrepareListaAgentes');
+//        Route::post('haberes/lista/agentes', GeneralController::class . '@prepareListaAgentes')
+//            ->name('haberesPrepareListaAgentes');
         
-        Route::get('haberes/lista/agentes/base/{base}/periodo/{periodo}/turno/{turno}', GeneralController::class . '@listaAgentes')
+        Route::post('haberes/lista/agentes', GeneralController::class . '@listaAgentes')
             ->name('haberesListaAgentes');
 
         /**

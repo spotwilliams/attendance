@@ -3,7 +3,7 @@
 /** @var \DateTime $fecha */
 /** @var \Cat\Models\Periodo $periodo */
 $fecha      = new DateTime($periodo->fecha_comienzo);
-$fechaToday = (new DateTime($periodo->fecha_fin));
+$fechaToday = new DateTime($periodo->fecha_fin);
 
 $fechasToShow = [];
 
@@ -28,22 +28,18 @@ while ($fecha < $fechaToday) {
             <div class="box-header with-border">
                 <h3 class="box-title">C&aacute;lculo de haberes</h3>
                 <div class="box-tools pull-right">
-                    <div class="col-md-2">
+                    <div class="col-md-2 col-xs-2">
 
-                        {!! Form::open(['route' => 'haberesSelectPeriodo']) !!}
-                        {!! Form::hidden('base', $base->id) !!}
-                        {!! Form::hidden('turno', $turno->id) !!}
-                        <input type="submit"
+                        <a href="{{route('haberesSelectBase')}}"
                                class="btn btn-default"
-                               value='Volver'/>
-                        {!! Form::close() !!}
+                               >Volver</a>
                     </div>
 
                     @if($estadoPeriodo->estaAbierto())
-                        <div class="col-md-4">
+                        <div class="col-md-4 col-xs-4">
 
                             {!! Form::open(['route' => 'haberesReportePreliminar']) !!}
-                            {!! Form::hidden('periodo', $periodo->id) !!}
+                            {!! Form::hidden('id_periodo', $periodo->id) !!}
                             {!! Form::hidden('base', $base->id) !!}
                             {!! Form::hidden('turno', $turno->id) !!}
                             <input type="submit"
@@ -52,10 +48,10 @@ while ($fecha < $fechaToday) {
                             {!! Form::close() !!}
                         </div>
                     @endif
-                    <div class="col-md-4">
+                    <div class="col-md-4 col-xs-4">
                         @if($estadoPeriodo->estaAbierto())
                             {!! Form::open(['route' => 'haberesConfirmarDisclaimer']) !!}
-                            {!! Form::hidden('periodo', $periodo->id) !!}
+                            {!! Form::hidden('id_periodo', $periodo->id) !!}
                             {!! Form::hidden('base', $base->id) !!}
                             {!! Form::hidden('turno', $turno->id) !!}
                             <input type="submit"
@@ -70,26 +66,27 @@ while ($fecha < $fechaToday) {
             <div class="box-body">
                 <div class="form-group col-sm-10 col-sm-offset-1">
                     <div class="progress-group ">
-                        <span class="progress-text">Paso 3</span>
-                        <span class="progress-number"><b>3</b>/4</span>
+                        <span class="progress-text">Paso 2</span>
+                        <span class="progress-number"><b>2</b>/3</span>
 
                         <div class="progress">
-                            <div class="progress-bar progress-bar-yellow" style="width: 75%"></div>
+                            <div class="progress-bar progress-bar-yellow" style="width: 66%"></div>
                         </div>
                     </div>
-                    <div class="col-md-4">
-                        <h4 class="box-title">Base <span class="label label-info">{{$base->nombre}}</span></h4>
-                    </div>
-                    <div class="col-md-2">
-                        <h4 class="box-title">Turno <span class="label label-info">{{$turno->codigo}}</span></h4>
-                    </div>
-                    <div class="col-md-4">
-                        <h4 class="box-title">
-                            Periodo <span
-                                    class="label label-info">{{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}</span>
-                            hasta <span
-                                    class="label label-info">{{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
-                        </h4>
+                    <div class="info-box bg-green">
+                        <span class="info-box-icon"><i class="fa fa-flag-o"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-number">{{$base->nombre}}</span>
+                            <span class="info-box-number">{{$turno->codigo}}</span>
+
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span class="progress-description">Periodo desde {{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}
+                                hasta {{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
+                        </div>
+                        <!-- /.info-box-content -->
                     </div>
                 </div>
 
@@ -113,13 +110,10 @@ while ($fecha < $fechaToday) {
                                         <h4><i class="icon fa fa-info"></i> Aviso</h4>
                                         Los presentismos para esta base y turno ya han sido cerrados.
                                     </div>
-                                    {{--<div class="col-md-4">--}}
-                                        {{--<a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>--}}
-                                    {{--</div>--}}
                                     <div class="col-md-4">
 
                                         {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
-                                        {!! Form::hidden('periodo', $periodo->id) !!}
+                                        {!! Form::hidden('id_periodo', $periodo->id) !!}
                                         {!! Form::hidden('turno', $turno->id) !!}
                                         {!! Form::hidden('base', $base->id) !!}
                                         <button type="submit" class="btn btn-success pull-right">
@@ -129,7 +123,7 @@ while ($fecha < $fechaToday) {
                                     </div>
                                     <div class="col-md-4">
                                         {!! Form::open(['route' => 'haberesNotificar']) !!}
-                                        {!! Form::hidden('periodo', $periodo->id) !!}
+                                        {!! Form::hidden('id_periodo', $periodo->id) !!}
                                         {!! Form::hidden('base', $base->id) !!}
                                         {!! Form::hidden('turno', $turno->id) !!}
                                         <input type="submit"
@@ -217,6 +211,7 @@ while ($fecha < $fechaToday) {
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+
             function activarPopOver() {
                 $('[data-toggle="popover"]')
                     .popover({

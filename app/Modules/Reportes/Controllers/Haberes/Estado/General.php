@@ -100,8 +100,9 @@ class General extends ReporteController
             ->with('turno')
             ->whereIn('id_periodo', $this->periodos)
             ->whereIn('id_base', $this->base)
-            ->whereIn('id_turno', $this->turno);
-
+            ->whereIn('id_turno', $this->turno)
+            ->orderBy('id_periodo', 'DESC');
+        
         return $this;
     }
     
