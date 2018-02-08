@@ -5,6 +5,7 @@ namespace Cat\Modules\Presentismo\Controllers\Registro;
 use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeInjustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeJustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
@@ -89,6 +90,10 @@ class JustificacionController extends AppBaseController
         } catch (NoSePuedeJustificar $e) {
             $message  = $e->getMessage();
             $code     = 500;
+            $disabled = true;
+        } catch (BaseTurnoSinPeriodo $e) {
+            $message = $e->getMessage();
+            $code = 500;
             $disabled = true;
         }
         

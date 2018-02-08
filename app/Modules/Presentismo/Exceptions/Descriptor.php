@@ -3,7 +3,10 @@
 namespace Cat\Modules\Presentismo\Exceptions;
 
 use Cat\Exceptions\MainDescriptor;
+use Cat\Models\Base;
+use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
+use Cat\Models\Turno;
 
 class Descriptor extends MainDescriptor
 {
@@ -11,10 +14,11 @@ class Descriptor extends MainDescriptor
     const CONTRATO_NO_LOCACION               = 2000;
     const SIN_DIAS_DISPONIBLES               = 3000;
     const PERIODO_CERRADO                    = 4000;
+    const BASE_TURNO_SIN_PERIODO             = 4001;
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
-    const FECHA_FUTURA = 8000;
+    const FECHA_FUTURA                       = 8000;
     
     
     public static function contratoInactivo()
@@ -103,5 +107,17 @@ class Descriptor extends MainDescriptor
         return self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA];
     }
     
-    
+    public static function baseTurnoSinPeriodo(Periodo $periodo, Base $base, Turno $turno)
+    {
+        if (!isset(self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO])) {
+            $fC  = (new \DateTime($periodo->fecha_comienzo))->format('d/m/Y');
+            $fF  = (new \DateTime($periodo->fecha_fin))->format('d/m/Y');
+            $msg = "El periodo comprendido entre $fC y $fF no existe para la base $base->nombre y turno $turno->codigo.";
+            
+            self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO]
+                = new Descriptor(Descriptor::BASE_TURNO_SIN_PERIODO, $msg);
+        }
+        
+        return self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO];
+    }
 }

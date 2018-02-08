@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -53,6 +54,7 @@ class Periodo extends Model
      * @param Base $base
      * @param Turno $turno
      * @return bool
+     * @throws BaseTurnoSinPeriodo
      */
     public function estaActivo(Base $base, Turno $turno)
     {
@@ -65,7 +67,8 @@ class Periodo extends Model
             return ($estado->abierto == true);
             
         } catch (ModelNotFoundException $e) {
-            return false;
+            throw new BaseTurnoSinPeriodo($this, $base, $turno);
+//            return false;
         }
         
     }

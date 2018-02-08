@@ -6,6 +6,7 @@ use Cat\Exceptions\FaltanDatosObligatorios;
 use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
@@ -164,6 +165,9 @@ class RegistroController extends AppBaseController
             
             $message = $e->getMessage();
             $code    = 500;
+        } catch (BaseTurnoSinPeriodo $e) {
+            $message = $e->getMessage();
+            $code = 500;
         }
         try {
             
