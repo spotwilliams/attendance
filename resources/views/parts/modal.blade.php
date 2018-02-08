@@ -8,7 +8,7 @@
             </div>
             <div class="modal-body">
                 <div class="row">
-                    <div class="col-xs-4">
+                    <div class="col-xs-5">
                         <div class="box box-warning">
                             <div class="box-body box-profile">
                                 <h4 class="profile-username text-center">Datos relevantes</h4>
@@ -33,7 +33,7 @@
                         </div>
                     </div>
 
-                    <div class="col-xs-8 table-responsive">
+                    <div class="col-xs-7 table-responsive">
                         <table class="table table-striped table-comentario">
                             <thead>
                             <tr>

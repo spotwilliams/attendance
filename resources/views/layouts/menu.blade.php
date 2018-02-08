@@ -126,6 +126,12 @@
         </li>
         <li class="divider"></li>
         <li>
+            <a href="{!! route('reportesHaberesVistaPreviaIndex') !!}">
+                <i class="fa fa-search"></i>
+                <span>Control de base</span>
+            </a>
+        </li>
+        <li>
             <a href="{!! route('reportesHaberesEstadoIndex') !!}">
                 <i class="fa fa-money"></i>
                 <span>Res&uacute;men de haberes</span>

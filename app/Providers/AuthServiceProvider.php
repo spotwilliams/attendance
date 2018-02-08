@@ -5,6 +5,8 @@ namespace Cat\Providers;
 // Crud Agentes
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\General;
+use Cat\Policies\Reportes\Haberes\VistaPreviaReportePolicy;
 use Cat\Policies\RequestGatePolicy;
 use Cat\Policies\TipoPresentismoGatePolicy;
 use Cat\User;
@@ -130,14 +132,14 @@ class AuthServiceProvider extends ServiceProvider
             ReporteIndividual::class       => IndividualPolicy::class,
             ReporteIndividualSearch::class => IndividualPolicy::class,
             
-            Request::class => RequestPolicy::class,
+            Request::class                => RequestPolicy::class,
             
-            ReporteHaberes::class  => ReportePolicyHaber::class,
-            ExportarHaberes::class => ExportarPolicyHaber::class,
-            
+            // Reporte de Haberes
+            ReporteHaberes::class         => ReportePolicyHaber::class,
+            ExportarHaberes::class        => ExportarPolicyHaber::class,
             ReporteHaberesAgentes::class  => ReportePolicyHaber::class,
             ExportarHaberesAgentes::class => ExportarPolicyHaber::class,
-        
+            General::class                => VistaPreviaReportePolicy::class,
         
         ];
     

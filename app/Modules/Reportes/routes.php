@@ -8,6 +8,7 @@
 | Rutas del presente modulo.
 |
 */
+
 use Illuminate\Support\Facades\Route;
 use Cat\Modules\Reportes\Controllers\Presentismos\General as PresentismosGeneral;
 use Cat\Modules\Reportes\Controllers\Presentismos\Individual as PresentismosIndividual;
@@ -19,6 +20,8 @@ use Cat\Modules\Reportes\Controllers\Haberes\Estado\General as HaberesEstado;
 use Cat\Modules\Reportes\Controllers\Haberes\Estado\Exportar as HaberesEstadoExport;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\General as HaberesAgentes;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\Exportar as HaberesAgentesExport;
+use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\General as HaberesVistaPrevia;
+use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\Exportar as HaberesVistaPreviaExport;
 
 Route::group([
     'middleware' => ['web'],
@@ -116,7 +119,16 @@ Route::group([
                 ->name('reportesHaberesAgentesExport');
         });
         
-        
+        Route::group(['prefix' => 'vista-previa'], function () {
+            Route::get('/', HaberesVistaPrevia::class . '@index')
+                ->name('reportesHaberesVistaPreviaIndex');
+            
+            Route::post('/', HaberesVistaPrevia::class . '@search')
+                ->name('reportesHaberesVistaPreviaSearch');
+            
+            Route::post('export', HaberesVistaPreviaExport::class . '@export')
+                ->name('reportesHaberesVistaPreviaExport');
+        });
     });
 }
 );
