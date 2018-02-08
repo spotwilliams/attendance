@@ -10,6 +10,12 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PeriodoActivo extends Rule
 {
+    /**
+     * @return bool|mixed
+     * @throws AgenteSinBase
+     * @throws AgenteSinTurno
+     * @throws PeriodoCerrado
+     */
     protected function validate()
     {
         
