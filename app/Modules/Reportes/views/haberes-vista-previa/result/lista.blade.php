@@ -28,22 +28,25 @@ if (isset($periodo)) {
     </div>
 
     <div class="box-body">
-        <table class="table table-hover" id="haberes-table">
-            <thead>
-            <th>Detalles</th>
-            <th>Personal</th>
-            <th>CUIT</th>
-            </thead>
-            <tbody>
-            @if($estadoPeriodo->estaAbierto())
-                @include('Reportes::haberes-vista-previa.result.all-days')
-            @else
-                <tr>
-                    <th align="center" acolspan="3"><span class="label label-info">El peri&oacute;do se encuentra cerrado para la base y turno seleccionado</span></th>
-                </tr>
-            @endif
-            </tbody>
-        </table>
+        @if(isset($agentes))
+            <table class="table table-hover" id="haberes-table">
+                <thead>
+                <th>Detalles</th>
+                <th>Personal</th>
+                <th>CUIT</th>
+                </thead>
+                <tbody>
+                @if($estadoPeriodo->estaAbierto())
+                    @include('Reportes::haberes-vista-previa.result.all-days')
+                @else
+                    <tr>
+                        <th align="center" acolspan="3"><span class="label label-info">El peri&oacute;do se encuentra cerrado para la base y turno seleccionado</span>
+                        </th>
+                    </tr>
+                @endif
+                </tbody>
+            </table>
+        @endif
     </div>
     <div class="box-footer">
         <div class="col-md-6 col-md-offset-3">
