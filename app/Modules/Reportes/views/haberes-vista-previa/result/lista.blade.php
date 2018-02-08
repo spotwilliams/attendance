@@ -34,13 +34,14 @@ if (isset($periodo)) {
                 <th>Detalles</th>
                 <th>Personal</th>
                 <th>CUIT</th>
+                <th></th>
                 </thead>
                 <tbody>
                 @if($estadoPeriodo->estaAbierto())
                     @include('Reportes::haberes-vista-previa.result.all-days')
                 @else
                     <tr>
-                        <th align="center" acolspan="3"><span class="label label-info">El peri&oacute;do se encuentra cerrado para la base y turno seleccionado</span>
+                        <th align="center" colspan="3"><span class="label label-info">El peri&oacute;do se encuentra cerrado para la base y turno seleccionado</span>
                         </th>
                     </tr>
                 @endif

@@ -39,6 +39,10 @@ if (isset($periodo)) {
 
             <td>{{$a->apellido}}, {{$a->nombre}}</td>
             <td>{{$a->cuit}}</td>
+            <td><a href="{{route('agentesShow', ['id' => $a->id])}}" data-toggle="popover" title="Ver datos"
+                   data-content="Abre la ficha del agente en otra pesta&ntilde;a" target="_blank"
+                   class="label label-success"><i class="fa fa-eye"></i></a>
+            </td>
         </tr>
         <tr class="hidden">
             {{--        <input type="hidden" data-presentismos="{{$a->presentismos}}">--}}
@@ -69,6 +73,6 @@ if (isset($periodo)) {
     @endforeach
 @else
     <tr>
-        <th align="center" acolspan="3"><span class="label label-info">No se encontraron agentes con contrato de locaci&oacute;n</span></th>
+        <th align="center" colspan="3"><span class="label label-info">No se encontraron agentes con contrato de locaci&oacute;n</span></th>
     </tr>
 @endif
