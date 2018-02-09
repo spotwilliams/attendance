@@ -9,6 +9,11 @@
 
         <div class="clearfix"></div>
         <div class="row">
+            <div class="col-md-12">
+                @include('Reportes::presentismos.por-agente.reporte.form')
+            </div>
+        </div>
+        <div class="row">
             <div class="col-md-3">
                 @include('Reportes::presentismos.por-agente.reporte.resumen')
             </div>
@@ -16,11 +21,6 @@
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">Reporte de asistencias</h3>
-                        <div class="box-tools pull-right">
-                            {!! Form::open(['route' => 'reportesPresentismoIndividualExport']) !!}
-                            <button type="submit" class="btn btn-default">Exportar</button>
-                            {!! Form::close() !!}
-                        </div>
                     </div>
                     <div class="box-body">
                         <div class="col-md-12 col-xs-12 table-responsive">

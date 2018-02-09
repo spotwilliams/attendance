@@ -23,7 +23,7 @@
                     {{ Form::open(['route' => 'reportesPresentismoIndividualReportePresentismos', 'method' => 'POST'])}}
                     <input type="hidden" name="agente" value="{{$agente->id}}">
                     {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '200px') !!}
-                    {{ Form::submit('Reporte', ['class' => 'btn btn-primary']) }}
+                    {{ Form::submit('Ver licencias', ['class' => 'btn btn-primary']) }}
 
                     {{ Form::close() }}
                 @else
