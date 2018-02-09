@@ -21,6 +21,7 @@
 {!! Html::style('plugins/colorpicker/css/bootstrap-colorpicker.min.css') !!}
 {!! Html::style('plugins/datatables-buttons-1.3.1/css/buttons.dataTables.css') !!}
 {!! Html::style('plugins/inputmask/css/inputmask.css') !!}
+{!! Html::style('plugins/fullcalendar/css/fullcalendar.min.css') !!}
 
 {!! Html::style('css/style.css') !!}
 <!-- Ionicons -->
@@ -215,6 +216,7 @@
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') !!}
 {!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
 {!! Html::script('plugins/inputmask/js/jquery.inputmask.bundle.min.js') !!}
+{!! Html::script('plugins/fullcalendar/js/fullcalendar.min.js') !!}
 
 {{--{!! Html::script('plugins/datatables-double-scroll/js/datatables-double-scroll.js') !!}--}}
 

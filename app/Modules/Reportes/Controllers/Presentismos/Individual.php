@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
+use Carbon\Carbon;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Reportes\Controllers\ReporteController;
@@ -30,10 +31,9 @@ class Individual extends ReporteController
     protected $agente;
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function reporte(Request $request)
     {
@@ -42,22 +42,25 @@ class Individual extends ReporteController
         $this->setupParams($request)
             ->setupQuery();
         
-        /** @var LengthAwarePaginator $return */
-        $return = $this->query->paginate(25, ['*'], 'pagina', $this->page);
-        
-        return View::make('Reportes::presentismos.por-agente.reporte-individual')
-            ->with('agentes', $return)
+        /** @var Agente $agente */
+        $agente = $this->query->first();
+
+        return View::make('Reportes::presentismos.por-agente.reporte.index')
+            ->with('agente', $agente)
             ->with('desde', $this->desde)
-            ->with('hasta', $this->hasta)
-            ->with('links', $this->getLinksLikeForm($return, $request, 'reportesPresentismoIndividualSearch'))
-            ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoIndividualExport'));
+            ->with('hasta', $this->hasta);
         
     }
     
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function export(Request $request)
     {
         $this->authorize('export', $this);
-
+        
         $this->setupParams($request)
             ->setupQuery();
         
@@ -71,10 +74,15 @@ class Individual extends ReporteController
         }
     }
     
+    /**
+     * @param Request $request
+     * @return $this
+     */
     protected function setupParams(Request $request)
     {
-        $this->desde  = new \DateTime($request->input('desde'));
-        $this->hasta  = new \DateTime($request->input('hasta'));
+        $today        = Carbon::today();
+        $this->desde  = new \DateTime($today->firstOfMonth());
+        $this->hasta  = new \DateTime($today->lastOfMonth());
         $this->agente = Agente::findOrFail($request->input('agente'));
         $this->tipos  = $request->input('tipos');
         $this->page   = (($request->input('page') !== null) ? $request->input('page') : 1);
@@ -82,6 +90,9 @@ class Individual extends ReporteController
         return $this;
     }
     
+    /**
+     * @return $this
+     */
     protected function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
@@ -96,8 +107,7 @@ class Individual extends ReporteController
                     
                     $query->orderBy('fecha', 'ASC')
                         ->with('tipoPresentismo')
-                        ->with('comentarios.user')
-                    ;
+                        ->with('comentarios.user');
                 },
             ])
             ->where('agentes.id', '=', $this->agente->id)

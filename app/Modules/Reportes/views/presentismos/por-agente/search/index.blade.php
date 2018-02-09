@@ -16,15 +16,17 @@
 
                 <div class="row">
                     <div class="col-md-10 col-xs-10 col-md-offset-1 col-xs-offset-1">
-                        @include('Reportes::presentismos.por-agente.form')
-                    </div>
-
-                    <div class="col-md-12 col-xs-12">
-                        @include('Reportes::presentismos.por-agente.table')
+                        @include('Reportes::presentismos.por-agente.search.form')
                     </div>
                 </div>
+
             </div>
             <div class="box-footer">
+                <div class="row">
+                    <div class="col-md-12 col-xs-12">
+                        @include('Reportes::presentismos.por-agente.search.table')
+                    </div>
+                </div>
                 <div class="text-center">
                     @if(isset($links))
                         {!! $links !!}

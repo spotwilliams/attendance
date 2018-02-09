@@ -240,13 +240,14 @@ class HtmlCustoms
     public static function getSelectByTipoContrato(
         TipoContrato $tipoContrato,
         $multiple = false,
-        $selector = 'selectpicker'
+        $selector = 'selectpicker',
+        $with = '150px'
     ) {
         
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
         $multipleOpt       = (($multiple === true) ? 'name="tipos[]" multiple multiple data-actions-box="true" ' : ' name="tipo" ');
-        $select            = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"150px\" data-size=\"5\" $multipleOpt >";
+        $select            = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"$with\" data-size=\"5\" $multipleOpt >";
         
         $option = ($multiple) ? '' : "<option value=\"-1\">...</option>";
         
@@ -255,6 +256,7 @@ class HtmlCustoms
         foreach ($tiposPresentismos as $tp) {
             // Option
             $option = "<option value=\"$tp->id\"";
+            $option .= ' data-tokens="' . $tp->codigo . '" ';
             $option .= " data-content=\"<span class='label' style='color: $tp->color_letra; background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
             $option .= ">$tp->descripcion</option>";
             $select .= $option;
