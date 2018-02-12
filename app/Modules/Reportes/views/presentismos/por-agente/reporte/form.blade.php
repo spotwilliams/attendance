@@ -19,18 +19,24 @@
             <div class="col-xs-8">
                 {{--Seleccione los datos para exportarlos a Excel!--}}
                 {!! Form::open(['route' => 'reportesPresentismoIndividualExport' ,'method' => 'POST']) !!}
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="exampleInputEmail1">Rango de fechas</label>
                     <input type="hidden" name="desde" class="desde">
                     <input type="hidden" name="hasta" class="hasta">
-                    <input type="text" class="rango">
+                    <input type="hidden" name="agente" value="{{$agente->id}}">
+                    <input type="text" class="rango form-control">
                 </div>
-                <div class="form-group">
+                <div class="form-group col-md-4">
                     <label for="exampleInputEmail1">Tipos de licencias</label>
-                {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '200px') !!}
+                    <div class="">
+                        {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '250px') !!}
+                    </div>
                 </div>
 
+                <div class="col-md-12 col-xs-12">
+
                 <button type="submit" class="btn btn-default">Exportar</button>
+                </div>
                 {!! Form::close() !!}
             </div>
         </div>

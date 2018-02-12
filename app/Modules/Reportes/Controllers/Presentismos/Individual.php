@@ -44,7 +44,7 @@ class Individual extends ReporteController
         
         /** @var Agente $agente */
         $agente = $this->query->first();
-
+        
         return View::make('Reportes::presentismos.por-agente.reporte.index')
             ->with('agente', $agente)
             ->with('desde', $this->desde)
@@ -111,8 +111,16 @@ class Individual extends ReporteController
                 },
             ])
             ->where('agentes.id', '=', $this->agente->id)
-            ->with('operativo.base')
-            ->with('operativo.turno')
+            ->with([
+                'operativo.base' => function ($query) {
+                    $query->select(['id', 'nombre as nombre_base', 'nombre']);
+                },
+            ])
+            ->with([
+                'operativo.turno' => function ($query) {
+                    $query->select(['id', 'codigo as turno', 'codigo']);
+                },
+            ])
             ->with('contrato.tipoContrato');
         
         return $this;
