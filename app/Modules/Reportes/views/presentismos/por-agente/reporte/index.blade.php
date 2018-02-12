@@ -43,8 +43,6 @@ $presentismos = $agente->presentismos->keyBy('fecha');
     <script type="text/javascript">
         $(document).ready(function () {
 
-            // page is now ready, initialize the calendar...
-
             $('#calendar').fullCalendar({
                 fixedWeekCount: false,
                 height: 500,
@@ -55,17 +53,73 @@ $presentismos = $agente->presentismos->keyBy('fecha');
                     day: 'dia',
                     list: 'lista',
                 },
-                defaultDate: '{{(new DateTime(\Carbon\Carbon::today()->firstOfMonth()))->format('Y-m-d')}}',
-                events: [
-                        @foreach($presentismos as $p)
+                eventSources: [
+
+                    // your event source
                     {
-                        title: '{!! $p->tipoPresentismo->codigo !!}',
-                        start: '{!! (new DateTime($p->fecha))->format('Y-m-d') !!}',
-                        color: '{{$p->tipoPresentismo->color}}',
-                        textColor: '{{$p->tipoPresentismo->color_letra}}',
-                    },
-                    @endforeach
+                        url: '{{route('reportesPresentismoIndividualPresentismosFecha')}}',
+                        headers: {
+                            'X-CSRF-TOKEN': '{{ csrf_token() }}'
+                        },
+                        type: 'POST',
+                        data: {
+                            agente: '{{$agente->id}}',
+                        },
+                        error: function () {
+                            alert('No se pudieron consultar los datos del presentismo');
+                        },
+                        success: function (data) {
+
+                            $('#resumen').children('li').remove();
+
+                            if (data.length === 0) {
+                                $('#resumen').append('<li class="list-group-item"><b>No se encontraron licencias</b></li>');
+                            } else {
+                                var resumen = [];
+                                var codigo = '';
+                                for (var i = 0; i < data.length; i++) {
+                                    codigo = data[i].tipo_presentismo.id;
+                                    if (resumen[codigo] === undefined) {
+                                        resumen[codigo] = {
+                                            count: 1,
+                                            codigo: data[i].tipo_presentismo.codigo,
+                                            letra: data[i].tipo_presentismo.color_letra,
+                                            background: data[i].tipo_presentismo.color,
+                                        };
+                                    } else {
+                                        resumen[codigo].count++;
+
+                                    }
+                                }
+                                $.each(resumen, function (index, item) {
+                                    if (item !== undefined) {
+
+                                        var li = '';
+                                        li = '<li class="list-group-item"><span class="label" style="background: ' +
+                                            item.background +
+                                            '">' +
+                                            item.codigo +
+                                            '</span><a class="pull-right"><span class="description-text">' +
+                                            item.count +
+                                            '</span></a></li>';
+                                        $('#resumen').append(li);
+                                    }
+
+                                });
+                            }
+                        }
+                    }
                 ],
+                eventDataTransform: function (p) {
+                    return {
+                        title: p.tipo_presentismo.codigo + ' (' + ((p.injustificado === true) ? 'Injustificado' : 'Justificado') + ')',
+                        start: moment(p.fecha, 'Y-MM-DD').format('Y-MM-DD'),
+                        color: p.tipo_presentismo.color,
+                        textColor: p.tipo_presentismo.color_letra,
+                    };
+
+
+                }
 
             })
 

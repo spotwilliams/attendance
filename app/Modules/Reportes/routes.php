@@ -83,7 +83,14 @@ Route::group([
         Route::post('individual/search/presentismo',
             PresentismosIndividual::class . '@reporte')
             ->name('reportesPresentismoIndividualReportePresentismos');
-        
+    
+        // Ajax
+        Route::post('individual/search/presentismo/calendar',
+            PresentismosIndividual::class . '@presentismosFecha')
+            ->name('reportesPresentismoIndividualPresentismosFecha');
+    
+    
+    
         // Descarga
         Route::post('export', PresentismosIndividual::class . '@export')
             ->name('reportesPresentismoIndividualExport');

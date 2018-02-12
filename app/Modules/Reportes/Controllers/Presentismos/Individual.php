@@ -52,6 +52,22 @@ class Individual extends ReporteController
         
     }
     
+    public function presentismosFecha(Request $request)
+    {
+        try {
+            $this->setupParams($request)
+                ->setupQuery();
+            
+            /** @var Agente $agente */
+            $agente = $this->query->first();
+            
+            return Response::json($agente->presentismos, 200);
+        } catch (\Exception $e) {
+            return Response::json([], 500);
+        }
+        
+    }
+    
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
@@ -80,9 +96,20 @@ class Individual extends ReporteController
      */
     protected function setupParams(Request $request)
     {
-        $today        = Carbon::today();
-        $this->desde  = new \DateTime($today->firstOfMonth());
-        $this->hasta  = new \DateTime($today->lastOfMonth());
+        $today = Carbon::today();
+        
+        if ($request->input('start')) {
+            $this->desde = new \DateTime($request->input('start'));
+        } else {
+            $this->desde = new \DateTime($today->firstOfMonth());
+        }
+        
+        if ($request->input('end')) {
+            $this->hasta = new \DateTime($request->input('end'));
+        } else {
+            
+            $this->hasta = new \DateTime($today->lastOfMonth());
+        }
         $this->agente = Agente::findOrFail($request->input('agente'));
         $this->tipos  = $request->input('tipos');
         $this->page   = (($request->input('page') !== null) ? $request->input('page') : 1);

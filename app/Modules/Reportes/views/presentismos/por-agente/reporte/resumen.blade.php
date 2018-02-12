@@ -9,13 +9,12 @@ $resumen = $agente->presentismos->groupBy(function ($presentismo, $key) {
         <h3 class="box-title">Resumen</h3>
 
         <div class="box-tools pull-right">
-            {{--<a href="{{route('reportesPresentismoIndividualIndex')}}" class="btn btn-default">Atr&aacute;s</a>--}}
         </div>
     </div>
     <div class="box-body">
         <div class="row">
             <div class="col-xs-12">
-                <ul class="list-group list-group-unbordered">
+                <ul class="list-group list-group-unbordered" id="resumen">
                     @if($resumen->isEmpty())
                         <li class="list-group-item">
                             <b>No se encontraron licencias</b>
