@@ -34,7 +34,7 @@ class DatabaseSeeder extends Seeder
 //        $this->parametros();
 //        $this->seguridad();
 //        $this->agentes();
-        $this->call(\Cat\Database\Releases\R201803_1_nuevos_reques\NuevosRequerimientos::class);
+        $this->call(\Cat\Database\Seeds\Releases\R201803_1_nuevos_reques\NuevosRequerimientos::class);
     }
     
     private function agentes()

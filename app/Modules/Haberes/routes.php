@@ -8,49 +8,81 @@
 | Rutas del presente modulo.
 |
 */
+
 use Illuminate\Support\Facades\Route;
 use Cat\Modules\Haberes\Controllers\Registro\GeneralController;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController;
 use Cat\Modules\Haberes\Controllers\Registro\NotificacionController;
-Route::group(
-    ['middleware' => ['web'], 'prefix' => 'administracion'],
-    
-    function () {
-        /**
-         * Generales
-         */
-        Route::get('index', GeneralController::class . '@index')
-            ->name('haberesSelectBase');
-        
-//        Route::post('haberes/select/periodo', GeneralController::class . '@selectPeriodo')
-//            ->name('haberesSelectPeriodo');
-        
-//        Route::post('haberes/lista/agentes', GeneralController::class . '@prepareListaAgentes')
-//            ->name('haberesPrepareListaAgentes');
-        
-        Route::post('haberes/lista/agentes', GeneralController::class . '@listaAgentes')
-            ->name('haberesListaAgentes');
 
+Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function () {
+    /**
+     * Generales
+     */
+    
+    
+    Route::get('index', GeneralController::class . '@index')
+        ->name('haberesSelectBase');
+    
+    Route::group(['prefix' => 'haberes'], function () {
+        
+        
+        Route::post('lista/agentes', GeneralController::class . '@listaAgentes')
+            ->name('haberesListaAgentes');
+        
         /**
          * Confirmaciones
          */
-        Route::post('haberes/confirmar/disclaimer', ConfirmarController::class . '@disclaimer')
-            ->name('haberesConfirmarDisclaimer');
-
-        Route::post('haberes/confirmar/lote', ConfirmarController::class . '@batch')
-            ->name('haberesConfirmarLote');
-    
+        Route::group(['prefix' => 'confirmar'], function () {
+            
+            Route::post('disclaimer', ConfirmarController::class . '@disclaimer')
+                ->name('haberesConfirmarDisclaimer');
+            
+            Route::post('lote', ConfirmarController::class . '@batch')
+                ->name('haberesConfirmarLote');
+        });
+        
         /**
          * Reporte
          */
-        Route::post('haberes/reporte', ReporteController::class . '@reporte')
-            ->name('haberesReporte');
-        Route::post('haberes/reporte/preliminar', ReporteController::class . '@reportePreliminar')
-            ->name('haberesReportePreliminar');
-
-        Route::post('haberes/notificar', NotificacionController::class . '@send')
-            ->name('haberesNotificar');
+        Route::group(['prefix' => 'reporte'], function () {
+            
+            Route::post('/', ReporteController::class . '@reporte')
+                ->name('haberesReporte');
+            
+            Route::post('preliminar', ReporteController::class . '@reportePreliminar')
+                ->name('haberesReportePreliminar');
+            
+        });
         
-    }
-);
+        
+        /**
+         * Notificacion
+         */
+        Route::group(['prefix' => 'reporte'], function () {
+            
+            Route::post('/', NotificacionController::class . '@send')
+                ->name('haberesNotificar');
+        });
+        
+        
+    });
+    
+    /**
+     * Modificacion Masivo
+     */
+    Route::group(['prefix' => 'modicacion'], function () {
+        Route::group(['prefix' => 'masivo'], function () {
+            
+            Route::get('contrato',
+                \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@index')
+                ->name('modificacionMasivaContratosIndex');
+            
+            Route::post('contrato',
+                \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@update')
+                ->name('modificacionMasivaContratosUpdate');
+        });
+    });
+    
+    
+});

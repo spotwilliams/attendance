@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Database\Releases\R201803_1_nuevos_reques;
+namespace Cat\Database\Seeds\Releases\R201803_1_nuevos_reques;
 
 use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
@@ -35,7 +35,11 @@ class NuevosRequerimientos extends Seeder
                 'name'        => 'Vista previa liquidacion',
                 'comentarios' => '',
             ],
-        
+            [
+                'id'          => 25,
+                'name'        => 'Modificar contratos',
+                'comentarios' => '',
+            ],
         ];
         
         

@@ -92,6 +92,12 @@
                 <span>C&aacute;lculo de haberes</span>
             </a>
         </li>
+        <li>
+            <a href="{!! route('modificacionMasivaContratosIndex') !!}">
+                <i class="fa fa-file-text-o"></i>
+                <span>Modificaci&oacute;n masiva de contratos</span>
+            </a>
+        </li>
     </ul>
 </li>
 
