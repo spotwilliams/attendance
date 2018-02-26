@@ -2,20 +2,18 @@
 
 namespace Cat\Modules\Reportes\Controllers\Haberes\Estado;
 
-use Cat\Modules\Reportes\Services\Formatters\Haberes;
+use Cat\Modules\Reportes\Services\Formatters\HaberesEstado;
 use Cat\Modules\Reportes\Services\Reporte;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Response;
 use Laracasts\Flash\Flash;
 
 class Exportar extends General
 {
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function export(Request $request)
     {
@@ -23,7 +21,7 @@ class Exportar extends General
         $this->setupParams($request)
             ->setupQuery();
         
-        $formatter = new Haberes();
+        $formatter = new HaberesEstado();
         $service   = new Reporte($this->query, $formatter);
         try {
             $service->execute();

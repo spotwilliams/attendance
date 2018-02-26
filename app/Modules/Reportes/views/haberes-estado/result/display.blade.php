@@ -63,6 +63,11 @@ if (!isset($data)) {
             </table>
         </div>
     </div>
+    <div class="box-footer text-center">
+        @if(isset($links))
+            {{$links}}
+        @endif
+    </div>
 </div>
 
 @section('css')
@@ -83,9 +88,9 @@ if (!isset($data)) {
                     {visible: false, targets: 0}
                 ],
                 paging: false,
-                pageLength: 60,
                 searching: false,
                 ordering: false,
+                info: false,
                 scrollY: 500,
                 scrollCollapse: false,
                 "order": [[2, 'asc']],

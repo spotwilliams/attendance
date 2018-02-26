@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Reportes\Services\Formatters;
 
+use Cat\Helpers\Calculation;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -13,19 +14,16 @@ class HaberesEstado extends RowDataFormatter
         return $this->toExcelRow($agente);
     }
     
-    protected function toExcelRow(Model $haber)
+    protected function toExcelRow(Model $estadoPeriodo)
     {
-        $data = [
-            'Apellido'              => $haber->agente->apellido,
-            'Nombre'                => $haber->agente->nombre,
-            'CUIT'                  => $haber->agente->cuit,
-            'Base durante periodo'  => $haber->base->nombre,
-            'Turno durante periodo' => $haber->turno->codigo,
-            'Base actual'           => $haber->agente->operativo->base->nombre,
-            'Turno actual'          => $haber->agente->operativo->turno->codigo,
-            'Mes'                   => trans('month.'.(new \DateTime($haber->periodo->fecha_comienzo))->format('m')),
-            'Año'                   => (new \DateTime($haber->periodo->fecha_comienzo))->format('Y'),
-            'Monto'                 => $haber->monto_facturado,
+        $monto = Calculation::getMontoAcumulado($estadoPeriodo->periodo, $estadoPeriodo->base, $estadoPeriodo->turno);
+        
+        $data  = [
+            'Desde'       => (new \DateTime($estadoPeriodo->periodo->fecha_comienzo))->format('d/m/Y'),
+            'Hasta'       => (new \DateTime($estadoPeriodo->periodo->fecha_fin))->format('d/m/Y'),
+            'Base'        => $estadoPeriodo->base->nombre,
+            'Turno'       => $estadoPeriodo->turno->codigo,
+            'Monto total' => $monto->total,
         ];
         
         return array_merge($data);
