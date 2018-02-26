@@ -22,6 +22,8 @@
 {!! Html::style('plugins/datatables-buttons-1.3.1/css/buttons.dataTables.css') !!}
 {!! Html::style('plugins/inputmask/css/inputmask.css') !!}
 {!! Html::style('plugins/fullcalendar/css/fullcalendar.min.css') !!}
+{!! Html::style('plugins/sliptree-bootstrap-tokenfield/css/bootstrap-tokenfield.min.css') !!}
+{!! Html::style('plugins/sliptree-bootstrap-tokenfield/css/tokenfield-typeahead.min.css') !!}
 
 {!! Html::style('css/style.css') !!}
 <!-- Ionicons -->
@@ -217,6 +219,8 @@
 {!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
 {!! Html::script('plugins/inputmask/js/jquery.inputmask.bundle.min.js') !!}
 {!! Html::script('plugins/fullcalendar/js/fullcalendar.min.js') !!}
+
+{!! Html::script('plugins/sliptree-bootstrap-tokenfield/js/bootstrap-tokenfield.min.js') !!}
 
 {{--{!! Html::script('plugins/datatables-double-scroll/js/datatables-double-scroll.js') !!}--}}
 
