@@ -28,9 +28,9 @@ $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta
 <div class="box-footer">
     {!! Form::submit('Buscar', ['class' => 'btn btn-primary pull-right']) !!}
     {!! Form::close() !!}
-    {{--@if(isset($exportar))--}}
-        {{--{!! $exportar !!}--}}
-    {{--@endif--}}
+    @if(isset($exportar))
+        {!! $exportar !!}
+    @endif
 </div>
 
 @section('scripts')
