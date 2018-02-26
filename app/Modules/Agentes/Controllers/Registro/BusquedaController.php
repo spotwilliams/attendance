@@ -34,7 +34,15 @@ class BusquedaController extends AppBaseController
     {
         $nombre   = $this->cleanMyInput(Input::get('nombre'));
         $apellido = $this->cleanMyInput(Input::get('apellido'));
-        $cuit     = $this->cleanMyInput(Input::get('cuit'));
+        $cuit     = [];
+        
+        if (!empty(Input::get('cuit'))) {
+            
+            foreach (explode(',', Input::get('cuit')) as $cuitIn) {
+                $cuit[] = $this->cleanMyInput($cuitIn);
+            }
+        }
+        
         
         $agentesEloquent = Agente::select(['*']);
         
@@ -51,14 +59,14 @@ class BusquedaController extends AppBaseController
         if ($apellido) {
             
             $agentesEloquent
-                ->where('apellido', 'ILIKE', "%$apellido%")
-//                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))
+                ->where('apellido', 'ILIKE',
+                    "%$apellido%")//                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))
             ;
         }
         if ($cuit) {
             
             $agentesEloquent
-                ->where('cuit', 'ILIKE', "%$cuit%");
+                ->whereIn('cuit', $cuit);
         }
         $agentesEloquent->with('operativo.base');
         
