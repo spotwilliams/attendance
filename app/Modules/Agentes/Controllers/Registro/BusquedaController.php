@@ -38,16 +38,20 @@ class BusquedaController extends AppBaseController
         
         $agentesEloquent = Agente::select(['*']);
         
+        /*
+         * En caso que lleguen mas de un
+         */
+        
         if ($nombre) {
             $agentesEloquent
 //                ->where(DB::raw('unaccent(nombre)'), 'ILIKE', DB::raw("unaccent('%$nombre%')"))
-                ->orWhere('nombre', 'ILIKE', "%$nombre%");
+                ->where('nombre', 'ILIKE', "%$nombre%");
         }
         
         if ($apellido) {
             
             $agentesEloquent
-                ->orWhere('apellido', 'ILIKE', "%$apellido%")
+                ->where('apellido', 'ILIKE', "%$apellido%")
 //                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))
             ;
         }
