@@ -68,18 +68,18 @@ class Descriptor extends MainDescriptor
         if (!isset(self::$errorMap[Descriptor::PERIODO_CERRADO])) {
             self::$errorMap[Descriptor::PERIODO_CERRADO]
                 = new Descriptor(Descriptor::PERIODO_CERRADO,
-                'La fecha es de un periodo ya cerrado para esta base');
+                'La fecha pertenece a un periodo ya facturado para este agente');
         }
         
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
     }
     
-    public static function fechaFutura()
+    public static function fechaFutura(TipoPresentismo $tipo)
     {
         if (!isset(self::$errorMap[Descriptor::FECHA_FUTURA])) {
             self::$errorMap[Descriptor::FECHA_FUTURA]
                 = new Descriptor(Descriptor::FECHA_FUTURA,
-                'La fecha es mayor a la de hoy');
+                "El presentismo '$tipo->codigo' no se puede cargar hacia adelante.");
         }
         
         return self::$errorMap[Descriptor::FECHA_FUTURA];

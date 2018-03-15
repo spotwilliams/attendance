@@ -24,7 +24,14 @@ return [
     /*
      * Cantidad de dias permitidos para cargar una fecha de contrato
      */
-    'fecha_contrato_registro' => 30,
+    'fecha_contrato_registro' => 60,
     'cant_dias_navegacion' => 5,
+    
+    /*
+     * Dia del mes que el periodo inicia y termina
+     */
+    'periodo_comienzo' => 16,
+    'periodo_fin' => 15,
+    'cant_dias' => 30,
 
 ];

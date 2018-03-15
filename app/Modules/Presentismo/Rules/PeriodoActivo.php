@@ -6,6 +6,7 @@ use Cat\Exceptions\AgenteSinBase;
 use Cat\Exceptions\AgenteSinTurno;
 use Cat\Models\Periodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
+use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PeriodoActivo extends Rule
@@ -19,7 +20,18 @@ class PeriodoActivo extends Rule
     protected function validate()
     {
         
-        $periodo = Periodo::findActivo($this->fecha);
+        $periodo = PeriodoRepository::getOrCreatePeriodoActivo($this->fecha);
+        
+        if ($periodo === null) {
+            throw new PeriodoCerrado($this->agente, $this->fecha);
+    
+        } else {
+            return true;
+        }
+        
+        /**
+         * @obsolete
+         */
         try {
             
             $base = $this->agente->base();
@@ -32,7 +44,12 @@ class PeriodoActivo extends Rule
             throw new AgenteSinTurno($this->agente);
         }
         
-        if ($periodo !== null and $periodo->estaActivo($base, $turno)) {
+        $haber = $periodo->haberes()
+            ->where('id_agente', '=', $this->agente->id)
+            ->first();
+        
+        // El agente no ha entregado la factura, por lo tanto se pueden hacer cambios
+        if ($haber->id_estado !== EstadoHaber::facturaEntregada()->id) {
             return true;
         } else {
             throw new PeriodoCerrado($this->agente, $this->fecha);
