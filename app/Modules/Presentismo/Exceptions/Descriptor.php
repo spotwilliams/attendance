@@ -18,6 +18,7 @@ class Descriptor extends MainDescriptor
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
+    const ESTADO_CONTRATO_EN_COMISION        = 9000;
     const FECHA_FUTURA                       = 8000;
     
     
@@ -119,5 +120,17 @@ class Descriptor extends MainDescriptor
         }
         
         return self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO];
+    }
+    
+    
+    public static function estadoContratoEnComision(TipoPresentismo $tipo)
+    {
+        if (!isset(self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION])) {
+            self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION]
+                = new Descriptor(Descriptor::ESTADO_CONTRATO_EN_COMISION,
+                'Los agentes en comisión solo pueden tener presentismo \'EX\'');
+        }
+    
+        return self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION];
     }
 }

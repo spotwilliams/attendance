@@ -54,6 +54,11 @@ class PorAgenteController extends BusquedaController
         return $agentes->links($presenter);
     }
     
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function prepareIndividualAgente(Request $request)
     {
         $this->authorize('prepareIndividualAgente', $this);

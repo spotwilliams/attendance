@@ -4,6 +4,7 @@ namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 
 class EstadoContrato extends Model
@@ -89,6 +90,19 @@ class EstadoContrato extends Model
         
         return EstadoContrato::where('id', '=', $estadoBajaPadre->id)
             ->orWhere('id_padre', '=', $estadoBajaPadre->id)
+            ->get();
+        
+    }
+    
+    /**
+     * @return Collection
+     */
+    public static function getEstadosEquivalentesActivos()
+    {
+        $estadoActivoPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first();
+        
+        return EstadoContrato::where('id', '=', $estadoActivoPadre->id)
+            ->orWhere('id_padre', '=', $estadoActivoPadre->id)
             ->get();
         
     }

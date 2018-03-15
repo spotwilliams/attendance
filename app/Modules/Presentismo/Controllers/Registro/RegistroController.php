@@ -7,6 +7,7 @@ use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\EnComision;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
@@ -48,7 +49,7 @@ class RegistroController extends AppBaseController
             ], 403);
         } catch (\Exception $exception) {
             $agente = Agente::find($request->input('agente'));
-    
+            
             return Response::json([
                 'message'     => 'Hubo un error inesperado.',
                 'agente'      => $agente->id,
@@ -167,7 +168,10 @@ class RegistroController extends AppBaseController
             $code    = 500;
         } catch (BaseTurnoSinPeriodo $e) {
             $message = $e->getMessage();
-            $code = 500;
+            $code    = 500;
+        } catch (EnComision $e) {
+            $message = $e->getMessage();
+            $code    = 500;
         }
         try {
             

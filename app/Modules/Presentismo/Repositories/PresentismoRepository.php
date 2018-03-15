@@ -95,7 +95,7 @@ class PresentismoRepository extends BaseRepository
      */
     public function getEloquentAgentesBetweenDates(Base $base, \DateTime $desde, \DateTime $hasta)
     {
-        $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
+        $activo       = EstadoContrato::getEstadosEquivalentesActivos();
         $eloquent     = Agente::with([
             'presentismos' => function ($presentismos) use ($desde, $hasta) {
                 $presentismos
@@ -107,7 +107,7 @@ class PresentismoRepository extends BaseRepository
             ->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
             ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
             ->where('operativos.id_base', $base->id)
-            ->where('contratos.id_estado_contrato', '=', $activo->id)
+            ->whereIn('contratos.id_estado_contrato', $activo->pluck('id'))
             ->orderBy('apellido', 'asc')
         ->select(['agentes.id as id', 'nombre', 'apellido', 'cuit', 'observacion']);
         
