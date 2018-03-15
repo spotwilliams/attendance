@@ -28,6 +28,8 @@ class Contrato extends Model
             'monto',
             'fecha_baja',
             'comentario_baja',
+            'comision_desde',
+            'comision_hasta',
         ];
     protected $dates = ['deleted_at'];
     

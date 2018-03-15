@@ -15,7 +15,7 @@ class TipoPresentismo extends Model
     const INJUSTIFICADO = 'A';
     const TARDANZA      = 'T';
     const PRESENTE      = 'P';
-    
+    const EXIMIDO       = 'EX';
     protected $fillable
         = [
             'codigo',
@@ -115,6 +115,14 @@ class TipoPresentismo extends Model
     public function getMyLabel()
     {
         return '<span class="label" style="background: ' . $this->color . ';">' . $this->codigo . '</span>';
+    }
+    
+    /**
+     * @return TipoPresentismo
+     */
+    public static function eximido()
+    {
+        return self::where('codigo', '=', self::EXIMIDO)->first();
     }
     
 }

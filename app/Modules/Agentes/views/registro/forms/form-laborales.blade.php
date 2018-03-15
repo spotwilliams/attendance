@@ -11,10 +11,17 @@ $idTiposContratosLocacion = array_keys(
 
 if (!isset($contrato)) {
     $contrato = new Contrato([
-        'id_tipo_contrato'   => old('id_tipo_contrato'),
-        'id_estado_contrato' => old('id_estado_contrato'),
+        'id_tipo_contrato'   => (int)old('id_tipo_contrato'),
+        'id_estado_contrato' => (int)old('id_estado_contrato'),
     ]);
 }
+if (old('id_tipo_contrato')) {
+    $contrato->id_tipo_contrato = (int)old('id_tipo_contrato');
+}
+if (old('id_estado_contrato')) {
+    $contrato->id_estado_contrato = (int)old('id_estado_contrato');
+}
+
 ?>
 {!! Form::hidden('id', null, ['class' => 'form-control']) !!}
 
@@ -87,8 +94,8 @@ if (!isset($contrato)) {
 Lo referido a los estados de contrato
 
 -->
-<div id="panel-estado-contrato">
-    <div id="child-panel-estado-contrato">
+<div class="panel panel-default">
+    <div class="panel-body">
 
         <?php
         $estados[-1] = 'Seleccione';
@@ -131,8 +138,9 @@ Lo referido a los estados de contrato
         Desde / Hasta comision
 
         --}}
+            {{--<p class="help-block col-md-offset-2">Se asignar&aacute; presentismo 'Eximido' durante los d&iacute;as establecidos.</p>--}}
         <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_desde')) has-error @endif">
-            <label class="col-sm-2 control-label">En comisi&oacute;n desde</label>
+            <label class="col-sm-2 control-label">En comisi&oacute;n desde *</label>
             <div class="col-sm-8">
                 {!! Form::hidden('comision_desde', null, ['class' => 'form-control']) !!}
                 <input type="text" name="comision_desde_show" class="form-control">
@@ -141,9 +149,8 @@ Lo referido a los estados de contrato
                 @endif
             </div>
         </div>
-
         <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_hasta')) has-error @endif">
-            <label class="col-sm-2 control-label">En comisi&oacute;n hasta</label>
+            <label class="col-sm-2 control-label">En comisi&oacute;n hasta *</label>
             <div class="col-sm-8">
                 {!! Form::hidden('comision_hasta', null, ['class' => 'form-control']) !!}
                 <input type="text" name="comision_hasta_show" class="form-control">
@@ -228,13 +235,11 @@ Lo referido a los estados de contrato
                         .fadeIn(400)
                         .removeClass('hidden');
 
-                    panelShow('panel-estado-contrato');
                     return;
 
                 } else {
                     $('.es-baja')
                         .fadeOut(400);
-                    panelHide('panel-estado-contrato');
                 }
 
                 // En comision
@@ -243,12 +248,10 @@ Lo referido a los estados de contrato
                         .fadeIn(400)
                         .removeClass('hidden');
 
-                    panelShow('panel-estado-contrato');
                 } else {
                     $('.es-comision')
                         .fadeOut(400);
 
-                    panelHide('panel-estado-contrato');
                 }
             });
 
@@ -259,21 +262,7 @@ Lo referido a los estados de contrato
             setupDate($('[name="fecha_ingreso_gobierno"]'), $('[name="fecha_ingreso_gobierno_show"]'))
         });
 
-        function panelHide(panel) {
-            $('div#' + panel)
-                .removeClass('panel panel-default')
-                .children('div#child-' + panel)
-                .removeClass('panel-body');
 
-        }
-
-        function panelShow(panel) {
-            $('div#' + panel)
-                .addClass('panel panel-default')
-                .children('div#child-' + panel)
-                .addClass('panel-body');
-
-        }
 
         function setupDate(element, complement) {
             var day = moment('{{date('Y')}}-01-01');

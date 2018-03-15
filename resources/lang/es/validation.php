@@ -82,7 +82,7 @@ return [
     'url'                   => 'El :attribute format is invalid.',
     'cuit'                  => 'El CUIT provisto no es v&aacute;lido.',
     'fecha_contrato_futuro' => 'La fecha no puede ser mayor a la actual.',
-    'fecha_contrato'        => 'La fecha no puede ser menor a 30 d&iacute;as.',
+    'fecha_contrato'        => 'La fecha no puede ser menor a 60 d&iacute;as.',
     
     /*
     |--------------------------------------------------------------------------

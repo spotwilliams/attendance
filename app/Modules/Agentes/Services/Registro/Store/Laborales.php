@@ -54,6 +54,12 @@ class Laborales extends Service
     /** @var  \DateTime */
     protected $fecha_ingreso_gobierno;
     
+    /** @var  \DateTime */
+    protected $comision_desde;
+    
+    /** @var  \DateTime */
+    protected $comision_hasta;
+    
     public function __construct(Agente $agente, $input)
     {
         
@@ -69,6 +75,10 @@ class Laborales extends Service
         $this->tipo_inscripcion       = $input['tipo_inscripcion'];
         $this->fecha_baja             = ($this->estado->esActivo() ? null : new \DateTime($input['fecha_baja']));
         $this->comentario_baja        = ($this->estado->esActivo() ? null : $input['comentario_baja']);
+    
+        $this->comision_desde = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_desde']) : null;
+        $this->comision_hasta = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_hasta']) : null;
+    
     }
     
     public function execute()
@@ -93,6 +103,8 @@ class Laborales extends Service
                 'monto'                  => floatval($this->monto),
                 'fecha_baja'             => $this->fecha_baja,
                 'comentario_baja'        => $this->comentario_baja,
+                'comision_desde'         => $this->comision_desde,
+                'comision_hasta'         => $this->comision_hasta,
                 'tipo_inscripcion'       => $this->tipo_inscripcion,
                 'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
             

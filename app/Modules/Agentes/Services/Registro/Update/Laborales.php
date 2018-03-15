@@ -14,6 +14,7 @@ use Cat\Models\Operativo;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -55,6 +56,12 @@ class Laborales extends Service
     /** @var  \DateTime */
     protected $fecha_ingreso_gobierno;
     
+    /** @var  \DateTime */
+    protected $comision_desde;
+    
+    /** @var  \DateTime */
+    protected $comision_hasta;
+    
     
     public function __construct(Agente $agente, $input)
     {
@@ -70,7 +77,11 @@ class Laborales extends Service
         $this->tipo_inscripcion       = $input['tipo_inscripcion'];
         $this->fecha_baja             = ($this->estado->esActivo() ? null : new \DateTime($input['fecha_baja']));
         $this->comentario_baja        = ($this->estado->esActivo() ? null : $input['comentario_baja']);
+        
+        $this->comision_desde = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_desde']) : null;
+        $this->comision_hasta = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_hasta']) : null;
     }
+    
     
     public function execute()
     {
@@ -86,6 +97,8 @@ class Laborales extends Service
             'comentario_baja'        => $this->comentario_baja,
             'tipo_inscripcion'       => $this->tipo_inscripcion,
             'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
+            'comision_desde'         => $this->comision_desde,
+            'comision_hasta'         => $this->comision_hasta,
         ];
         try {
             DB::beginTransaction();
@@ -93,7 +106,16 @@ class Laborales extends Service
                 $this->agente
                     ->contrato()
                     ->firstOrFail()
-                    ->update($data);;
+                    ->update($data);
+                
+                
+//                if ($this->estado->id === EstadoContrato::comision()->id) {
+//                    $tipo = TipoPresentismo::eximido();
+//                    while ($this->comision_desde <= $this->comision_hasta) {
+//                        Facilitador::validarDespuesGuardar($this->agente, $tipo, $this->comision_desde);
+//                        $this->comision_desde->modify('+1day');
+//                    }
+//                }
             } catch (ModelNotFoundException $e) {
                 Contrato::create($data);
             }

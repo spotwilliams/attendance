@@ -12,7 +12,6 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Laborales as Update;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
@@ -51,16 +50,16 @@ class LaboralesController extends AppBaseController
         
         return view('Agentes::registro.create')
             ->with('tab', 'laborales')
-            ->with('agente', $id);
+            ->with('agente', $agente);
     }
     
     
     /**
-     * @param Request $request
+     * @param LaboralesRequest $request
      * @return $this
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request)
+    public function store(LaboralesRequest $request)
     {
         $this->authorize('store', $this);
         

@@ -49,7 +49,7 @@ class OperativosController extends AppBaseController
         
         return view('Agentes::registro.create')
             ->with('tab', 'operativos')
-            ->with('agente', $id);
+            ->with('agente', $agente);
     }
     
     

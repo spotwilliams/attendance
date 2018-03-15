@@ -40,7 +40,7 @@ try {
                     @if($contrato->fecha_ingreso_gobierno === '1900-01-01')
                         <td>No definido</td>
                     @else
-                    <td>{{(new DateTime($contrato->fecha_ingreso_gobierno))->format('d/m/Y')}}</td>
+                        <td>{{(new DateTime($contrato->fecha_ingreso_gobierno))->format('d/m/Y')}}</td>
                     @endif
                 </tr>
                 <tr>
@@ -67,6 +67,16 @@ try {
                     <tr>
                         <th>Comentarios de la baja:</th>
                         <td>{{$contrato->comentario_baja}}</td>
+                    </tr>
+                @endif
+                @if($estadoContrato->id === \Cat\Models\EstadoContrato::comision()->id)
+                    <tr>
+                        <th>Desde:</th>
+                        <td>{{(new DateTime($contrato->comision_desde))->format('d/m/Y')}}</td>
+                    </tr>
+                    <tr>
+                        <th>Hasta:</th>
+                        <td>{{(new DateTime($contrato->comision_hasta))->format('d/m/Y')}}</td>
                     </tr>
                 @endif
 
