@@ -29,85 +29,129 @@ if (!isset($contrato)) {
     </div>
 </div>
 <input type="hidden" name="agente" value="{{$agente->id}}">
-<?php
-$tipos[-1] = 'Seleccione';
-foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est) {
-    $tipos[$est['id']] = $est['descripcion'];
-}
-?>
-
-<div class="form-group @if($errors->has('id_tipo_contrato')) has-error @endif">
-    <label class="col-sm-2 control-label">Tipo de modalidad *</label>
-    <div class="col-sm-8">
-        {!! Form::select('id_tipo_contrato',  $tipos, null, ['class' => 'form-control']) !!}
-        @if($errors->has('id_tipo_contrato'))
-            <span class="help-block">{{$errors->first('id_tipo_contrato')}}</span>
-        @endif
-    </div>
-</div>
-<div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
-    <label class="col-sm-2 control-label">ID Sial</label>
-    <div class="col-sm-8">
-        {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-<div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
-    <label class="col-sm-2 control-label">Ficha</label>
-    <div class="col-sm-8">
-        {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
-
-<?php
-$estados[-1] = 'Seleccione';
-foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $est) {
-    $estados[$est['id']] = $est['descripcion'];
-}
-?>
 
 
-<div class="form-group @if($errors->has('id_estado_contrato')) has-error @endif">
-    <label class="col-sm-2 control-label">Estado *</label>
-    <div class="col-sm-8">
-        {!! Form::select('id_estado_contrato',  $estados, null, ['class' => 'form-control']) !!}
-        @if($errors->has('id_estado_contrato'))
-            <span class="help-block">{{$errors->first('id_estado_contrato')}}</span>
-        @endif
-    </div>
-</div>
+<div class="panel panel-default">
+    <div class="panel-body">
+        <?php
+        $tipos[-1] = 'Seleccione';
+        foreach (\Cat\Models\TipoContrato::all(['id', 'descripcion'])->toArray() as $est) {
+            $tipos[$est['id']] = $est['descripcion'];
+        }
+        ?>
 
-<div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('fecha_baja')) has-error @endif">
-    <label class="col-sm-2 control-label">Fecha de baja</label>
-    <div class="col-sm-8">
-        {!! Form::hidden('fecha_baja', null, ['class' => 'form-control']) !!}
-        <input type="text" name="fecha_baja_show" class="form-control">
-        @if($errors->has('fecha_baja'))
-            <span class="help-block">{{$errors->first('fecha_baja')}}</span>
-        @endif
+        <div class="form-group @if($errors->has('id_tipo_contrato')) has-error @endif">
+            <label class="col-sm-2 control-label">Tipo de modalidad *</label>
+            <div class="col-sm-8">
+                {!! Form::select('id_tipo_contrato',  $tipos, null, ['class' => 'form-control']) !!}
+                @if($errors->has('id_tipo_contrato'))
+                    <span class="help-block">{{$errors->first('id_tipo_contrato')}}</span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
+            <label class="col-sm-2 control-label">ID Sial</label>
+            <div class="col-sm-8">
+                {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
+            <label class="col-sm-2 control-label">Ficha</label>
+            <div class="col-sm-8">
+                {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        <div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif es-locacion">
+            <label class="col-sm-2 control-label">Tipo de inscripci&oacute;n IIBB * </label>
+            <div class="col-sm-8">
+                {!! Form::select('tipo_inscripcion',  [
+                '-1' => 'Seleccione',
+                'Regimen simplificado' => 'R&eacute;gimen simplificado',
+                 'Convenio multilareral' => 'Convenio multilareral',
+                  'Regimen general' => 'R&eacute;gimen general'
+                  ], null, ['class' => 'form-control']) !!}
+                @if($errors->has('tipo_inscripcion'))
+                    <span class="help-block">{{$errors->first('tipo_inscripcion')}}</span>
+                @endif
+
+            </div>
+        </div>
+
     </div>
 </div>
 
-<div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif">
-    <label class="col-sm-2 control-label">Comentario de baja</label>
-    <div class="col-sm-8">
-        {!! Form::textarea('comentario_baja', null, ['class' => 'form-control']) !!}
-    </div>
-</div>
 
-<div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif es-locacion">
-    <label class="col-sm-2 control-label">Tipo de inscripci&oacute;n IIBB * </label>
-    <div class="col-sm-8">
-        {!! Form::select('tipo_inscripcion',  [
-        '-1' => 'Seleccione',
-        'Regimen simplificado' => 'R&eacute;gimen simplificado',
-         'Convenio multilareral' => 'Convenio multilareral',
-          'Regimen general' => 'R&eacute;gimen general'
-          ], null, ['class' => 'form-control']) !!}
-        @if($errors->has('tipo_inscripcion'))
-            <span class="help-block">{{$errors->first('tipo_inscripcion')}}</span>
-        @endif
+<!--
+Lo referido a los estados de contrato
 
+-->
+<div id="panel-estado-contrato">
+    <div id="child-panel-estado-contrato">
+
+        <?php
+        $estados[-1] = 'Seleccione';
+        foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $est) {
+            $estados[$est['id']] = $est['descripcion'];
+        }
+        ?>
+
+
+        <div class="form-group @if($errors->has('id_estado_contrato')) has-error @endif">
+            <label class="col-sm-2 control-label">Estado *</label>
+            <div class="col-sm-8">
+                {!! Form::select('id_estado_contrato',  $estados, null, ['class' => 'form-control']) !!}
+                @if($errors->has('id_estado_contrato'))
+                    <span class="help-block">{{$errors->first('id_estado_contrato')}}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('fecha_baja')) has-error @endif">
+            <label class="col-sm-2 control-label">Fecha de baja</label>
+            <div class="col-sm-8">
+                {!! Form::hidden('fecha_baja', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_baja_show" class="form-control">
+                @if($errors->has('fecha_baja'))
+                    <span class="help-block">{{$errors->first('fecha_baja')}}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif">
+            <label class="col-sm-2 control-label">Comentario de baja</label>
+            <div class="col-sm-8">
+                {!! Form::textarea('comentario_baja', null, ['class' => 'form-control']) !!}
+            </div>
+        </div>
+
+        {{--
+
+        Desde / Hasta comision
+
+        --}}
+        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_desde')) has-error @endif">
+            <label class="col-sm-2 control-label">En comisi&oacute;n desde</label>
+            <div class="col-sm-8">
+                {!! Form::hidden('comision_desde', null, ['class' => 'form-control']) !!}
+                <input type="text" name="comision_desde_show" class="form-control">
+                @if($errors->has('comision_desde'))
+                    <span class="help-block">{{$errors->first('comision_desde')}}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_hasta')) has-error @endif">
+            <label class="col-sm-2 control-label">En comisi&oacute;n hasta</label>
+            <div class="col-sm-8">
+                {!! Form::hidden('comision_hasta', null, ['class' => 'form-control']) !!}
+                <input type="text" name="comision_hasta_show" class="form-control">
+                @if($errors->has('comision_hasta'))
+                    <span class="help-block">{{$errors->first('comision_hasta')}}</span>
+                @endif
+            </div>
+        </div>
     </div>
 </div>
 
@@ -127,7 +171,7 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
         {!! Form::hidden('fecha_ingreso_gobierno', null, ['class' => 'form-control']) !!}
         <input type="text" name="fecha_ingreso_gobierno_show" class="form-control">
 
-    @if($errors->has('fecha_ingreso_gobierno'))
+        @if($errors->has('fecha_ingreso_gobierno'))
             <span class="help-block">{{$errors->first('fecha_ingreso_gobierno')}}</span>
         @endif
     </div>
@@ -154,37 +198,82 @@ foreach (\Cat\Models\EstadoContrato::all(['id', 'descripcion'])->toArray() as $e
             $('[name="id_tipo_contrato"]').on('change', function () {
                 var optionsLocacion = {{json_encode( $idTiposContratosLocacion)}};
                 // Locacion de servicio
-                for (var i = 0; i < optionsLocacion.length; i++) {
-                    if ($(this).val() == optionsLocacion[i]) {
+                if ($.inArray(parseInt($(this).val()), optionsLocacion) !== -1) {
 
-                        $('.es-situacion-revista').fadeOut(400);
-                        $('.es-locacion').fadeIn(400);
-                        break;
-                    } else {
-                        $('.es-situacion-revista').fadeIn(400);
-                        $('.es-locacion').fadeOut(400);
+                    $('.es-situacion-revista').fadeOut(400);
+                    $('.es-locacion')
+                        .fadeIn(400)
+                        .removeClass('hidden');
+                } else {
+                    $('.es-situacion-revista').fadeIn(400)
+                        .removeClass('hidden');
+                    $('.es-locacion').fadeOut(400);
 
-                    }
                 }
             });
-            // Mostrar cambios cuando se selecciona
+            /**
+             *
+             *
+             *  Comportanmiento en estado Contrato
+             *
+             *
+             */
             $('[name="id_estado_contrato"]').on('change', function (event) {
+
                 var optionsBaja = {{json_encode( $idEstadosContratosBaja)}};
-                for (var i = 0; i < optionsBaja.length; i++) {
-                    if ($(this).val() == optionsBaja[i]) {
-                        $('.es-baja').fadeIn(400);
-                        $('.es-baja').removeClass('hidden');
-                        break;
-                    } else {
-                        $('.es-baja').fadeOut(400);
-                    }
+
+                // Activos
+                if ($.inArray(parseInt($(this).val()), optionsBaja) !== -1) {
+                    $('.es-baja')
+                        .fadeIn(400)
+                        .removeClass('hidden');
+
+                    panelShow('panel-estado-contrato');
+                    return;
+
+                } else {
+                    $('.es-baja')
+                        .fadeOut(400);
+                    panelHide('panel-estado-contrato');
+                }
+
+                // En comision
+                if ($(this).val() === '{{\Cat\Models\EstadoContrato::comision()->id}}') {
+                    $('.es-comision')
+                        .fadeIn(400)
+                        .removeClass('hidden');
+
+                    panelShow('panel-estado-contrato');
+                } else {
+                    $('.es-comision')
+                        .fadeOut(400);
+
+                    panelHide('panel-estado-contrato');
                 }
             });
 
             setupDate($('[name="fecha_baja"]'), $('[name="fecha_baja_show"]'))
+            setupDate($('[name="comision_hasta"]'), $('[name="comision_hasta_show"]'))
+            setupDate($('[name="comision_desde"]'), $('[name="comision_desde_show"]'))
             setupDate($('[name="fecha_ingreso"]'), $('[name="fecha_ingreso_show"]'))
             setupDate($('[name="fecha_ingreso_gobierno"]'), $('[name="fecha_ingreso_gobierno_show"]'))
         });
+
+        function panelHide(panel) {
+            $('div#' + panel)
+                .removeClass('panel panel-default')
+                .children('div#child-' + panel)
+                .removeClass('panel-body');
+
+        }
+
+        function panelShow(panel) {
+            $('div#' + panel)
+                .addClass('panel panel-default')
+                .children('div#child-' + panel)
+                .addClass('panel-body');
+
+        }
 
         function setupDate(element, complement) {
             var day = moment('{{date('Y')}}-01-01');
