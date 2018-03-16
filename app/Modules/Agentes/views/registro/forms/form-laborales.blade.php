@@ -126,10 +126,13 @@ Lo referido a los estados de contrato
             </div>
         </div>
 
-        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif">
+        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('comentario_baja')) has-error @endif">
             <label class="col-sm-2 control-label">Comentario de baja</label>
             <div class="col-sm-8">
                 {!! Form::textarea('comentario_baja', null, ['class' => 'form-control']) !!}
+                @if($errors->has('comentario_baja'))
+                    <span class="help-block">{{$errors->first('comentario_baja')}}</span>
+                @endif
             </div>
         </div>
 
@@ -138,7 +141,7 @@ Lo referido a los estados de contrato
         Desde / Hasta comision
 
         --}}
-            {{--<p class="help-block col-md-offset-2">Se asignar&aacute; presentismo 'Eximido' durante los d&iacute;as establecidos.</p>--}}
+        {{--<p class="help-block col-md-offset-2">Se asignar&aacute; presentismo 'Eximido' durante los d&iacute;as establecidos.</p>--}}
         <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_desde')) has-error @endif">
             <label class="col-sm-2 control-label">En comisi&oacute;n desde *</label>
             <div class="col-sm-8">
@@ -156,6 +159,15 @@ Lo referido a los estados de contrato
                 <input type="text" name="comision_hasta_show" class="form-control">
                 @if($errors->has('comision_hasta'))
                     <span class="help-block">{{$errors->first('comision_hasta')}}</span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group es-comision  @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comentario_comision')) has-error @endif">
+            <label class="col-sm-2 control-label">Comentario de comisi&oacute;n * </label>
+            <div class="col-sm-8">
+                {!! Form::textarea('comentario_comision', null, ['class' => 'form-control']) !!}
+                @if($errors->has('comentario_comision'))
+                    <span class="help-block">{{$errors->first('comentario_comision')}}</span>
                 @endif
             </div>
         </div>
@@ -228,22 +240,20 @@ Lo referido a los estados de contrato
             $('[name="id_estado_contrato"]').on('change', function (event) {
 
                 var optionsBaja = {{json_encode( $idEstadosContratosBaja)}};
-
+                var continuarCon = true;
                 // Activos
                 if ($.inArray(parseInt($(this).val()), optionsBaja) !== -1) {
                     $('.es-baja')
                         .fadeIn(400)
                         .removeClass('hidden');
-
-                    return;
-
+                    continuarCon = false;
                 } else {
                     $('.es-baja')
                         .fadeOut(400);
                 }
 
                 // En comision
-                if ($(this).val() === '{{\Cat\Models\EstadoContrato::comision()->id}}') {
+                if (continuarCon && ($(this).val() === '{{\Cat\Models\EstadoContrato::comision()->id}}')) {
                     $('.es-comision')
                         .fadeIn(400)
                         .removeClass('hidden');
@@ -261,7 +271,6 @@ Lo referido a los estados de contrato
             setupDate($('[name="fecha_ingreso"]'), $('[name="fecha_ingreso_show"]'))
             setupDate($('[name="fecha_ingreso_gobierno"]'), $('[name="fecha_ingreso_gobierno_show"]'))
         });
-
 
 
         function setupDate(element, complement) {

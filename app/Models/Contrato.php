@@ -28,6 +28,7 @@ class Contrato extends Model
             'monto',
             'fecha_baja',
             'comentario_baja',
+            'comentario_comision',
             'comision_desde',
             'comision_hasta',
         ];
@@ -37,7 +38,8 @@ class Contrato extends Model
         = [
             'fecha_ingreso'          => 'required|date|fecha_contrato_futuro|fecha_contrato',
             'fecha_ingreso_gobierno' => 'date|fecha_contrato_futuro',
-            'fecha_baja'             => 'date',
+            'fecha_baja'             => 'date|required',
+            'comentario_baja'        => 'required',
             'id_tipo_contrato'       => 'not_in:-1',
             'id_estado_contrato'     => 'not_in:-1',
             'tipo_inscripcion'       => 'not_in:-1',

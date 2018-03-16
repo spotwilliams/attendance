@@ -60,6 +60,9 @@ class Laborales extends Service
     /** @var  \DateTime */
     protected $comision_hasta;
     
+    /** @var  string */
+    protected $comentario_comision;
+    
     public function __construct(Agente $agente, $input)
     {
         
@@ -75,10 +78,11 @@ class Laborales extends Service
         $this->tipo_inscripcion       = $input['tipo_inscripcion'];
         $this->fecha_baja             = ($this->estado->esActivo() ? null : new \DateTime($input['fecha_baja']));
         $this->comentario_baja        = ($this->estado->esActivo() ? null : $input['comentario_baja']);
-    
-        $this->comision_desde = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_desde']) : null;
-        $this->comision_hasta = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_hasta']) : null;
-    
+        
+        $this->comision_desde      = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_desde']) : null;
+        $this->comision_hasta      = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_hasta']) : null;
+        $this->comentario_comision = ($this->estado->id === EstadoContrato::comision()->id) ? $input['comentario_comision'] : null;
+        
     }
     
     public function execute()
@@ -105,9 +109,9 @@ class Laborales extends Service
                 'comentario_baja'        => $this->comentario_baja,
                 'comision_desde'         => $this->comision_desde,
                 'comision_hasta'         => $this->comision_hasta,
+                'comentario_comision'    => $this->comentario_comision,
                 'tipo_inscripcion'       => $this->tipo_inscripcion,
                 'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
-            
             ]);
             
             DB::commit();

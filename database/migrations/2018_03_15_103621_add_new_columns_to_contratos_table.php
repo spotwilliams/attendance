@@ -15,7 +15,8 @@ class AddNewColumnsToContratosTable extends Migration
         Schema::table('contratos', function (Blueprint $table) {
             $table->date('comision_desde')->nullable();
             $table->date('comision_hasta')->nullable();
-            
+            $table->string('comentario_comision', 400)->nullable();
+    
         });
     }
     

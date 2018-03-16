@@ -62,6 +62,9 @@ class Laborales extends Service
     /** @var  \DateTime */
     protected $comision_hasta;
     
+    /** @var  string */
+    protected $comentario_comision;
+    
     
     public function __construct(Agente $agente, $input)
     {
@@ -78,8 +81,9 @@ class Laborales extends Service
         $this->fecha_baja             = ($this->estado->esActivo() ? null : new \DateTime($input['fecha_baja']));
         $this->comentario_baja        = ($this->estado->esActivo() ? null : $input['comentario_baja']);
         
-        $this->comision_desde = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_desde']) : null;
-        $this->comision_hasta = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_hasta']) : null;
+        $this->comision_desde      = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_desde']) : null;
+        $this->comision_hasta      = ($this->estado->id === EstadoContrato::comision()->id) ? new \DateTime($input['comision_hasta']) : null;
+        $this->comentario_comision = ($this->estado->id === EstadoContrato::comision()->id) ? $input['comentario_comision'] : null;
     }
     
     
@@ -99,6 +103,7 @@ class Laborales extends Service
             'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
             'comision_desde'         => $this->comision_desde,
             'comision_hasta'         => $this->comision_hasta,
+            'comentario_comision'    => $this->comentario_comision,
         ];
         try {
             DB::beginTransaction();
@@ -108,14 +113,6 @@ class Laborales extends Service
                     ->firstOrFail()
                     ->update($data);
                 
-                
-//                if ($this->estado->id === EstadoContrato::comision()->id) {
-//                    $tipo = TipoPresentismo::eximido();
-//                    while ($this->comision_desde <= $this->comision_hasta) {
-//                        Facilitador::validarDespuesGuardar($this->agente, $tipo, $this->comision_desde);
-//                        $this->comision_desde->modify('+1day');
-//                    }
-//                }
             } catch (ModelNotFoundException $e) {
                 Contrato::create($data);
             }

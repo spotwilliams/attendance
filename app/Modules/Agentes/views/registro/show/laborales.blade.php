@@ -78,6 +78,10 @@ try {
                         <th>Hasta:</th>
                         <td>{{(new DateTime($contrato->comision_hasta))->format('d/m/Y')}}</td>
                     </tr>
+                    <tr>
+                        <th>Comentarios de comisi&oacute;n:</th>
+                        <td>{{$contrato->comentario_comision}}</td>
+                    </tr>
                 @endif
 
                 </tbody>

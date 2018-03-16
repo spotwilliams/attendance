@@ -66,6 +66,12 @@ class Validation
         $estadoContrato = EstadoContrato::find($request->input('id_estado_contrato'));
         if ($estadoContrato->esActivo()) {
             unset($rules['fecha_baja']);
+            unset($rules['comentario_baja']);
+        }
+        if ($estadoContrato->estado === EstadoContrato::ESTADO_COMISION) {
+            $rules['comision_desde']      = 'date|required';
+            $rules['comision_hasta']      = 'date|required';
+            $rules['comentario_comision'] = 'required';
         }
         
         return $rules;
