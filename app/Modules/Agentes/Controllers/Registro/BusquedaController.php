@@ -43,7 +43,6 @@ class BusquedaController extends AppBaseController
             }
         }
         
-        
         $agentesEloquent = Agente::select(['*']);
         
         /*
@@ -59,9 +58,8 @@ class BusquedaController extends AppBaseController
         if ($apellido) {
             
             $agentesEloquent
-                ->where('apellido', 'ILIKE',
-                    "%$apellido%")//                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))
-            ;
+                ->where('apellido', 'ILIKE', "%$apellido%");
+            //                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))
         }
         if ($cuit) {
             
@@ -83,9 +81,7 @@ class BusquedaController extends AppBaseController
     {
         $spec = [',', '-', '.'];
         
-        foreach ([] as $s) {
-            $input = str_replace($s, '', $input);
-        }
+        $input = str_replace($spec, '', $input);
         
         return trim($input);
     }
