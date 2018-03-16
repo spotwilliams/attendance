@@ -70,7 +70,7 @@ if (old('id_estado_contrato')) {
             </div>
         </div>
 
-        <div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif es-locacion">
+        <div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif es-locacion @if(!in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
             <label class="col-sm-2 control-label">Tipo de inscripci&oacute;n IIBB * </label>
             <div class="col-sm-8">
                 {!! Form::select('tipo_inscripcion',  [
