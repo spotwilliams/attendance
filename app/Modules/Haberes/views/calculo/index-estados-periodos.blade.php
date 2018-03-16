@@ -16,6 +16,7 @@
             {!! Form::open(['route' => 'haberesListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 
             <div class="box-body">
+
                 <div class="col-md-offset-2 col-md-8">
 
                     <div class="form-group">
@@ -28,9 +29,22 @@
                             </div>
                         </div>
                     </div>
-                    <blockquote>
-                        <p class="help-block class-col-md-10">Solo se listan aquellas bases y turnos con periodos abiertos, y con agentes con contratos del tipo Locaci&oacute;n de servicios y obra</p>
-                    </blockquote>
+
+                    <div class="info-box bg-green">
+                        <span class="info-box-icon"><i class="fa fa-exclamation-triangle"></i></span>
+
+                        <div class="info-box-content">
+                            <span class="info-box-number">Aviso</span>
+                            <div class="progress">
+                                <div class="progress-bar" style="width: 100%"></div>
+                            </div>
+                            <span>S&oacute;lo Se listan las Bases y Turnos con agentes con contratos de Locaci&oacute;n de Servicios y Obra
+                            </span>
+
+                        </div>
+                        <!-- /.info-box-content -->
+                    </div>
+                    <!-- /.info-box -->
                     <select class="form-control" name="periodo" title="Seleccione un periodo...">
                         @foreach($estadosPeriodos->groupBy('id_periodo') as $idPeriodo => $estados)
                             <optgroup
