@@ -49,7 +49,7 @@ class Contratos extends Service
                     'fecha_ingreso' => $this->fechaContrato->format('Y-m-d')
                 ]);
             
-            DB::commint();
+            DB::commit();
         } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
