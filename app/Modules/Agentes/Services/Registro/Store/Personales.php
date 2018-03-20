@@ -83,9 +83,6 @@ class Personales extends Service
         } catch (QueryException $e) {
             DB::rollBack();
             ImageHelper::resetAvatar($this->agente);
-            if (str_contains($e->getMessage(), 'Duplicate')) {
-                throw new EntidadDuplicada($this->agente);
-            }
             throw $e;
         }
     }

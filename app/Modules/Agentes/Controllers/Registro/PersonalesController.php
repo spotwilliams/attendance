@@ -119,7 +119,8 @@ class PersonalesController extends AppBaseController
     {
         $this->authorize('update', $this);
         
-        $rules = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
+        $rules         = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
+        $rules['cuit'] = 'required|cuit';
         
         $this->validate($request, $rules);
         $input  = $request->all();

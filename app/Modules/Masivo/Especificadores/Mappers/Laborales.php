@@ -24,6 +24,10 @@ class Laborales
             'id_estado_contrato'     => $estadoContrato->id,
             'id_tipo_contrato'       => $modalidad->id,
             'monto'                  => DataCleaner::cleanPossibleEmptyValue($collection->monto),
+            'comentario'             => null,
+            'fecha_estado_desde'     => null,
+            'fecha_estado_hasta'     => null,
+            'fecha_fin'              => null,
         ];
         
     }
