@@ -81,6 +81,7 @@ return [
     'unique'                => 'El :attribute has already been taken.',
     'url'                   => 'El :attribute format is invalid.',
     'cuit'                  => 'El CUIT provisto no es v&aacute;lido.',
+    'cuit_unico'            => 'El CUIT provisto pertenece a otro agente.',
     'fecha_contrato_futuro' => 'La fecha no puede ser mayor a la actual.',
     'fecha_contrato'        => 'La fecha no puede ser menor a 60 d&iacute;as.',
     
@@ -104,7 +105,7 @@ return [
             'date'     => 'Formato de fecha incorrecto',
             'before'   => 'La fecha de contrato no puede ser mayor a la actual',
         ],
-        'gerencias'      => [
+        'gerencias'           => [
             'required' => 'Debe seleccinar al menos una gerencia',
         ],
         /*

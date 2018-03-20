@@ -34,4 +34,8 @@ return [
     'periodo_fin' => 15,
     'cant_dias' => 30,
 
+    /*
+     * Monto del contrato por defecto
+     */
+    'monto_contrato' => 16002
 ];

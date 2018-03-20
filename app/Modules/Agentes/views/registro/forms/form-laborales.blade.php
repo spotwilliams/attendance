@@ -48,7 +48,7 @@ if (old('id_estado_contrato')) {
         ?>
 
         <div class="form-group @if($errors->has('id_tipo_contrato')) has-error @endif">
-            <label class="col-sm-2 control-label">Tipo de modalidad *</label>
+            <label class="col-sm-3 control-label">Tipo de modalidad *</label>
             <div class="col-sm-8">
                 {!! Form::select('id_tipo_contrato',  $tipos, null, ['class' => 'form-control']) !!}
                 @if($errors->has('id_tipo_contrato'))
@@ -56,22 +56,42 @@ if (old('id_estado_contrato')) {
                 @endif
             </div>
         </div>
+        <div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
+            <label class="col-sm-3 control-label">Fecha de ingreso modalidad actual *</label>
+            <div class="col-sm-8">
+                {!! Form::hidden('fecha_ingreso', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_ingreso_show" class="form-control">
+                @if($errors->has('fecha_ingreso'))
+                    <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
+                @endif
+            </div>
+        </div>
+        <div class="form-group @if($errors->has('fecha_fin')) has-error @endif es-locacion @if(!in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
+            <label class="col-sm-3 control-label">Fecha de fin modalidad actual *</label>
+            <div class="col-sm-8">
+                {!! Form::hidden('fecha_fin', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_fin_show" class="form-control">
+                @if($errors->has('fecha_fin'))
+                    <span class="help-block">{{$errors->first('fecha_fin')}}</span>
+                @endif
+            </div>
+        </div>
         <div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
-            <label class="col-sm-2 control-label">ID Sial</label>
+            <label class="col-sm-3 control-label">ID Sial</label>
             <div class="col-sm-8">
                 {!! Form::text('id_sial', null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
         <div class="form-group es-situacion-revista @if(in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
-            <label class="col-sm-2 control-label">Ficha</label>
+            <label class="col-sm-3 control-label">Ficha</label>
             <div class="col-sm-8">
                 {!! Form::text('ficha', null, ['class' => 'form-control']) !!}
             </div>
         </div>
 
         <div class="form-group @if($errors->has('tipo_inscripcion')) has-error @endif es-locacion @if(!in_array($contrato->id_tipo_contrato, $idTiposContratosLocacion)) hidden @endif">
-            <label class="col-sm-2 control-label">Tipo de inscripci&oacute;n IIBB * </label>
+            <label class="col-sm-3 control-label">Tipo de inscripci&oacute;n IIBB * </label>
             <div class="col-sm-8">
                 {!! Form::select('tipo_inscripcion',  [
                 '-1' => 'Seleccione',
@@ -106,7 +126,7 @@ Lo referido a los estados de contrato
 
 
         <div class="form-group @if($errors->has('id_estado_contrato')) has-error @endif">
-            <label class="col-sm-2 control-label">Estado *</label>
+            <label class="col-sm-3 control-label">Estado *</label>
             <div class="col-sm-8">
                 {!! Form::select('id_estado_contrato',  $estados, null, ['class' => 'form-control']) !!}
                 @if($errors->has('id_estado_contrato'))
@@ -115,77 +135,63 @@ Lo referido a los estados de contrato
             </div>
         </div>
 
-        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('fecha_baja')) has-error @endif">
-            <label class="col-sm-2 control-label">Fecha de baja</label>
+        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('fecha_estado_desde')) has-error @endif">
+            <label class="col-sm-3 control-label">Fecha de baja</label>
             <div class="col-sm-8">
-                {!! Form::hidden('fecha_baja', null, ['class' => 'form-control']) !!}
-                <input type="text" name="fecha_baja_show" class="form-control">
-                @if($errors->has('fecha_baja'))
-                    <span class="help-block">{{$errors->first('fecha_baja')}}</span>
+                {!! Form::hidden('fecha_estado_desde', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_estado_desde_show" class="form-control">
+                @if($errors->has('fecha_estado_desde'))
+                    <span class="help-block">{{$errors->first('fecha_estado_desde')}}</span>
                 @endif
             </div>
         </div>
-
-        <div class="form-group es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif @if($errors->has('comentario_baja')) has-error @endif">
-            <label class="col-sm-2 control-label">Comentario de baja</label>
-            <div class="col-sm-8">
-                {!! Form::textarea('comentario_baja', null, ['class' => 'form-control']) !!}
-                @if($errors->has('comentario_baja'))
-                    <span class="help-block">{{$errors->first('comentario_baja')}}</span>
-                @endif
-            </div>
-        </div>
-
         {{--
 
         Desde / Hasta comision
 
         --}}
         {{--<p class="help-block col-md-offset-2">Se asignar&aacute; presentismo 'Eximido' durante los d&iacute;as establecidos.</p>--}}
-        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_desde')) has-error @endif">
-            <label class="col-sm-2 control-label">En comisi&oacute;n desde *</label>
+        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('fecha_estado_desde')) has-error @endif">
+            <label class="col-sm-3 control-label">En comisi&oacute;n desde *</label>
             <div class="col-sm-8">
-                {!! Form::hidden('comision_desde', null, ['class' => 'form-control']) !!}
-                <input type="text" name="comision_desde_show" class="form-control">
-                @if($errors->has('comision_desde'))
-                    <span class="help-block">{{$errors->first('comision_desde')}}</span>
+                {!! Form::hidden('fecha_estado_desde', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_estado_desde_show" class="form-control">
+                @if($errors->has('fecha_estado_desde'))
+                    <span class="help-block">{{$errors->first('fecha_estado_desde')}}</span>
                 @endif
             </div>
         </div>
-        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comision_hasta')) has-error @endif">
-            <label class="col-sm-2 control-label">En comisi&oacute;n hasta *</label>
+        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('fecha_estado_hasta')) has-error @endif">
+            <label class="col-sm-3 control-label">En comisi&oacute;n hasta *</label>
             <div class="col-sm-8">
-                {!! Form::hidden('comision_hasta', null, ['class' => 'form-control']) !!}
-                <input type="text" name="comision_hasta_show" class="form-control">
-                @if($errors->has('comision_hasta'))
-                    <span class="help-block">{{$errors->first('comision_hasta')}}</span>
+                {!! Form::hidden('fecha_estado_hasta', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_estado_hasta_show" class="form-control">
+                @if($errors->has('fecha_estado_hasta'))
+                    <span class="help-block">{{$errors->first('fecha_estado_hasta')}}</span>
                 @endif
             </div>
         </div>
-        <div class="form-group es-comision  @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('comentario_comision')) has-error @endif">
-            <label class="col-sm-2 control-label">Comentario de comisi&oacute;n * </label>
+        <div class="form-group
+                    @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja) and $contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif
+        @if($errors->has('comentario')) has-error @endif
+                ">
+            <label class="col-sm-3 control-label es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif ">Comentario
+                de baja</label>
+            <label class="col-sm-3 control-label es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif">Comentario
+                de comisi&oacute;n * </label>
             <div class="col-sm-8">
-                {!! Form::textarea('comentario_comision', null, ['class' => 'form-control']) !!}
-                @if($errors->has('comentario_comision'))
-                    <span class="help-block">{{$errors->first('comentario_comision')}}</span>
+                {!! Form::textarea('comentario', null, ['class' => 'form-control']) !!}
+                @if($errors->has('comentario'))
+                    <span class="help-block">{{$errors->first('comentario')}}</span>
                 @endif
             </div>
         </div>
     </div>
 </div>
 
-<div class="form-group @if($errors->has('fecha_ingreso')) has-error @endif">
-    <label class="col-sm-2 control-label">Fecha de ingreso modalidad actual *</label>
-    <div class="col-sm-8">
-        {!! Form::hidden('fecha_ingreso', null, ['class' => 'form-control']) !!}
-        <input type="text" name="fecha_ingreso_show" class="form-control">
-        @if($errors->has('fecha_ingreso'))
-            <span class="help-block">{{$errors->first('fecha_ingreso')}}</span>
-        @endif
-    </div>
-</div>
+
 <div class="form-group @if($errors->has('fecha_ingreso_gobierno')) has-error @endif">
-    <label class="col-sm-2 control-label">Fecha de ingreso al GCBA</label>
+    <label class="col-sm-3 control-label">Fecha de ingreso al GCBA * </label>
     <div class="col-sm-8">
         {!! Form::hidden('fecha_ingreso_gobierno', null, ['class' => 'form-control']) !!}
         <input type="text" name="fecha_ingreso_gobierno_show" class="form-control">
@@ -196,9 +202,9 @@ Lo referido a los estados de contrato
     </div>
 </div>
 <div class="form-group">
-    <label class="col-sm-2 control-label">Monto</label>
+    <label class="col-sm-3 control-label">Monto</label>
     <div class="col-sm-8">
-        {!! Form::text('monto', null, ['class' => 'form-control', 'placeholder' => '14547']) !!}
+        {!! Form::text('monto', null, ['class' => 'form-control', 'placeholder' => '16002']) !!}
     </div>
 </div>
 
@@ -239,12 +245,26 @@ Lo referido a los estados de contrato
              */
             $('[name="id_estado_contrato"]').on('change', function (event) {
 
+
+                var comentario = $('textarea[name="comentario"]').parents('.form-group').first();
+
+                comentario
+                    .removeClass('hidden')
+                    .fadeOut(400);
+
                 var optionsBaja = {{json_encode( $idEstadosContratosBaja)}};
                 var continuarCon = true;
                 // Activos
                 if ($.inArray(parseInt($(this).val()), optionsBaja) !== -1) {
                     $('.es-baja')
                         .fadeIn(400)
+                        .removeClass('hidden');
+
+                    $('.es-baja')
+                        .fadeIn(400)
+                        .removeClass('hidden');
+
+                    comentario.fadeIn(400)
                         .removeClass('hidden');
                     continuarCon = false;
                 } else {
@@ -258,6 +278,8 @@ Lo referido a los estados de contrato
                         .fadeIn(400)
                         .removeClass('hidden');
 
+                    comentario.fadeIn(400)
+                        .removeClass('hidden');
                 } else {
                     $('.es-comision')
                         .fadeOut(400);
@@ -265,10 +287,11 @@ Lo referido a los estados de contrato
                 }
             });
 
-            setupDate($('[name="fecha_baja"]'), $('[name="fecha_baja_show"]'))
-            setupDate($('[name="comision_hasta"]'), $('[name="comision_hasta_show"]'))
-            setupDate($('[name="comision_desde"]'), $('[name="comision_desde_show"]'))
+            setupDate($('[name="fecha_estado_desde"]'), $('[name="fecha_estado_desde_show"]'))
+            setupDate($('[name="fecha_estado_hasta"]'), $('[name="fecha_estado_hasta_show"]'))
+            setupDate($('[name="fecha_estado_desde"]'), $('[name="fecha_estado_desde_show"]'))
             setupDate($('[name="fecha_ingreso"]'), $('[name="fecha_ingreso_show"]'))
+            setupDate($('[name="fecha_fin"]'), $('[name="fecha_fin_show"]'))
             setupDate($('[name="fecha_ingreso_gobierno"]'), $('[name="fecha_ingreso_gobierno_show"]'))
         });
 

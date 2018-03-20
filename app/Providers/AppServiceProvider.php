@@ -2,6 +2,7 @@
 
 namespace Cat\Providers;
 
+use Cat\Rules\CuitUnico;
 use Cat\Rules\FechaContrato;
 use Cat\Rules\FechaContratoFuturo;
 use Illuminate\Support\Facades\Validator;
@@ -18,6 +19,7 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Validator::extend('cuit', Cuit::class . '@validate');
+        Validator::extend('cuit_unico', CuitUnico::class . '@validate');
         Validator::extend('fecha_contrato_futuro', FechaContratoFuturo::class . '@validate');
         Validator::extend('fecha_contrato', FechaContrato::class . '@validate');
     }

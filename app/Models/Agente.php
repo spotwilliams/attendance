@@ -62,7 +62,7 @@ class Agente extends Model
             'nombre'              => 'required|max:255',
             'apellido'            => 'required|max:255',
             'fecha_nacimiento'    => 'required|date',
-            'cuit'                => 'required|cuit',
+            'cuit'                => 'required|cuit|cuit_unico',
             'dni'                 => 'required|integer',
             //            'telefono'         => 'required|digits_between:1,20',
             'telefono_particular' => 'required|digits_between:1,50',
@@ -115,7 +115,15 @@ class Agente extends Model
         return $this->hasOne(Contrato::class, 'id_agente');
     }
     
-    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function contratoActual()
+    {
+        return $this->hasOne(Contrato::class, 'id_agente')
+            ->orderBy('id', 'DESC')
+            ->limit(1);
+    }
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/

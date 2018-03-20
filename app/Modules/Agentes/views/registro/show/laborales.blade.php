@@ -3,7 +3,7 @@
 /** @var \Cat\Models\Agente $agente */
 try {
     /** @var \Cat\Models\Contrato $contrato */
-    $contrato = $agente->contrato()->firstOrFail();
+    $contrato = $agente->contratoActual()->firstOrFail();
     /** @var \Cat\Models\TipoContrato $tipoContrato */
     $tipoContrato   = $contrato->tipoContrato()->firstOrFail();
     $estadoContrato = $contrato->estadoContrato()->firstOrFail();
@@ -28,13 +28,20 @@ try {
                     </tr>
                 @endif
                 <tr>
-                    <th>Fecha alta contrato:</th>
+                    <th>Fecha ingreso modalidad actual:</th>
                     @if($contrato->fecha_ingreso === '1900-01-01')
                         <td>No definido</td>
                     @else
                         <td>{{(new DateTime($contrato->fecha_ingreso))->format('d/m/Y')}}</td>
                     @endif
                 </tr>
+                @if($tipoContrato->codigo === \Cat\Models\TipoContrato::TIPO_LOCACION)
+                    <tr>
+                        <th>Fecha fin modalidad actual:</th>
+                        <td>{{(new DateTime($contrato->fecha_fin))->format('d/m/Y')}}</td>
+                    </tr>
+
+                @endif
                 <tr>
                     <th>Fecha de ingreso al GCBA:</th>
                     @if($contrato->fecha_ingreso_gobierno === '1900-01-01')
@@ -62,25 +69,25 @@ try {
                 @if(!$estadoContrato->esActivo())
                     <tr>
                         <th>Fecha de baja:</th>
-                        <td>{{(new DateTime($contrato->fecha_baja))->format('d/m/Y')}}</td>
+                        <td>{{(new DateTime($contrato->fecha_estado_desde))->format('d/m/Y')}}</td>
                     </tr>
                     <tr>
                         <th>Comentarios de la baja:</th>
-                        <td>{{$contrato->comentario_baja}}</td>
+                        <td>{{$contrato->comentario}}</td>
                     </tr>
                 @endif
                 @if($estadoContrato->id === \Cat\Models\EstadoContrato::comision()->id)
                     <tr>
                         <th>Desde:</th>
-                        <td>{{(new DateTime($contrato->comision_desde))->format('d/m/Y')}}</td>
+                        <td>{{(new DateTime($contrato->fecha_estado_desde))->format('d/m/Y')}}</td>
                     </tr>
                     <tr>
                         <th>Hasta:</th>
-                        <td>{{(new DateTime($contrato->comision_hasta))->format('d/m/Y')}}</td>
+                        <td>{{(new DateTime($contrato->fecha_estado_hasta))->format('d/m/Y')}}</td>
                     </tr>
                     <tr>
                         <th>Comentarios de comisi&oacute;n:</th>
-                        <td>{{$contrato->comentario_comision}}</td>
+                        <td>{{$contrato->comentario}}</td>
                     </tr>
                 @endif
 

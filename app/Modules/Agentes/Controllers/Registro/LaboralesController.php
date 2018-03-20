@@ -101,10 +101,15 @@ class LaboralesController extends AppBaseController
         $this->authorize('edit', $this);
         
         try {
+            /** @var Agente $agente */
             $agente = Agente::with('operativo.turno')
                 ->with('operativo.base')
                 ->findOrFail($id);
-    
+            
+            /** @var Contrato $contrato */
+            $contrato = $agente->contratoActual()
+                ->first();
+            
             if (($agente->operativo) and ($agente->operativo->base) and ($agente->operativo->turno)) {
                 Gate::allows('work-bases', [[$agente->operativo->base->id]]);
                 Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
@@ -117,7 +122,7 @@ class LaboralesController extends AppBaseController
         
         return view('Agentes::registro.edit')
             ->with('agente', $agente)
-            ->with('contrato', $agente->contrato()->first())
+            ->with('contrato', $contrato)
             ->with('tab', 'laborales');
     }
     
@@ -158,30 +163,5 @@ class LaboralesController extends AppBaseController
             
         }
     }
-    
-    /**
-     * Remove the specified Presentismo from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $this->authorize('destroy', $this);
-        
-        $presentismo = $this->agenteRepository->findWithoutFail($id);
-        
-        if (empty($presentismo)) {
-            Flash::error('Presentismo not found');
-            
-            return redirect(route('Presentismo::registro.index'));
-        }
-        
-        $this->agenteRepository->delete($id);
-        
-        Flash::success('Presentismo deleted successfully.');
-        
-        return redirect(route('Presentismo::registro.index'));
-    }
+
 }
