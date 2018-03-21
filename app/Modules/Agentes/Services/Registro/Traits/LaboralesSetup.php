@@ -56,7 +56,7 @@ trait LaboralesSetup
     protected function setup(Agente $agente, $input)
     {
         $this->agente                 = $agente;
-        $this->monto                  = ($input['monto'] === null) ? config('cat.monto_contrato') : $input['monto'];
+        $this->monto                  = (empty($input['monto']) or !isset($input['monto'])) ? config('cat.monto_contrato') : $input['monto'];
         $this->fecha                  = new \DateTime($input['fecha_ingreso']);
         $this->estado                 = EstadoContrato::findOrFail($input['id_estado_contrato']);
         $this->tipo                   = TipoContrato::findOrFail($input['id_tipo_contrato']);

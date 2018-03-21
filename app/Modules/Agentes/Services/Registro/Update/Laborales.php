@@ -5,6 +5,7 @@ namespace Cat\Modules\Agentes\Services\Registro\Update;
 
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
+use Cat\Models\ContratoHistorico;
 use Cat\Modules\Agentes\Services\Registro\Traits\LaboralesSetup;
 use Cat\Modules\Service;
 use Illuminate\Database\QueryException;
@@ -37,12 +38,11 @@ class Laborales extends Service
                 ->orderBy('id', 'DESC')
                 ->firstOrFail();
             
-            if (($contratoActual->tipoContrato->id === $this->tipo->id)
-                and ($contratoActual->estadoContrato->id === $this->estado->id)) {
-                $this->mantenerContrato($contratoActual);
-            } else {
-                $this->createNewContrato($contratoActual);
-            }
+            // Actualizo los datos segun los solicitado
+            $data = $this->getData();
+            $contratoActual->update(array_filter($data));
+            
+            $this->logCambioContrato($contratoActual);
             
             DB::commit();
             
@@ -56,9 +56,62 @@ class Laborales extends Service
         
     }
     
-    public function createNewContrato(Contrato $contratoActual)
+    public function logCambioContrato(Contrato $contratoActual)
     {
         $data = $this->getData();
+        
+        
+        $operaciones = [
+            // Cambio de tipo
+            -1 => [
+                // Cambio de estado
+                -1 => [
+                    'updateFechaFinContratoHistoricoAnterior',
+                    'updateFechaFinEstadoContratoHistoricoAnterior',
+                    'createContratoHistorico',
+                ],
+                // Se mantiene el estado
+                0  => [
+                    'updateFechaFinContratoHistoricoAnterior',
+                    'createContratoHistorico',
+                ],
+            ],
+            // Se mantiene el tipo
+            0  => [
+                // Cambio de estado
+                -1 => [
+                    'updateFechaFinEstadoContratoHistoricoAnterior',
+                    'createContratoHistorico',
+                ],
+                // Se mantiene el estado
+                0  => [
+                    'updateContratoHistorico',
+                ],
+            ],
+        ];
+        
+        
+        $tipo   = ($contratoActual->tipoContrato->id - $this->tipo->id) ? -1 : 0;
+        $estado = ($contratoActual->estadoContrato->id - $this->estado->id) ? -1 : 0;
+        
+        foreach ($operaciones[$tipo][$estado] as $operacion) {
+            $this->{$operacion}($contratoActual);
+        }
+        
+        
+        return;
+        
+        if ($contratoActual->tipoContrato->id !== $this->tipo->id) {
+        }
+        
+        
+        if (($contratoActual->tipoContrato->id === $this->tipo->id)
+            and ($contratoActual->estadoContrato->id === $this->estado->id)) {
+            // Solo tengo que actualizar el registro correspondiente en el historico
+        } else {
+            // Tengo que crear un nuevo registro historico
+        }
+        
         
         // Hay que darle un posible cierre al contrato actual
         // y comienzo al nuevo contrato, tal vez sin necesidad de cierre
@@ -74,16 +127,54 @@ class Laborales extends Service
             ]);
         }
         
-        Contrato::create(array_filter($data));
+        ContratoHistorico::create(array_filter($data));
+        
     }
     
-    public function mantenerContrato(Contrato $contratoActual)
+    private function createContratoHistorico(Contrato $contratoActual)
     {
-        $data = $this->getData();
+        ContratoHistorico::create($this->getData());
+    }
+    
+    private function updateContratoHistorico(Contrato $contratoActual)
+    {
+        /** @var ContratoHistorico $historicoActual */
+        $historicoActual = $this->agente->contratosHistoricos()
+            ->orderBy('id', 'DESC')
+            ->firstOrFail();
         
-        $contratoActual->update(array_filter($data));
+        $historicoActual->update($this->getData());
+        
+    }
+    
+    private function updateFechaFinContratoHistoricoAnterior(Contrato $contratoActual)
+    {
+        $historicoActual = $this->agente->contratosHistoricos()
+            ->orderBy('id', 'DESC')
+            ->firstOrFail();
+        
+        
+        $fechaFin = (new \DateTime($contratoActual->fecha_ingreso));
+        $fechaFin->modify('-1day');
+        
+        $historicoActual->update([
+            'fecha_fin' => $fechaFin->format('Y-m-d'),
+        ]);
         
         
     }
     
+    private function updateFechaFinEstadoContratoHistoricoAnterior(Contrato $contratoActual)
+    {
+        $historicoActual = $this->agente->contratosHistoricos()
+            ->orderBy('id', 'DESC')
+            ->firstOrFail();
+        
+        $fechaFin = (new \DateTime($contratoActual->fecha_estado_desde));
+        $fechaFin->modify('-1day');
+        
+        $historicoActual->update([
+            'fecha_estado_hasta' => $fechaFin->format('Y-m-d'),
+        ]);
+    }
 }

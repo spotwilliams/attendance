@@ -13,7 +13,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 class Agente extends Model
 {
     use SoftDeletes, AgenteUpperCase;
-
+    
     public $table = 'agentes';
     
     const CREATED_AT = 'created_at';
@@ -58,7 +58,7 @@ class Agente extends Model
      * @var array
      */
     public static $rules
-        = [
+                          = [
             'nombre'              => 'required|max:255',
             'apellido'            => 'required|max:255',
             'fecha_nacimiento'    => 'required|date',
@@ -69,12 +69,12 @@ class Agente extends Model
             'telefono_casa'       => 'digits_between:1,50',
             'telefono_ht'         => 'digits_between:1,50',
             'email'               => 'required|email',
-            'email_gobierno'       => 'email',
+            'email_gobierno'      => 'email',
         
         
         ];
     public static $avatar = 'default.jpg';
-
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
      **/
@@ -124,6 +124,15 @@ class Agente extends Model
             ->orderBy('id', 'DESC')
             ->limit(1);
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function contratosHistoricos()
+    {
+        return $this->hasMany(ContratoHistorico::class, 'id_agente');
+    }
+    
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/

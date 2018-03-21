@@ -107,7 +107,7 @@ class LaboralesController extends AppBaseController
                 ->findOrFail($id);
             
             /** @var Contrato $contrato */
-            $contrato = $agente->contratoActual()
+            $contrato = $agente->contrato()
                 ->first();
             
             if (($agente->operativo) and ($agente->operativo->base) and ($agente->operativo->turno)) {
