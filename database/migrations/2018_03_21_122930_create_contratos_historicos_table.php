@@ -55,6 +55,26 @@ class CreateContratosHistoricosTable extends Migration
                 ->onDelete('NO ACTION');
             
         });
+        
+        \Illuminate\Support\Facades\DB::insert(
+            'INSERT INTO contratos_historicos (id_tipo_contrato, id_estado_contrato, id_agente, fecha_ingreso, fecha_ingreso_gobierno, fecha_fin, fecha_estado_desde, fecha_estado_hasta, id_sial, ficha, tipo_inscripcion, comentario, monto)
+              SELECT
+                id_tipo_contrato,
+                id_estado_contrato,
+                id_agente,
+                fecha_ingreso,
+                fecha_ingreso_gobierno,
+                fecha_fin,
+                fecha_estado_desde,
+                fecha_estado_hasta,
+                id_sial,
+                ficha,
+                tipo_inscripcion,
+                comentario,
+                monto
+              FROM contratos_historicos;
+');
+    
     }
     
     /**
