@@ -3,6 +3,7 @@
 namespace Cat\Modules\Agentes\Services\Registro\Store;
 
 
+use Carbon\Carbon;
 use Cat\Models\Agente;
 use Cat\Models\Area;
 use Cat\Models\Base;
@@ -21,6 +22,7 @@ use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
 use Cat\Models\Turno;
+use Cat\Models\TurnoHistorico;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\QueryException;
@@ -77,8 +79,9 @@ class Operativos extends Service
         
         try {
             DB::beginTransaction();
+            
             $this->horario = Horario::create($this->horario);
-            Operativo::create([
+            $operativo     = Operativo::create([
                 'id_agente'          => $this->agente->id,
                 'id_gerencia'        => $this->gerencia->id,
                 'id_base'            => $this->base->id,
@@ -88,6 +91,13 @@ class Operativos extends Service
                 'funcion_especifica' => $this->funcion_especifica,
                 'id_turno'           => $this->turno->id,
                 'id_horario'         => $this->horario->id,
+            ]);
+            
+            
+            TurnoHistorico::create([
+                'id_operativo' => $operativo->id,
+                'id_turno'     => $this->turno->id,
+                'fecha_inicio' => Carbon::now()->format('Y-m-d'),
             ]);
             
             DB::commit();

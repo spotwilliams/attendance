@@ -82,4 +82,10 @@ class Operativo extends Model
     {
         return $this->belongsTo(Turno::class, 'id_turno');
     }
+    
+    public function turnosHistorico()
+    {
+        return $this->belongsTo(TurnoHistorico::class, 'id_operativo');
+    }
+    
 }
