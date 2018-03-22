@@ -30,7 +30,7 @@ class PeriodoActivo extends Rule
         }
         
         /**
-         * @obsolete
+         * @obsolete Waiting reconsiderations
          */
         try {
             

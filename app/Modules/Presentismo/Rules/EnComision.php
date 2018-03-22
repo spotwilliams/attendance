@@ -2,9 +2,11 @@
 
 namespace Cat\Modules\Validation\Rules;
 
-
+use Cat\Models\Contrato;
 use Cat\Models\EstadoContrato;
 use Cat\Models\TipoPresentismo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
+
 class EnComision extends Rule
 {
     
@@ -14,18 +16,25 @@ class EnComision extends Rule
      */
     protected function validate()
     {
-        
-        $estadoContrato = $this->agente->contrato()->first()->estadoContrato()->first();
-
-        if ($estadoContrato->id === EstadoContrato::comision()->id) {
-            if($this->tipoAusente->id === TipoPresentismo::eximido()->id) {
-                return true;
+        try {
+            /** @var Contrato $contrato */
+            $contrato = $this->agente->contrato()->firstOrFail();
+            /** @var EstadoContrato $estadoContrato */
+            $estadoContrato = $contrato->estadoContrato()->first();
+            
+            if ($estadoContrato->id === EstadoContrato::comision()->id) {
+                if ($this->tipoAusente->id === TipoPresentismo::eximido()->id) {
+                    return true;
+                } else {
+                    throw new \Cat\Modules\Presentismo\Exceptions\Validacion\EnComision($this->tipoAusente);
+                }
             } else {
-                throw new \Cat\Modules\Presentismo\Exceptions\Validacion\EnComision($this->tipoAusente);
+                return true;
             }
-        } else {
-            return true;
+        } catch (ModelNotFoundException $sinContrato) {
+            return false;
         }
+        
         
     }
     

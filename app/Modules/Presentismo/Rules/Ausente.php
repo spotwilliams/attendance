@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: worker
- * Date: 5/8/17
- * Time: 09:18
- */
 
 namespace Cat\Modules\Validation\Rules;
 
@@ -15,6 +9,11 @@ use Cat\Models\TipoPresentismo;
 
 class Ausente extends Rule
 {
+    /**
+     * @return bool|mixed
+     * @throws SinDiasDisponibles
+     * @throws SinTopeONoEstablecido
+     */
     protected function validate()
     {
         // Verificar que sea injustificado

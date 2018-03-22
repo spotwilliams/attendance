@@ -85,6 +85,7 @@ class Agente extends Model
     
     /**
      * @return Base
+     * @throws ModelNotFoundException
      **/
     public function base()
     {
