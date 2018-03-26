@@ -13,6 +13,7 @@ class CreateContratosHistoricosTable extends Migration
     public function up()
     {
         \Illuminate\Support\Facades\Schema::create('contratos_historicos', function (Blueprint $table) {
+            
             $table->integer('id', true);
             $table->integer('id_tipo_contrato')->index('contrato_historico_es_de_tipo_idx');
             $table->integer('id_estado_contrato')->index('contrato_historico_esta_en_estado_idx');
@@ -56,6 +57,9 @@ class CreateContratosHistoricosTable extends Migration
             
         });
         
+        \Cat\Models\Contrato::whereNull('fecha_fin')
+            ->update(['fecha_fin' => (new DateTime('2600-12-31'))->format('Y-m-d')]);
+        
         \Illuminate\Support\Facades\DB::insert(
             'INSERT INTO contratos_historicos (id_tipo_contrato, id_estado_contrato, id_agente, fecha_ingreso, fecha_ingreso_gobierno, fecha_fin, fecha_estado_desde, fecha_estado_hasta, id_sial, ficha, tipo_inscripcion, comentario, monto)
               SELECT
@@ -72,7 +76,7 @@ class CreateContratosHistoricosTable extends Migration
                 tipo_inscripcion,
                 comentario,
                 monto
-              FROM contratos_historicos;
+              FROM contratos;
 ');
     
     }

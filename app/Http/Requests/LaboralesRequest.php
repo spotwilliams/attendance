@@ -37,7 +37,7 @@ class LaboralesRequest extends Request
         $this->validateFechasComision();
     }
     
-    private function validateFechasIngreso()
+    protected function validateFechasIngreso()
     {
         $ingresoGobierno = Carbon::createFromFormat(
             'Y-m-d',
@@ -62,31 +62,49 @@ class LaboralesRequest extends Request
         } else {
             return true;
         }
+        
+        return true;
     }
     
-    private function validateFechasComision()
+    protected function validateFechasComision()
     {
         /** @var  $validator */
         $validator = $this->getValidatorInstance();
-        
         if (EstadoContrato::comision()->id === EstadoContrato::find($this->input('id_estado_contrato'))->id) {
             
             $desde = $fechaContrato = Carbon::createFromFormat(
                 'Y-m-d',
-                (new \DateTime($this->input('comision_desde')))->format('Y-m-d')
+                (new \DateTime($this->input('fecha_estado_desde')))->format('Y-m-d')
             );
             
             $hasta = $fechaContrato = Carbon::createFromFormat(
                 'Y-m-d',
-                (new \DateTime($this->input('comision_hasta')))->format('Y-m-d')
+                (new \DateTime($this->input('fecha_estado_hasta')))->format('Y-m-d')
             );
             
             if ($hasta->lt($desde)) {
                 $validator->getMessageBag()
-                    ->add('comision_hasta',
+                    ->add('fecha_estado_hasta',
                         'La fecha hasta no puede ser menor a la desde.');
                 
                 $this->failedValidation($validator);
+            }
+            
+            $fIngreso = Carbon::createFromFormat('Y-m-d', $this->input('fecha_ingreso'));
+            $fFin     = Carbon::createFromFormat('Y-m-d', $this->input('fecha_fin'));
+            
+            
+            if (!$desde->between($fIngreso, $fFin)) {
+                $validator->getMessageBag()
+                    ->add('fecha_estado_desde',
+                        'La fecha debe ser mayor a la fecha de ingreso de la modaldiad actual y menor a la fecha de fin en caso de existir');
+                $this->failedValidation($validator);
+            } elseif (!$hasta->between($fIngreso, $fFin)) {
+                $validator->getMessageBag()
+                    ->add('fecha_estado_hasta',
+                        'La fecha debe ser mayor a la fecha de ingreso de la modaldiad actual y menor a la fecha de fin en caso de existir');
+                $this->failedValidation($validator);
+                
             }
         }
     }

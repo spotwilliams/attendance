@@ -25,8 +25,7 @@ if (Gate::allows('see-all-day')) {
             @if(in_array($fechasToShow[$i]['day'], $weekend))
                 <td><?php
                     $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
-                    echo \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p,
-                        $age->contrato->tipoContrato)
+                    echo \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $age)
                     ?></td>
             @else
                 <td><label class="label label-default">N/A</label></td>

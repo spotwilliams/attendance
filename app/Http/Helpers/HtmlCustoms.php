@@ -2,6 +2,7 @@
 
 namespace Cat\Helpers;
 
+use Carbon\Carbon;
 use Cat\Models\Agente;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
@@ -153,11 +154,10 @@ class HtmlCustoms
      */
     public static function getSelectForTipoPresentismo(
         Presentismo $p = null,
-        TipoContrato $tipoContrato,
+        Agente $agente,
         $selector = 'selectpicker'
     ) {
-        
-        $select = self::getSelect($p, $tipoContrato, $selector);
+        $select = self::getSelect($p, $agente, $selector);
         $tools  = self::getButtonsTools($p);
         
         $html = "<div class='form-group'>$select $tools</div>";
@@ -166,10 +166,11 @@ class HtmlCustoms
     }
     
     
-    public static function getSelect(Presentismo $p = null, TipoContrato $tipoContrato, $selector = 'selectpicker')
+    public static function getSelect(Presentismo $p = null, Agente $agente, $selector = 'selectpicker')
     {
+        $date = ($p === null) ? null : new Carbon($p->fecha);
         /** @var Collection $tiposPresentismos */
-        $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
+        $tiposPresentismos = TipoPresentismosRepository::getByTipoContratoOnDate($agente, $date);
         
         $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
         $option = "<option value=\"-1\">...</option>";

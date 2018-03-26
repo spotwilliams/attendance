@@ -135,6 +135,17 @@ class Agente extends Model
     }
     
     /**
+     * @param \DateTime $fecha
+     * @return mixed
+     */
+    public function contratoOnDate(\DateTime $fecha)
+    {
+        return $this->hasMany(ContratoHistorico::class, 'id_agente')
+            ->whereDate('fecha_ingreso', '<=', $fecha)
+            ->whereDate('fecha_fin', '>=', $fecha);
+    }
+    
+    /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
      **/
     public function domicilios()

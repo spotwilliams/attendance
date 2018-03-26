@@ -98,42 +98,11 @@ class Laborales extends Service
             $this->{$operacion}($contratoActual);
         }
         
-        
-        return;
-        
-        if ($contratoActual->tipoContrato->id !== $this->tipo->id) {
-        }
-        
-        
-        if (($contratoActual->tipoContrato->id === $this->tipo->id)
-            and ($contratoActual->estadoContrato->id === $this->estado->id)) {
-            // Solo tengo que actualizar el registro correspondiente en el historico
-        } else {
-            // Tengo que crear un nuevo registro historico
-        }
-        
-        
-        // Hay que darle un posible cierre al contrato actual
-        // y comienzo al nuevo contrato, tal vez sin necesidad de cierre
-        
-        // 1) damos cierre al contrato actual, desde el dia anterior al contrato actual
-        if ($contratoActual->tipoContrato->id !== $this->tipo->id) {
-            
-            $fechaFin = new \DateTime($this->fecha->format('Y-m-d'));
-            $fechaFin->modify('-1day');
-            
-            $contratoActual->update([
-                'fecha_fin' => $fechaFin->format('Y-m-d'),
-            ]);
-        }
-        
-        ContratoHistorico::create(array_filter($data));
-        
     }
     
     private function createContratoHistorico(Contrato $contratoActual)
     {
-        ContratoHistorico::create($this->getData());
+        ContratoHistorico::create(array_filter($this->getData()));
     }
     
     private function updateContratoHistorico(Contrato $contratoActual)
@@ -143,7 +112,7 @@ class Laborales extends Service
             ->orderBy('id', 'DESC')
             ->firstOrFail();
         
-        $historicoActual->update($this->getData());
+        $historicoActual->update(array_filter($this->getData()));
         
     }
     

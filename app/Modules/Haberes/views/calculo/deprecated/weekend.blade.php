@@ -50,7 +50,7 @@ $agentesCompletos = Calculation::addFaltasNoRegistradas($agentes->getCollection(
                                 <label>{{(new DateTime($p->fecha))->format('d/m')}}
                                     (@lang('day.'. (new DateTime($p->fecha))->format('D')))</label>
                                 <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
-                                {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a->contrato->tipoContrato) !!}
+                                {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a) !!}
 
                             </div>
                         @endif

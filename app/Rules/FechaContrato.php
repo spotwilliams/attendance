@@ -11,6 +11,7 @@ class FechaContrato
     /**
      * @param $attribute
      * @param $fecha
+     * @return bool
      */
     public function validate($attribute, $fecha)
     {

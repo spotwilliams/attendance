@@ -45,16 +45,18 @@ class RegistroController extends AppBaseController
                 'message'     => $faltanDatos->getMessage(),
                 'agente'      => $agente->id,
                 'presentismo' => new Presentismo(['id_tipo_presentismo' => -1]),
-                'button'      => HtmlCustoms::getButtonWithPopOver(null, false, true),
+                'button'      => HtmlCustoms::getButtonWithPopOver(null),
             ], 403);
         } catch (\Exception $exception) {
             $agente = Agente::find($request->input('agente'));
             
             return Response::json([
                 'message'     => 'Hubo un error inesperado.',
+                'tech'        => $exception->getMessage(),
+                'track'       => $exception->getTraceAsString(),
                 'agente'      => $agente->id,
                 'presentismo' => new Presentismo(['id_tipo_presentismo' => -1]),
-                'button'      => HtmlCustoms::getButtonWithPopOver(null, false, true),
+                'button'      => HtmlCustoms::getButtonWithPopOver(null),
             ], 403);
         }
         
