@@ -120,14 +120,6 @@ class General extends ReporteController
     protected function setupQuery()
     {
         
-        $tipoLocacion = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
-            ->get(['id'])
-            ->keyBy('id')
-            ->toArray());
-        
-        $agentesYaConfirmados = Haber::where('id_periodo', '=', $this->periodo->id)
-            ->get(['id_agente'])->toArray();
-        
         $agentes = $this
             ->presentismoRepository
             ->getEloquentAgentes($this->base->id, $this->periodo);
@@ -149,8 +141,6 @@ class General extends ReporteController
                 },
             ])
             ->with('contrato.tipoContrato')
-            ->whereNotIn('agentes.id', $agentesYaConfirmados)
-            ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
             ->where('operativos.id_turno', '=', $this->turno->id);
         
         

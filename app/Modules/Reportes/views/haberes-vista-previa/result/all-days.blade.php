@@ -4,7 +4,7 @@ use Cat\Helpers\Calculation;
 use Illuminate\Support\Facades\Gate;
 
 if (isset($periodo)) {
-
+//dd($periodo);
     /** @var \Cat\Models\Periodo $periodo */
     $turnosFinSemana = ['FSN', 'FSD', 'FSI'];
     if (in_array($turno->codigo, $turnosFinSemana)) {
@@ -54,11 +54,12 @@ if (isset($periodo)) {
                         @foreach($a->presentismos->sortBy('fecha')->all() as $p)
                             @if($p->injustificado !== false)
                                 <div class="col-xs-2">
-                                    <label>{{(new DateTime($p->fecha))->format('d/m')}}
-                                        (@lang('day.'. (new DateTime($p->fecha))->format('D')))</label>
-                                    <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
-                                    {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a) !!}
+                                    <?php $fecha = (new DateTime($p->fecha));?>
 
+                                    <label>{{(new DateTime($p->fecha))->format('d/m/y')}}
+                                        (@lang('day.'. $fecha->format('D')))</label>
+                                    <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
+                                    {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a, 'selectpicker', $fecha) !!}
                                 </div>
                             @endif
                         @endforeach
@@ -73,6 +74,7 @@ if (isset($periodo)) {
     @endforeach
 @else
     <tr>
-        <th align="center" colspan="3"><span class="label label-info">No se encontraron agentes con contrato de locaci&oacute;n</span></th>
+        <th align="center" colspan="3"><span class="label label-info">No se encontraron agentes con contrato de locaci&oacute;n</span>
+        </th>
     </tr>
 @endif

@@ -155,9 +155,10 @@ class HtmlCustoms
     public static function getSelectForTipoPresentismo(
         Presentismo $p = null,
         Agente $agente,
-        $selector = 'selectpicker'
+        $selector = 'selectpicker',
+        \DateTime $fecha = null
     ) {
-        $select = self::getSelect($p, $agente, $selector);
+        $select = self::getSelect($p, $agente, $selector, $fecha);
         $tools  = self::getButtonsTools($p);
         
         $html = "<div class='form-group'>$select $tools</div>";
@@ -166,30 +167,39 @@ class HtmlCustoms
     }
     
     
-    public static function getSelect(Presentismo $p = null, Agente $agente, $selector = 'selectpicker')
-    {
-        $date = ($p === null) ? null : new Carbon($p->fecha);
+    public static function getSelect(
+        Presentismo $p = null,
+        Agente $agente,
+        $selector = 'selectpicker',
+        \DateTime $fecha
+    ) {
+        $date = ($p === null) ? new Carbon($fecha->format('Y-m-d')) : new Carbon($p->fecha);
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContratoOnDate($agente, $date);
         
-        $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
-        $option = "<option value=\"-1\">...</option>";
-        
-        $select .= $option;
-        /** @var TipoPresentismo $tp */
-        foreach ($tiposPresentismos as $tp) {
-            // Option
-            $seleccionado = ($tp->id === ($p == null ? -1 : $p->id_tipo_presentismo));
-            $option       = "<option value=\"$tp->id\"";
-            $option       .= ' data-tokens="' . $tp->codigo . '" ';
-            $option       .= $seleccionado ? ' selected' : '';
-            $option       .= " data-content=\"<span class='label' style='color: $tp->color_letra; background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
-            $option       .= ">$tp->descripcion</option>";
-            $select       .= $option;
+        if (!$tiposPresentismos->isEmpty()) {
+            
+            $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
+            $option = "<option value=\"-1\">...</option>";
+            
+            $select .= $option;
+            /** @var TipoPresentismo $tp */
+            foreach ($tiposPresentismos as $tp) {
+                // Option
+                $seleccionado = ($tp->id === ($p == null ? -1 : $p->id_tipo_presentismo));
+                $option       = "<option value=\"$tp->id\"";
+                $option       .= ' data-tokens="' . $tp->codigo . '" ';
+                $option       .= $seleccionado ? ' selected' : '';
+                $option       .= " data-content=\"<span class='label' style='color: $tp->color_letra; background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
+                $option       .= ">$tp->descripcion</option>";
+                $select       .= $option;
+            }
+            
+            
+            $select .= '</select>';
+        } else {
+            $select = '<span class="label label-default">Sin contrato en esta fecha</span>';
         }
-        
-        
-        $select .= '</select>';
         
         return $select;
     }

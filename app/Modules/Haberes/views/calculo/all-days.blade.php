@@ -44,10 +44,11 @@ $agentesCompletos = Calculation::addFaltasNoRegistradas($agentes->getCollection(
                     @foreach($a->presentismos->sortBy('fecha')->all() as $p)
                         @if($p->injustificado !== false)
                             <div class="col-xs-2">
+                                <?php $fecha = (new DateTime($p->fecha));?>
                                 <label>{{(new DateTime($p->fecha))->format('d/m')}}
-                                    (@lang('day.'. (new DateTime($p->fecha))->format('D')))</label>
+                                    (@lang('day.'. $fecha->format('D')))</label>
                                 <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
-                                {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a) !!}
+                                {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a, 'selectpicker', $fecha) !!}
 
                             </div>
                         @endif

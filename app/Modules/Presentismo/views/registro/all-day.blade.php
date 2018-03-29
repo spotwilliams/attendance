@@ -19,7 +19,7 @@
 
             <td data-agente="{{$age->id}}"><?php
                 $p = (isset($presentismos[$fechasToShow[$i]['data']]) ? $presentismos[$fechasToShow[$i]['data']] : null);
-                echo \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $age)
+                echo \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $age, 'selectpicker', $fechasToShow[$i]['obj'])
                 ?></td>
         @endfor
 
