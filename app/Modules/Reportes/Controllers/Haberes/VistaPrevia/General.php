@@ -3,15 +3,10 @@
 namespace Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia;
 
 use Cat\Models\Base;
-use Cat\Models\Contrato;
-use Cat\Models\EstadoPeriodo;
-use Cat\Models\Haber;
 use Cat\Models\Periodo;
-use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\View;
@@ -28,9 +23,6 @@ class General extends ReporteController
     
     /** @var  Periodo */
     protected $periodo;
-    
-    /** @var EstadoPeriodo */
-    protected $estadoPeriodo;
     
     protected $presentismoRepository;
     
@@ -82,7 +74,6 @@ class General extends ReporteController
                 ->with('base', $this->base)
                 ->with('turno', $this->turno)
                 ->with('periodo', $this->periodo)
-                ->with('estadoPeriodo', $this->estadoPeriodo)
                 ->with('links', $this->getLinksLikeForm($return, $request, 'reportesHaberesAgentesIndex'))
                 ->with('exportar', $this->getExportForm($return, $request, 'reportesHaberesAgentesExport'));
         } catch (ModelNotFoundException $e) {
@@ -108,11 +99,6 @@ class General extends ReporteController
         $this->turno   = Turno::findOrFail($request->input('turno'));
         $this->periodo = Periodo::findOrFail($request->input('periodo'));
         $this->page    = (($request->input('page') !== null) ? $request->input('page') : 1);
-        
-        $this->estadoPeriodo = EstadoPeriodo::where('id_periodo', '=', $this->periodo->id)
-            ->where('id_base', '=', $this->base->id)
-            ->where('id_turno', '=', $this->turno->id)
-            ->firstOrFail();
         
         return $this;
     }
