@@ -65,6 +65,10 @@ class Contrato extends Model
         return $this->belongsTo(Agente::class, 'id_agente');
     }
     
+    public function agente()
+    {
+        return $this->belongsTo(Agente::class, 'id_agente');
+    }
     
     /**
      * True si es del tipo Locacion de servicios

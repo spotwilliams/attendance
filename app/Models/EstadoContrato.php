@@ -84,6 +84,9 @@ class EstadoContrato extends Model
         }
     }
     
+    /**
+     * @return Collection
+     */
     public static function getEstadosEquivalentesBajas()
     {
         $estadoBajaPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_BAJA)->first();

@@ -78,6 +78,10 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
                 \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@index')
                 ->name('modificacionMasivaContratosIndex');
             
+            Route::post('disclosure',
+                \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@disclosure')
+                ->name('modificacionMasivaContratosDisclosure');
+
             Route::post('contrato',
                 \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@update')
                 ->name('modificacionMasivaContratosUpdate');

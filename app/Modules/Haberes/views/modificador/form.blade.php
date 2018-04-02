@@ -1,26 +1,39 @@
 <?php
-
-foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $geren) {
-    /** @var \Cat\Models\Gerencia $geren */
-    /** @var \Cat\Models\Gerencia $subgerencia */
-    $gerencias[$geren->nombre] = [
-        $geren->id => $geren->nombre
-    ];
-
-    foreach ($geren->hijas()->get(['id', 'nombre']) as $subgerencia) {
-        $gerencias[$geren->nombre] [$subgerencia->id] = $subgerencia->nombre;
-    }
-}
+$gerencias = \Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']);
+//foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $geren) {
+//    /** @var \Cat\Models\Gerencia $geren */
+//    /** @var \Cat\Models\Gerencia $subgerencia */
+//    $gerencias[$geren->nombre] = [
+//        $geren->id => $geren->nombre
+//    ];
+//
+//    foreach ($geren->hijas()->get(['id', 'nombre']) as $subgerencia) {
+//        $gerencias[$geren->nombre] [$subgerencia->id] = $subgerencia->nombre;
+//    }
+//}
+$gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 
 ?>
 
-{!! Form::open(['route' => 'modificacionMasivaContratosUpdate', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+{!! Form::open(['route' => 'modificacionMasivaContratosDisclosure', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
 
 
 <div class="form-group @if($errors->has('gerencias')) has-error @endif">
     <label class="col-sm-4 control-label">Gerencia/Subgerencia</label>
     <div class="col-sm-6">
-        {!! Form::select('gerencias[]',  $gerencias, null, ['class' => 'form-control', 'data-live-search'=>'true', 'multiple' => true]) !!}
+        <select name="gerencias[]" class="form-control" data-live-search="true" multiple>
+            @foreach($gerencias as $padre)
+                <optgroup label="{{$padre->nombre}}">
+                    <option value="{{$padre->id}}"
+                            @if(in_array($padre->id, $gerenciasOld)) selected @endif>{{$padre->nombre}}</option>
+                    @foreach($padre->hijas()->get(['id', 'nombre']) as $g)
+                        <option value="{{$g->id}}"
+                                @if(in_array($g->id, $gerenciasOld)) selected @endif>{{$g->nombre}}</option>
+                    @endforeach
+                </optgroup>
+            @endforeach
+        </select>
+        {{--        {!! Form::select('gerencias[]',  $gerencias, old('gerencias'), ['class' => 'form-control', 'data-live-search'=>'true', 'multiple' => true]) !!}--}}
         @if($errors->has('gerencias'))
             <span class="help-block">{{$errors->first('gerencias')}}</span>
         @endif
@@ -49,7 +62,7 @@ foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $
 <div class="form-group">
     <label class="col-sm-4 control-label"></label>
     <div class="col-sm-6">
-        {!! Form::submit('Registrar', ['class' => 'btn btn-primary pull-right']) !!}
+        {!! Form::submit('Siguiente', ['class' => 'btn btn-primary pull-right']) !!}
     </div>
 </div>
 
