@@ -20,8 +20,11 @@ class Agente extends RowDataFormatter
             'Nombre'                            => $agente->nombre,
             'CUIT'                              => $agente->cuit,
             'Email'                             => $agente->email,
+            'Email gobierno'                    => $agente->email_gobierno,
             'Sexo'                              => ($agente->sexo === 'F') ? 'Mujer' : ($agente->sexo === 'M' ? 'Hombre' : $agente->sexo),
-            'Telefono'                          => $agente->telefono,
+            'Telefono particular'               => $agente->telefono_particular,
+            'Telefono casa'                     => $agente->telefono_casa,
+            'Telefono ht'                       => $agente->telefono_ht,
             'Estado Civil'                      => $agente->estado_civil,
             'Base'                              => $this->getIfYouCan($agente->operativo, 'base', 'nombre'),
             'Area'                              => $this->getIfYouCan($agente->operativo, 'area', 'nombre'),
@@ -45,6 +48,8 @@ class Agente extends RowDataFormatter
             'Fecha baja'                        => $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_baja'),
             'Comentario baja'                   => $this->getIfYouCan($agente, 'contrato', 'comentario_baja'),
             'Estudios'                          => $this->tieneEstudios($agente->estudio),
+            'Observacion'                       => $agente->observacion,
+            'Profesion'                         => $agente->profesion,
         ];
         
         $horario = $this->getIfYouCan($agente->operativo, 'horario',
@@ -99,7 +104,7 @@ class Agente extends RowDataFormatter
         if ($domicilios) {
             
             foreach ($domicilios as $domicilio) {
-                $dom = "Calle: {$domicilio->calle} - Nro: {$domicilio->numero} - Dpto: {$domicilio->departamento} - Piso: {$domicilio->piso} - Barrio: {$domicilio->barrio} - Prov: {$domicilio->provincia} - Otro: {$domicilio->libre}";
+                $dom = "Calle: {$domicilio->calle} - Nro: {$domicilio->numero} - Dpto: {$domicilio->departamento} - Piso: {$domicilio->piso} - Barrio: {$domicilio->barrio} - Prov: {$domicilio->provincia} - Codigo postal: {$domicilio->codigo_postal} - Otro: {$domicilio->libre}";
                 if ($domicilio->constituido === true) {
                     $return['Domicilio constituido'] = $dom;
                 } else {

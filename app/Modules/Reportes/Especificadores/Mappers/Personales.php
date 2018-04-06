@@ -2,7 +2,7 @@
 
 namespace Cat\Reportes\Especificadores\Mappers;
 
-use Cat\Reportes\Helpers\DataCleaner;
+use Cat\Masivo\Helpers\DataCleaner;
 use Maatwebsite\Excel\Collections\CellCollection;
 
 class Personales
