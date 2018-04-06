@@ -93,11 +93,12 @@ class Operativos extends Service
                 'id_horario'         => $this->horario->id,
             ]);
             
-            
+            /** @var Contrato $contratoActual */
+            $contratoActual = $this->agente->contrato()->first();
             TurnoHistorico::create([
                 'id_operativo' => $operativo->id,
                 'id_turno'     => $this->turno->id,
-                'fecha_inicio' => Carbon::now()->format('Y-m-d'),
+                'fecha_inicio' => $contratoActual->fecha_ingreso,
             ]);
             
             DB::commit();

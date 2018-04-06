@@ -50,7 +50,7 @@ class Registro extends Service
         $this->jornadaLaborable = $fecha;
         $this->periodo          = PeriodoRepository::getOrCreatePeriodoActivo($fecha);
         
-        $this->contrato = $this->agente->contratoOnDate($this->jornadaLaborable)
+        $this->contratoEnFecha = $this->agente->contratoOnDate($this->jornadaLaborable)
             ->with('estadoContrato')
             ->with('tipoContrato')
             ->first();
@@ -91,7 +91,7 @@ class Registro extends Service
             $presentismo->injustificado = $this->tipoPresentismo->injustificado;
             
             // Guardo los datos de trazabilidad de contrato y turno
-            $presentismo->id_estado_contrato = ($this->contratoEnFecha !== null) ? $this->contratoEnFecha->estdoContrato->id : null;
+            $presentismo->id_estado_contrato = ($this->contratoEnFecha !== null) ? $this->contratoEnFecha->estadoContrato->id : null;
             $presentismo->id_tipo_contrato   = ($this->contratoEnFecha !== null) ? $this->contratoEnFecha->tipoContrato->id : null;
             $presentismo->id_turno           = ($this->turnoEnFecha !== null) ? $this->turnoEnFecha->id_turno : null;
             

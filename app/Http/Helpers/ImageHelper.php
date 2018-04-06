@@ -19,16 +19,16 @@ class ImageHelper
     public static function storeAvatar(Agente $agente = null, UploadedFile $avatar = null)
     {
         if ($agente && $avatar) {
-            if ($agente->avatar !== Agente::$avatar) {
-                
-                $filename = $agente->cuit . '_' . time() . '.' . $avatar->getClientOriginalExtension();
-                
-                Image::make($avatar)
-                    ->resize(600, 600)
-                    ->save(public_path(self::$pathAvatar . $filename));
-                return $filename;
-            }
+            
+            $filename = $agente->cuit . '_' . time() . '.' . $avatar->getClientOriginalExtension();
+            
+            Image::make($avatar)
+                ->resize(600, 600)
+                ->save(public_path(self::$pathAvatar . $filename));
+            
+            return $filename;
         }
+        
         
         return Agente::$avatar;
     }
@@ -37,7 +37,6 @@ class ImageHelper
     {
         if ($agente) {
             if ($agente->avatar !== Agente::$avatar) {
-
                 Image::make(public_path(self::$pathAvatar . $agente->avatar))
                     ->destroy();
             }
