@@ -4,6 +4,7 @@ namespace Cat\Http\Requests;
 
 use Carbon\Carbon;
 use Cat\Helpers\Validation;
+use Cat\Models\Agente;
 use Cat\Models\EstadoContrato;
 
 class LaboralesRequestUpdate extends LaboralesRequest
@@ -17,8 +18,17 @@ class LaboralesRequestUpdate extends LaboralesRequest
      */
     public function rules()
     {
-        $rules                  = Validation::getContratoRules($this);
-        $rules['fecha_ingreso'] = 'required|date|fecha_contrato_futuro';
+        
+        $rules  = Validation::getContratoRules($this);
+        $agente = Agente::where('id', '=', $this->input('agente'))
+            ->with('contrato')
+            ->first();
+        if (($agente !== null) and ($agente->contrato->fecha_ingreso === $this->input('fecha_ingreso'))) {
+            $rules['fecha_ingreso'] = 'required|date|fecha_contrato_futuro';
+        } else {
+            
+            $rules['fecha_ingreso'] = 'required|date|fecha_contrato_futuro|fecha_contrato';
+        }
         
         return $rules;
     }
