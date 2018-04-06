@@ -136,7 +136,7 @@ class Agente extends Model
     
     /**
      * @param \DateTime $fecha
-     * @return mixed
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
      */
     public function contratoOnDate(\DateTime $fecha)
     {

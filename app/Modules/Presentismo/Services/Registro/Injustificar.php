@@ -34,6 +34,9 @@ class Injustificar extends Service
         
     }
     
+    /**
+     * @throws NoSePuedeInjustificar
+     */
     public function execute()
     {
         /** @var TipoPresentismo $tipoPresentismo */

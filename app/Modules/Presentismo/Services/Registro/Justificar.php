@@ -38,6 +38,10 @@ class Justificar extends Service
         
     }
     
+    /**
+     * @throws NoSePuedeJustificar
+     * @throws \Cat\Modules\Presentismo\Exceptions\Validacion\Validation
+     */
     public function execute()
     {
         /** @var TipoPresentismo $tipoPresentismo */

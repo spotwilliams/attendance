@@ -20,6 +20,9 @@ class Presentismo extends Model
             'id_periodo',
             'fecha',
             'id_tipo_presentismo',
+            'id_estado_contrato',
+            'id_tipo_contrato',
+            'id_turno',
             'injustificado',
         ];
     

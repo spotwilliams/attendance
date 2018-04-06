@@ -10,6 +10,7 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Cat\Modules\Presentismo\Services\Registro\Registro;
 use Cat\Modules\Presentismo\Services\Validacion\Validation;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation as ValidacionNoSuperada;
+use Illuminate\Support\Facades\Log;
 
 class Facilitador
 {
@@ -17,7 +18,7 @@ class Facilitador
      * @param Agente $agente
      * @param TipoPresentismo $tipoPresentismo
      * @param \DateTime $fecha
-     * @return void
+     * @throws \Exception
      */
     public static function validarDespuesGuardar(Agente $agente, TipoPresentismo $tipoPresentismo, \DateTime $fecha)
     {
@@ -47,9 +48,20 @@ class Facilitador
         
     }
     
+    /**
+     * @param Agente $agente
+     * @param TipoPresentismo|null $tipoPresentismo
+     * @param \DateTime $fecha
+     * @throws \Exception
+     */
     private static function goOn(Agente $agente, TipoPresentismo $tipoPresentismo = null, \DateTime $fecha)
     {
-        $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
-        $serviceResigtro->execute();
+        try {
+            $serviceResigtro = new Registro($agente, $tipoPresentismo, $fecha);
+            $serviceResigtro->execute();
+        } catch (\Exception $e) {
+            Log::error($e);
+            throw $e;
+        }
     }
 }

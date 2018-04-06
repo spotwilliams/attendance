@@ -21,6 +21,9 @@ class Destroy extends Service
     
     protected $periodo;
     
+    /** @var \DateTime  */
+    protected $jornadaLaborable;
+    
     public function __construct(Agente $agente, \DateTime $fecha)
     {
         $this->agente           = $agente;
