@@ -4,7 +4,6 @@ use Cat\Helpers\Calculation;
 use Illuminate\Support\Facades\Gate;
 
 if (isset($periodo)) {
-//dd($periodo);
     /** @var \Cat\Models\Periodo $periodo */
     $turnosFinSemana = ['FSN', 'FSD', 'FSI'];
     if (in_array($turno->codigo, $turnosFinSemana)) {

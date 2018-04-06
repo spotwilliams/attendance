@@ -21,7 +21,6 @@ while ($fecha <= $fechaToday) {
 $selector = 'selectpicker';
 $idModal  = 'comentarios-modal';
 
-//dd($agentes->last()->toJson());
 ?>
 
 <table class="table hover" id="presentismos-table">
@@ -275,7 +274,6 @@ $idModal  = 'comentarios-modal';
                     {data: 'cuit'},
                     {data: 'contrato.tipo_contrato.descripcion'},
                         @for($i = 0; $i < count($fechasToShow) ;$i++)
-                        {{--{{dd($fechasToShow)}}--}}
                     {
                         data: function (agente) {
                             var fecha = '{{$fechasToShow[$i]['data']}}';
