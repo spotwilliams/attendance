@@ -173,7 +173,7 @@ class HtmlCustoms
         $selector = 'selectpicker',
         \DateTime $fecha
     ) {
-        $date = ($p === null) ? new Carbon($fecha->format('Y-m-d')) : new Carbon($p->fecha);
+        $date = (self::presentismoIsNull($p)) ? new Carbon($fecha->format('Y-m-d')) : new Carbon($p->fecha);
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContratoOnDate($agente, $date);
         
@@ -225,23 +225,32 @@ class HtmlCustoms
         return $buttonComment;
     }
     
+    /**
+     * @param Presentismo|null $p
+     * @return bool
+     */
+    private static function presentismoIsNull(Presentismo $p = null)
+    {
+        return ($p === null) or ($p->id === -1) or ($p->id === null);
+    }
+    
     public static function getButtonWithPopOver(Presentismo $p = null)
     {
-        $injustificado = ($p && ($p->injustificado == true)) ? true : false;
-        $disabled      = (($p != null) && ($p->id_tipo_presentismo != -1)) ? '' : 'disabled';
+        $injustificado = ((!self::presentismoIsNull($p)) && ($p->injustificado == true)) ? true : false;
+        $disabled      = ((!self::presentismoIsNull($p)) && ($p->id_tipo_presentismo != -1)) ? '' : 'disabled';
         $title         = ($injustificado ? '<label class="label label-danger"> Injustificado</label>' : '<label class="label label-info"> Justificado</label>');
         $label         = ($injustificado ? 'Justificado' : 'Injustificado');
         $classToggle   = ($injustificado ? 'label-info' : 'label-danger');
         $message       = "Click para marcar el presentismo como <label class=\"label $classToggle\">$label</label>";
         $toggles       = 'data-toggle=\'popover\' data-trigger=\'hover\'';
-        
-        if ($p) {
+        if (!self::presentismoIsNull($p)) {
+            
             $classButton = ($injustificado ? 'fa-check-square text-red' : 'fa-check-square text-green');
         } else {
             $classButton = 'fa-check-square-o';
         }
         $icon   = "<i class='fa $classButton'></i>";
-        $data   = 'data-presentismo=\'' . (($p === null) ? '' : $p->toJson()) . '\'';
+        $data   = 'data-presentismo=\'' . (self::presentismoIsNull($p) ? '' : $p->toJson()) . '\'';
         $button = "<button type='button' class='btn btn-default' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
         
         return $button;

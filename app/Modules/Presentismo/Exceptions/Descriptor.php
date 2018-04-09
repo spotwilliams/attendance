@@ -80,7 +80,7 @@ class Descriptor extends MainDescriptor
         if (!isset(self::$errorMap[Descriptor::FECHA_FUTURA])) {
             self::$errorMap[Descriptor::FECHA_FUTURA]
                 = new Descriptor(Descriptor::FECHA_FUTURA,
-                "El presentismo '$tipo->codigo' no se puede cargar hacia adelante.");
+                "'$tipo->codigo' no puede asignarse en una fecha posterior a la de hoy.");
         }
         
         return self::$errorMap[Descriptor::FECHA_FUTURA];

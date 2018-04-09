@@ -93,6 +93,11 @@ class RegistroController extends AppBaseController
         return $operation;
     }
     
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
     public function store(Request $request)
     {
         try {
@@ -141,6 +146,11 @@ class RegistroController extends AppBaseController
         }
     }
     
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
     public function saveOrUpdate(Request $request)
     {
         $input  = $request->all();
