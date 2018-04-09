@@ -8,14 +8,17 @@
         @include('flash::message')
 
         <div class="clearfix"></div>
-        <div class="row">
-            <div class="col-md-12">
-                @include('Reportes::presentismos.por-agente.reporte.form')
-            </div>
-        </div>
+        {{--<div class="row">--}}
+            {{--<div class="col-md-12">--}}
+                {{--@include('Reportes::presentismos.por-agente.reporte.form')--}}
+            {{--</div>--}}
+        {{--</div>--}}
         <div class="row">
             <div class="col-md-3">
                 @include('Reportes::presentismos.por-agente.reporte.resumen')
+
+                @include('Reportes::presentismos.por-agente.reporte.form')
+
             </div>
             <div class="col-md-9">
                 <div class="box box-warning">

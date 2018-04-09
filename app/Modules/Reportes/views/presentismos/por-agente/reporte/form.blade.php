@@ -4,41 +4,42 @@
     </div>
     <div class="box-body">
         <div class="row">
-            <div class="col-xs-4">
+            <div class="col-xs-12">
                 <div class="user-block">
                     <img class="img-circle img-bordered-sm"
                          src="{{URL::asset('uploads/avatars/'.$agente->avatar)}}"
                          alt="foto agente">
                     <span class="username">
-                          <a href="#">{{$agente->apellido}}, {{$agente->nombre}}</a>
+                          <a href="{{route('agentesShow', $agente->id)}}" target="_blank">{{$agente->apellido}}, {{$agente->nombre}}</a>
                         </span>
                     <span class="description">{{$agente->operativo->base->nombre}}
                         - {{$agente->operativo->turno->codigo}}</span>
                 </div>
             </div>
-            <div class="col-xs-8">
-                {{--Seleccione los datos para exportarlos a Excel!--}}
-                {!! Form::open(['route' => 'reportesPresentismoIndividualExport' ,'method' => 'POST']) !!}
-                <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">Rango de fechas</label>
-                    <input type="hidden" name="desde" class="desde">
-                    <input type="hidden" name="hasta" class="hasta">
-                    <input type="hidden" name="agente" value="{{$agente->id}}">
-                    <input type="text" class="rango form-control">
-                </div>
-                <div class="form-group col-md-4">
-                    <label for="exampleInputEmail1">Tipos de licencias</label>
-                    <div class="">
-                        {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '250px') !!}
-                    </div>
-                </div>
-
-                <div class="col-md-12 col-xs-12">
-
-                <button type="submit" class="btn btn-default">Exportar</button>
-                </div>
-                {!! Form::close() !!}
+            {{--<div class="col-xs-12">--}}
+            {{--Seleccione los datos para exportarlos a Excel!--}}
+            {!! Form::open(['route' => 'reportesPresentismoIndividualExport' ,'method' => 'POST']) !!}
+            <div class="form-group col-md-12">
+                <label for="exampleInputEmail1">Rango de fechas</label>
+                <input type="hidden" name="desde" class="desde">
+                <input type="hidden" name="hasta" class="hasta">
+                <input type="hidden" name="agente" value="{{$agente->id}}">
+                <input type="text" class="rango form-control">
             </div>
+            <div class="form-group col-md-12">
+                <label for="exampleInputEmail1">Tipos de licencias</label>
+                <div class="">
+                    {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '250px') !!}
+                </div>
+            </div>
+
+            <div class="col-md-12 col-xs-12">
+
+                <button type="submit" class="btn btn-default pull-right">Exportar</button>
+                {{--<a class="btn btn-success">Actualizar calendario</a>--}}
+            </div>
+            {!! Form::close() !!}
+            {{--</div>--}}
         </div>
     </div>
 
