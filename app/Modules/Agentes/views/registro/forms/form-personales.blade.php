@@ -59,17 +59,15 @@
         </div>
     </div>
 
-    <div class="col-md-4">
+    <div class="col-md-4 ">
 
-        <img class="profile-user-img img-responsive img-circle"
+        <img class="img-responsive img-circle"
              src="{{URL::asset('uploads/avatars/'.(isset($agente)?$agente->avatar:\Cat\Models\Agente::$avatar))}}"
-             alt="User profile picture">
-
-        <div style="margin: 0 auto; width: 100px; padding: 7px;"
+             alt="User profile picture"
+             style="margin:0 auto;width:150px;"
         >
 
-            {!! Form::file('avatar', ['class'=>'filestyle', 'data-input'=> 'false','accept'=> 'image/x-png,image/png,image/gif,image/jpeg' ,'data-buttonName'=>'btn-primary'])!!}
-        </div>
+        {!! Form::file('avatar', ['style'=> 'margin:0 auto;', 'class'=>'filestyle', 'data-input'=> 'false','accept'=> 'image/x-png,image/png,image/gif,image/jpeg' ,'data-buttonName'=>'btn-primary'])!!}
     </div>
 </div>
 <div class="form-group @if($errors->has('cuit')) has-error @endif">
@@ -473,6 +471,8 @@ $control = 0;
             var im = new Inputmask("99-99999999-9");
             im.mask('input[name="cuit"]');
 
+            // Alineacion de  la imagen y el seleccionar archivo
+            $('.bootstrap-filestyle').prop('style', 'margin: 0px auto')
         });
 
     </script>

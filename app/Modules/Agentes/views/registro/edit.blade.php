@@ -42,7 +42,7 @@
                             </li>
                         @endif
                             <li>
-                                <a href="{{route('agentesShow', ['id' => $agente->id])}}">Ver datos</a>
+                                <a href="{{route('agentesShow', ['id' => $agente->id])}}">Visualizar</a>
                             </li>
                     </ul>
                     <div class="tab-content">
