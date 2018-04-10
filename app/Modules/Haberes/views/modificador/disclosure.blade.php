@@ -16,9 +16,9 @@
                             <h4><i class="icon fa fa-warning"></i> Aviso: Se van a realizar modificaciones masivas.</h4>
                             Usted va a modificar el monto de contrato de los agentes listados abajo, junto con su fecha
                             de
-                            ingreso a la modalidad en la que pertenecen.
+                            ingreso a la modalidad a la que pertenecen.
                             <br>
-                            Estos cambios pueden revertirse de manera manual a trav&eacute;s desde los datos del
+                            Estos cambios pueden revertirse de manera manual a trav&eacute;s de los datos del
                             personal
                         </div>
                     </div>
@@ -26,7 +26,7 @@
                 <div class="row">
                     <div class="col-md-6">
                         <div class="callout callout-success">
-                            <h4>Listado de gerencias seleccionadas</h4>
+                            <h4>Listado de sectores seleccionadas</h4>
                             <ul>
                                 @foreach($gerencias as $gerencia)
                                     <li>{{$gerencia->nombre}}</li>
