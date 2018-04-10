@@ -203,10 +203,6 @@
 {{-- Input file --}}
 {!! Html::script('plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js') !!}
 
-{{-- Helper Cat --}}
-{!! Html::script('js/helpers.js') !!}
-{!! Html::script('js/defaults.js') !!}
-
 {!! Html::script('plugins/pace/js/pace.min.js') !!}
 {!! Html::script('plugins/moment/js/moment.js') !!}
 
@@ -223,6 +219,10 @@
 {!! Html::script('plugins/sliptree-bootstrap-tokenfield/js/bootstrap-tokenfield.min.js') !!}
 
 {{--{!! Html::script('plugins/datatables-double-scroll/js/datatables-double-scroll.js') !!}--}}
+
+{{-- Helper Cat --}}
+{!! Html::script('js/helpers.js') !!}
+{!! Html::script('js/defaults.js') !!}
 
 
 

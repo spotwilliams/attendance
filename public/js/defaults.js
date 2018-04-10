@@ -25,3 +25,21 @@ $.extend(true, $.fn.dataTable.defaults, {
         }
     }
 );
+
+// Selectpicker
+(function ($) {
+    // Por defecto busca el igual
+    $.fn.selectpicker.defaults = {
+        liveSearchStyle: 'equals',
+    };
+
+    // pseudo para equals
+    $.expr.pseudos.equals = function (obj, index, meta) {
+        var $obj = $(obj);
+        var haystack = ($obj.data('tokens') || $obj.text()).toString().toUpperCase();
+
+        return haystack === (meta[3].toUpperCase());
+    };
+
+
+})(jQuery);
