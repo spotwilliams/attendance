@@ -1,16 +1,5 @@
 <?php
-$gerencias = \Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']);
-//foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $geren) {
-//    /** @var \Cat\Models\Gerencia $geren */
-//    /** @var \Cat\Models\Gerencia $subgerencia */
-//    $gerencias[$geren->nombre] = [
-//        $geren->id => $geren->nombre
-//    ];
-//
-//    foreach ($geren->hijas()->get(['id', 'nombre']) as $subgerencia) {
-//        $gerencias[$geren->nombre] [$subgerencia->id] = $subgerencia->nombre;
-//    }
-//}
+$gerencias    = \Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']);
 $gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 
 ?>
@@ -21,7 +10,7 @@ $gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 <div class="form-group @if($errors->has('gerencias')) has-error @endif">
     <label class="col-sm-4 control-label">Gerencia/Subgerencia</label>
     <div class="col-sm-6">
-        <select name="gerencias[]" class="form-control" data-live-search="true" multiple>
+        <select name="gerencias[]" data-actions-box="true" class="form-control" data-live-search="true" multiple>
             @foreach($gerencias as $padre)
                 <optgroup label="{{$padre->nombre}}">
                     <option value="{{$padre->id}}"

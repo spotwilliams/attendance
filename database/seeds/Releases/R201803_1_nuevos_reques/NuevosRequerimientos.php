@@ -3,6 +3,7 @@
 namespace Cat\Database\Seeds\Releases\R201803_1_nuevos_reques;
 
 use Cat\Models\Agente;
+use Cat\Models\Gerencia;
 use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Cat\Modules\Security\Models\Permission;
@@ -18,6 +19,15 @@ class NuevosRequerimientos extends Seeder
     {
         $this->permisos();
         $this->updatePresentismos();
+        $this->updatePresentismos();
+    }
+    
+    public function updateGerenciaMalEscrita()
+    {
+        Gerencia::where('id', '=', 1)
+            ->update([
+                'nombre' => 'Subgerencia Operativa Base Zona Centro',
+            ]);
     }
     
     public function permisos()
