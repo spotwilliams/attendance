@@ -38,7 +38,8 @@ class BusquedaController extends AppBaseController
         
         if (!empty(Input::get('cuit'))) {
             
-            foreach (explode(',', Input::get('cuit')) as $cuitIn) {
+            $cuitsInput = is_array(Input::get('cuit')) ? Input::get('cuit') : explode(',', Input::get('cuit'));
+            foreach ($cuitsInput as $cuitIn) {
                 $cuit[] = $this->cleanMyInput($cuitIn);
             }
         }

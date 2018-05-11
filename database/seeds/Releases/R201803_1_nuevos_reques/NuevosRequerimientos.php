@@ -19,7 +19,6 @@ class NuevosRequerimientos extends Seeder
     {
         $this->permisos();
         $this->updatePresentismos();
-        $this->updatePresentismos();
     }
     
     public function updateGerenciaMalEscrita()
@@ -105,8 +104,8 @@ class NuevosRequerimientos extends Seeder
                 $bar->advance();
                 
             } catch (\Exception $e) {
-                $this->command->warn($e->getMessage());
-                $this->command->warn($e->getLine());
+                $message = "{$agente->cuit},";
+                $this->command->warn($message);
             }
         }
         
