@@ -100,12 +100,16 @@ class Individual extends ReporteController
         
         if ($request->input('start')) {
             $this->desde = new \DateTime($request->input('start'));
+        } elseif ($request->input('desde')) {
+            $this->desde = new \DateTime($request->input('desde'));
         } else {
             $this->desde = new \DateTime($today->firstOfMonth());
         }
         
         if ($request->input('end')) {
             $this->hasta = new \DateTime($request->input('end'));
+        } elseif ($request->input('hasta')) {
+            $this->hasta = new \DateTime($request->input('hasta'));
         } else {
             
             $this->hasta = new \DateTime($today->lastOfMonth());
