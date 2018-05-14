@@ -65,7 +65,8 @@ class BusquedaController extends AppBaseController
         if ($cuit) {
             
             $agentesEloquent
-                ->whereIn('cuit', $cuit);
+                ->whereIn('cuit', $cuit)
+                ->orWhereIn('dni', $cuit);
         }
         $agentesEloquent->with('operativo.base');
         
