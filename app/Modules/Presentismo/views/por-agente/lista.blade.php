@@ -109,7 +109,7 @@ $idModal = 'comentarios-modal'
                 $('[name="desde"]').val(desde.format('Y-MM-DD'));
                 $('[name="hasta"]').val(hasta.format('Y-MM-DD'));
 
-                $('[name="presentismo-param-form"]').submit();
+                $('[name="presentismo-por-agente-param-form"]').submit();
             });
 
             $('.avanzar-dias').on('click', function (event) {
