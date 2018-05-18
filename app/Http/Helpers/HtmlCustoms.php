@@ -179,7 +179,7 @@ class HtmlCustoms
         
         if (!$tiposPresentismos->isEmpty()) {
             
-            $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
+            $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\" data-live-search-style='equals'>";
             $option = "<option value=\"-1\">...</option>";
             
             $select .= $option;

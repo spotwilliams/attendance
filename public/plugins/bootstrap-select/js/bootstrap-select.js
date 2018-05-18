@@ -1487,7 +1487,8 @@
             _searchStyle: function () {
                 var styles = {
                     begins: 'ibegins',
-                    startsWith: 'ibegins'
+                    startsWith: 'ibegins',
+                    equals: 'equals'
                 };
 
                 return styles[this.options.liveSearchStyle] || 'icontains';

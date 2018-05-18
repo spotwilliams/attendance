@@ -28,10 +28,6 @@ $.extend(true, $.fn.dataTable.defaults, {
 
 // Selectpicker
 (function ($) {
-    // Por defecto busca el igual
-    $.fn.selectpicker.defaults = {
-        liveSearchStyle: 'equals',
-    };
 
     // pseudo para equals
     $.expr.pseudos.equals = function (obj, index, meta) {
@@ -72,11 +68,11 @@ $.extend(true, $.fn.dataTable.defaults, {
                     var $searchBase = that.$lis.not('.is-hidden, .divider, .dropdown-header'),
                         $hideItems;
 
-                    $hideItems = $searchBase.find('a').not(':equals("' + that.$searchbox.val() + '")');
+                    // console.log(that._searchStyle())
+                    $hideItems = $searchBase.find('a').not(':'+that._searchStyle()+'("' + that.$searchbox.val() + '")');
 
-                    console.log($hideItems)
                     if ($hideItems.length === $searchBase.length) {
-                        $no_results.html(that.options.noneResultsText.replace('{0}', '"' + htmlEscape(that.$searchbox.val()) + '"'));
+                        $no_results.html(that.options.noneResultsText.replace('{0}', '"' + that.$searchbox.val() + '"'));
                         that.$menuInner.append($no_results);
                         that.$lis.addClass('hidden');
                     } else {
