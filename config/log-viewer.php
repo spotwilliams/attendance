@@ -38,7 +38,7 @@ return [
         'attributes' => [
             'prefix'     => 'logs',
 
-            'middleware' => ['web'],
+            'middleware' => ['web', 'auth'],
         ],
     ],
 
