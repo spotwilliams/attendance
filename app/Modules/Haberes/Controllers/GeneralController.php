@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Haberes\Controllers\Registro;
 
+use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Base;
 use Cat\Models\Contrato;
 use Cat\Models\EstadoPeriodo;
@@ -14,6 +15,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
@@ -200,8 +202,10 @@ class GeneralController extends AppBaseController
                 ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
                 ->where('operativos.id_turno', '=', $turno->id);
             
+            $return = $agentes->paginate(25);
             return view('Haberes::calculo.lista')
-                ->with('agentes', $agentes->paginate(25))
+                ->with('agentes', $return)
+                ->with('links', $this->getLinksLikeForm($return, $request, 'haberesListaAgentes'))
                 ->with('base', $base)
                 ->with('periodo', $periodo)
                 ->with('estadoPeriodo', $estadoPeriodo)
@@ -212,5 +216,14 @@ class GeneralController extends AppBaseController
             return view('Haberes::calculo.index-estados-periodos');
         }
         
+    }
+    
+    protected function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request,  $route)
+    {
+        /** @var FormPresenter $presenter */
+        $presenter = new FormPresenter($paginator, $route);
+        $presenter->setInputsParams($request->all());
+        
+        return $paginator->links($presenter);
     }
 }

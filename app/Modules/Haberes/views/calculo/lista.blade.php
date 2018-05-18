@@ -156,8 +156,10 @@ while ($fecha < $fechaToday) {
             </div>
             <div class="box-footer">
                 <div class="col-md-6 col-md-offset-3">
+                    @if(!$agentes->isEmpty())
+                        {{$links}}
+                    @endif
 
-                    {{$agentes->links()}}
                 </div>
 
             </div>
