@@ -74,7 +74,7 @@ class General extends ReporteController
                 ->with('base', $this->base)
                 ->with('turno', $this->turno)
                 ->with('periodo', $this->periodo)
-                ->with('links', $this->getLinksLikeForm($return, $request, 'reportesHaberesAgentesIndex'))
+                ->with('links', $this->getLinksLikeForm($return, $request, 'reportesHaberesVistaPreviaSearch'))
                 ->with('exportar', $this->getExportForm($return, $request, 'reportesHaberesAgentesExport'));
         } catch (ModelNotFoundException $e) {
             Flash::error('Al parecer alguno de los datos seleccionados no permiten encontrar un periodo valido');

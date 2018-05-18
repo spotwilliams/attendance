@@ -45,7 +45,7 @@ if (isset($periodo)) {
     <div class="box-footer">
         <div class="col-md-6 col-md-offset-3">
             @if(isset($agentes))
-                {{$agentes->links()}}
+                {{$links}}
             @endif
         </div>
 
