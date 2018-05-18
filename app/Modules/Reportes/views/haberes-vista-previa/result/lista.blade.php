@@ -285,10 +285,17 @@ if (isset($periodo)) {
                      *
                      *
                      */
-                    var agenteData = $(this).parents().closest('.col-xs-2').children('input');
+                    var agenteData = $(this).parents().closest('.col-xs-2').children('input.data-agente');
                     var agente = $(agenteData).data('agente');
                     var presentismoData = $(this).parents().closest('.form-group').children('.tools-presentismo').children('[data-toggle="popover"]');
                     var presentismo = $(presentismoData).data('presentismo');
+                    var fecha = null;
+
+                    if (presentismo === "") {
+                        fecha = $(this).parents().closest('.col-xs-2').children('input.data-fecha').data('fecha');
+                    } else {
+                        fecha = presentismo.fecha;
+                    }
 
                     $.ajax({
                         url: '{{route('presentismoStore')}}',
@@ -296,7 +303,7 @@ if (isset($periodo)) {
                         data: {
                             'agente': agente.id,
                             'presentismo': $(this).val(),
-                            'fecha': presentismo.fecha,
+                            'fecha': fecha,
                         },
                         success: function (xhr, other) {
 

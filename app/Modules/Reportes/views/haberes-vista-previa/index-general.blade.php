@@ -24,25 +24,3 @@
     </div>
 @endsection
 
-@section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            $('table').dataTable({
-                paging: false,
-                ordering: false,
-                info: false,
-                searching: false,
-                scrollY: "700px",
-                scrollX: true,
-                scrollCollapse: true,
-                fixedColumns: true,
-                dom: 'Bfrtip',
-            });
-            {{--@if(isset($exportar))--}}
-            {{--var exportButton = $('{!! $exportar !!}');--}}
-            //                exportButton.children('[type="submit"]').removeClass('btn btn-default').addClass('dt-button buttons-colvisGroup');
-            //                $('.dt-buttons').append(exportButton);
-            {{--@endif--}}
-        })
-    </script>
-@append

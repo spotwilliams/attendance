@@ -57,7 +57,8 @@ if (isset($periodo)) {
 
                                     <label>{{(new DateTime($p->fecha))->format('d/m/y')}}
                                         (@lang('day.'. $fecha->format('D')))</label>
-                                    <input type="hidden" data-agente="{{json_encode($a->getAttributes())}}">
+                                    <input type="hidden" class="data-agente" data-agente="{{json_encode($a->getAttributes())}}">
+                                    <input type="hidden" class="data-fecha" data-fecha="{{$p->fecha}}">
                                     {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a, 'selectpicker', $fecha) !!}
                                 </div>
                             @endif
