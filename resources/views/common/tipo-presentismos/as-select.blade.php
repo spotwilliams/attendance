@@ -14,7 +14,7 @@ $name      = ($multiple !== '') ? 'tipo_presentismo[]' : 'tipo_presentismo';
         @endif
     </label>
     <div class="col-sm-9 col-xs-9">
-        <select class="form-control" {{$multiple}} name="{{$name}}" data-live-search="true">
+        <select class="form-control" {{$multiple}} name="{{$name}}" data-live-search="true" data-live-search-style='equals'>
             @if(!$multiple)
                 <option value="-1">...</option>
             @endif
@@ -23,6 +23,7 @@ $name      = ($multiple !== '') ? 'tipo_presentismo[]' : 'tipo_presentismo';
                     @foreach($grupo as $tp)
                         <option value="{{$tp->id }}"
                                 data-content="<span class='label' style='color: {{$tp->color_letra}}; background-color: {{$tp->color}}'>{{$tp->descripcion}} ({{$tp->codigo}})</span>"
+                                data-tokens="{{$tp->codigo}}"
                                 @if(isset($tiposPresentismos) and in_array($tp->id, $tiposPresentismos)) selected @endif>{{$tp->codigo}}
                         </option>
                     @endforeach

@@ -34,59 +34,14 @@ class GeneralController extends AppBaseController
     }
     
     /**
-     * @param Request $request
      * @return \Illuminate\Contracts\View\Factory|View
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('selectBase', $this);
         
-        /** @var Collection $operativos */
-        $operativos = Operativo::select(['operativos.*'])
-            ->join('agentes', 'operativos.id_agente', '=', 'agentes.id')
-            ->join('contratos', function ($joinClause) {
-                /** @var \Illuminate\Support\Collection $tipo */
-                /** @var \Illuminate\Database\Query\JoinClause $joinClause */
-                
-                $tipo = TipoContrato::select('id')
-                    ->where('codigo', 'LOCACION')
-                    ->get();
-                
-                $joinClause->on('agentes.id', '=', 'contratos.id_agente')
-                    ->whereIn('id_tipo_contrato', array_keys($tipo->keyBy('id')->toArray()));
-            })
-            ->get();
-        
-        /** @var Builder $eloq */
-        $eloq = EstadoPeriodo::select(['estado_periodos.*'])
-            ->with('turno')
-            ->with('periodo')
-            ->where('abierto', '=', true)
-            ->orderBy('id_periodo', 'DESC');
-        
-        /**
-         * @var integer $idBase
-         * @var Collection $item
-         */
-        $eloq->where(function ($where) use($operativos ){
-            
-            foreach ($operativos->groupBy('id_base') as $idBase => $item) {
-                $idTurnos = array_keys($item->keyBy('id_turno')->toArray());
-                
-                foreach ($idTurnos as $idTurno) {
-                    $where->orWhere(function ($where) use ($idBase, $idTurno) {
-                        $where->where('id_base', $idBase)
-                            ->where('id_turno', $idTurno);
-                    });
-                }
-            }
-        });
-
-        $estadoPeriodo = $eloq->get();
-        
-        return view('Haberes::calculo.index-estados-periodos')
-            ->with('estadosPeriodos', $estadoPeriodo);
+        return view('Haberes::calculo.index');
     }
     
     /**
@@ -156,7 +111,7 @@ class GeneralController extends AppBaseController
     public function listaAgentes(Request $request)
     {
         $this->authorize('listaAgentes', $this);
-     
+        
         try {
             /** @var EstadoPeriodo $estadoPeriodo */
             $estadoPeriodo = EstadoPeriodo::where('id', '=', $request->input('periodo'))
@@ -203,6 +158,7 @@ class GeneralController extends AppBaseController
                 ->where('operativos.id_turno', '=', $turno->id);
             
             $return = $agentes->paginate(25);
+            
             return view('Haberes::calculo.lista')
                 ->with('agentes', $return)
                 ->with('links', $this->getLinksLikeForm($return, $request, 'haberesListaAgentes'))
@@ -218,7 +174,7 @@ class GeneralController extends AppBaseController
         
     }
     
-    protected function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request,  $route)
+    protected function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request, $route)
     {
         /** @var FormPresenter $presenter */
         $presenter = new FormPresenter($paginator, $route);
