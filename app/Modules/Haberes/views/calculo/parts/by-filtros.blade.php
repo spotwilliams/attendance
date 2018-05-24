@@ -1,4 +1,4 @@
-{!! Form::open(['route' => 'haberesListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST', 'role' => 'form']) !!}
+{!! Form::open(['route' => 'haberesSearchByFiltros', 'class'=>'form-horizontal', 'method' => 'POST', 'role' => 'form']) !!}
 
 
 <div class="col-md-12">

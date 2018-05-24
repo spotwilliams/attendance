@@ -87,7 +87,7 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{!! route('haberesSelectBase') !!}">
+            <a href="{!! route('haberesIndex') !!}">
                 <i class="fa fa-money"></i>
                 <span>C&aacute;lculo de haberes</span>
             </a>

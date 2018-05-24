@@ -14,6 +14,8 @@ use Cat\Modules\Haberes\Controllers\Registro\GeneralController;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController;
 use Cat\Modules\Haberes\Controllers\Registro\NotificacionController;
+use Cat\Modules\Haberes\Controllers\Registro\ByAgenteController;
+use Cat\Modules\Haberes\Controllers\Registro\ByFiltrosController;
 
 Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function () {
     /**
@@ -21,14 +23,20 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
      */
     
     
-    Route::get('index', GeneralController::class . '@index')
-        ->name('haberesSelectBase');
-    
     Route::group(['prefix' => 'haberes'], function () {
         
-        
-        Route::post('lista/agentes', GeneralController::class . '@listaAgentes')
-            ->name('haberesListaAgentes');
+        Route::get('index', GeneralController::class . '@index')
+            ->name('haberesIndex');
+    
+        Route::group(['prefix' => 'search'], function () {
+            
+            Route::post('by/agente',ByAgenteController::class . '@search')
+                ->name('haberesSearchByAgente');
+            
+            Route::post('by/filtros',ByFiltrosController::class . '@search')
+                ->name('haberesSearchByFiltros');
+            
+        });
         
         /**
          * Confirmaciones
@@ -81,7 +89,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
             Route::post('disclosure',
                 \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@disclosure')
                 ->name('modificacionMasivaContratosDisclosure');
-
+            
             Route::post('contrato',
                 \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@update')
                 ->name('modificacionMasivaContratosUpdate');
