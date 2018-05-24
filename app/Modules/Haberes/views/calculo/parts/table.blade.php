@@ -13,7 +13,7 @@
         </tr>
         </thead>
         <tbody>
-        @foreach($agentes as $agente)
+        @foreach(isset($agentes) ?$agentes: [] as $agente)
             <tr>
                 <td>
                     <a href="{{route('agentesShow', ['id' => $agente->id])}}" data-toggle="popover" title="Ver datos"

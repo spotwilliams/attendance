@@ -40,7 +40,7 @@
 
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Resultados de la b&uacute;squeda</h3>
+                <h3 class="box-title">Resultados de la b&uacute;squeda: <span class="label label-info">@if(isset($agentes)){{$agentes->total()}}@else{{0}}@endif</span> agentes encontrados</h3>
             </div>
 
             <div class="box-body">
