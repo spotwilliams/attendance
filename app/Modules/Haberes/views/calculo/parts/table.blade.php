@@ -36,7 +36,7 @@
 
 <div class="text-center">
     @if(isset($agentes) and !$agentes->isEmpty())
-        {{$agentes->links()}}
+        {{$links}}
     @endif
 </div>
 

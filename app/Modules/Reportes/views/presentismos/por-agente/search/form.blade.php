@@ -17,7 +17,7 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('input[name="cuit"]').tokenfield();
+            $('input[name="cuit"]').not(':hidden').tokenfield();
         })
     </script>
 @append

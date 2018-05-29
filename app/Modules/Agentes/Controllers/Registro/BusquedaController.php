@@ -5,8 +5,8 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 use Cat\Models\Agente;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Http\Controllers\AppBaseController;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Input;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
@@ -16,6 +16,14 @@ class BusquedaController extends AppBaseController
     /** @var  AgenteRepository */
     private $agenteRepository;
     
+    /** @var Builder */
+    protected $agentesEloquent;
+    
+    protected $nombre;
+    
+    protected $apellido;
+    
+    protected $cuit;
     
     public function __construct(AgenteRepository $agenteRepo)
     {
@@ -32,51 +40,55 @@ class BusquedaController extends AppBaseController
      */
     public function search(Request $request)
     {
-        $nombre   = $this->cleanMyInput(Input::get('nombre'));
-        $apellido = $this->cleanMyInput(Input::get('apellido'));
-        $cuit     = [];
+        $this->prepareQuery();
+        $return = $this->agentesEloquent
+            ->paginate(25)
+            ->appends(['nombre' => $this->nombre, 'apellido' => $this->apellido, 'cuit' => $this->cuit]);
+        
+        return View::make('Agentes::registro.search.index')
+            ->withAgentes($return);
+        
+    }
+    
+    protected function prepareQuery()
+    {
+        $this->nombre   = $this->cleanMyInput(Input::get('nombre'));
+        $this->apellido = $this->cleanMyInput(Input::get('apellido'));
+        $this->cuit     = [];
         
         if (!empty(Input::get('cuit'))) {
             
             $cuitsInput = is_array(Input::get('cuit')) ? Input::get('cuit') : explode(',', Input::get('cuit'));
             foreach ($cuitsInput as $cuitIn) {
-                $cuit[] = $this->cleanMyInput($cuitIn);
+                $this->cuit[] = $this->cleanMyInput($cuitIn);
             }
         }
         
-        $agentesEloquent = Agente::select(['*']);
+        $this->agentesEloquent = Agente::select(['*']);
         
         /*
          * En caso que lleguen mas de un
          */
         
-        if ($nombre) {
-            $agentesEloquent
+        if ($this->nombre) {
+            $this->agentesEloquent
 //                ->where(DB::raw('unaccent(nombre)'), 'ILIKE', DB::raw("unaccent('%$nombre%')"))
-                ->where('nombre', 'ILIKE', "%$nombre%");
+                ->where('nombre', 'ILIKE', "%$this->nombre%");
         }
         
-        if ($apellido) {
+        if ($this->apellido) {
             
-            $agentesEloquent
-                ->where('apellido', 'ILIKE', "%$apellido%");
+            $this->agentesEloquent
+                ->where('apellido', 'ILIKE', "%$this->apellido%");
             //                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))
         }
-        if ($cuit) {
+        if ($this->cuit) {
             
-            $agentesEloquent
-                ->whereIn('cuit', $cuit)
-                ->orWhereIn('dni', $cuit);
+            $this->agentesEloquent
+                ->whereIn('cuit', $this->cuit)
+                ->orWhereIn('dni', $this->cuit);
         }
-        $agentesEloquent->with('operativo.base');
-        
-        $return = $agentesEloquent
-            ->paginate(25)
-            ->appends(['nombre' => $nombre, 'apellido' => $apellido, 'cuit' => $cuit]);
-        
-        return View::make('Agentes::registro.search.index')
-            ->withAgentes($return);
-        
+        $this->agentesEloquent->with('operativo.base');
     }
     
     protected function cleanMyInput($input)

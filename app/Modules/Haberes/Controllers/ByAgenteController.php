@@ -3,44 +3,39 @@
 namespace Cat\Modules\Haberes\Controllers\Registro;
 
 use Cat\Helpers\Pagination\FormPresenter;
-use Cat\Models\Base;
-use Cat\Models\Contrato;
-use Cat\Models\EstadoPeriodo;
-use Cat\Models\Haber;
-use Cat\Models\Operativo;
-use Cat\Models\TipoContrato;
-use Cat\Models\Turno;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
-use Cat\Http\Controllers\AppBaseController;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Illuminate\Support\Collection;
-use Illuminate\Validation\ValidationException;
+use Illuminate\Support\Facades\Input;
 use Illuminate\View\View;
-use Laracasts\Flash\Flash;
+use Cat\Modules\Haberes\Controllers\Pageable;
 
 class ByAgenteController extends BusquedaController
 {
+    use Pageable;
+    
+    
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Support\Facades\Response
+     */
     public function search(Request $request)
     {
         /** @var View $result */
-        $result = parent::search($request);
+        parent::prepareQuery();
         /** @var LengthAwarePaginator $agentes */
-        $agentes = $result->getData()['agentes'];
-        
+        $agentes = $this->agentesEloquent->paginate($this->itemsPerPage);
+
         return view('Haberes::calculo.index')
             ->with('agentes', $agentes)
-            ->with('links', $this->getLinks($agentes, $request));
+            ->with('links', $this->getLinks($agentes));
     }
     
-    private function getLinks(LengthAwarePaginator $agentes, Request $request)
+    private function getLinks(LengthAwarePaginator $agentes)
     {
         $presenter = new FormPresenter($agentes, 'haberesSearchByAgente');
-        $presenter->setInputsParams($request->all());
-        
+        $presenter->setInputsParams(['nombre' => $this->nombre, 'apellido' => $this->apellido, 'cuit' => Input::get('cuit')]);
+
         return $agentes->links($presenter);
     }
     
