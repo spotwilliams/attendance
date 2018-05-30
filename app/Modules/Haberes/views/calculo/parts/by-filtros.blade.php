@@ -1,5 +1,6 @@
 {!! Form::open(['route' => 'haberesSearchByFiltros', 'class'=>'form-horizontal', 'method' => 'POST', 'role' => 'form']) !!}
 
+<input type="hidden" name="periodo" value="{{$periodo->id}}">
 
 <div class="col-md-12">
     @include('common.bases.as-checkbox', ['label' => 'Bases'])

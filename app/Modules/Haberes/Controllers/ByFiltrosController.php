@@ -4,10 +4,13 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 
 
 use Cat\Models\Agente;
+use Cat\Models\Periodo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
+use Laracasts\Flash\Flash;
 
 class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteController
 {
@@ -33,38 +36,44 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
     /**
      * @param Request $request
      * @return \Illuminate\Support\Facades\Response
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function search(Request $request)
     {
-
+        
         $this->setupParams($request)
             ->setupQuery();
         
-        /** @var LengthAwarePaginator $return */
-        $return = $this->query->paginate(25, ['*'], 'pagina', $this->page);
+        /** @var Collection $return */
+        $return = $this->query->get();
+        try {
+            $periodo = Periodo::findOrFail($request->input('periodo'));
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Debe seleccionar un periodo de la lista');
+            
+            return redirect(route('haberesIndex'));
+        }
         
-        return View::make('Haberes::calculo.index')
+        return View::make('Haberes::calculo.seleccionar-agentes')
             ->with('agentes', $return)
+            ->with('periodo', $periodo)
             ->with('bases', $this->bases)
             ->with('turnos', $this->turnos)
             ->with('areas', $this->areas)
             ->with('funcion', $this->funciones)
             ->with('estadoContratos', $this->estadoContratos)
-            ->with('tipoContratos', $this->tipoContratos)
-            ->with('links', $this->getLinksLikeForm($return, $request, 'haberesSearchByFiltros'));
+            ->with('tipoContratos', $this->tipoContratos);
         
     }
     
     protected function setupParams(Request $request)
     {
-        $this->areas              = new Collection($request->input('areas'));
-        $this->bases              = new Collection($request->input('bases'));
-        $this->turnos             = new Collection($request->input('turnos'));
-        $this->funciones          = new Collection($request->input('funcion'));
-        $this->estadoContratos    = new Collection($request->input('estadoContratos'));
-        $this->tipoContratos      = new Collection($request->input('tipoContratos'));
-        $this->page               = (($request->input('page') !== null) ? $request->input('page') : 1);
+        $this->areas           = new Collection($request->input('areas'));
+        $this->bases           = new Collection($request->input('bases'));
+        $this->turnos          = new Collection($request->input('turnos'));
+        $this->funciones       = new Collection($request->input('funcion'));
+        $this->estadoContratos = new Collection($request->input('estadoContratos'));
+        $this->tipoContratos   = new Collection($request->input('tipoContratos'));
+        $this->page            = (($request->input('page') !== null) ? $request->input('page') : 1);
         
         return $this;
     }

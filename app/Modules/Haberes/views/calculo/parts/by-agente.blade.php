@@ -1,4 +1,5 @@
 {{ Form::open(['route' => 'haberesSearchByAgente', 'method' => 'POST'])}}
+<input type="hidden" name="periodo" value="{{$periodo->id}}">
 <div class="col-md-4">
     {{ Form::text('apellido', Request::input('apellido'), ['id' => 'apellido', 'placeholder' => 'Apellido', 'class' => 'col-md-3 form-control']) }}
 </div>

@@ -27,13 +27,17 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         
         Route::get('index', GeneralController::class . '@index')
             ->name('haberesIndex');
-    
+        
         Route::group(['prefix' => 'search'], function () {
             
-            Route::post('by/agente',ByAgenteController::class . '@search')
+            Route::post('/', GeneralController::class . '@search')
+                ->name('haberesSearch');
+            
+            Route::post('by/agente', ByAgenteController::class . '@search')
                 ->name('haberesSearchByAgente');
             
-            Route::post('by/filtros',ByFiltrosController::class . '@search')
+            
+            Route::post('by/filtros', ByFiltrosController::class . '@search')
                 ->name('haberesSearchByFiltros');
             
         });

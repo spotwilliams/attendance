@@ -2,13 +2,17 @@
 
 namespace Cat\Modules\Haberes\Controllers\Registro;
 
+use Arcanedev\Support\Collection;
 use Cat\Helpers\Pagination\FormPresenter;
+use Cat\Models\Periodo;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\View\View;
 use Cat\Modules\Haberes\Controllers\Pageable;
+use Laracasts\Flash\Flash;
 
 class ByAgenteController extends BusquedaController
 {
@@ -23,19 +27,34 @@ class ByAgenteController extends BusquedaController
     {
         /** @var View $result */
         parent::prepareQuery();
-        /** @var LengthAwarePaginator $agentes */
-        $agentes = $this->agentesEloquent->paginate($this->itemsPerPage);
-
-        return view('Haberes::calculo.index')
+        /** @var Collection $agentes */
+        $agentes = $this->agentesEloquent
+            ->with('operativo.base')
+            ->get();
+        
+        try {
+            $periodo = Periodo::findOrFail($request->input('periodo'));
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Debe seleccionar un periodo de la lista');
+            
+            return redirect(route('haberesIndex'));
+        }
+        
+        
+        return view('Haberes::calculo.seleccionar-agentes')
             ->with('agentes', $agentes)
-            ->with('links', $this->getLinks($agentes));
+            ->with('periodo', $periodo);
     }
     
     private function getLinks(LengthAwarePaginator $agentes)
     {
         $presenter = new FormPresenter($agentes, 'haberesSearchByAgente');
-        $presenter->setInputsParams(['nombre' => $this->nombre, 'apellido' => $this->apellido, 'cuit' => Input::get('cuit')]);
-
+        $presenter->setInputsParams([
+            'nombre'   => $this->nombre,
+            'apellido' => $this->apellido,
+            'cuit'     => Input::get('cuit'),
+        ]);
+        
         return $agentes->links($presenter);
     }
     

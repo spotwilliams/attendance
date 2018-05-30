@@ -1,15 +1,13 @@
 <div class="table-responsive">
 
-    <table class="resultados">
+    <table class="resultados dataTable no-footer">
         <thead>
         <tr>
             <th></th>
             <th>Agente</th>
             <th>CUIT</th>
-            <th>Monto a facturar</th>
-            <th>D&iacute;as registrados</th>
-            <th>Justificados</th>
-            <th>No justificados</th>
+            <th>Base</th>
+            <th>Turno</th>
         </tr>
         </thead>
         <tbody>
@@ -20,12 +18,18 @@
                        data-content="Abre la ficha del agente en otra pesta&ntilde;a" target="_blank"
                        class="label label-success"><i class="fa fa-eye"></i></a>
                 </td>
-                <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
+                <td>
+                    <div class="checkbox checkbox-info checkbox-circle col-md-4 col-xs-6 col-lg-4">
+                        <input type="checkbox" id="check_agente_{{$agente->id}}" class="base-option" name="agentes[]"
+                               value="{{$agente->id}}">
+                        <label for="check_agente_{{$agente->id}}">
+                            {{$agente->apellido}}, {{$agente->nombre}}
+                        </label>
+                    </div>
+                </td>
                 <td>{{$agente->cuit}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre'])}}</td>
+                <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'codigo'])}}</td>
             </tr>
         @endforeach
         </tbody>
@@ -33,23 +37,9 @@
 
 
 </div>
-
-<div class="text-center">
-    @if(isset($agentes) and !$agentes->isEmpty())
-        {{$links}}
-    @endif
-</div>
-
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('table.resultados').dataTable({
-                searching: false,
-                bInfo: false,
-                paging: false,
-                ordering: false,
-            });
-
             $('[data-toggle="popover"]').popover({
                 trigger: 'hover'
             });
