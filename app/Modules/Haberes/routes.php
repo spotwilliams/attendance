@@ -31,6 +31,9 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         Route::post('calcular', ConfirmarController::class . '@calcular')
             ->name('haberesCalcular');
         
+        Route::post('registrar', ConfirmarController::class . '@registarFactura')
+            ->name('haberesRegistrarFactura');
+        
         Route::group(['prefix' => 'search'], function () {
             
             Route::post('/', GeneralController::class . '@search')

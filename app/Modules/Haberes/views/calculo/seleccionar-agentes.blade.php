@@ -60,7 +60,7 @@
                     <div class="btn-group">
                         <a class="btn btn-default ninguno">Ninguno</a>
                         <a class="btn btn-default todos">Todos</a>
-                        <input type="submit" value="Calcular" class="btn btn-primary">
+                        <input type="submit" value="Siguiente" class="btn btn-primary">
                     </div>
                 </div>
             </div>

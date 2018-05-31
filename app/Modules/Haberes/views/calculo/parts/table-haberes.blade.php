@@ -8,6 +8,7 @@
             <th>CUIT</th>
             <th>Monto a facturar</th>
             <th>D&iacute;as injustificados</th>
+            <th>Nro. Factura</th>
         </tr>
         </thead>
         <tbody>
@@ -18,7 +19,22 @@
                        data-content="Abre la ficha del agente en otra pesta&ntilde;a" target="_blank"
                        class="label label-success"><i class="fa fa-eye"></i></a>
                 </td>
-                <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
+                <td>
+                    <div class="checkbox checkbox-info checkbox-circle">
+                        {{--Necesario por si ocurren errores de validacion, y se tiene que recargar la vista--}}
+                        <input type="hidden" name="agentes[]" value="{{$agente->id}}">
+
+                        <?php
+                        $oldFacts = old('facturas') ?: [];
+
+                        ?>
+                        <input type="checkbox" id="check_agente_{{$agente->id}}" class="agente-option"
+                               value="{{$agente->id}}" @if(array_key_exists($agente->id, $oldFacts)) checked @endif>
+                        <label for="check_agente_{{$agente->id}}">
+                            {{$agente->apellido}}, {{$agente->nombre}}
+                        </label>
+                    </div>
+                </td>
                 <td>{{$agente->cuit}}</td>
                 <td>
                     @if($agente->detalle->monto === $agente->detalle->montoContrato)
@@ -37,6 +53,14 @@
                     @endif
                                     {{$agente->detalle->diasADescontar}}
                                 </span>
+                </td>
+                <td>
+
+                    <input type="text" name="facturas[{{$agente->id}}]"
+
+                           @if(!array_key_exists($agente->id, $oldFacts)) disabled class=" form-control disabled"
+                           @else class="form-control" value="{{$oldFacts[$agente->id]}}"  @endif
+                    >
                 </td>
             </tr>
         @endforeach

@@ -3,13 +3,8 @@
 namespace Cat\Modules\Haberes\Controllers\Registro;
 
 use Cat\Models\Agente;
-use Cat\Models\Base;
-use Cat\Models\EstadoPeriodo;
 use Cat\Models\Periodo;
-use Cat\Models\Turno;
-use Cat\Modules\Haberes\Controllers\GeneralController;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
-use Cat\Modules\Haberes\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
@@ -22,6 +17,8 @@ use Laracasts\Flash\Flash;
 
 class ConfirmarController extends AppBaseController
 {
+    /** Trait que me permite generar reglas dinamicas para los campos factura */
+    use Ruleable;
     /** @var  PresentismoRepository */
     private $presentismoRepository;
     
@@ -99,34 +96,43 @@ class ConfirmarController extends AppBaseController
      * @throws \Exception
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function batch(Request $request)
+    public function registarFactura(Request $request)
     {
         $this->authorize('batch', $this);
         
         try {
-            $input   = $request->all();
-            $periodo = Periodo::findOrFail($input['periodo']);
-            $base    = Base::find($input['base']);
-            $turno   = Turno::findOrFail($input['turno']);
             
-            $estadoPeriodo = EstadoPeriodo::where('id_periodo', '=', $periodo->id)
-                ->where('id_base', '=', $base->id)
-                ->where('id_turno', '=', $turno->id)
-                ->first();
+            /** @var Periodo $periodo */
+            $periodo = Periodo::findOrFail($request->input('periodo'));
             
-            Facilitador::batch($base, $periodo, $turno);
-            Flash::success('Periodo cerrado con &eacute;xito');
+            $this->setRulesAccording($request)
+                ->validate($request, $this->rules, $this->messages);
             
-            return view('Haberes::calculo.end')
-                ->with('periodo', $periodo)
-                ->with('base', $base)
-                ->with('estadoPeriodo', $estadoPeriodo)
-                ->with('turno', $turno);
+            $periodo->validarSiPuedeCalcular();
             
-        } catch (ModelNotFoundException $exception) {
-            Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
             
-            return redirect()->back();
+            dd($this);
+            
+            
+            
+        } catch (ValidationException $e) {
+    
+            Flash::error($e->validator->getMessageBag()->first());
+            
+            return $this->calcular($request);
+            
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Debe seleccionar un periodo');
+            
+            return redirect()->route('haberesIndex');
+        } catch (PeriodoAbierto $e) {
+            Flash::error($e->getMessage());
+            
+            return redirect()->route('haberesIndex');
+        } catch (\Exception $exception) {
+            Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
+            
+            return redirect()->route('haberesIndex');
             
         }
     }

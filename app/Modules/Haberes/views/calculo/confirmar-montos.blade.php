@@ -46,18 +46,20 @@
         </div>
 
         <div class="box">
-            {!! Form::open(['method' => 'POST', 'route' => 'haberesCalcular']) !!}
+            {!! Form::open(['method' => 'POST', 'route' => 'haberesRegistrarFactura']) !!}
             <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
             <div class="box-header with-border">
                 <h3 class="box-title"><span
                             class="label label-info">@if(isset($agentes)){{$agentes->count()}}@else{{0}}@endif</span>
                     agentes encontrados</h3>
-                {{--<div class="box-tools pull-right">--}}
-                    {{--<div class="btn-group">--}}
-                        {{--<input type="submit" value="Confirmar montos" class="btn btn-primary">--}}
-                    {{--</div>--}}
-                {{--</div>--}}
+                <div class="box-tools pull-right">
+                    <div class="btn-group">
+                        <a class="btn btn-default ninguno">Ninguno</a>
+                        <a class="btn btn-default todos">Todos</a>
+                        <input type="submit" value="Registrar" class="btn btn-primary">
+                    </div>
+                </div>
             </div>
 
             <div class="box-body">
@@ -77,6 +79,30 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+
+
+            $('a.todos, a.ninguno').on('click', function () {
+                if ($(this).hasClass('ninguno')) {
+                    $('input[type="checkbox"].agente-option').prop('checked', false).change();
+                } else {
+                    $('input[type="checkbox"].agente-option').prop('checked', true).change();
+                }
+            });
+
+            $('input[type="checkbox"].agente-option').change(function (event) {
+                var rw = $(this).parents('tr');
+                var text = $(rw).find('input[type="text"]').not(':hidden');
+
+                if (this.checked) {
+                    $(text).prop('disabled', false);
+                } else {
+                    $(text).prop('disabled', true);
+                }
+            });
+
+            // Para activar el change si estaban precargardos
+            // $('input[type="checkbox"].agente-option:checked').prop('checked', true).change();
+
         })
     </script>
 @append
