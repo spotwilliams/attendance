@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Haberes\Controllers\Registro;
+namespace Cat\Modules\Haberes\Controllers\Notificacion;
 
 use Cat\Models\Base;
 use Cat\Models\Periodo;
@@ -8,7 +8,6 @@ use Cat\Models\Turno;
 use Cat\Modules\Haberes\Controllers\Helpers\Data;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
 use Cat\Modules\Haberes\Services\Reporte\Reporte;
-use Cat\Modules\Reportes\Services\Formatters\RowDataFormatter;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Http\Request;

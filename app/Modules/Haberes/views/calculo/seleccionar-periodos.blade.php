@@ -11,7 +11,7 @@
 
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">C&aacute;lculo de haberes</h3>
+                <h3 class="box-title">Registro de facturas</h3>
             </div>
 
             <div class="box-body text-center">

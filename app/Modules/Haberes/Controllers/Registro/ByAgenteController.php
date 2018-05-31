@@ -13,12 +13,10 @@ use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Input;
 use Illuminate\View\View;
-use Cat\Modules\Haberes\Controllers\Pageable;
 use Laracasts\Flash\Flash;
 
 class ByAgenteController extends BusquedaController
 {
-    use Pageable;
     
     
     /**

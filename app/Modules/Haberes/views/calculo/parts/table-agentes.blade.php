@@ -19,7 +19,7 @@
                        class="label label-success"><i class="fa fa-eye"></i></a>
                 </td>
                 <td>
-                    <div class="checkbox checkbox-info checkbox-circle col-md-4 col-xs-6 col-lg-4">
+                    <div class="checkbox checkbox-info checkbox-circle">
                         <input type="checkbox" id="check_agente_{{$agente->id}}" class="agente-option" name="agentes[]"
                                value="{{$agente->id}}">
                         <label for="check_agente_{{$agente->id}}">

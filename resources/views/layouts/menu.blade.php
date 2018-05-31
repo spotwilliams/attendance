@@ -89,7 +89,7 @@
         <li>
             <a href="{!! route('haberesIndex') !!}">
                 <i class="fa fa-money"></i>
-                <span>C&aacute;lculo de haberes</span>
+                <span>Registro de facturas</span>
             </a>
         </li>
         <li>

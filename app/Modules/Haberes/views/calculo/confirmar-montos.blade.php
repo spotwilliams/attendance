@@ -18,7 +18,7 @@
         ?>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">C&aacute;lculo de haberes para <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
+                <h3 class="box-title">Registar facturas para <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
                         '{{$mesFacturacion->format('y')}}</span> <span
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h3>
