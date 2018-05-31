@@ -229,4 +229,12 @@ class Agente extends Model
         
         return $dias;
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function facturas()
+    {
+        return $this->hasMany(FacturaFisica::class, 'id_agente');
+    }
 }

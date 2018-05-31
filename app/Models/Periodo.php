@@ -137,4 +137,13 @@ class Periodo extends Model
             return true;
         }
     }
+    
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function facturas()
+    {
+        return $this->hasMany(FacturaFisica::class, 'id_periodo');
+    }
 }
