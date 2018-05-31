@@ -21,10 +21,10 @@
 
     @include('common.estado-contratos.as-checkbox', ['label' => 'Estado contrato'])
 </div>
-<div class="col-md-12">
+{{--<div class="col-md-12">--}}
 
-    @include('common.tipo-contratos.as-checkbox', ['label' => 'Tipo contrato'])
-</div>
+{{--    @include('common.tipo-contratos.as-checkbox', ['label' => 'Tipo contrato'])--}}
+{{--</div>--}}
 
 <div class="col-md-12">
     {!! Form::submit('Buscar', ['class' => 'btn btn-info pull-right btn-flat']) !!}
@@ -36,9 +36,9 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-            $('select').selectpicker({
-                container: '.lista-tipos'
-            });
+            // $('select').selectpicker({
+            //     container: '.lista-tipos'
+            // });
         })
     </script>
 @append

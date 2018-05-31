@@ -15,6 +15,7 @@ class Descriptor extends MainDescriptor
     const SIN_DIAS_DISPONIBLES               = 3000;
     const PERIODO_CERRADO                    = 4000;
     const BASE_TURNO_SIN_PERIODO             = 4001;
+    const PERIODO_ABIERTO_PARA_CALCULAR      = 4002;
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
@@ -75,6 +76,20 @@ class Descriptor extends MainDescriptor
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
     }
     
+    /**
+     * @return self
+     */
+    public static function periodoAbiertoParaCalcular()
+    {
+        if (!isset(self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR])) {
+            self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR]
+                = new Descriptor(Descriptor::PERIODO_ABIERTO_PARA_CALCULAR,
+                'El periodo seleccionado es el actual y no puede ser usado para calcular los montos.');
+        }
+        
+        return self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR];
+    }
+    
     public static function fechaFutura(TipoPresentismo $tipo)
     {
         if (!isset(self::$errorMap[Descriptor::FECHA_FUTURA])) {
@@ -130,7 +145,7 @@ class Descriptor extends MainDescriptor
                 = new Descriptor(Descriptor::ESTADO_CONTRATO_EN_COMISION,
                 'Los agentes en comisión solo pueden tener presentismo \'EX\'');
         }
-    
+        
         return self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION];
     }
 }

@@ -3,6 +3,7 @@
 namespace Cat\Models;
 
 use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -123,4 +124,17 @@ class Periodo extends Model
         }
     }
     
+    /**
+     * Verifica si se pueden calcular los montos tomando como referencia una fecha particular
+     * @throws PeriodoAbierto
+     * @return true
+     */
+    public function validarSiPuedeCalcular()
+    {
+        if ($this->fechaComprendida(new \DateTime('now'))) {
+            throw new PeriodoAbierto($this);
+        } else {
+            return true;
+        }
+    }
 }

@@ -114,6 +114,12 @@ class TipoPresentismosRepository
         
     }
     
+    /**
+     * @param Agente $agente
+     * @param Periodo $periodo
+     * @return int
+     * @obsolete
+     */
     public static function getCantFaltasInjustificadas(Agente $agente, Periodo $periodo)
     {
         /** @var Collection $faltas */

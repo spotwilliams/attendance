@@ -4,8 +4,12 @@ namespace Cat\Modules\Haberes\Services\Calculo;
 
 use Cat\Models\Agente;
 use Cat\Models\Periodo;
+use Cat\Models\Presentismo;
+use Cat\Models\TipoPresentismo;
+use Cat\Models\Turno;
 use Cat\Modules\Service;
 use Cat\Repositories\TipoPresentismosRepository;
+use Illuminate\Support\Collection;
 
 class Calculador extends Service
 {
@@ -16,73 +20,79 @@ class Calculador extends Service
     /** @var Periodo */
     protected $periodo;
     
-    /** @var  float */
-    protected $monto;
-    
-    /** @var float */
-    protected $montoContrato;
+    /** @var  \stdClass */
+    protected $detalle;
     
     /**
-     * Calculador constructor.
      * @param Agente $agente
      * @param Periodo $periodo
-     */
-    public function __construct(Agente $agente, Periodo $periodo)
-    {
-        $this->load($agente, $periodo);
-    }
-    
-    /**
-     * Permite reutilizar el servicio para otros agentes o periodos
-     * @param Agente $agente
-     * @param Periodo $periodo
+     * @return $this
      */
     public function reset(Agente $agente, Periodo $periodo)
     {
         $this->load($agente, $periodo);
+        
+        return $this;
     }
     
     /**
-     * Reinicializa el objeto
      * @param Agente $agente
      * @param Periodo $periodo
+     * @return $this
      */
     private function load(Agente $agente, Periodo $periodo)
     {
-        $this->agente        = $agente;
-        $this->periodo       = $periodo;
-        $this->montoContrato = floatval($this->agente->contrato()->first()->monto);
-        $this->monto         = null;
+        $this->agente  = $agente;
+        $this->periodo = $periodo;
+        
+        // Definimos cuanto detalle vamos a devolver
+        $this->detalle                   = new \stdClass();
+        $this->detalle->tard             = 0;
+        $this->detalle->fins             = 0;
+        $this->detalle->sema             = 0;
+        $this->detalle->tardEqui         = 0;
+        $this->detalle->monto            = 0;
+        $this->detalle->montoContrato    = floatval($this->agente->contratoOnDate(new \DateTime($periodo->fecha_comienzo))->first()->monto);
+        $this->detalle->montoDescontable = floatval($this->detalle->montoContrato / Calculador::FACTOR_DIVISION);
+        $this->detalle->diasADescontar   = 0;
+        
+        return $this;
     }
     
     /**
-     * @return bool
+     * @return \stdClass()
      */
     public function execute()
     {
-        /** @var float $montoDescontable Monto de referencia para descontar */
-        $montoDescontable = floatval($this->montoContrato / Calculador::FACTOR_DIVISION);
+        
+        /** @var Collection $presentismos */
+        $presentismos = $this->agente->presentismos->groupBy(function ($presentismo) {
+            return $presentismo->injustificado === true ? 'injustificado' : 'justificado';
+        });
+        /** @var Presentismo $presentismo */
+        if ($presentismos->has('injustificado')) {
+            /** @var Presentismo $preInjustificado */
+            foreach ($presentismos->get('injustificado') as $preInjustificado) {
+                if ($preInjustificado->tipoPresentismo->codigo === TipoPresentismo::TARDANZA) {
+                    $this->detalle->tard++;
+                } elseif ($preInjustificado->turno->esFinDeSemana()) {
+                    // Los fin de semana valen doble
+                    $this->detalle->fins += config('cat.presentismos.equivalencia.injustificado.fin_semana');
+                } else {
+                    $this->detalle->sema++;
+                }
+            }
+            
+        }
+        // actualizamos las tardanzas al valor que corresponde
+        $this->detalle->tardEqui = floor($this->detalle->tard / config('cat.presentismos.equivalencia.injustificado.tardanza'));
         
         /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
-        $diasADescontar = TipoPresentismosRepository::getCantFaltasInjustificadas($this->agente, $this->periodo);
-        $this->monto    = floatval($this->montoContrato - ($montoDescontable * $diasADescontar));
+        $this->detalle->diasADescontar = $this->detalle->sema + $this->detalle->tardEqui + $this->detalle->fins;
         
-        return floatval($this->monto);
+        $this->detalle->monto = floatval($this->detalle->montoContrato - ($this->detalle->montoDescontable * $this->detalle->diasADescontar));
+        
+        return $this->detalle;
     }
-    
-    public function getMontoContrato()
-    {
-        return $this->montoContrato;
-    }
-    
-    public function getMontoPagar()
-    {
-        if ($this->monto === null) {
-            return $this->execute();
-        } else {
-            return $this->monto;
-        }
-    }
-    
     
 }

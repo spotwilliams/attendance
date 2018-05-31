@@ -30,17 +30,14 @@
 
                     <div class="form-group">
                         <div class="progress-group">
-                            <span class="progress-text">Paso 2 - Seleccionar agentes</span>
-                            <span class="progress-number"><b>2</b>/4</span>
+                            <span class="progress-text">Paso 3 - Confirmar montos</span>
+                            <span class="progress-number"><b>3</b>/4</span>
 
                             <div class="progress">
-                                <div class="progress-bar progress-bar-yellow" style="width: 50%"></div>
+                                <div class="progress-bar progress-bar-yellow" style="width: 75%"></div>
                             </div>
                         </div>
                     </div>
-
-
-                    @include('Haberes::calculo.parts.form-filtros')
                 </div>
 
             </div>
@@ -56,20 +53,18 @@
                 <h3 class="box-title"><span
                             class="label label-info">@if(isset($agentes)){{$agentes->count()}}@else{{0}}@endif</span>
                     agentes encontrados</h3>
-                <div class="box-tools pull-right">
-                    <div class="btn-group">
-                        <a class="btn btn-default ninguno">Ninguno</a>
-                        <a class="btn btn-default todos">Todos</a>
-                        <input type="submit" value="Calcular" class="btn btn-primary">
-                    </div>
-                </div>
+                {{--<div class="box-tools pull-right">--}}
+                    {{--<div class="btn-group">--}}
+                        {{--<input type="submit" value="Confirmar montos" class="btn btn-primary">--}}
+                    {{--</div>--}}
+                {{--</div>--}}
             </div>
 
             <div class="box-body">
 
                 <div class="col-md-12">
 
-                    @include('Haberes::calculo.parts.table-agentes')
+                    @include('Haberes::calculo.parts.table-haberes')
                 </div>
 
             </div>
@@ -82,15 +77,6 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
-
-            $('a.todos, a.ninguno').on('click', function () {
-                if ($(this).hasClass('ninguno')) {
-                    $('input[type="checkbox"].agente-option').prop('checked', false);
-                } else {
-                    $('input[type="checkbox"].agente-option').prop('checked', true);
-                }
-            });
-
         })
     </script>
 @append

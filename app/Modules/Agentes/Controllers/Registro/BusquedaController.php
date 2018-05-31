@@ -64,7 +64,7 @@ class BusquedaController extends AppBaseController
             }
         }
         
-        $this->agentesEloquent = Agente::select(['*']);
+        $this->agentesEloquent = Agente::select(['agentes.*']);
         
         /*
          * En caso que lleguen mas de un

@@ -47,7 +47,7 @@ use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Policies\Presentismos\JustificacionPolicy;
 
 // Haberes
-use Cat\Modules\Haberes\Controllers\Registro\GeneralController as HaberesGeneral;
+use Cat\Modules\Haberes\Controllers\GeneralController as HaberesGeneral;
 use Cat\Policies\Haberes\GeneralPolicy as HaberesGeneralPolicy;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController as HaberesReporte;
 use Cat\Policies\Haberes\ReportePolicy as HaberesReportePolicy;

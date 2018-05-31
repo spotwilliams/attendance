@@ -5,6 +5,7 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 
 use Cat\Models\Agente;
 use Cat\Models\Periodo;
+use Cat\Models\TipoContrato;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -72,8 +73,10 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
         $this->turnos          = new Collection($request->input('turnos'));
         $this->funciones       = new Collection($request->input('funcion'));
         $this->estadoContratos = new Collection($request->input('estadoContratos'));
-        $this->tipoContratos   = new Collection($request->input('tipoContratos'));
-        $this->page            = (($request->input('page') !== null) ? $request->input('page') : 1);
+//        $this->tipoContratos   = new Collection($request->input('tipoContratos'));
+        // Solo los agentes con locacion
+        $this->tipoContratos = TipoContrato::where('codigo', '=', TipoContrato::TIPO_LOCACION)->get()->pluck('id');
+        $this->page          = (($request->input('page') !== null) ? $request->input('page') : 1);
         
         return $this;
     }

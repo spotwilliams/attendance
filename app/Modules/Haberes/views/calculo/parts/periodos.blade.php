@@ -4,7 +4,7 @@
 
     <div class="col-sm-6">
 
-        <select name="periodo" data-width="300px">
+        <select name="periodo" data-width="300px" data-live-search="true">
             @foreach(\Cat\Models\Periodo::select(['*'])->orderBy('fecha_comienzo', 'DESC')->get() as $periodo)
                 <?php
 

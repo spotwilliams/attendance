@@ -20,7 +20,7 @@
                 </td>
                 <td>
                     <div class="checkbox checkbox-info checkbox-circle col-md-4 col-xs-6 col-lg-4">
-                        <input type="checkbox" id="check_agente_{{$agente->id}}" class="base-option" name="agentes[]"
+                        <input type="checkbox" id="check_agente_{{$agente->id}}" class="agente-option" name="agentes[]"
                                value="{{$agente->id}}">
                         <label for="check_agente_{{$agente->id}}">
                             {{$agente->apellido}}, {{$agente->nombre}}
@@ -43,6 +43,13 @@
             $('[data-toggle="popover"]').popover({
                 trigger: 'hover'
             });
+            $('table.resultados').dataTable({
+                searching: false,
+                bInfo: false,
+                paging: false,
+                ordering: false,
+            });
+
         })
     </script>
 @append

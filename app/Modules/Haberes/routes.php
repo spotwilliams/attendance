@@ -10,7 +10,7 @@
 */
 
 use Illuminate\Support\Facades\Route;
-use Cat\Modules\Haberes\Controllers\Registro\GeneralController;
+use Cat\Modules\Haberes\Controllers\GeneralController;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController;
 use Cat\Modules\Haberes\Controllers\Registro\NotificacionController;
@@ -27,6 +27,9 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         
         Route::get('index', GeneralController::class . '@index')
             ->name('haberesIndex');
+        
+        Route::post('calcular', ConfirmarController::class . '@calcular')
+            ->name('haberesCalcular');
         
         Route::group(['prefix' => 'search'], function () {
             
@@ -45,27 +48,27 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         /**
          * Confirmaciones
          */
-        Route::group(['prefix' => 'confirmar'], function () {
-            
-            Route::post('disclaimer', ConfirmarController::class . '@disclaimer')
-                ->name('haberesConfirmarDisclaimer');
-            
-            Route::post('lote', ConfirmarController::class . '@batch')
-                ->name('haberesConfirmarLote');
-        });
+//        Route::group(['prefix' => 'confirmar'], function () {
+//
+//            Route::post('disclaimer', ConfirmarController::class . '@disclaimer')
+//                ->name('haberesConfirmarDisclaimer');
+//
+//            Route::post('lote', ConfirmarController::class . '@batch')
+//                ->name('haberesConfirmarLote');
+//        });
         
-        /**
-         * Reporte
-         */
-        Route::group(['prefix' => 'reporte'], function () {
-            
-            Route::post('/', ReporteController::class . '@reporte')
-                ->name('haberesReporte');
-            
-            Route::post('preliminar', ReporteController::class . '@reportePreliminar')
-                ->name('haberesReportePreliminar');
-            
-        });
+//        /**
+//         * Reporte
+//         */
+//        Route::group(['prefix' => 'reporte'], function () {
+//
+//            Route::post('/', ReporteController::class . '@reporte')
+//                ->name('haberesReporte');
+//
+//            Route::post('preliminar', ReporteController::class . '@reportePreliminar')
+//                ->name('haberesReportePreliminar');
+//
+//        });
         
         
         /**

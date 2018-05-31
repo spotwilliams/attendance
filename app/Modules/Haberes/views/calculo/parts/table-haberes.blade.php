@@ -7,9 +7,7 @@
             <th>Agente</th>
             <th>CUIT</th>
             <th>Monto a facturar</th>
-            <th>D&iacute;as registrados</th>
-            <th>Justificados</th>
-            <th>No justificados</th>
+            <th>D&iacute;as injustificados</th>
         </tr>
         </thead>
         <tbody>
@@ -22,10 +20,24 @@
                 </td>
                 <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
                 <td>{{$agente->cuit}}</td>
-                <td></td>
-                <td></td>
-                <td></td>
-                <td></td>
+                <td>
+                    @if($agente->detalle->monto === $agente->detalle->montoContrato)
+                        <span class="label label-default">
+                    @else
+                                <span class="label label-warning">
+                    @endif
+                                    $ {{$agente->detalle->monto}}
+                        </span>
+                </td>
+                <td>
+                    @if($agente->detalle->diasADescontar  == 0)
+                        <span class="label label-default">
+                    @else
+                                <span class="label label-warning">
+                    @endif
+                                    {{$agente->detalle->diasADescontar}}
+                                </span>
+                </td>
             </tr>
         @endforeach
         </tbody>
