@@ -5,6 +5,8 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 use Cat\Models\Agente;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
+use Cat\Modules\Haberes\Services\Helpers\Facilitador;
+use Cat\Modules\Haberes\Services\Registro\Registro;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
@@ -46,16 +48,7 @@ class ConfirmarController extends AppBaseController
             
             $periodo->validarSiPuedeCalcular();
             /** @var Builder $eloq */
-            $eloq = Agente::whereIn('id', $request->input('agentes'))
-                ->with([
-                    'presentismos' => function ($with) use ($periodo) {
-                        /** @var Builder $with */
-                        $with->where('id_periodo', '=', $periodo->id)
-                            ->with('turno')
-                            ->with('tipoPresentismo')
-                            ->with('tipoContrato');
-                    },
-                ]);
+            $eloq = $this->getEloq($periodo, $request->input('agentes'));
             
             /** @var Collection $agentes */
             $agentes    = $eloq->get();
@@ -110,13 +103,31 @@ class ConfirmarController extends AppBaseController
             
             $periodo->validarSiPuedeCalcular();
             
+            $eloq = $this->getEloq($periodo, array_keys($request->input('facturas')));
             
-            dd($this);
+            /** @var Collection $agentes */
+            $agentes = $eloq->get();
+
+            Facilitador::batch($agentes, $periodo, $request->input('facturas'));
+            
+            $agentes    = $eloq
+                ->with([
+                    'facturas' => function ($with) use ($periodo) {
+                        /** @var Builder $with */
+                        $with->where('id_periodo', '=', $periodo->id);
+                    },
+                ])
+                ->get();
+            
+            $calculador = new CalculadorBatch($agentes, $periodo);
             
             
+            return view('Haberes::calculo.end')
+                ->with('agentes', $calculador->execute())
+                ->with('periodo', $periodo);
             
         } catch (ValidationException $e) {
-    
+            
             Flash::error($e->validator->getMessageBag()->first());
             
             return $this->calcular($request);
@@ -135,6 +146,25 @@ class ConfirmarController extends AppBaseController
             return redirect()->route('haberesIndex');
             
         }
+    }
+    
+    /**
+     * @param Periodo $periodo
+     * @param $ids
+     * @return Builder
+     */
+    private function getEloq(Periodo $periodo, $ids)
+    {
+        return Agente::whereIn('id', $ids)
+            ->with([
+                'presentismos' => function ($with) use ($periodo) {
+                    /** @var Builder $with */
+                    $with->where('id_periodo', '=', $periodo->id)
+                        ->with('turno')
+                        ->with('tipoPresentismo')
+                        ->with('tipoContrato');
+                },
+            ]);
     }
     
 }

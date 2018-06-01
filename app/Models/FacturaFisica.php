@@ -5,33 +5,7 @@ namespace Cat\Models;
 use Illuminate\Database\Eloquent\Model;
 
 /**
- * @SWG\Definition(
- *      definition="FacturaFisica",
- *      required={""},
- *      @SWG\Property(
- *          property="id",
- *          description="id",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_agente",
- *          description="id_agente",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="id_periodo",
- *          description="id_periodo",
- *          type="integer",
- *          format="int32"
- *      ),
- *      @SWG\Property(
- *          property="nro_factura",
- *          description="nro_factura",
- *          type="string"
- *      )
- * )
+ * @property Agente $agente
  */
 class FacturaFisica extends Model
 {

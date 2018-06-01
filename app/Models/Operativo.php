@@ -4,7 +4,10 @@ namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * Class Operativo
+ * @package Cat\Models
+ */
 class Operativo extends Model
 {
     
@@ -29,10 +32,10 @@ class Operativo extends Model
     
     public static $rules
         = [
-            'id_funcion'   => 'not_in:-1',
-            'id_base'      => 'not_in:-1',
-            'id_turno'     => 'not_in:-1',
-            'id_horario'   => 'not_in:-1',
+            'id_funcion' => 'not_in:-1',
+            'id_base'    => 'not_in:-1',
+            'id_turno'   => 'not_in:-1',
+            'id_horario' => 'not_in:-1',
         ];
     
     /**
@@ -110,7 +113,10 @@ class Operativo extends Model
         return $this->belongsTo(TurnoHistorico::class, 'id_operativo');
     }
     
-    
+    /**
+     * @param \DateTime $fecha
+     * @return mixed
+     */
     public function turnoOnDate(\DateTime $fecha)
     {
         return $this->hasMany(TurnoHistorico::class, 'id_operativo')

@@ -12,9 +12,10 @@ use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
-use Cat\Modules\Haberes\Services\Registro\CierrePeriodo;
 use Cat\Modules\Haberes\Services\Registro\Registro;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Collection;
+use Illuminate\Support\Facades\DB;
 
 class Facilitador
 {
@@ -36,42 +37,25 @@ class Facilitador
     }
     
     /**
-     * @param array $agentes Los items pueden ser models de Agente o bien ids
+     * @param Collection $agentes
      * @param Periodo $periodo
-     * @throws \Exception
+     * @param $nrosFactura
      */
-    public static function batch(Base $base, Periodo $periodo, Turno $turno)
+    public static function batch(Collection $agentes, Periodo $periodo, $nrosFactura)
     {
-        $periodoCerradoCompleto = true;
         try {
-            $tipoLocacion = array_keys(
-                TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
-                    ->get(['id'])
-                    ->keyBy('id')
-                    ->toArray()
-            );
-            $operativos   = $base->agentes()
-                ->with('agente')
-                ->where('operativos.id_turno', '=', $turno->id)
-                ->join('contratos', 'contratos.id_agente', '=', 'agentes.id')
-                ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
-                ->get();
-
-            /** @var Operativo $operativo */
-            foreach ($operativos as $operativo) {
-                try {
-                    $service = new Registro($operativo->agente()->first(), $periodo, $turno, $base);
-                    $service->execute();
-                } catch (QueryException $e) {
-                    $periodoCerradoCompleto = false;
-                }
+            DB::beginTransaction();
+            
+            foreach ($agentes as $agente) {
+                $support = new Registro($agente, $periodo, $nrosFactura[$agente->id]);
+                
+                $support->execute();
+                
             }
             
-            if ($periodoCerradoCompleto) {
-                $cerradorPeriodo = new CierrePeriodo($periodo, $base, $turno);
-                $cerradorPeriodo->execute();
-            }
+            DB::commit();
         } catch (QueryException $e) {
+            DB::rollBack();
             throw $e;
         }
     }

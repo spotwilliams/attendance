@@ -9,7 +9,11 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
+/**
+ * Class Agente
+ * @property Operativo $operativo
+ * @package Cat\Models
+ */
 class Agente extends Model
 {
     use SoftDeletes, AgenteUpperCase;
@@ -236,5 +240,15 @@ class Agente extends Model
     public function facturas()
     {
         return $this->hasMany(FacturaFisica::class, 'id_agente');
+    }
+    
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function facturasByPeriodo(Periodo $periodo)
+    {
+        return $this->hasMany(FacturaFisica::class, 'id_agente')
+            ->where('id_periodo', '=', $periodo->id);
     }
 }

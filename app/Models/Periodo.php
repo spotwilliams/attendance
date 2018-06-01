@@ -7,6 +7,12 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * Class Periodo
+ * @property string fecha_comienzo
+ * @property string fecha_fin
+ * @package Cat\Models
+ */
 class Periodo extends Model
 {
     
