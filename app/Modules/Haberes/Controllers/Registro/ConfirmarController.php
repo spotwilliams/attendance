@@ -6,7 +6,6 @@ use Cat\Models\Agente;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
-use Cat\Modules\Haberes\Services\Registro\Registro;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
@@ -53,9 +52,6 @@ class ConfirmarController extends AppBaseController
             /** @var Collection $agentes */
             $agentes    = $eloq->get();
             $calculador = new CalculadorBatch($agentes, $periodo);
-            
-            $calculador->execute();
-            
             
             return view('Haberes::calculo.confirmar-montos')
                 ->with('periodo', $periodo)
@@ -107,10 +103,10 @@ class ConfirmarController extends AppBaseController
             
             /** @var Collection $agentes */
             $agentes = $eloq->get();
-
+            
             Facilitador::batch($agentes, $periodo, $request->input('facturas'));
             
-            $agentes    = $eloq
+            $agentes = $eloq
                 ->with([
                     'facturas' => function ($with) use ($periodo) {
                         /** @var Builder $with */
@@ -163,6 +159,10 @@ class ConfirmarController extends AppBaseController
                         ->with('turno')
                         ->with('tipoPresentismo')
                         ->with('tipoContrato');
+                },
+                'facturas'     => function ($with) use ($periodo) {
+                    /** @var Builder $with */
+                    $with->where('id_periodo', '=', $periodo->id);
                 },
             ]);
     }

@@ -58,8 +58,15 @@
 
                     <input type="text" name="facturas[{{$agente->id}}]"
 
-                           @if(!array_key_exists($agente->id, $oldFacts)) disabled class=" form-control disabled"
-                           @else class="form-control" value="{{$oldFacts[$agente->id]}}"  @endif
+                           @if(!array_key_exists($agente->id, $oldFacts))
+                           @if($agente->facturas->isEmpty())
+                           disabled class=" form-control disabled"
+                           @else
+                           disabled class="form-control" value="{{$agente->facturas->first()->nro_factura}}"
+                           @endif
+                           @else
+                           class="form-control" value="{{$oldFacts[$agente->id]}}"
+                            @endif
                     >
                 </td>
             </tr>
@@ -82,6 +89,10 @@
             $('[data-toggle="popover"]').popover({
                 trigger: 'hover'
             });
+
+            $()
+        }).on("keypress", "form", function(event) {
+            return event.keyCode != 13;
         })
     </script>
 @append
