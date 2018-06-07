@@ -52,6 +52,12 @@
                     Se regist&oacute; factura para <span
                             class="label label-info">@if(isset($agentes)){{$agentes->count()}}@else{{0}}@endif</span>
                     agentes</h3>
+                <div class="box-tools pull-right">
+                    <div class="btn-group">
+                        <a class="btn btn-default ninguno" href="{{route('haberesIndex')}}"><i class="fa fa-undo"></i>&nbsp;Volver</a>
+                        <input type="submit" value="Siguiente" class="btn btn-primary">
+                    </div>
+                </div>
             </div>
 
             <div class="box-body">

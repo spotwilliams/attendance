@@ -54,10 +54,14 @@
                             class="label label-info">@if(isset($agentes)){{$agentes->count()}}@else{{0}}@endif</span>
                     agentes encontrados</h3>
                 <div class="box-tools pull-right">
+                    <input type="hidden" name="periodo" value="{{$periodo->id}}">
                     <div class="btn-group">
+                        <button type="submit" class="btn btn-default atras"><i
+                                    class="fa fa-backward"></i>&nbsp;Atr&aacute;s
+                        </button>
                         <a class="btn btn-default ninguno">Ninguno</a>
                         <a class="btn btn-default todos">Todos</a>
-                        <input type="submit" value="Registrar" class="btn btn-primary">
+                        <button type="submit" class="btn btn-primary registrar">Registrar</button>
                     </div>
                 </div>
             </div>
@@ -80,6 +84,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
+            $('button.atras, button.registrar').on('click', function (event) {
+                event.preventDefault();
+                var $form = $('form');
+                if ($(this).hasClass('atras')) {
+                    $form.prop('action', '{{route('haberesSearch')}}')
+                } else {
+                    $form.prop('action', '{{route('haberesRegistrarFactura')}}')
+                }
+
+                $form.submit();
+            });
 
             $('a.todos, a.ninguno').on('click', function () {
                 if ($(this).hasClass('ninguno')) {

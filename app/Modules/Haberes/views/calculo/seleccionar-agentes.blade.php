@@ -58,6 +58,7 @@
                     agentes encontrados</h3>
                 <div class="box-tools pull-right">
                     <div class="btn-group">
+                        <a class="btn btn-default ninguno" href="{{route('haberesIndex')}}"><i class="fa fa-backward"></i>&nbsp;Atr&aacute;s</a>
                         <a class="btn btn-default ninguno">Ninguno</a>
                         <a class="btn btn-default todos">Todos</a>
                         <input type="submit" value="Siguiente" class="btn btn-primary">
