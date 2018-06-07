@@ -43,20 +43,20 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         Route::get('index', \Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@index')
             ->name('notificacionIndex');
         
-        // Paso X
+        // Paso 3
         Route::post('calcular', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@calcular')
             ->name('notificacionCalcular');
         
-        // Paso 3
+        // Paso 4
         Route::group(['prefix' => 'notificar'], function () {
             
-            // Paso 3.1
-            Route::post('prefix', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@registarFactura')
-                ->name('notificacionRegistrarPrefijo');
+            // Paso 4.1
+            Route::post('regular', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@regular')
+                ->name('notificacionRegular');
             
-            // Paso 3.1
-            Route::post('prefix', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@registarFactura')
-                ->name('notificacionRegistrarLibre');
+            // Paso 4.1
+            Route::post('libre', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@libre')
+                ->name('notificacionLibre');
         });
         
         Route::group(['prefix' => 'search'], function () {

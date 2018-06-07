@@ -7,7 +7,6 @@ use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;
@@ -47,7 +46,6 @@ class ConfirmarController extends AppBaseController
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function calcular(Request $request)
     {
@@ -163,7 +161,7 @@ class ConfirmarController extends AppBaseController
      * @param $ids
      * @return Builder
      */
-    private function getEloq(Periodo $periodo, $ids)
+    protected function getEloq(Periodo $periodo, $ids)
     {
         return Agente::whereIn('id', $ids)
             ->with([

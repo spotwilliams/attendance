@@ -29,7 +29,7 @@
 
                         ?>
                         <input type="checkbox" id="check_agente_{{$agente->id}}" class="agente-option"
-                               value="{{$agente->id}}" @if(array_key_exists($agente->id, $oldFacts)) checked @endif>
+                               value="{{$agente->id}}" name="mails[{{$agente->id}}]" @if(array_key_exists($agente->id, $oldFacts)) checked @endif>
                         <label for="check_agente_{{$agente->id}}">
                             {{$agente->apellido}}, {{$agente->nombre}}
                         </label>
@@ -57,7 +57,6 @@
                 {{--<td>--}}
 
                     {{--<input type="text" name="facturas[{{$agente->id}}]"--}}
-
                            {{--@if(!array_key_exists($agente->id, $oldFacts))--}}
                            {{--@if($agente->facturas->isEmpty())--}}
                            {{--disabled class=" form-control disabled"--}}

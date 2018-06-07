@@ -46,7 +46,7 @@
         </div>
 
         <div class="box">
-            {!! Form::open(['method' => 'POST', 'route' => 'haberesRegistrarFactura']) !!}
+            {!! Form::open(['method' => 'POST', 'route']) !!}
             <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
             <div class="box-header with-border">
@@ -57,12 +57,12 @@
                     <input type="hidden" name="periodo" value="{{$periodo->id}}">
                     <div class="btn-group">
                         <button type="submit" class="btn btn-default atras"><i
-                                    class="fa fa-backward"></i>&nbsp;Atr&aacute;s
+                                    class="fa fa-backward"></i>&nbsp;<span class="hidden-xs">Atr&aacute;s</span>
                         </button>
-                        <a class="btn btn-default ninguno">Ninguno</a>
-                        <a class="btn btn-default todos">Todos</a>
-                        <button type="submit" class="btn btn-primary libre">Env&iacute;o libre</button>
-                        <button type="submit" class="btn btn-primary regular">Env&iacute;o regular</button>
+                        <a class="btn btn-default ninguno"><span class="hidden-xs">Ninguno</span>&nbsp;<i class="hidden-lg hidden-md hidden-sm fa fa-close"></i></a>
+                        <a class="btn btn-default todos"><span class="hidden-xs">Todos</span>&nbsp;<i class="hidden-lg hidden-md hidden-sm fa fa-check"></i></a>
+                        <button type="submit" class="btn btn-primary libre"><span class="hidden-xs">Env&iacute;o libre</span>&nbsp;<i class="hidden-lg hidden-md hidden-sm fa fa-send-o"></i></button>
+                        <button type="submit" class="btn btn-primary regular"><span class="hidden-xs">Env&iacute;o regular</span>&nbsp;<i class="hidden-lg hidden-md hidden-sm fa fa-file-text-o"></i></button>
                     </div>
                 </div>
             </div>
@@ -85,17 +85,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 
-            $('button.atras, button.registrar').on('click', function (event) {
+            $('button.atras, button.registrar, button.regular, button.libre').on('click', function (event) {
                 event.preventDefault();
                 var $form = $('form');
                 if ($(this).hasClass('atras')) {
-                    $form.prop('action', '{{route('notificacionIndex')}}')
-                }
-                if ($(this).hasClass('libre')) {
-                    $form.prop('action', '{{route('notificacionIndex')}}')
+                    $form.prop('action', '{{route('notificacionSearch')}}')
                 }
                 if ($(this).hasClass('regular')) {
-                    $form.prop('action', '{{route('notificacionIndex')}}')
+                    $form.prop('action', '{{route('notificacionRegular')}}')
+                }
+                if ($(this).hasClass('libre')) {
+                    $form.prop('action', '{{route('notificacionLibre')}}')
                 }
                 $form.submit();
             });
