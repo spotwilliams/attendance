@@ -7,6 +7,7 @@ use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
+use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
@@ -17,7 +18,19 @@ use Laracasts\Flash\Flash;
 
 class ByAgenteController extends BusquedaController
 {
+    /** @var string */
+    protected $searchView;
     
+    /** @var string */
+    protected $indexRoute;
+    
+    public function __construct(AgenteRepository $agenteRepo)
+    {
+        parent::__construct($agenteRepo);
+        
+        $this->searchView = 'Haberes::calculo.seleccionar-agentes';
+        $this->indexRoute = 'haberesIndex';
+    }
     
     /**
      * @param Request $request
@@ -32,7 +45,7 @@ class ByAgenteController extends BusquedaController
         $this->agentesEloquent->join('contratos', function ($join) {
             /** @var JoinClause $join */
             $join->on('contratos.id_agente', '=', 'agentes.id');
-
+            
             $join
                 ->whereIn('id_tipo_contrato',
                     TipoContrato::where('codigo', '=', TipoContrato::TIPO_LOCACION)->get()->pluck('id')->toArray());
@@ -49,11 +62,11 @@ class ByAgenteController extends BusquedaController
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo de la lista');
             
-            return redirect(route('haberesIndex'));
+            return redirect(route($this->indexRoute));
         }
         
         
-        return view('Haberes::calculo.seleccionar-agentes')
+        return view($this->searchView)
             ->with('agentes', $agentes)
             ->with('periodo', $periodo);
     }

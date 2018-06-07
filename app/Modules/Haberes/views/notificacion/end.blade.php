@@ -55,6 +55,7 @@
                 <div class="box-tools pull-right">
                     <div class="btn-group">
                         <a class="btn btn-default ninguno" href="{{route('haberesIndex')}}"><i class="fa fa-undo"></i>&nbsp;Volver</a>
+                        <input type="submit" value="Siguiente" class="btn btn-primary">
                     </div>
                 </div>
             </div>

@@ -25,25 +25,32 @@ use Laracasts\Flash\Flash;
 
 class GeneralController extends AppBaseController
 {
-    /** @var  PresentismoRepository */
-    private $presentismoRepository;
     
-    public function __construct(PresentismoRepository $presentismoRepo)
+    /** @var string */
+    protected $indexView;
+    
+    /** @var string */
+    protected $searchView;
+    
+    /** @var string */
+    protected $indexRoute;
+    
+    
+    public function __construct()
     {
-        $this->presentismoRepository = $presentismoRepo;
         $this->middleware('auth');
         
+        $this->indexView  = 'Haberes::calculo.seleccionar-periodos';
+        $this->searchView = 'Haberes::calculo.seleccionar-agentes';
+        $this->indexRoute = 'haberesIndex';
     }
     
     /**
      * @return \Illuminate\Contracts\View\Factory|View
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
-        $this->authorize('selectBase', $this);
-        
-        return view('Haberes::calculo.seleccionar-periodos');
+        return view($this->indexView);
     }
     
     
@@ -55,16 +62,16 @@ class GeneralController extends AppBaseController
             
             $periodo->validarSiPuedeCalcular();
             
-            return view('Haberes::calculo.seleccionar-agentes')
+            return view($this->searchView)
                 ->with('periodo', $periodo);
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo de la lista');
             
-            return redirect(route('haberesIndex'));
+            return redirect(route($this->indexRoute));
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
         }
     }
 }

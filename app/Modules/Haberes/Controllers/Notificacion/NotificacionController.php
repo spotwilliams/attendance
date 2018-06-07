@@ -9,26 +9,26 @@ use Cat\Modules\Haberes\Controllers\Helpers\Data;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
 use Cat\Modules\Haberes\Services\Reporte\Reporte;
 use Cat\Http\Controllers\AppBaseController;
+use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Repositories\TipoPresentismosRepository;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
 use Laracasts\Flash\Flash;
+use Cat\Modules\Haberes\Controllers\GeneralController;
 
-class NotificacionController extends AppBaseController
+class NotificacionController extends GeneralController
 {
-    
-    /** @var  Data */
-    private $helper;
-    
-    public function __construct(Data $helper)
+    public function __construct()
     {
-        $this->helper = $helper;
-        $this->middleware('auth');
+        parent::__construct();
         
+        $this->indexView  = 'Haberes::notificacion.seleccionar-periodos';
+        $this->searchView = 'Haberes::notificacion.seleccionar-agentes';
+        $this->indexRoute = 'notificacionIndex';
     }
-    
     
     public function send(Request $request)
     {
@@ -43,21 +43,22 @@ class NotificacionController extends AppBaseController
             
             foreach ($agentes as $haber) {
                 $data = [
-                    'Nombre'                         => $haber->agente->nombre,
-                    'Apellido'                       => $haber->agente->apellido,
-                    'CUIT'                           => $haber->agente->cuit,
-                    'monto'               => $haber->monto_facturado,
-                    'faltas' => (string)TipoPresentismosRepository::getCantFaltasInjustificadas($haber->agente,
+                    'Nombre'   => $haber->agente->nombre,
+                    'Apellido' => $haber->agente->apellido,
+                    'CUIT'     => $haber->agente->cuit,
+                    'monto'    => $haber->monto_facturado,
+                    'faltas'   => (string)TipoPresentismosRepository::getCantFaltasInjustificadas($haber->agente,
                         $haber->periodo),
                 ];
                 if ($haber->agente->email != '') {
                     
-                    Mail::queue('Haberes::notification.mail', ['data' => $data, 'periodo' => $periodo], function ($message) use ($haber) {
-                        /** @var Message $message */
-                        $message->to($haber->agente->email);
+                    Mail::queue('Haberes::notification.mail', ['data' => $data, 'periodo' => $periodo],
+                        function ($message) use ($haber) {
+                            /** @var Message $message */
+                            $message->to($haber->agente->email);
 //                        $message->to('presentismo-cat@remain-it.com');
-                        $message->subject('Notificacion de haber');
-                    });
+                            $message->subject('Notificacion de haber');
+                        });
                 }
             }
             Flash::success('Notificaciones enviadas correctamente');

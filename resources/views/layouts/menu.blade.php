@@ -93,6 +93,12 @@
             </a>
         </li>
         <li>
+            <a href="{!! route('notificacionIndex') !!}">
+                <i class="fa fa-envelope"></i>
+                <span>Notificaci&oacute;n</span>
+            </a>
+        </li>
+        <li>
             <a href="{!! route('modificacionMasivaContratosIndex') !!}">
                 <i class="fa fa-file-text-o"></i>
                 <span>Modificaci&oacute;n masiva de contratos</span>

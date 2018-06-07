@@ -1,65 +1,80 @@
 <?php
 
-/*
-|--------------------------------------------------------------------------
-| Application Routes
-|--------------------------------------------------------------------------
-|
-| Rutas del presente modulo.
-|
-*/
 
 use Illuminate\Support\Facades\Route;
-use Cat\Modules\Haberes\Controllers\GeneralController;
-use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController;
-use Cat\Modules\Haberes\Controllers\Registro\ReporteController;
-use Cat\Modules\Haberes\Controllers\Registro\NotificacionController;
-use Cat\Modules\Haberes\Controllers\Registro\ByAgenteController;
-use Cat\Modules\Haberes\Controllers\Registro\ByFiltrosController;
 
 Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function () {
     /**
-     * Generales
+     * Registro de facturas
      */
-    
-    
-    Route::group(['prefix' => 'haberes'], function () {
+    Route::group(['prefix' => 'facturas'], function () {
         
-        Route::get('index', GeneralController::class . '@index')
+        // Paso 1
+        Route::get('index', \Cat\Modules\Haberes\Controllers\GeneralController::class . '@index')
             ->name('haberesIndex');
         
-        Route::post('calcular', ConfirmarController::class . '@calcular')
+        // Paso 3
+        Route::post('calcular', Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@calcular')
             ->name('haberesCalcular');
-        
-        Route::post('registrar', ConfirmarController::class . '@registarFactura')
+        // Paso 4
+        Route::post('registrar', Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@registarFactura')
             ->name('haberesRegistrarFactura');
         
         Route::group(['prefix' => 'search'], function () {
             
-            Route::post('/', GeneralController::class . '@search')
+            // Paso 2
+            Route::post('/', Cat\Modules\Haberes\Controllers\GeneralController::class . '@search')
                 ->name('haberesSearch');
-            
-            Route::post('by/agente', ByAgenteController::class . '@search')
+            // Paso 2.1
+            Route::post('by/agente', Cat\Modules\Haberes\Controllers\Registro\ByAgenteController::class . '@search')
                 ->name('haberesSearchByAgente');
             
-            
-            Route::post('by/filtros', ByFiltrosController::class . '@search')
+            // Paso 2.2
+            Route::post('by/filtros', Cat\Modules\Haberes\Controllers\Registro\ByFiltrosController::class . '@search')
                 ->name('haberesSearchByFiltros');
             
         });
         
-        /**
-         * Confirmaciones
-         */
-//        Route::group(['prefix' => 'confirmar'], function () {
-//
-//            Route::post('disclaimer', ConfirmarController::class . '@disclaimer')
-//                ->name('haberesConfirmarDisclaimer');
-//
-//            Route::post('lote', ConfirmarController::class . '@batch')
-//                ->name('haberesConfirmarLote');
-//        });
+    });
+    
+    Route::group(['prefix' => 'notificacion'], function () {
         
+        // Paso 1
+        Route::get('index', \Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@index')
+            ->name('notificacionIndex');
+        
+        // Paso X
+        Route::post('calcular', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@calcular')
+            ->name('notificacionCalcular');
+        
+        // Paso 3
+        Route::group(['prefix' => 'notificar'], function () {
+            
+            // Paso 3.1
+            Route::post('prefix', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@registarFactura')
+                ->name('notificacionRegistrarPrefijo');
+            
+            // Paso 3.1
+            Route::post('prefix', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@registarFactura')
+                ->name('notificacionRegistrarLibre');
+        });
+        
+        Route::group(['prefix' => 'search'], function () {
+            
+            // Paso 2
+            Route::post('/', \Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@search')
+                ->name('notificacionSearch');
+            // Paso 2.1
+            Route::post('by/agente', Cat\Modules\Haberes\Controllers\Notificacion\ByAgenteController::class . '@search')
+                ->name('notificacionSearchByAgente');
+            
+            // Paso 2.2
+            Route::post('by/filtros', Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController::class . '@search')
+                ->name('notificacionSearchByFiltros');
+            
+        });
+        
+    });
 //        /**
 //         * Reporte
 //         */
@@ -72,19 +87,6 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
 //                ->name('haberesReportePreliminar');
 //
 //        });
-        
-        
-        /**
-         * Notificacion
-         */
-        Route::group(['prefix' => 'reporte'], function () {
-            
-            Route::post('/', NotificacionController::class . '@send')
-                ->name('haberesNotificar');
-        });
-        
-        
-    });
     
     /**
      * Modificacion Masivo

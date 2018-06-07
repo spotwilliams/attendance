@@ -20,15 +20,29 @@ class ConfirmarController extends AppBaseController
 {
     /** Trait que me permite generar reglas dinamicas para los campos factura */
     use Ruleable;
-    /** @var  PresentismoRepository */
-    private $presentismoRepository;
     
-    public function __construct(PresentismoRepository $presentismoRepo)
+    /** @var string */
+    protected $searchView;
+    
+    /** @var string */
+    protected $confirmarView;
+    
+    /** @var string */
+    protected $endView;
+    
+    /** @var string */
+    protected $indexRoute;
+    
+    public function __construct()
     {
-        $this->presentismoRepository = $presentismoRepo;
         $this->middleware('auth');
-        
+        $this->searchView    = 'Haberes::calculo.seleccionar-agentes';
+        $this->indexRoute    = 'haberesIndex';
+        $this->confirmarView = 'Haberes::calculo.confirmar-montos';
+        $this->searchView    = 'Haberes::calculo.seleccionar-agentes';
+        $this->endView       = 'Haberes::calculo.end';
     }
+    
     
     /**
      * @param Request $request
@@ -37,7 +51,7 @@ class ConfirmarController extends AppBaseController
      */
     public function calcular(Request $request)
     {
-        $this->authorize('disclaimer', $this);
+//        $this->authorize('disclaimer', $this);
         
         try {
             /** @var Periodo $periodo */
@@ -53,27 +67,27 @@ class ConfirmarController extends AppBaseController
             $agentes    = $eloq->get();
             $calculador = new CalculadorBatch($agentes, $periodo);
             
-            return view('Haberes::calculo.confirmar-montos')
+            return view($this->confirmarView)
                 ->with('periodo', $periodo)
                 ->with('agentes', $calculador->execute());
             
         } catch (ValidationException $e) {
             Flash::error($e->validator->getMessageBag()->get('agentes')[0]);
             
-            return view('Haberes::calculo.seleccionar-agentes')
+            return view($this->searchView)
                 ->with('periodo', $periodo);
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo');
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
         } catch (\Exception $exception) {
             Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
             
         }
         
@@ -87,7 +101,7 @@ class ConfirmarController extends AppBaseController
      */
     public function registarFactura(Request $request)
     {
-        $this->authorize('batch', $this);
+//        $this->authorize('batch', $this);
         
         try {
             
@@ -118,7 +132,7 @@ class ConfirmarController extends AppBaseController
             $calculador = new CalculadorBatch($agentes, $periodo);
             
             
-            return view('Haberes::calculo.end')
+            return view($this->endView)
                 ->with('agentes', $calculador->execute())
                 ->with('periodo', $periodo);
             
@@ -131,15 +145,15 @@ class ConfirmarController extends AppBaseController
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo');
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
         } catch (\Exception $exception) {
             Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
             
-            return redirect()->route('haberesIndex');
+            return redirect()->route($this->indexRoute);
             
         }
     }

@@ -33,6 +33,18 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
     /** @var  Collection */
     protected $tipoContratos;
     
+    /** @var string */
+    protected $searchView;
+    
+    /** @var string */
+    protected $indexRoute;
+    
+    public function __construct()
+    {
+        parent::__construct();
+        $this->searchView = 'Haberes::calculo.seleccionar-agentes';
+        $this->indexRoute = 'haberesIndex';
+    }
     
     /**
      * @param Request $request
@@ -51,10 +63,10 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo de la lista');
             
-            return redirect(route('haberesIndex'));
+            return redirect(route($this->indexRoute));
         }
         
-        return View::make('Haberes::calculo.seleccionar-agentes')
+        return View::make($this->searchView)
             ->with('agentes', $return)
             ->with('periodo', $periodo)
             ->with('bases', $this->bases)
