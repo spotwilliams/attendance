@@ -2,8 +2,10 @@
 
 namespace Cat\Modules\Haberes\Controllers\Notificacion;
 
+use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
@@ -34,11 +36,25 @@ class NotificacionController extends GeneralController
             /** @var Periodo $periodo */
             $periodo = Periodo::findOrFail($input['periodo']);
             /** @var Collection $agentes */
-            $agentes = $this->getEloq($periodo, $input['agentes'])->get();
+            $agentes = $this->getEloq($periodo, $input['agentes'])
+                // Si el agente ya fue notificado, tengo que asegurarme que no se lo haga de nuevo
+                ->get();
             
-            $this->send($periodo, $agentes, 'Haberes::notificacion.mail-template.mensaje-regular');
+            if ($agentes->isEmpty()) {
+                Notification::warningInstant('Todos los agentes seleccionados ya han sido notificados para el periodo seleccionado.');
+                
+            } else {
+                
+                $this->send(
+                    $periodo,
+                    $agentes,
+                    'Haberes::notificacion.mail-template.mensaje-regular',
+                    Notificacion::REGULAR
+                );
+            }
+            
         } catch (\Exception $e) {
-            
+            dd($e->getMessage());
             Flash::error('Error inesperado: ' . $e->getMessage());
             
         }
@@ -49,7 +65,7 @@ class NotificacionController extends GeneralController
         
     }
     
-    protected function send(Periodo $periodo, Collection $agentes, $mensaje)
+    protected function send(Periodo $periodo, Collection $agentes, $mensaje, $tipo)
     {
         $support = new Calculador();
         foreach ($agentes as $agente) {
@@ -64,6 +80,13 @@ class NotificacionController extends GeneralController
 //                        $message->to('notificacionesinternas@gmail.com');
                         $message->subject('Notificacion de haber');
                     });
+                
+                Notificacion::create([
+                    'id_agente'  => $agente->id,
+                    'id_periodo' => $periodo->id,
+                    'tipo'       => $tipo,
+                ]);
+                
                 Notification::successInstant('Se ha enviado la notificaci&oacute;n a ' . $agente->email);
             } else {
                 Notification::errorInstant('El agente ' . $agente->apellido . ', ' . $agente->nombre . ' (CUIT: ' . $agente->cuit . '),  no tiene registrado un mail.');

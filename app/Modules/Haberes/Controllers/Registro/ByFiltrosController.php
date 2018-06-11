@@ -53,11 +53,6 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
     public function search(Request $request)
     {
         
-        $this->setupParams($request)
-            ->setupQuery();
-        
-        /** @var Collection $return */
-        $return = $this->query->get();
         try {
             $periodo = Periodo::findOrFail($request->input('periodo'));
         } catch (ModelNotFoundException $e) {
@@ -65,6 +60,18 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
             
             return redirect(route($this->indexRoute));
         }
+        
+        $this->setupParams($request)
+            ->setupQuery();
+        
+        /** @var Collection $return */
+        $return = $this->query
+            ->with([
+                'notificaciones' => function ($with) use ($periodo) {
+                    $with->where('id_periodo', '=', $periodo->id);
+                },
+            ])
+            ->get();
         
         return View::make($this->searchView)
             ->with('agentes', $return)

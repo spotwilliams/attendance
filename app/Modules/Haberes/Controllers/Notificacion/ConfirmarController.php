@@ -91,4 +91,13 @@ class ConfirmarController extends ParentController
             
         }
     }
+    
+    protected function getEloq(Periodo $periodo, $ids)
+    {
+        return parent::getEloq($periodo, $ids)
+            ->whereDoesntHave('notificaciones', function ($whereHasNot) use ($periodo) {
+                /** @var Builder $whereHasNot */
+                $whereHasNot->where('id_periodo', '=', $periodo->id);
+            });
+    }
 }

@@ -38,6 +38,14 @@ class ByAgenteController extends BusquedaController
      */
     public function search(Request $request)
     {
+        try {
+            $periodo = Periodo::findOrFail($request->input('periodo'));
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Debe seleccionar un periodo de la lista');
+            
+            return redirect(route($this->indexRoute));
+        }
+        
         /** @var View $result */
         parent::prepareQuery();
         
@@ -55,16 +63,12 @@ class ByAgenteController extends BusquedaController
         /** @var Collection $agentes */
         $agentes = $this->agentesEloquent
             ->with('operativo.base')
+            ->with([
+                'notificaciones' => function ($with) use ($periodo) {
+                    $with->where('id_periodo', '=', $periodo->id);
+                },
+            ])
             ->get();
-        
-        try {
-            $periodo = Periodo::findOrFail($request->input('periodo'));
-        } catch (ModelNotFoundException $e) {
-            Flash::error('Debe seleccionar un periodo de la lista');
-            
-            return redirect(route($this->indexRoute));
-        }
-        
         
         return view($this->searchView)
             ->with('agentes', $agentes)

@@ -251,4 +251,12 @@ class Agente extends Model
         return $this->hasMany(FacturaFisica::class, 'id_agente')
             ->where('id_periodo', '=', $periodo->id);
     }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notificaciones()
+    {
+        return $this->hasMany(Notificacion::class, 'id_agente');
+    }
 }
