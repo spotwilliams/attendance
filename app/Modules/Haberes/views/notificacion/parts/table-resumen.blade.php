@@ -6,9 +6,8 @@
             <th></th>
             <th>Agente</th>
             <th>CUIT</th>
-            <th>Monto facturado</th>
-            <th>D&iacute;as injustificados</th>
-            <th>Nro. Factura</th>
+            <th>Base</th>
+            <th>Turno</th>
         </tr>
         </thead>
         <tbody>
@@ -23,27 +22,9 @@
                     {{$agente->apellido}}, {{$agente->nombre}}
                 </td>
                 <td>{{$agente->cuit}}</td>
-                <td>
-                    @if($agente->detalle->monto === $agente->detalle->montoContrato)
-                        <span class="label label-default">
-                    @else
-                                <span class="label label-warning">
-                    @endif
-                                    $ {{$agente->detalle->monto}}
-                        </span>
-                </td>
-                <td>
-                    @if($agente->detalle->diasADescontar  == 0)
-                        <span class="label label-default">
-                    @else
-                                <span class="label label-warning">
-                    @endif
-                                    {{$agente->detalle->diasADescontar}}
-                                </span>
-                </td>
-                <td>
-                    <label>{{$agente->facturas->first()->nro_factura}}</label>
-                </td>
+                <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre'])}}</td>
+                <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'codigo'])}}</td>
+
             </tr>
         @endforeach
         </tbody>

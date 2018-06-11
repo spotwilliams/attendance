@@ -35,13 +35,15 @@ class ConfirmarController extends ParentController
     public function regular(Request $request)
     {
         $this->emailView = 'Haberes::notificacion.email-regular';
+        
         return $this->generateResponse($request);
-    
+        
     }
     
     public function libre(Request $request)
     {
         $this->emailView = 'Haberes::notificacion.email-libre';
+        
         return $this->generateResponse($request);
     }
     
@@ -56,7 +58,9 @@ class ConfirmarController extends ParentController
             
             $periodo->validarSiPuedeCalcular();
             /** @var Builder $eloq */
-            $eloq = $this->getEloq($periodo, $request->input('mails'));
+            $eloq = $this->getEloq($periodo, $request->input('mails'))
+                ->with('operativo.base')
+                ->with('operativo.turno');
             
             /** @var Collection $agentes */
             $agentes    = $eloq->get();

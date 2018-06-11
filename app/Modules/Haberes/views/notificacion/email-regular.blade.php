@@ -49,12 +49,13 @@
 
             <div class="box-header with-border">
                 <h3 class="box-title">
-                    Se regist&oacute; factura para <span
+                    Se enviar&aacute; mail notificando a <span
                             class="label label-info">@if(isset($agentes)){{$agentes->count()}}@else{{0}}@endif</span>
                     agentes</h3>
                 <div class="box-tools pull-right">
                     <div class="btn-group">
-                        <a class="btn btn-default ninguno" href="{{route('notificacionIndex')}}"><i class="fa fa-undo"></i>&nbsp;Volver</a>
+                        <a class="btn btn-default ninguno" href="{{route('notificacionIndex')}}"><i
+                                    class="fa fa-undo"></i>&nbsp;Volver</a>
                         <input type="submit" value="Siguiente" class="btn btn-primary">
                     </div>
                 </div>
@@ -62,8 +63,6 @@
 
             <div class="box-body">
                 <div class="col-md-12">
-                    {{dd($agentes)}}
-
                     @include('Haberes::notificacion.parts.table-resumen')
                 </div>
 

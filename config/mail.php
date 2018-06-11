@@ -1,6 +1,6 @@
 <?php
 
-return [
+ [
 
     /*
     |--------------------------------------------------------------------------
@@ -109,4 +109,15 @@ return [
 
     'sendmail' => '/usr/sbin/sendmail -bs',
 
+];
+
+return [
+    'driver' => 'smtp',
+    'host'   => 'smtp.mailtrap.io',
+    'port'   => 2525,
+    'from'   => ['address' => 'presentismo.control@gmail.com', 'name' => 'Notificaciones VyM'],
+    'username' => '8b4376060e8f0b',
+    'password' => '5d93840d833c45',
+    'sendmail' => '/usr/sbin/sendmail -bs',
+    'pretend'  => false,
 ];
