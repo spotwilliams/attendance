@@ -11,7 +11,7 @@
 
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">Notificaci&oacute;n de facturas</h3>
+                <h3 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span></h3>
             </div>
 
             <div class="box-body text-center">

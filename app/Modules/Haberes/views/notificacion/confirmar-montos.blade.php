@@ -18,7 +18,7 @@
         ?>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">Notificar facturas de <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
+                <h3 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> de <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
                         '{{$mesFacturacion->format('y')}}</span> <span
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h3>

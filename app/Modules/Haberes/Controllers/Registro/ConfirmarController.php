@@ -14,7 +14,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Laracasts\Flash\Flash;
-use Modules\Haberes\Controllers\Eloquenteable;
+use Cat\Modules\Haberes\Controllers\Eloquenteable;
 
 class ConfirmarController extends AppBaseController
 {
