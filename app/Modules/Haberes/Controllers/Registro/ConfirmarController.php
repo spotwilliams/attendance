@@ -14,11 +14,12 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Laracasts\Flash\Flash;
+use Modules\Haberes\Controllers\Eloquenteable;
 
 class ConfirmarController extends AppBaseController
 {
     /** Trait que me permite generar reglas dinamicas para los campos factura */
-    use Ruleable;
+    use Ruleable, Eloquenteable;
     
     /** @var string */
     protected $searchView;
@@ -155,28 +156,4 @@ class ConfirmarController extends AppBaseController
             
         }
     }
-    
-    /**
-     * @param Periodo $periodo
-     * @param $ids
-     * @return Builder
-     */
-    protected function getEloq(Periodo $periodo, $ids)
-    {
-        return Agente::whereIn('id', $ids)
-            ->with([
-                'presentismos' => function ($with) use ($periodo) {
-                    /** @var Builder $with */
-                    $with->where('id_periodo', '=', $periodo->id)
-                        ->with('turno')
-                        ->with('tipoPresentismo')
-                        ->with('tipoContrato');
-                },
-                'facturas'     => function ($with) use ($periodo) {
-                    /** @var Builder $with */
-                    $with->where('id_periodo', '=', $periodo->id);
-                },
-            ]);
-    }
-    
 }

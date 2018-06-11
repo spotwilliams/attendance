@@ -46,7 +46,7 @@
         </div>
 
         <div class="box">
-            {!! Form::open(['method' => 'POST', 'route']) !!}
+            {!! Form::open(['method' => 'POST']) !!}
             <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
             <div class="box-header with-border">
@@ -92,7 +92,7 @@
                     $form.prop('action', '{{route('notificacionSearch')}}')
                 }
                 if ($(this).hasClass('regular')) {
-                    $form.prop('action', '{{route('notificacionRegular')}}')
+                    $form.prop('action', '{{route('confirmarNotificacionRegular')}}')
                 }
                 if ($(this).hasClass('libre')) {
                     $form.prop('action', '{{route('notificacionLibre')}}')

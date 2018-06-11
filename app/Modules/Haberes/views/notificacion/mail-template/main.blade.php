@@ -66,12 +66,12 @@
                                                 @include('Haberes::notificacion.mail-template.spacer')
 
                                                 <p style="color:#a6a6a6;font-size:12px;font-family:Helvetica,Arial,sans-serif;margin-top:0;margin-bottom:15px;padding-top:0;padding-bottom:0;line-height:18px;"
-                                                   class="reminder">Instituto Provincial de Loterías y Casinos</p>
+                                                   class="reminder">Direcci&oacute;n General de Cuerpo de Agentes de Control de Tr&aacute;nsito y Transporte</p>
                                             </td>
                                             <td align="right" width="220"
                                                 style="color:#a6a6a6;font-size:12px;font-family:'Helvetica Neue',Helvetica,Arial,sans-serif;text-shadow: 0 1px 0 #ffffff;"
                                                 valign="top" class="hide">
-                                                @include('Haberes::notificacion.mail-templatelogo')
+                                                @include('Haberes::notificacion.mail-template.logo')
 
                                             </td>
                                         </tr>

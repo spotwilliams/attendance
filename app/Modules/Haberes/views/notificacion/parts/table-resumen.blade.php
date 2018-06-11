@@ -6,14 +6,16 @@
             <th></th>
             <th>Agente</th>
             <th>CUIT</th>
-            <th>Base</th>
-            <th>Turno</th>
+            <th>Email</th>
+            <th>Monto a facturar</th>
+            <th>D&iacute;as injustificados</th>
         </tr>
         </thead>
         <tbody>
         @foreach(isset($agentes) ? $agentes: [] as $agente)
             <tr>
                 <td>
+                    <input type="hidden" name="agentes[]" value="{{$agente->id}}">
                     <a href="{{route('agentesShow', ['id' => $agente->id])}}" data-toggle="popover" title="Ver datos"
                        data-content="Abre la ficha del agente en otra pesta&ntilde;a" target="_blank"
                        class="label label-success"><i class="fa fa-eye"></i></a>
@@ -22,8 +24,25 @@
                     {{$agente->apellido}}, {{$agente->nombre}}
                 </td>
                 <td>{{$agente->cuit}}</td>
-                <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre'])}}</td>
-                <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'codigo'])}}</td>
+                <td>{{$agente->email}}</td>
+                <td>
+                    @if($agente->detalle->monto === $agente->detalle->montoContrato)
+                        <span class="label label-default">
+                    @else
+                                <span class="label label-warning">
+                    @endif
+                                    $ {{$agente->detalle->monto}}
+                        </span>
+                </td>
+                <td>
+                    @if($agente->detalle->diasADescontar  == 0)
+                        <span class="label label-default">
+                    @else
+                                <span class="label label-warning">
+                    @endif
+                                    {{$agente->detalle->diasADescontar}}
+                                </span>
+                </td>
 
             </tr>
         @endforeach

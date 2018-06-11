@@ -17,7 +17,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         Route::post('calcular', Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@calcular')
             ->name('haberesCalcular');
         // Paso 4
-        Route::post('registrar', Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@registarFactura')
+        Route::post('registrar',
+            Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@registarFactura')
             ->name('haberesRegistrarFactura');
         
         Route::group(['prefix' => 'search'], function () {
@@ -49,10 +50,17 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         
         // Paso 4
         Route::group(['prefix' => 'notificar'], function () {
-            
-            // Paso 4.1
-            Route::post('regular', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@regular')
-                ->name('notificacionRegular');
+            Route::group(['prefix' => 'regular'], function () {
+                
+                // Paso 4.1
+                Route::post('confirmar',
+                    Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@regular')
+                    ->name('confirmarNotificacionRegular');
+                // Paso 4.1
+                Route::post('enviar',
+                    Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@sendRegular')
+                    ->name('enviarNotificacionRegular');
+            });
             
             // Paso 4.1
             Route::post('libre', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@libre')
@@ -69,7 +77,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
                 ->name('notificacionSearchByAgente');
             
             // Paso 2.2
-            Route::post('by/filtros', Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController::class . '@search')
+            Route::post('by/filtros',
+                Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController::class . '@search')
                 ->name('notificacionSearchByFiltros');
             
         });
