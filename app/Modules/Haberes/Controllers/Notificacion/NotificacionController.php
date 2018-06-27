@@ -54,7 +54,6 @@ class NotificacionController extends GeneralController
             }
             
         } catch (\Exception $e) {
-            dd($e->getMessage());
             Flash::error('Error inesperado: ' . $e->getMessage());
             
         }
