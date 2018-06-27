@@ -9,6 +9,7 @@ use Cat\Models\TipoPresentismo;
 use Cat\Models\Turno;
 use Cat\Modules\Service;
 use Cat\Repositories\TipoPresentismosRepository;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Support\Collection;
 
 class Calculador extends Service
@@ -46,13 +47,19 @@ class Calculador extends Service
         $this->periodo = $periodo;
         
         // Definimos cuanto detalle vamos a devolver
-        $this->detalle                   = new \stdClass();
-        $this->detalle->tard             = 0;
-        $this->detalle->fins             = 0;
-        $this->detalle->sema             = 0;
-        $this->detalle->tardEqui         = 0;
-        $this->detalle->monto            = 0;
-        $this->detalle->montoContrato    = floatval($this->agente->contratoOnDate(new \DateTime($periodo->fecha_comienzo))->first()->monto);
+        $this->detalle           = new \stdClass();
+        $this->detalle->tard     = 0;
+        $this->detalle->fins     = 0;
+        $this->detalle->sema     = 0;
+        $this->detalle->tardEqui = 0;
+        $this->detalle->monto    = 0;
+        try {
+            $contrato = $this->agente->contratoOnDate(new \DateTime($periodo->fecha_comienzo))->firstOrFail();
+            $monto    = $contrato->monto;
+        } catch (ModelNotFoundException $sinContrato) {
+            $monto = 0;
+        }
+        $this->detalle->montoContrato    = $monto;
         $this->detalle->montoDescontable = floatval($this->detalle->montoContrato / Calculador::FACTOR_DIVISION);
         $this->detalle->diasADescontar   = 0;
         
