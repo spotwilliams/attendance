@@ -10,6 +10,7 @@ use Cat\Modules\Haberes\Services\Calculo\Calculador;
 use Cat\Modules\Service;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
+use Illuminate\Support\Facades\DB;
 
 class Registro extends Service
 {
@@ -45,7 +46,7 @@ class Registro extends Service
     {
         
         try {
-            
+            DB::beginTransaction();
             
             $detalle = $this->supportService->reset($this->agente, $this->periodo)->execute();
             
@@ -54,10 +55,15 @@ class Registro extends Service
                 'id_agente'  => $this->agente->id,
                 'id_periodo' => $this->periodo->id,
             ]);
+            try {
+                $turno = $this->agente->operativo->turnoOnDate(new \DateTime($this->periodo->fecha_comienzo))->firstOrFail();
+            } catch (ModelNotFoundException $sinTurnoEnEsaFecha) {
+                $turno = $this->agente->operativo->turno()->first();
+            }
             // Se guardan los haberes
             $haber->update([
                 'id_base'         => $this->agente->base()->id,
-                'id_turno'        => $this->agente->operativo->turnoOnDate(new \DateTime($this->periodo->fecha_comienzo))->first()->id_turno,
+                'id_turno'        => $turno->id_turno,
                 'monto_facturado' => $detalle->monto,
                 'monto_contrato'  => $detalle->montoContrato,
             ]);
@@ -77,10 +83,14 @@ class Registro extends Service
                 ]);
             }
             
+            DB::commit();
             
             return true;
         } catch (QueryException $e) {
-            
+            DB::rollBack();
+            throw $e;
+        } catch (\Exception $e) {
+            DB::rollBack();
             throw $e;
         }
     }
