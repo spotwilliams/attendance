@@ -8,6 +8,8 @@ use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
+use Cat\Modules\Haberes\Controllers\Eloquenteable;
+use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
@@ -18,6 +20,8 @@ use Laracasts\Flash\Flash;
 
 class ByAgenteController extends BusquedaController
 {
+    
+    use Eloquenteable;
     /** @var string */
     protected $searchView;
     
@@ -59,7 +63,7 @@ class ByAgenteController extends BusquedaController
                     TipoContrato::where('codigo', '=', TipoContrato::TIPO_LOCACION)->get()->pluck('id')->toArray());
         });
         
-        
+        $this->addPresentismoEloq($this->agentesEloquent, $periodo);
         /** @var Collection $agentes */
         $agentes = $this->agentesEloquent
             ->with('operativo.base')
@@ -69,6 +73,9 @@ class ByAgenteController extends BusquedaController
                 },
             ])
             ->get();
+        
+        $service = new CalculadorBatch($agentes, $periodo);
+        $agentes = $service->execute();
         
         return view($this->searchView)
             ->with('agentes', $agentes)

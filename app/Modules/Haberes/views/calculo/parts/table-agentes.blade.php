@@ -8,6 +8,8 @@
             <th>CUIT</th>
             <th>Base</th>
             <th>Turno</th>
+            <th>Monto a facturar</th>
+            <th>Faltas</th>
         </tr>
         </thead>
         <tbody>
@@ -30,6 +32,24 @@
                 <td>{{$agente->cuit}}</td>
                 <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre'])}}</td>
                 <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'codigo'])}}</td>
+                <td>
+                    @if($agente->detalle->monto === $agente->detalle->montoContrato)
+                        <span class="label label-default">
+                    @else
+                                <span class="label label-warning">
+                    @endif
+                                    $ {{$agente->detalle->monto}}
+                        </span>
+                </td>
+                <td>
+                    @if($agente->detalle->diasADescontar  == 0)
+                        <span class="label label-default">
+                    @else
+                                <span class="label label-warning">
+                    @endif
+                                    {{$agente->detalle->diasADescontar}}
+                                </span>
+                </td>
             </tr>
         @endforeach
         </tbody>

@@ -18,7 +18,8 @@
         ?>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> de <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
+                <h3 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> de <span
+                            class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
                         '{{$mesFacturacion->format('y')}}</span> <span
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h3>
@@ -49,7 +50,7 @@
         </div>
 
         <div class="box">
-            {!! Form::open(['method' => 'POST', 'route' => 'notificacionCalcular']) !!}
+            {!! Form::open(['method' => 'POST', 'route' => 'notificacionCalcular', 'name' => 'form-agentes']) !!}
             <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
             <div class="box-header with-border">
@@ -58,10 +59,18 @@
                     agentes encontrados</h3>
                 <div class="box-tools pull-right">
                     <div class="btn-group">
-                        <a class="btn btn-default ninguno" href="{{route('notificacionIndex')}}"><i class="fa fa-backward"></i>&nbsp;Atr&aacute;s</a>
-                        <a class="btn btn-default ninguno">Ninguno</a>
-                        <a class="btn btn-default todos">Todos</a>
-                        <input type="submit" value="Siguiente" class="btn btn-primary">
+                        <a href="{{route('notificacionIndex')}}" class="btn btn-default atras"><i
+                                    class="fa fa-backward"></i>&nbsp;<span class="hidden-xs">Atr&aacute;s</span>
+                        </a>
+                        <a class="btn btn-default ninguno"><span class="hidden-xs">Ninguno</span>&nbsp;<i
+                                    class="hidden-lg hidden-md hidden-sm fa fa-close"></i></a>
+                        <a class="btn btn-default todos"><span class="hidden-xs">Todos</span>&nbsp;<i
+                                    class="hidden-lg hidden-md hidden-sm fa fa-check"></i></a>
+                        <button type="submit" class="btn btn-primary libre"><span
+                                    class="hidden-xs">Env&iacute;o libre</span>&nbsp;<i
+                                    class="hidden-lg hidden-md hidden-sm fa fa-send-o"></i></button>
+                        <button type="submit" class="btn btn-primary regular"><span class="hidden-xs">Env&iacute;o regular</span>&nbsp;<i
+                                    class="hidden-lg hidden-md hidden-sm fa fa-file-text-o"></i></button>
                     </div>
                 </div>
             </div>
@@ -91,6 +100,44 @@
                     $('input[type="checkbox"].agente-option').prop('checked', true);
                 }
             });
+
+
+            $('button.atras, button.registrar, button.regular, button.libre').on('click', function (event) {
+                event.preventDefault();
+                var $form = $('form[name="form-agentes"]');
+                if ($(this).hasClass('atras')) {
+                    $form.prop('action', '{{route('notificacionIndex')}}')
+                }
+                if ($(this).hasClass('regular')) {
+                    $form.prop('action', '{{route('confirmarNotificacionRegular')}}')
+                }
+                if ($(this).hasClass('libre')) {
+                    $form.prop('action', '{{route('notificacionLibre')}}')
+                }
+                $form.submit();
+            });
+
+            $('a.todos, a.ninguno').on('click', function () {
+                if ($(this).hasClass('ninguno')) {
+                    $('input[type="checkbox"].agente-option').prop('checked', false).change();
+                } else {
+                    $('input[type="checkbox"].agente-option').prop('checked', true).change();
+                }
+            });
+
+            $('input[type="checkbox"].agente-option').change(function (event) {
+                var rw = $(this).parents('tr');
+                var text = $(rw).find('input[type="text"]').not(':hidden');
+
+                if (this.checked) {
+                    $(text).prop('disabled', false);
+                } else {
+                    $(text).prop('disabled', true);
+                }
+            });
+
+            // Para activar el change si estaban precargardos
+            // $('input[type="checkbox"].agente-option:checked').prop('checked', true).change();
 
         })
     </script>

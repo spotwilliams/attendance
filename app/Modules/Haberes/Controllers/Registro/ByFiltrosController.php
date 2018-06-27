@@ -6,6 +6,8 @@ namespace Cat\Modules\Haberes\Controllers\Registro;
 use Cat\Models\Agente;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
+use Cat\Modules\Haberes\Controllers\Eloquenteable;
+use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -15,6 +17,8 @@ use Laracasts\Flash\Flash;
 
 class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteController
 {
+    use Eloquenteable;
+    
     /** @var  Collection */
     protected $areas;
     
@@ -63,7 +67,9 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
         
         $this->setupParams($request)
             ->setupQuery();
-        
+    
+        $this->addPresentismoEloq($this->query, $periodo);
+    
         /** @var Collection $return */
         $return = $this->query
             ->with([
@@ -73,6 +79,9 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
             ])
             ->get();
         
+        $service = new CalculadorBatch($return, $periodo);
+        $return = $service->execute();
+    
         return View::make($this->searchView)
             ->with('agentes', $return)
             ->with('periodo', $periodo)

@@ -27,8 +27,7 @@ class ConfirmarController extends ParentController
         parent::__construct();
         $this->searchView    = 'Haberes::notificacion.seleccionar-agentes';
         $this->indexRoute    = 'notificacionIndex';
-        $this->confirmarView = 'Haberes::notificacion.confirmar-montos';
-        $this->searchView    = 'Haberes::notificacion.seleccionar-agentes';
+        $this->confirmarView = 'Haberes::notificacion.seleccionar-agentes';
         $this->endView       = 'Haberes::notificacion.end';
     }
     
@@ -54,11 +53,11 @@ class ConfirmarController extends ParentController
             /** @var Periodo $periodo */
             $periodo = Periodo::findOrFail($request->input('periodo'));
             
-            $this->validate($request, ['mails' => 'required'], ['required' => 'Debe seleccionar al menos un agente']);
+            $this->validate($request, ['agentes' => 'required'], ['required' => 'Debe seleccionar al menos un agente']);
             
             $periodo->validarSiPuedeCalcular();
             /** @var Builder $eloq */
-            $eloq = $this->getEloq($periodo, $request->input('mails'))
+            $eloq = $this->getEloq($periodo, $request->input('agentes'))
                 ->with('operativo.base')
                 ->with('operativo.turno');
             
@@ -71,7 +70,7 @@ class ConfirmarController extends ParentController
                 ->with('agentes', $calculador->execute());
             
         } catch (ValidationException $e) {
-            Flash::error($e->validator->getMessageBag()->get('mails')[0]);
+            Flash::error($e->validator->getMessageBag()->get('agentes')[0]);
             
             return $this->calcular($request);
             

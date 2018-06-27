@@ -8,6 +8,7 @@ use Cat\Models\Haber;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
 use Cat\Modules\Service;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 
 class Registro extends Service
@@ -61,11 +62,20 @@ class Registro extends Service
                 'monto_contrato'  => $detalle->montoContrato,
             ]);
             
-            FacturaFisica::create([
-                'id_agente'   => $this->agente->id,
-                'id_periodo'  => $this->periodo->id,
-                'nro_factura' => $this->nroFactura,
-            ]);
+            try {
+                /** @var FacturaFisica $factura */
+                $factura = FacturaFisica::where('id_agente', '=', $this->agente->id)
+                    ->where('id_periodo', '=', $this->periodo->id)
+                    ->firstOrFail();
+                
+                $factura->update(['nro_factura' => $this->nroFactura,]);
+            } catch (ModelNotFoundException $exception) {
+                FacturaFisica::create([
+                    'id_agente'   => $this->agente->id,
+                    'id_periodo'  => $this->periodo->id,
+                    'nro_factura' => $this->nroFactura,
+                ]);
+            }
             
             
             return true;
