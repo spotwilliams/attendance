@@ -33,7 +33,7 @@
                 <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre'])}}</td>
                 <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'codigo'])}}</td>
                 <td>
-                    @if($agente->detalle->monto === $agente->detalle->montoContrato)
+                    @if($agente->detalle->monto == $agente->detalle->montoContrato)
                         <span class="label label-default">
                     @else
                                 <span class="label label-warning">
