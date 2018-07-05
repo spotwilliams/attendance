@@ -1,7 +1,6 @@
 <?php
 use Cat\Repositories\TurnosRepository;
 
-$turnos = TurnosRepository::getAll();
 
 $classContainer            = 'col-md-6 col-lg-6 col-xs-6';
 $classLabel                = 'col-md-3 col-xs-3';
