@@ -7,6 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 
 abstract class  RowDataFormatter
 {
+    /** @var  array */
+    protected $encabezado;
+    
     protected $acentos
         = [
             '&aacute;' => 'á',
@@ -18,6 +21,10 @@ abstract class  RowDataFormatter
     
     public abstract function format(Model $model);
     
+    public function getEncabezado()
+    {
+        return $this->encabezado;
+    }
     protected function cleanAcentos($v)
     {
         foreach ($this->acentos as $acento => $char) {

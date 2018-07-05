@@ -32,7 +32,7 @@ class ReporteAsStream extends Service
     
     
     /**
-     * @return bool
+     * @return mixed
      */
     public function execute()
     {
@@ -44,21 +44,26 @@ class ReporteAsStream extends Service
         return Response::stream(function () {
             $page       = 1;
             $allRecords = 0;
-            echo (implode(',', $this->rowFormatter->getEncabezado())) . PHP_EOL;
-            do {
-                /** @var LengthAwarePaginator $models */
-                $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
+            echo  $this->rowFormatter->getEncabezado() . "\r\n";
+            try {
                 
-                $page++;
-                foreach ($models->items() as $model) {
-                    $allRecords++;
-                    $data  = $this->rowFormatter->format($model);
-                    $field = str_replace(array("\r\n", "\n\r", "\n", "\r"), ',', implode(',', $data));
+                do {
+                    /** @var LengthAwarePaginator $models */
+                    $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
                     
-                    echo $field . PHP_EOL;
-                }
-                flush();
-            } while ($models->isEmpty() ? false : true);
+                    $page++;
+                    foreach ($models->items() as $model) {
+                        $allRecords++;
+                        $field  = $this->rowFormatter->format($model);
+                        
+                        echo $field . "\r\n";
+                        
+                    }
+                    flush();
+                } while ($models->isEmpty() ? false : true);
+            } catch (\Exception $e) {
+                echo ($e->getMessage()) . $e->getFile() . $e->getLine();
+            }
             
         }, 200, [
 //             Stream headers
