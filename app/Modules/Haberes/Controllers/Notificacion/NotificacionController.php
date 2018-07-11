@@ -5,7 +5,7 @@ namespace Cat\Modules\Haberes\Controllers\Notificacion;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
-use Illuminate\Database\Query\Builder;
+use Cat\Modules\Haberes\Services\Sender\Regular;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
@@ -44,17 +44,18 @@ class NotificacionController extends GeneralController
                 Notification::warningInstant('Todos los agentes seleccionados ya han sido notificados para el periodo seleccionado.');
                 
             } else {
-                
-                $this->send(
+                $service = new Regular(
                     $periodo,
                     $agentes,
-                    'Haberes::notificacion.mail-template.mensaje-regular',
-                    Notificacion::REGULAR
+                    new \DateTime($request->input('fecha_factura')),
+                    new \DateTime($request->input('fecha_pago'))
                 );
+                
+                return $service->execute();
             }
             
         } catch (\Exception $e) {
-            Flash::error('Error inesperado: ' . $e->getMessage());
+            Flash::error('Error inesperado: ' . $e->getMessage() . $e->getLine());
             
         }
         

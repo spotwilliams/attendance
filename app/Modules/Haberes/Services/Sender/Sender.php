@@ -46,6 +46,7 @@ abstract class Sender extends Service
         Periodo $periodo,
         Collection $agentes,
         $view,
+        $tipo,
         $data = [],
         $subject = 'Notificacion de factura'
     ) {
@@ -55,6 +56,7 @@ abstract class Sender extends Service
         $this->subject = $subject;
         $this->support = new Calculador();
         $this->view    = $view;
+        $this->tipo    = $tipo;
     }
     
     protected function send()
@@ -63,8 +65,16 @@ abstract class Sender extends Service
             $detalle = $this->support->reset($agente, $this->periodo)->execute();
             
             if ($agente->email != '') {
+                
+                
                 Mail::queue($this->view,
-                    ['agente' => $agente, 'detalle' => $detalle, 'periodo' => $this->periodo, 'data' => $this->data],
+                    [
+                        'agente'  => $agente,
+                        'detalle' => $detalle,
+                        'periodo' => $this->periodo,
+                        'data'    => $this->data,
+                        'subject' => $this->subject,
+                    ],
                     function ($message) use ($agente) {
                         /** @var Message $message */
                         $message->to($agente->email);
@@ -72,9 +82,9 @@ abstract class Sender extends Service
                     });
                 
                 Notificacion::create([
-                    'id_agente' => $agente->id,
+                    'id_agente'  => $agente->id,
                     'id_periodo' => $this->periodo->id,
-                    'tipo' => $this->tipo,
+                    'tipo'       => $this->tipo,
                 ]);
                 
             }

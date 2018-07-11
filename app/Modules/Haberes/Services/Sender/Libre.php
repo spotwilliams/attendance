@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Haberes\Controllers\Notificacion;
+namespace Cat\Modules\Haberes\Services\Sender;
 
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;

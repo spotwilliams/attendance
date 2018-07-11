@@ -439,7 +439,7 @@
                                         <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 14px;">
                                             <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
                                                 <p style="margin: 0;font-size: 14px;line-height: 17px">FECHA <span
-                                                            style="font-size: 20px; line-height: 24px;"><strong>XX/XX/XXX</strong></span>
+                                                            style="font-size: 20px; line-height: 24px;"><strong>{{$data['fecha_factura']}}</strong></span>
                                                 </p>
                                                 <p style="margin: 0;font-size: 14px;line-height: 17px">CUIT &#160;
                                                     &#160;<span
@@ -601,6 +601,78 @@
                                                 <p style="margin: 0;font-size: 14px;line-height: 17px">CUIT:
                                                     <strong><span style="font-size: 20px; line-height: 24px;">34-99903208-9</span></strong>
                                                 </p>
+                                                <p style="margin: 0;font-size: 14px;line-height: 17px">Fecha pago:<strong><span
+                                                                style="font-size: 20px; line-height: 24px;">{{$data['fecha_pago']}}<br
+                                                                    data-mce-bogus="1"></span></strong></p></div>
+                                        </div>
+                                        <!--[if mso]></td></tr></table><![endif]-->
+                                    </div>
+
+                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
+                            </div>
+                        </div>
+                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
+                    </div>
+                </div>
+            </div>
+
+            <div style="background-color:transparent;">
+                <div style="Margin: 0 auto;min-width: 320px;max-width: 590px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;"
+                     class="block-grid mixed-two-up ">
+                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
+
+                        <div class="col num8"
+                             style="display: table-cell;vertical-align: top;min-width: 320px;max-width: 392px;">
+                            <div style="background-color: transparent; width: 100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div style="border-top: 2px solid #555555; border-left: 2px solid #555555; border-bottom: 2px solid #555555; border-right: 2px solid #555555; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                    <!--<![endif]-->
+                                    <div class="">
+                                        <!--[if mso]>
+                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                                <td style="padding-right: 5px; padding-left: 5px; padding-top: 5px; padding-bottom: 52px;">
+                                        <![endif]-->
+                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 5px; padding-left: 5px; padding-top: 5px; padding-bottom: 28px;">
+                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
+                                                <p style="margin: 0;font-size: 14px;line-height: 17px">DETALLE:
+                                                    <strong><span style="font-size: 20px; line-height: 24px;">{{$data['mensaje']}}</span></strong>
+                                                </p>
+                                                <p style="margin: 0;font-size: 14px;line-height: 17px"><span
+                                                                style="font-size: 20px; line-height: 24px;">Incluir firma y aclaración</span></p>
+                                            </div>
+                                        </div>
+                                        <!--[if mso]></td></tr></table><![endif]-->
+                                    </div>
+
+
+
+                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
+                            </div>
+                        </div>
+                        <!--[if (mso)|(IE)]></td>
+                        <td align="center" width="193"
+                            style=" width:193px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 2px solid #555555; border-left: 2px solid #555555; border-bottom: 2px solid #555555; border-right: 2px solid #555555;"
+                            valign="top"><![endif]-->
+                        <div class="col num4"
+                             style="display: table-cell;vertical-align: top;max-width: 320px;min-width: 196px;">
+                            <div style="background-color: transparent; width: 100% !important;">
+                                <!--[if (!mso)&(!IE)]><!-->
+                                <div style="border-top: 2px solid #555555; border-left: 2px solid #555555; border-bottom: 2px solid #555555; border-right: 2px solid #555555; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
+                                    <!--<![endif]-->
+
+
+                                    <div class="">
+                                        <!--[if mso]>
+                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
+                                            <tr>
+                                                <td style="padding-right: 5px; padding-left: 5px; padding-top: 5px; padding-bottom: 52px;">
+                                        <![endif]-->
+                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 5px; padding-left: 5px; padding-top: 5px; padding-bottom: 52px;">
+                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
+                                                <p style="margin: 0;font-size: 14px;line-height: 17px">IMPORTE:
+                                                    <strong><span style="font-size: 20px; line-height: 24px;">{{$detalle['monto']}}</span></strong>
+                                                </p>
                                                 <p style="margin: 0;font-size: 14px;line-height: 17px"><strong><span
                                                                 style="font-size: 20px; line-height: 24px;"><br
                                                                     data-mce-bogus="1"></span></strong></p></div>
@@ -615,393 +687,7 @@
                     </div>
                 </div>
             </div>
-            <div style="background-color:transparent;">
-                <div style="Margin: 0 auto;min-width: 320px;max-width: 590px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;"
-                     class="block-grid four-up ">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-                        <!--[if (mso)|(IE)]>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td style="background-color:transparent;" align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width: 590px;">
-                                        <tr class="layout-full-width" style="background-color:transparent;"><![endif]-->
 
-                        <!--[if (mso)|(IE)]>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">CANT</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">DETALLE</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">Precio Unit.</p>
-                                            </div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">IMPORTE</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
-                    </div>
-                </div>
-            </div>
-            <div style="background-color:transparent;">
-                <div style="Margin: 0 auto;min-width: 320px;max-width: 590px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;"
-                     class="block-grid four-up ">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-                        <!--[if (mso)|(IE)]>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td style="background-color:transparent;" align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width: 590px;">
-                                        <tr class="layout-full-width" style="background-color:transparent;"><![endif]-->
-
-                        <!--[if (mso)|(IE)]>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">
-                                                    ........................</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">
-                                                    ..............................</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">
-                                                    ..........................</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">
-                                                    ...........................</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
-                    </div>
-                </div>
-            </div>
-            <div style="background-color:transparent;">
-                <div style="Margin: 0 auto;min-width: 320px;max-width: 590px;overflow-wrap: break-word;word-wrap: break-word;word-break: break-word;background-color: transparent;"
-                     class="block-grid four-up ">
-                    <div style="border-collapse: collapse;display: table;width: 100%;background-color:transparent;">
-                        <!--[if (mso)|(IE)]>
-                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                            <tr>
-                                <td style="background-color:transparent;" align="center">
-                                    <table cellpadding="0" cellspacing="0" border="0" style="width: 590px;">
-                                        <tr class="layout-full-width" style="background-color:transparent;"><![endif]-->
-
-                        <!--[if (mso)|(IE)]>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">CANT</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">DETALLE</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">Precio Unit.</p>
-                                            </div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td>
-                        <td align="center" width="148"
-                            style=" width:148px; padding-right: 0px; padding-left: 0px; padding-top:5px; padding-bottom:5px; border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent;"
-                            valign="top"><![endif]-->
-                        <div class="col num3"
-                             style="max-width: 320px;min-width: 147px;display: table-cell;vertical-align: top;">
-                            <div style="background-color: transparent; width: 100% !important;">
-                                <!--[if (!mso)&(!IE)]><!-->
-                                <div style="border-top: 0px solid transparent; border-left: 0px solid transparent; border-bottom: 0px solid transparent; border-right: 0px solid transparent; padding-top:5px; padding-bottom:5px; padding-right: 0px; padding-left: 0px;">
-                                    <!--<![endif]-->
-
-
-                                    <div class="">
-                                        <!--[if mso]>
-                                        <table width="100%" cellpadding="0" cellspacing="0" border="0">
-                                            <tr>
-                                                <td style="padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                        <![endif]-->
-                                        <div style="color:#555555;line-height:120%;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif; padding-right: 10px; padding-left: 10px; padding-top: 10px; padding-bottom: 10px;">
-                                            <div style="font-size:12px;line-height:14px;color:#555555;font-family:Arial, 'Helvetica Neue', Helvetica, sans-serif;text-align:left;">
-                                                <p style="margin: 0;font-size: 14px;line-height: 17px">IMPORTE</p></div>
-                                        </div>
-                                        <!--[if mso]></td></tr></table><![endif]-->
-                                    </div>
-
-                                    <!--[if (!mso)&(!IE)]><!--></div><!--<![endif]-->
-                            </div>
-                        </div>
-                        <!--[if (mso)|(IE)]></td></tr></table></td></tr></table><![endif]-->
-                    </div>
-                </div>
-            </div>
             <!--[if (mso)|(IE)]></td></tr></table><![endif]-->
         </td>
     </tr>

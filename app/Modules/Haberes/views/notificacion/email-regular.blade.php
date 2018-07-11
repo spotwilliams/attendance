@@ -19,24 +19,11 @@
         <div class="box box-warning">
 
             <div class="box-body text-center">
-                <h4 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> para <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
+                <h4 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> para
+                    <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
                         '{{$mesFacturacion->format('y')}}</span> <span
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h4>
-
-                {{--<div class="col-md-10 col-md-offset-1">--}}
-
-                {{--<div class="form-group">--}}
-                {{--<div class="progress-group">--}}
-                {{--<span class="progress-text">Paso 4 - Resumen</span>--}}
-                {{--<span class="progress-number"><b>4</b>/4</span>--}}
-
-                {{--<div class="progress">--}}
-                {{--<div class="progress-bar progress-bar-yellow" style="width: 100%"></div>--}}
-                {{--</div>--}}
-                {{--</div>--}}
-                {{--</div>--}}
-                {{--</div>--}}
                 <div class="col-md-12">
                     @include('Haberes::notificacion.mail-template.disclaimer-regular')
                 </div>
@@ -48,7 +35,7 @@
 
         <div class="box">
 
-            {{Form::open()}}
+            {{Form::open(['class' => 'form-horizontal'])}}
             <div class="box-header with-border">
                 <h3 class="box-title">
                     Se enviar&aacute; mail notificando a <span
@@ -69,8 +56,83 @@
             </div>
 
             <div class="box-body">
-                <div class="col-md-12">
-                    @include('Haberes::notificacion.parts.table-resumen')
+                <div class="row">
+                    <div class="col-md-8 col-md-offset-2">
+
+                        <div class="callout callout-warning">
+
+                            <p>Los siguientes datos se incluir&aacute;n en el mail de notificaci&oacute;n,
+                                por favor complete los datos faltantes</p>
+                        </div>
+                    </div>
+
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Señor/es</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="GCBA" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Direcci&oacute;n</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Av. Belgrano 840" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Localidad</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Av. Belgrano 840" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">IVA</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Excento" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">COndiciones de venta</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" placeholder="Contado" disabled="">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Fecha de factura</label>
+
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control fecha" name="fecha_factura">
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group">
+                            <label class="col-sm-4 control-label">Fecha de pago</label>
+
+                            <div class="col-sm-8">
+                                <input type="email" class="form-control fecha" name="fecha_pago">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-12">
+                        @include('Haberes::notificacion.parts.table-resumen')
+                    </div>
                 </div>
 
             </div>
