@@ -30,13 +30,13 @@ class PresentismoAsLine extends RowDataFormatter
         $this->hasta       = $hasta;
         $this->comentarios = $comentarios;
         $this->allDays     = Calculation::getAllDaysBetween($this->desde, $this->hasta);
-        $this->encabezado  = 'Apellido,Nombre,CUIT,DNI,Turno,Base,';
+        $this->encabezado  = 'Apellido;Nombre;CUIT;DNI;Turno;Base;';
         
         foreach ($this->allDays as $fecha) {
-            $this->encabezado .= $fecha . ' Codigo,';
-            $this->encabezado .= $fecha . ' Estado,';
+            $this->encabezado .= $fecha . ' Codigo;';
+            $this->encabezado .= $fecha . ' Estado;';
             if ($this->comentarios) {
-                $this->encabezado .= $fecha . ' Comentarios,';
+                $this->encabezado .= $fecha . ' Comentarios;';
             }
         }
         
@@ -46,11 +46,11 @@ class PresentismoAsLine extends RowDataFormatter
     public function format(Model $agente)
     {
         $agenteReturn
-            = $agente->apellido . ',' .
-            $agente->nombre . ',' .
-            $agente->cuit . ',' .
-            $agente->dni . ',' .
-            ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'turno']) . ',' .
+            = $agente->apellido . ';' .
+            $agente->nombre . ';' .
+            $agente->cuit . ';' .
+            $agente->dni . ';' .
+            ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'turno']) . ';' .
             ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']);
         
         $presentismos = $this->transformPresentismo($agente->presentismos);
@@ -74,18 +74,18 @@ class PresentismoAsLine extends RowDataFormatter
             if (isset($presArray[$fecha])) {
                 $p = $presArray[$fecha];
                 
-                $pres .= ',' . $p['tipo_presentismo']['codigo'];
-                $pres .= ',' . (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
+                $pres .= ';' . $p['tipo_presentismo']['codigo'];
+                $pres .= ';' . (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
                 if ($this->comentarios) {
                     
-                    $pres .= ',' . $this->prepareComentarios($p['comentarios']);
+                    $pres .= ';' . $this->prepareComentarios($p['comentarios']);
                 }
                 
             } else {
-                $pres .= ',N/A' //codigo
-                    . ',N/A'; // injustificado
+                $pres .= ';N/A' //codigo
+                    . ';N/A'; // injustificado
                 if ($this->comentarios) {
-                    $pres .= ',NA'; // comentario
+                    $pres .= ';NA'; // comentario
                 }
             }
         }
