@@ -25,7 +25,7 @@
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h4>
                 <div class="col-md-12">
-                    @include('Haberes::notificacion.obsoletes.mail-template.disclaimer-regular')
+                    @include('Haberes::notificacion.parts.disclaimer-regular')
                 </div>
 
             </div>

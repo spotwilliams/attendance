@@ -62,9 +62,18 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
                     ->name('enviarNotificacionRegular');
             });
             
-            // Paso 4.1
-            Route::post('libre', Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@libre')
-                ->name('notificacionLibre');
+            Route::group(['prefix' => 'libre'], function () {
+                
+                // Paso 4.1
+                Route::post('confirmar',
+                    Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController::class . '@libre')
+                    ->name('notificacionLibre');
+                // Paso 4.1
+                Route::post('enviar',
+                    Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@sendLibre')
+                    ->name('enviarNotificacionLibre');
+            });
+            
         });
         
         Route::group(['prefix' => 'search'], function () {

@@ -33,9 +33,20 @@ class ConfirmarController extends ParentController
     
     public function regular(Request $request)
     {
+        $condicions      = [];
         $this->emailView = 'Haberes::notificacion.email-regular';
+        $periodo         = Periodo::findOrFail($request->input('periodo'));
         
-        return $this->generateResponse($request);
+        $condicions[] = [
+            'where'    => 'whereDoesntHave',
+            'column'   => 'notificaciones',
+            'callable' => function ($whereHasNot) use ($periodo) {
+                /** @var Builder $whereHasNot */
+                $whereHasNot->where('id_periodo', '=', $periodo->id);
+            },
+        ];
+        
+        return $this->generateResponse($request, $condicions);
         
     }
     
@@ -47,7 +58,7 @@ class ConfirmarController extends ParentController
     }
     
     
-    protected function generateResponse(Request $request)
+    protected function generateResponse(Request $request, $eloqConditions = [])
     {
         try {
             /** @var Periodo $periodo */
@@ -60,6 +71,10 @@ class ConfirmarController extends ParentController
             $eloq = $this->getEloq($periodo, $request->input('agentes'))
                 ->with('operativo.base')
                 ->with('operativo.turno');
+            
+            foreach ($eloqConditions as $condition) {
+                $eloq->{$condition['where']}($condition['column'], $condition['callable']);
+            }
             
             /** @var Collection $agentes */
             $agentes    = $eloq->get();
@@ -91,12 +106,4 @@ class ConfirmarController extends ParentController
         }
     }
     
-    protected function getEloq(Periodo $periodo, $ids)
-    {
-        return parent::getEloq($periodo, $ids)
-            ->whereDoesntHave('notificaciones', function ($whereHasNot) use ($periodo) {
-                /** @var Builder $whereHasNot */
-                $whereHasNot->where('id_periodo', '=', $periodo->id);
-            });
-    }
 }
