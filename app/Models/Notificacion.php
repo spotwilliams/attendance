@@ -20,6 +20,9 @@ class Notificacion extends Model
             'id_agente',
             'id_periodo',
             'tipo',
+            'fecha_factura',
+            'fecha_pago',
+            'mensaje',
         ];
     
     /**
@@ -29,10 +32,13 @@ class Notificacion extends Model
      */
     protected $casts
         = [
-            'id'         => 'integer',
-            'id_agente'  => 'integer',
-            'id_periodo' => 'integer',
-            'tipo'       => 'string',
+            'id'            => 'integer',
+            'id_agente'     => 'integer',
+            'id_periodo'    => 'integer',
+            'tipo'          => 'string',
+            'fecha_factura' => 'string',
+            'fecha_pago'    => 'string',
+            'mensaje'       => 'string',
         ];
     
     /**

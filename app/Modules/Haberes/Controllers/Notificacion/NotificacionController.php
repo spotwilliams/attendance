@@ -2,9 +2,11 @@
 
 namespace Cat\Modules\Haberes\Controllers\Notificacion;
 
+use Cat\Helpers\ErrorLogger;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
+use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Haberes\Services\Sender\Regular;
 use Illuminate\Http\Request;
 use Illuminate\Mail\Message;
@@ -30,13 +32,15 @@ class NotificacionController extends GeneralController
     
     public function sendRegular(Request $request)
     {
-        
         $input = $request->all();
         try {
             /** @var Periodo $periodo */
             $periodo = Periodo::findOrFail($input['periodo']);
             /** @var Collection $agentes */
             $agentes = $this->getEloq($periodo, $input['agentes'])
+                ->whereDoesntHave('notificaciones', function ($where) use ($periodo) {
+                    $where->where('id_periodo', '=', $periodo->id);
+                })
                 // Si el agente ya fue notificado, tengo que asegurarme que no se lo haga de nuevo
                 ->get();
             
@@ -51,71 +55,20 @@ class NotificacionController extends GeneralController
                     new \DateTime($request->input('fecha_pago'))
                 );
                 
-                return $service->execute();
+                $service->execute();
+                Flash::success('Se han notificado los agentes de manera correcta');
             }
             
         } catch (\Exception $e) {
-            Flash::error('Error inesperado: ' . $e->getMessage() . $e->getLine());
+            $log = new ErrorLogger();
+            Flash::error($log->track($e));
             
         }
+        $calculador = new CalculadorBatch($agentes, $periodo);
         
         return view('Haberes::notificacion.end')
             ->with('periodo', $periodo)
-            ->with('agentes', $agentes);
+            ->with('agentes', $calculador->execute());
         
     }
-    
-    protected function send(Periodo $periodo, Collection $agentes, $mensaje, $tipo)
-    {
-        $support = new Calculador();
-        foreach ($agentes as $agente) {
-            $detalle = $support->reset($agente, $periodo)->execute();
-            
-            if ($agente->email != '') {
-                Mail::queue('Haberes::notificacion.mail-template.main',
-                    ['agente' => $agente, 'detalle' => $detalle, 'periodo' => $periodo, 'mensaje' => $mensaje],
-                    function ($message) use ($agente) {
-                        /** @var Message $message */
-                        $message->to($agente->email);
-//                        $message->to('notificacionesinternas@gmail.com');
-                        $message->subject('Notificacion de haber');
-                    });
-                
-                Notificacion::create([
-                    'id_agente'  => $agente->id,
-                    'id_periodo' => $periodo->id,
-                    'tipo'       => $tipo,
-                ]);
-                
-                Notification::successInstant('Se ha enviado la notificaci&oacute;n a ' . $agente->email);
-            } else {
-                Notification::errorInstant('El agente ' . $agente->apellido . ', ' . $agente->nombre . ' (CUIT: ' . $agente->cuit . '),  no tiene registrado un mail.');
-            }
-        }
-    }
-
-//    public function reportePreliminar(Request $request)
-//    {
-//        $this->authorize('reportePreliminar', $this);
-//
-//        $input = $request->all();
-//        try {
-//            $periodo = Periodo::findOrFail($input['periodo']);
-//            $base    = Base::findOrFail($input['base']);
-//            $turno   = Turno::findOrFail($input['turno']);
-//
-//            /** @var Collection $agentes */
-//            $agentes = Facilitador::preliminar($base, $periodo, $turno);
-//
-//            $service = new Reporte(new Collection($agentes));
-//
-//            $service->execute();
-//
-//        } catch (\Exception $e) {
-//            Flash::error('No se ha podido continuar. Intente nuevamente');
-//
-//            return view('Haberes::calculo.index-base');
-//        }
-//
-//    }
 }

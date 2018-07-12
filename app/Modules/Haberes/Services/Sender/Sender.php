@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Haberes\Services\Sender;
 
+use Cat\Models\Agente;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\Calculador;
@@ -9,7 +10,6 @@ use Cat\Modules\Service;
 use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Mail;
-use Krucas\Notification\Facades\Notification;
 
 abstract class Sender extends Service
 {
@@ -59,6 +59,8 @@ abstract class Sender extends Service
         $this->tipo    = $tipo;
     }
     
+    protected abstract function getArrayDataForSaveNotificacion(Agente $agente, Periodo $periodo);
+    
     protected function send()
     {
         foreach ($this->agentes as $agente) {
@@ -81,11 +83,7 @@ abstract class Sender extends Service
                         $message->subject($this->subject);
                     });
                 
-                Notificacion::create([
-                    'id_agente'  => $agente->id,
-                    'id_periodo' => $this->periodo->id,
-                    'tipo'       => $this->tipo,
-                ]);
+                Notificacion::create($this->getArrayDataForSaveNotificacion($agente, $this->periodo, $this->tipo));
                 
             }
         }

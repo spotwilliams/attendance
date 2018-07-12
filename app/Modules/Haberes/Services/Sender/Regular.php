@@ -4,6 +4,7 @@ namespace Cat\Modules\Haberes\Services\Sender;
 
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
+use Cat\Modules\Reportes\Services\Formatters\Agente;
 use Illuminate\Support\Collection;
 
 class Regular extends Sender
@@ -14,6 +15,9 @@ class Regular extends Sender
     
     /** @var \DateTime */
     protected $fechaPago;
+    
+    /** @var string */
+    protected $mensaje;
     
     /**
      * Regular constructor.
@@ -37,20 +41,33 @@ class Regular extends Sender
         $this->fechaFactura = $fechaFactura;
         $this->fechaPago    = $fechaPago;
         
+        $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $this->periodo->fecha_fin);
+        $mesFacturacion->addMonth(1);
+        $this->mensaje = 'HONORARIOS CORRESPONDIENTES A ' . strtoupper(trans('month.' . $mesFacturacion->format('m'))) . ' DEL ' . $mesFacturacion->format('Y');
     }
     
     public function execute()
     {
-        $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $this->periodo->fecha_fin);
-        $mesFacturacion->addMonth(1);
         
         $this->data = [
-            'mensaje'       => 'HONORARIOS CORRESPONDIENTES A ' . strtoupper(trans('month.' . $mesFacturacion->format('m'))) . ' DEL ' . $mesFacturacion->format('Y'),
+            'mensaje'       => $this->mensaje,
             'fecha_factura' => $this->fechaFactura->format('d/m/Y'),
             'fecha_pago'    => $this->fechaPago->format('d/m/Y'),
         ];
         
         return $this->send();
+    }
+    
+    protected function getArrayDataForSaveNotificacion(\Cat\Models\Agente $agente, Periodo $periodo)
+    {
+        return [
+            'id_agente'     => $agente->id,
+            'id_periodo'    => $this->periodo->id,
+            'tipo'          => $this->tipo,
+            'mensaje'       => $this->mensaje,
+            'fecha_factura' => $this->fechaFactura->format('d/m/Y'),
+            'fecha_pago'    => $this->fechaPago->format('d/m/Y'),
+        ];
     }
     
     

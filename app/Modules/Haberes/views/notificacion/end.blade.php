@@ -40,6 +40,9 @@
                     </div>
                     {!! \Krucas\Notification\Facades\Notification::showAll() !!}
                 </div>
+                <div class="col-md-12">
+                    @include('Haberes::notificacion.parts.table-resumen')
+                </div>
             </div>
             <div class="box-footer">
                 <a class="btn btn-default pull-right" href="{{route('notificacionIndex')}}"><i class="fa fa-refresh"></i>&nbsp;Volver a buscar</a>

@@ -25,7 +25,7 @@
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h4>
                 <div class="col-md-12">
-                    @include('Haberes::notificacion.mail-template.disclaimer-regular')
+                    @include('Haberes::notificacion.obsoletes.mail-template.disclaimer-regular')
                 </div>
 
             </div>
@@ -145,6 +145,13 @@
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
+            $('.fecha').daterangepicker({
+                singleDatePicker: true,
+                showDropdowns: true,
+                minYear: 2018,
+                maxYear: parseInt(moment().format('YYYY'), 10),
+                startDate: moment()
+            });
             $('button.atras, button.enviar').on('click', function (event) {
                 event.preventDefault();
                 var $form = $('form');
