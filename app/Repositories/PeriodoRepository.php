@@ -69,6 +69,7 @@ class PeriodoRepository extends BaseRepository
      * Asigna el periodo activo a las bases
      * @param Periodo $periodo
      * @param Base|null $base si es null activa el periodo para todas las bases
+     * @obsolete
      */
     public static function activarPeriodoEnBasesYTurnos(Periodo $periodo, Base $base = null, Turno $turno = null)
     {

@@ -30,6 +30,8 @@ abstract class Rule
     /**
      * Rule constructor.
      * @param Agente $agente
+     * @param TipoPresentismo $tipoAusente
+     * @param \DateTime|null $fecha
      */
     public function __construct(Agente $agente, TipoPresentismo $tipoAusente, \DateTime $fecha = null)
     {

@@ -10,6 +10,7 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\EnComision;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Services\Registro\Destroy;
 use Cat\Modules\Presentismo\Services\Validacion\ValidationNonType;
@@ -182,6 +183,9 @@ class RegistroController extends AppBaseController
             $message = $e->getMessage();
             $code    = 500;
         } catch (EnComision $e) {
+            $message = $e->getMessage();
+            $code    = 500;
+        } catch (Validation $e) {
             $message = $e->getMessage();
             $code    = 500;
         }

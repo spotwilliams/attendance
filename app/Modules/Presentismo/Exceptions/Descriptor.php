@@ -7,9 +7,11 @@ use Cat\Models\Base;
 use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
 use Cat\Models\Turno;
+use Cat\Modules\Reportes\Services\Formatters\Agente;
 
 class Descriptor extends MainDescriptor
 {
+    const DEBUG                              = 0001;
     const CONTRATO_INACTIVO                  = 1000;
     const CONTRATO_NO_LOCACION               = 2000;
     const SIN_DIAS_DISPONIBLES               = 3000;
@@ -21,6 +23,8 @@ class Descriptor extends MainDescriptor
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
     const ESTADO_CONTRATO_EN_COMISION        = 9000;
     const FECHA_FUTURA                       = 8000;
+    const FECHA_FUERA_DEL_LIMITE             = 8001;
+    const PERIODO_FACTURADO                  = 10000;
     
     
     public static function contratoInactivo()
@@ -147,5 +151,39 @@ class Descriptor extends MainDescriptor
         }
         
         return self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION];
+    }
+    
+    public static function debug(\Exception $exception)
+    {
+        $message = "Mensaje: {$exception->getMessage()}. File: {$exception->getFile()}. Line: {$exception->getLine()}. Trace: {$exception->getTraceAsString()}";
+        if (!isset(self::$errorMap[Descriptor::DEBUG])) {
+            
+            self::$errorMap[Descriptor::DEBUG] = new Descriptor(Descriptor::DEBUG, $message);
+        }
+        
+        return self::$errorMap[Descriptor::DEBUG];
+    }
+    
+    public static function periodoFacturado()
+    {
+        $message = "El periodo ya fue facturado por el agente.";
+        if (!isset(self::$errorMap[Descriptor::PERIODO_FACTURADO])) {
+            
+            self::$errorMap[Descriptor::PERIODO_FACTURADO] = new Descriptor(Descriptor::PERIODO_FACTURADO, $message);
+        }
+        
+        return self::$errorMap[Descriptor::PERIODO_FACTURADO];
+    }
+    
+    
+    public static function fechaFueraDelLimite()
+    {
+        $message = 'No se pueden cargar presentismos mas allá de los ' . config('cat.limite_dias_planta') . ' dias.';
+        if (!isset(self::$errorMap[Descriptor::FECHA_FUERA_DEL_LIMITE])) {
+            
+            self::$errorMap[Descriptor::FECHA_FUERA_DEL_LIMITE] = new Descriptor(Descriptor::FECHA_FUERA_DEL_LIMITE, $message);
+        }
+        
+        return self::$errorMap[Descriptor::FECHA_FUERA_DEL_LIMITE];
     }
 }

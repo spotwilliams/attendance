@@ -37,5 +37,10 @@ return [
     /*
      * Monto del contrato por defecto
      */
-    'monto_contrato' => 16002
+    'monto_contrato' => 16002,
+    
+    /*
+     * Cantidad de dias previo a evitar cambiar el presentismos para planta
+     */
+    'limite_dias_planta' => 90,
 ];
