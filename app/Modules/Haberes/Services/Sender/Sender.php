@@ -59,20 +59,39 @@ abstract class Sender extends Service
         $this->tipo    = $tipo;
     }
     
+    /**
+     * Obtiene el detalle para enviar los datos
+     * @param Agente $agente
+     * @param Periodo $periodo
+     * @return mixed
+     */
     protected abstract function getArrayDataForSaveNotificacion(Agente $agente, Periodo $periodo);
+    
+    /**
+     * Obtiene el detalle a mandar
+     * @param Agente $agente
+     * @return string
+     */
+    protected abstract function getMessage(Agente $agente);
+    
+    /**
+     * @param Agente $agente
+     * @return \stdClass
+     */
+    protected abstract function getDetalle(Agente $agente);
     
     protected function send()
     {
         foreach ($this->agentes as $agente) {
-            $detalle = $this->support->reset($agente, $this->periodo)->execute();
             
             if ($agente->email != '') {
                 
+                $this->data['mensaje'] = $this->getMessage($agente);
                 
                 Mail::queue($this->view,
                     [
                         'agente'  => $agente,
-                        'detalle' => $detalle,
+                        'detalle' => $this->getDetalle($agente),
                         'periodo' => $this->periodo,
                         'data'    => $this->data,
                         'subject' => $this->subject,
@@ -83,7 +102,7 @@ abstract class Sender extends Service
                         $message->subject($this->subject);
                     });
                 
-                Notificacion::create($this->getArrayDataForSaveNotificacion($agente, $this->periodo, $this->tipo));
+                Notificacion::create($this->getArrayDataForSaveNotificacion($agente, $this->periodo));
                 
             }
         }

@@ -5,16 +5,7 @@ namespace Cat\Modules\Haberes\Services\Sender;
 use Cat\Models\Agente;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
-use Cat\Modules\Haberes\Services\Calculo\Calculador;
-use Illuminate\Database\Query\Builder;
-use Illuminate\Http\Request;
-use Illuminate\Mail\Message;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Mail;
-use Krucas\Notification\Facades\Notification;
-use Laracasts\Flash\Flash;
-use Cat\Modules\Haberes\Controllers\GeneralController;
-use Cat\Modules\Haberes\Controllers\Eloquenteable;
 
 class Libre extends Sender
 {
@@ -28,6 +19,8 @@ class Libre extends Sender
     /** @var string */
     protected $mensaje;
     
+    /** @var  */
+    protected $monto;
     /**
      * Regular constructor.
      * @param Periodo $periodo
@@ -40,7 +33,8 @@ class Libre extends Sender
         Collection $agentes,
         \DateTime $fechaFactura,
         \DateTime $fechaPago,
-        $mensaje
+        $mensaje,
+        $monto
     ) {
         parent::__construct(
             $periodo,
@@ -51,13 +45,13 @@ class Libre extends Sender
         $this->fechaFactura = $fechaFactura;
         $this->fechaPago    = $fechaPago;
         $this->mensaje      = $mensaje;
+        $this->monto = $monto;
     }
     
     public function execute()
     {
         
         $this->data = [
-            'mensaje'       => $this->mensaje,
             'fecha_factura' => $this->fechaFactura->format('d/m/Y'),
             'fecha_pago'    => $this->fechaPago->format('d/m/Y'),
         ];
@@ -74,6 +68,18 @@ class Libre extends Sender
             'mensaje'       => $this->mensaje,
             'fecha_factura' => $this->fechaFactura->format('d/m/Y'),
             'fecha_pago'    => $this->fechaPago->format('d/m/Y'),
+        ];
+    }
+    
+    protected function getMessage(Agente $agente)
+    {
+        return $this->mensaje;
+    }
+    
+    protected function getDetalle(Agente $agente)
+    {
+        return [
+            'monto' => $this->monto,
         ];
     }
     

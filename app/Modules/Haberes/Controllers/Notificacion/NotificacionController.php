@@ -3,6 +3,7 @@
 namespace Cat\Modules\Haberes\Controllers\Notificacion;
 
 use Cat\Helpers\ErrorLogger;
+use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Haberes\Services\Sender\Libre;
@@ -37,7 +38,9 @@ class NotificacionController extends GeneralController
             /** @var Collection $agentes */
             $agentes = $this->getEloq($periodo, $input['agentes'])
                 ->whereDoesntHave('notificaciones', function ($where) use ($periodo) {
-                    $where->where('id_periodo', '=', $periodo->id);
+                    $where->where('id_periodo', '=', $periodo->id)
+                        ->where('tipo', '=', Notificacion::REGULAR);
+                    
                 })
                 // Si el agente ya fue notificado, tengo que asegurarme que no se lo haga de nuevo
                 ->get();
@@ -85,8 +88,15 @@ class NotificacionController extends GeneralController
             // a la vista con el error
             $this->validate(
                 $request,
-                ['mensaje' => 'required'],
-                ['mensaje.required' => 'El mensaje que el agente debe colocar en la factura es obligatorio']
+                [
+                    'mensaje' => 'required',
+                    'monto'   => 'required|numeric',
+                ],
+                [
+                    'mensaje.required' => 'El mensaje que el agente debe colocar en la factura es obligatorio',
+                    'monto.required'   => 'El monto que el agente debe colocar en la factura es obligatorio',
+                    'monto.numeric'          => 'El monto debe ser un numero valido',
+                ]
             );
             
             
@@ -95,7 +105,8 @@ class NotificacionController extends GeneralController
                 $agentes,
                 new \DateTime($request->input('fecha_factura')),
                 new \DateTime($request->input('fecha_pago')),
-                $input['mensaje']
+                $input['mensaje'],
+                $input['monto']
             );
             
             $service->execute();

@@ -2,9 +2,9 @@
 
 namespace Cat\Modules\Haberes\Services\Sender;
 
+use Cat\Models\Agente;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
-use Cat\Modules\Reportes\Services\Formatters\Agente;
 use Illuminate\Support\Collection;
 
 class Regular extends Sender
@@ -41,16 +41,12 @@ class Regular extends Sender
         $this->fechaFactura = $fechaFactura;
         $this->fechaPago    = $fechaPago;
         
-        $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $this->periodo->fecha_fin);
-        $mesFacturacion->addMonth(1);
-        $this->mensaje = 'HONORARIOS CORRESPONDIENTES A ' . strtoupper(trans('month.' . $mesFacturacion->format('m'))) . ' DEL ' . $mesFacturacion->format('Y');
     }
     
     public function execute()
     {
         
         $this->data = [
-            'mensaje'       => $this->mensaje,
             'fecha_factura' => $this->fechaFactura->format('d/m/Y'),
             'fecha_pago'    => $this->fechaPago->format('d/m/Y'),
         ];
@@ -58,7 +54,7 @@ class Regular extends Sender
         return $this->send();
     }
     
-    protected function getArrayDataForSaveNotificacion(\Cat\Models\Agente $agente, Periodo $periodo)
+    protected function getArrayDataForSaveNotificacion(Agente $agente, Periodo $periodo)
     {
         return [
             'id_agente'     => $agente->id,
@@ -68,6 +64,28 @@ class Regular extends Sender
             'fecha_factura' => $this->fechaFactura->format('d/m/Y'),
             'fecha_pago'    => $this->fechaPago->format('d/m/Y'),
         ];
+    }
+    
+    
+    protected function getMessage(Agente $agente)
+    {
+        $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $this->periodo->fecha_fin);
+        $mesFacturacion->addMonth(1);
+        $this->mensaje = 'HONORARIOS CORRESPONDIENTES A ' . strtoupper(trans('month.' . $mesFacturacion->format('m'))) . ' DEL ' . $mesFacturacion->format('Y');
+        
+        $detalle = $this->getDetalle($agente);
+        if ($detalle->diasADescontar > 0) {
+            $this->mensaje .= 'CON ' . $this->getDetalle($agente)->diasADescontar . ' DIAS DE DESCUENTO';
+        }
+        
+        return $this->mensaje;
+    }
+    
+    
+    protected function getDetalle(Agente $agente)
+    {
+        return $this->support->reset($agente, $this->periodo)->execute();
+        
     }
     
     

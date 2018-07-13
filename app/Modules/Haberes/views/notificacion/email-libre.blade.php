@@ -135,9 +135,21 @@
                             <label class="col-sm-4 control-label">Mensaje</label>
 
                             <div class="col-sm-8">
-                                <textarea class="form-control" name="mensaje" maxlength="400" placeholder="Escriba un mensaje de hasta 400 caracteres"></textarea>
+                                <textarea class="form-control" name="mensaje" maxlength="400" placeholder="Escriba un mensaje de hasta 400 caracteres">{{old('mensaje')}}</textarea>
                                 @if($errors->has('mensaje'))
                                     <label>{{$errors->first('mensaje')}}</label>
+                                @endif
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-8">
+                        <div class="form-group @if($errors->has('monto')) has-error @endif">
+                            <label class="col-sm-4 control-label">Monto</label>
+
+                            <div class="col-sm-8">
+                                <input type="text" class="form-control" name="monto" placeholder="$ 0.0" value="{{old('monto')}}">
+                                @if($errors->has('monto'))
+                                    <label>{{$errors->first('monto')}}</label>
                                 @endif
                             </div>
                         </div>

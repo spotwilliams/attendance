@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Haberes\Controllers\Notificacion;
 
+use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
@@ -42,7 +43,8 @@ class ConfirmarController extends ParentController
             'column'   => 'notificaciones',
             'callable' => function ($whereHasNot) use ($periodo) {
                 /** @var Builder $whereHasNot */
-                $whereHasNot->where('id_periodo', '=', $periodo->id);
+                $whereHasNot->where('id_periodo', '=', $periodo->id)
+                    ->where('tipo', '=', Notificacion::REGULAR);
             },
         ];
         
