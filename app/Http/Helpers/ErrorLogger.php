@@ -4,6 +4,7 @@
 namespace Cat\Helpers;
 
 
+use Cat\Exceptions\RemainException;
 use Illuminate\Support\Facades\Log;
 
 class ErrorLogger
@@ -20,8 +21,7 @@ class ErrorLogger
         $this->map = [
             'general' => function (\Exception $e) {
                 
-                $e->uuid = $this->uniqueId;
-                Log::error($e);
+                Log::error(new RemainException($e, $this->uniqueId));
                 
                 return 'Se ha detectado un error inesperado.  Consulte con el nro. de seguimiento: ' . $this->uniqueId;
             },
