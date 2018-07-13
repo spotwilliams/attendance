@@ -171,7 +171,7 @@ return [
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Krucas\Notification\NotificationServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-        // Arcanedev\LogViewer\LogViewerServiceProvider::class,
+         Arcanedev\LogViewer\LogViewerServiceProvider::class,
     ],
     
     /*
