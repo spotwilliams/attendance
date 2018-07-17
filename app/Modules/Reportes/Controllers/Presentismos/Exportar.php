@@ -43,6 +43,9 @@ class Exportar extends General
         $this->query
             ->with([
                 'presentismos' => function ($query) {
+                    if (!$this->tiposPresentismos->isEmpty()) {
+                        $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
+                    }
                     $query->whereDate('fecha', '>=', $this->desde)
                         ->whereDate('fecha', '<=', $this->hasta)
                         ->orderBy('fecha', 'ASC')
