@@ -6,6 +6,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Agente;
 use Cat\Models\Gerencia;
 use Cat\Models\Operativo;
+use Cat\Models\TipoContrato;
 use Cat\Modules\Haberes\Services\Modificador\Contratos;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
@@ -57,13 +58,18 @@ class ContratosController extends AppBaseController
         
         /** @var Collection $agentes */
         $agentes = Agente::whereIn('id', $operativos->pluck('id_agente'))
-            ->with(['operativo' => function($with) {
-                $with
-                    ->with('base')
-                    ->with('turno')
-                    ->with('gerencia')
-                ;
-            }])
+            ->with([
+                'operativo' => function ($with) {
+                    $with
+                        ->with('base')
+                        ->with('turno')
+                        ->with('gerencia');
+                },
+            ])
+            ->whereHas('contrato', function ($wherehas) {
+                $wherehas->whereIn('id_tipo_contrato', TipoContrato::getEquivalentesLocacion()->pluck('id'));
+            })
+            ->with('contrato.tipoContrato')
             ->get();
         
         return view('Haberes::modificador.disclosure')
