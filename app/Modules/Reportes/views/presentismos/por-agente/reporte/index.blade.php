@@ -9,9 +9,9 @@
 
         <div class="clearfix"></div>
         {{--<div class="row">--}}
-            {{--<div class="col-md-12">--}}
-                {{--@include('Reportes::presentismos.por-agente.reporte.form')--}}
-            {{--</div>--}}
+        {{--<div class="col-md-12">--}}
+        {{--@include('Reportes::presentismos.por-agente.reporte.form')--}}
+        {{--</div>--}}
         {{--</div>--}}
         <div class="row">
             <div class="col-md-3">
@@ -49,6 +49,8 @@ $presentismos = $agente->presentismos->keyBy('fecha');
             $('#calendar').fullCalendar({
                 fixedWeekCount: false,
                 height: 500,
+                defaultView: 'month',
+                showNonCurrentDates: false,
                 buttonText: {
                     today: 'hoy',
                     month: 'mes',
@@ -73,6 +75,10 @@ $presentismos = $agente->presentismos->keyBy('fecha');
                         },
                         success: function (data) {
 
+                            var cal = $("#calendar").fullCalendar('getCalendar');
+
+                            var start = cal.getView().start;
+
                             $('#resumen').children('li').remove();
 
                             if (data.length === 0) {
@@ -81,17 +87,22 @@ $presentismos = $agente->presentismos->keyBy('fecha');
                                 var resumen = [];
                                 var codigo = '';
                                 for (var i = 0; i < data.length; i++) {
-                                    codigo = data[i].tipo_presentismo.id;
-                                    if (resumen[codigo] === undefined) {
-                                        resumen[codigo] = {
-                                            count: 1,
-                                            codigo: data[i].tipo_presentismo.codigo,
-                                            letra: data[i].tipo_presentismo.color_letra,
-                                            background: data[i].tipo_presentismo.color,
-                                        };
-                                    } else {
-                                        resumen[codigo].count++;
+                                    var date = moment(data[i].fecha);
 
+                                    if (start.diff(date, 'months') === 0) {
+
+                                        codigo = data[i].tipo_presentismo.id;
+                                        if (resumen[codigo] === undefined) {
+                                            resumen[codigo] = {
+                                                count: 1,
+                                                codigo: data[i].tipo_presentismo.codigo,
+                                                letra: data[i].tipo_presentismo.color_letra,
+                                                background: data[i].tipo_presentismo.color,
+                                            };
+                                        } else {
+                                            resumen[codigo].count++;
+
+                                        }
                                     }
                                 }
                                 $.each(resumen, function (index, item) {
@@ -124,7 +135,8 @@ $presentismos = $agente->presentismos->keyBy('fecha');
 
                 }
 
-            })
+            });
+
 
         });
 
