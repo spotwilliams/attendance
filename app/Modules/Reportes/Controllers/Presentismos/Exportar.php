@@ -4,7 +4,9 @@ namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
 use Cat\Helpers\Calculation;
 use Cat\Modules\Reportes\Services\Formatters\Presentismo;
+use Cat\Modules\Reportes\Services\Formatters\PresentismoAsLine;
 use Cat\Modules\Reportes\Services\Reporte;
+use Cat\Modules\Reportes\Services\ReporteAsStream;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
@@ -26,11 +28,13 @@ class Exportar extends General
         $this->setupParams($request)
             ->setupQuery();
         
-        $formatter = new Presentismo($this->desde, $this->hasta);
-        $service   = new Reporte($this->query, $formatter);
+        $formatter = new PresentismoAsLine($this->desde, $this->hasta, $this->incluirComentarios);
+        $service   = new ReporteAsStream($this->query, $formatter);
+        
         try {
-            $service->execute();
+            return $service->execute();
         } catch (\Exception $e) {
+            
             Flash::error($e->getMessage());
             
             return redirect(route('reportesPresentismoGeneralIndex'));

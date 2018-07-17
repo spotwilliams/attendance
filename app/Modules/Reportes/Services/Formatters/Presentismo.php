@@ -15,14 +15,19 @@ class Presentismo extends RowDataFormatter
     /** @var  \DateTime */
     
     protected $hasta;
+    
     /** @var  array */
     protected $encabezado;
     
-    public function __construct(\DateTime $desde, \DateTime $hasta)
+    /** @var bool */
+    protected $comentarios;
+    
+    public function __construct(\DateTime $desde, \DateTime $hasta, $comentarios = true)
     {
-        $this->desde      = $desde;
-        $this->hasta      = $hasta;
-        $this->encabezado = array_flip(Calculation::getAllDaysBetween($this->desde, $this->hasta));
+        $this->desde       = $desde;
+        $this->hasta       = $hasta;
+        $this->comentarios = $comentarios;
+        $this->encabezado  = array_flip(Calculation::getAllDaysBetween($this->desde, $this->hasta));
         
     }
     
@@ -50,18 +55,19 @@ class Presentismo extends RowDataFormatter
         $temp = array_merge($this->encabezado, $presentismos->keyBy('fecha')->toArray());
         
         foreach ($temp as $fecha => $p) {
-            
+            $pres[$fecha . '_codigo']     = 'N/A';
+            $pres[$fecha . '_estado']     = 'N/A';
+            $pres[$fecha . '_comentario'] = 'N/A';
+    
             if (is_array($p)) {
 
 //                $pres[$fecha . '_dia']        = $p['fecha'];
                 $pres[$fecha . '_codigo']     = $p['tipo_presentismo']['codigo'];
                 $pres[$fecha . '_estado']     = (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
                 $pres[$fecha . '_comentario'] = $this->prepareComentarios($p['comentarios']);
-            } else {
-//                $pres[$fecha . '_dia']        = '';
-                $pres[$fecha . '_codigo']     = '';
-                $pres[$fecha . '_estado']     = '';
-                $pres[$fecha . '_comentario'] = '';
+            }
+            if (!$this->comentarios) {
+                unset($pres[$fecha . '_comentario']);
             }
         }
         
