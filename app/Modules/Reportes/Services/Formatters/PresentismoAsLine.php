@@ -85,7 +85,7 @@ class PresentismoAsLine extends RowDataFormatter
                 $pres .= ';N/A' //codigo
                     . ';N/A'; // injustificado
                 if ($this->comentarios) {
-                    $pres .= ';NA'; // comentario
+                    $pres .= ';N/A'; // comentario
                 }
             }
         }
@@ -104,10 +104,10 @@ class PresentismoAsLine extends RowDataFormatter
         $comentario = '';
         foreach ($comentarios as $comment) {
             $fecha      = (new \DateTime($comment['created_at']))->format('d/m/Y');
-            $comentario .= "{$comment['comentario']} (por: {$comment['user']['email']} - el {$fecha})" . PHP_EOL;
+            $comentario .= "{$comment['comentario']} (por: {$comment['user']['email']} - el {$fecha}) || ";
         }
         
-        return str_replace([',', ';'], '-', $comentario);
+        return str_replace([',', ';', "\r", "\n", "\r\n"], '-', $comentario);
         
         
     }

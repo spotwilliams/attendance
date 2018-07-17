@@ -6,6 +6,8 @@ use Carbon\Carbon;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Reportes\Controllers\ReporteController;
+use Cat\Modules\Reportes\Services\Formatters\PresentismoAsLine;
+use Cat\Modules\Reportes\Services\ReporteAsStream;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\View;
@@ -80,9 +82,9 @@ class Individual extends ReporteController
         $this->setupParams($request)
             ->setupQuery();
         
-        $service = new Reporte($this->query, new Presentismo($this->desde, $this->hasta), true);
+        $service = new ReporteAsStream($this->query, new PresentismoAsLine($this->desde, $this->hasta), true);
         try {
-            $service->execute();
+           return  $service->execute();
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
             
