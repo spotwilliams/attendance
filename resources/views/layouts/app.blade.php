@@ -205,6 +205,7 @@
 
 {!! Html::script('plugins/pace/js/pace.min.js') !!}
 {!! Html::script('plugins/moment/js/moment.js') !!}
+{!! Html::script('plugins/chart/js/Chart.js') !!}
 
 {!! Html::script('plugins/daterangepicker/js/daterangepicker.js') !!}
 
