@@ -107,7 +107,7 @@ class PresentismoAsLine extends RowDataFormatter
             $comentario .= "{$comment['comentario']} (por: {$comment['user']['email']} - el {$fecha})" . PHP_EOL;
         }
         
-        return $comentario;
+        return str_replace([',', ';'], '-', $comentario);
         
         
     }
