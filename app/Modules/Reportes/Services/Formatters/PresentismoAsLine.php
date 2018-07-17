@@ -66,7 +66,9 @@ class PresentismoAsLine extends RowDataFormatter
     {
         $pres = '';
         
-        $dates = array_unique(array_merge($this->allDays, $presentismos->pluck('fecha')->toArray() ?? []));
+        $array = $presentismos->pluck('fecha')->toArray();
+        
+        $dates = array_unique(array_merge($this->allDays, $array ? $array : []));
         
         $presArray = $presentismos->keyBy('fecha')->toArray();
         foreach ($dates as $fecha) {
