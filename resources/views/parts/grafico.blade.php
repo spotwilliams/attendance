@@ -86,74 +86,54 @@
                 type: 'line',
                 data: {
                     labels: [
-
-                        newDateString(0),
-                        newDateString(1),
-                        newDateString(2),
-                        newDateString(3),
-                        newDateString(4),
-                        newDateString(5),
-                        newDateString(6)
+                        // "Red", "Blue", "Yellow", "Green", "Purple",
+                        @foreach($fechas as $fecha)
+                        moment('{{$fecha}}').format('D/MM/Y'),
+                        @endforeach
+                        // 'Agentes activos del cuerpo',
+                        // 'Presentismo cargado',
                     ],
-                    datasets: [{
-                        type: 'line',
-                        label: 'Dataset 1',
-                        backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.red,
-                        data: [
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor()
-                        ],
-                    }, {
-                        type: 'line',
-                        label: 'Dataset 2',
-                        backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.blue,
-                        data: [
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor()
-                        ],
-                    }, {
-                        type: 'line',
-                        label: 'Dataset 3',
-                        backgroundColor: color(window.chartColors.green).alpha(0.5).rgbString(),
-                        borderColor: window.chartColors.green,
-                        fill: false,
-                        data: [
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor(),
-                            randomScalingFactor()
-                        ],
-                    }]
+                    datasets: [
+                        {
+                            type: 'line',
+                            label: 'Agentes activos del cuerpo ',
+                            // backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.red,
+                            data: [
+                                @foreach($fechas as $fecha)
+                                {{--{{$cantAgentes}},--}}
+                                {{($activosByDay->get($fecha)) ? $activosByDay->get($fecha)->agentes : $cantAgentes}},
+
+                                @endforeach
+
+                            ],
+                        },
+                        {
+                            type: 'line',
+                            label: 'Presentismo cargado',
+                            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                            borderColor: window.chartColors.blue,
+                            data: [
+                                @foreach($fechas as $fecha)
+                                {{($presentByDay->get($fecha)) ? $presentByDay->get($fecha)->presentismo : 0}},
+                                @endforeach
+                            ],
+                        },]
                 },
                 options: {
                     title: {
-                        text: 'Chart.js Combo Time Scale'
+                        // text: 'Chart.js Combo Time Scale'
                     },
-                    scales: {
-                        xAxes: [{
-                            type: 'time',
-                            display: true,
-                            time: {
-                                format: timeFormat,
-                                // round: 'day'
-                            }
-                        }],
-                    },
+                    // scales: {
+                    //     xAxes: [{
+                    //         type: 'integer',
+                    //         display: true,
+                    //         time: {
+                    format: timeFormat,
+                    round: 'day'
+                    // }
+                    // }],
+                    // },
                 }
             };
 

@@ -6,6 +6,7 @@ namespace Cat\Modules\Agentes\Services\Registro\Update;
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
 use Cat\Models\ContratoHistorico;
+use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Modules\Agentes\Services\Registro\Traits\LaboralesSetup;
 use Cat\Modules\Service;
 use Illuminate\Database\QueryException;
@@ -44,6 +45,7 @@ class Laborales extends Service
             
             $this->logCambioContrato($contratoActual);
             
+            AgenteRepository::storeCountActivos();
             DB::commit();
             
             return $this->agente;

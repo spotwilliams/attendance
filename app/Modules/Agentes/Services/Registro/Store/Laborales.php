@@ -6,6 +6,7 @@ namespace Cat\Modules\Agentes\Services\Registro\Store;
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
 use Cat\Models\ContratoHistorico;
+use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Modules\Agentes\Services\Registro\Traits\LaboralesSetup;
 use Cat\Modules\Service;
 use Illuminate\Support\Facades\DB;
@@ -38,6 +39,8 @@ class Laborales extends Service
             Contrato::create(array_filter($data));
             
             ContratoHistorico::create(array_filter($data));
+            
+            AgenteRepository::storeCountActivos();
             
             DB::commit();
             

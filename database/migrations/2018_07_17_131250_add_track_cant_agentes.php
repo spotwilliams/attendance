@@ -13,12 +13,9 @@ class AddTrackCantAgentes extends Migration
     public function up()
     {
         
-        
-        \Cat\Models\Param::create([
-        
-        ]);
+        \Cat\Modules\Agentes\Repositories\AgenteRepository::storeCountActivos();
     }
-
+    
     /**
      * Reverse the migrations.
      *

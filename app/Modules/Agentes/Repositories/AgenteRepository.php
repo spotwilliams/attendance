@@ -2,9 +2,12 @@
 
 namespace Cat\Modules\Agentes\Repositories;
 
+use Arcanedev\Support\Collection;
 use Cat\Models\Agente;
 use Cat\Models\Base;
+use Cat\Models\EstadoContrato;
 use Cat\Models\Operativo;
+use Cat\Models\Param;
 use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -50,6 +53,43 @@ class AgenteRepository extends BaseRepository
         } catch (QueryException $e) {
             return [];
         }
+    }
+    
+    /**
+     * @return integer
+     */
+    public static function getCountActivos()
+    {
+        $agentesActivo = Agente::whereHas('contrato', function ($where) {
+            /** @var Collection $activos */
+            $activos = EstadoContrato::getEstadosEquivalentesActivos();
+            $where->whereIn('id_estado_contrato', $activos->pluck('id')->toArray());
+            
+        })->count();
+        
+        return $agentesActivo;
+    }
+    
+    public static function storeCountActivos(\DateTime $fecha = null)
+    {
+        $fecha = $fecha ? $fecha : new \DateTime('now');
+        try {
+            $param = Param::where('param', '=', Param::CANT_ACTIVOS)
+                ->whereDate('created_at', '=', $fecha)
+                ->firstOrFail();
+        } catch (ModelNotFoundException $e) {
+            $param = new Param([
+                'param'       => Param::CANT_ACTIVOS,
+                'descripcion' => 'Cantidad de agentes activos',
+            ]);
+        }
+        
+        $param->fill([
+            'valor' => self::getCountActivos(),
+        ])
+            ->save();
+        
+        
     }
     
 }
