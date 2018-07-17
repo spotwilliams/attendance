@@ -26,14 +26,4 @@ Route::get('login', '\Cat\Http\Controllers\Auth\AuthController@showLoginForm');
 Route::post('login', '\Cat\Http\Controllers\Auth\AuthController@login');
 Route::get('logout', '\Cat\Http\Controllers\Auth\AuthController@logout');
 
-// Registration Routes...
-Route::get('register', '\Cat\Http\Controllers\Auth\AuthController@showRegistrationForm');
-Route::post('register', '\Cat\Http\Controllers\Auth\AuthController@register');
-
-// Password Reset Routes...
-Route::get('password/reset/{token?}', '\Cat\Http\Controllers\Auth\PasswordController@showResetForm');
-Route::post('password/email', '\Cat\Http\Controllers\Auth\PasswordController@sendResetLinkEmail');
-Route::post('password/reset', '\Cat\Http\Controllers\Auth\PasswordController@reset');
-
-
 Route::get('/home', 'HomeController@index');
