@@ -49,7 +49,7 @@ class ConfirmarController extends AppBaseController
      */
     public function registarFactura(Request $request)
     {
-//        $this->authorize('batch', $this);
+        $this->authorize('send', $this);
     
         try {
         $this->setRulesAccording()

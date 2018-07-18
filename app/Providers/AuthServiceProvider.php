@@ -5,6 +5,7 @@ namespace Cat\Providers;
 // Crud Agentes
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Haberes\Controllers\GeneralController;
 use Cat\Modules\Haberes\Controllers\Modificador\ContratosController;
 use Cat\Modules\Haberes\Controllers\Notificacion\ByAgenteController;
 use Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController;
@@ -13,6 +14,7 @@ use Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController;
 use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\General;
 use Cat\Policies\Haberes\ModificadorContratosPolicy;
 use Cat\Policies\Haberes\NotificacionPolicy;
+use Cat\Policies\Haberes\RegistroFacturacionPolicy;
 use Cat\Policies\Reportes\Haberes\VistaPreviaReportePolicy;
 use Cat\Policies\RequestGatePolicy;
 use Cat\Policies\TipoPresentismoGatePolicy;
@@ -52,12 +54,9 @@ use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Policies\Presentismos\JustificacionPolicy;
 
 // Haberes
-use Cat\Modules\Haberes\Controllers\GeneralController as HaberesGeneral;
-use Cat\Policies\Haberes\GeneralPolicy as HaberesGeneralPolicy;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController as HaberesReporte;
 use Cat\Policies\Haberes\ReportePolicy as HaberesReportePolicy;
 use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController as HaberesConfirmar;
-use Cat\Policies\Haberes\CierrePeriodoPolicy as HaberesConfirmarPolicy;
 
 // Reportes
 use Cat\Modules\Reportes\Controllers\Agentes\General as ReporteAgentes;
@@ -117,12 +116,18 @@ class AuthServiceProvider extends ServiceProvider
             RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
             JustificacionController::class => JustificacionPolicy::class,
             
-            NotificacionController::class => NotificacionPolicy::class,//index
-            ByAgenteController::class     => NotificacionPolicy::class,//search
-            ByFiltrosController::class    => NotificacionPolicy::class,//search
-            ConfirmarController::class    => NotificacionPolicy::class,//send
-            HaberesReporte::class         => HaberesReportePolicy::class,
-            HaberesConfirmar::class       => HaberesConfirmarPolicy::class,
+            NotificacionController::class => NotificacionPolicy::class,
+            ByAgenteController::class     => NotificacionPolicy::class,
+            ByFiltrosController::class    => NotificacionPolicy::class,
+            ConfirmarController::class    => NotificacionPolicy::class,
+            
+            GeneralController::class                                             => RegistroFacturacionPolicy::class,
+            \Cat\Modules\Haberes\Controllers\Registro\ByAgenteController::class  => RegistroFacturacionPolicy::class,
+            \Cat\Modules\Haberes\Controllers\Registro\ByFiltrosController::class => RegistroFacturacionPolicy::class,
+            \Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class => RegistroFacturacionPolicy::class,
+            
+            HaberesReporte::class => HaberesReportePolicy::class,
+            //reporte
             
             ContratosController::class => ModificadorContratosPolicy::class,
             

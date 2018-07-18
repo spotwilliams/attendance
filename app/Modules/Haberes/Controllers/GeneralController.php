@@ -47,9 +47,12 @@ class GeneralController extends AppBaseController
     
     /**
      * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index()
     {
+        $this->authorize('index', $this);
+        
         return view($this->indexView);
     }
     

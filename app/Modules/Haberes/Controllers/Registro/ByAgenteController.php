@@ -38,10 +38,13 @@ class ByAgenteController extends BusquedaController
     
     /**
      * @param Request $request
-     * @return $this|\Illuminate\Support\Facades\Response
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector|\Illuminate\Support\Facades\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function search(Request $request)
     {
+        $this->authorize('search', $this);
+        
         try {
             $periodo = Periodo::findOrFail($request->input('periodo'));
         } catch (ModelNotFoundException $e) {

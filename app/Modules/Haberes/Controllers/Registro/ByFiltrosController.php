@@ -52,11 +52,13 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
     
     /**
      * @param Request $request
-     * @return \Illuminate\Support\Facades\Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function search(Request $request)
     {
-        
+        $this->authorize('search', $this);
+    
         try {
             $periodo = Periodo::findOrFail($request->input('periodo'));
         } catch (ModelNotFoundException $e) {
