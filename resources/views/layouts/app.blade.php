@@ -187,9 +187,12 @@
 @endif
 
 {!! Html::script('plugins/jquery/js/jquery.min.js') !!}
+
 {!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
 {!! Html::script('plugins/datatables/js/dataTables.fixedHeader.min.js') !!}
 {!! Html::script('plugins/datatables/js/dataTables.responsive.min.js') !!}
+{!! Html::script('plugins/datatables-empty-columns/js/dataTables.hideEmptyColumns.min.js') !!}
+
 {!! Html::script('plugins/bootstrap-select/js/bootstrap-select.js') !!}
 {!! Html::script('plugins/slimScroll/js/jquery.slimscroll.min.js') !!}
 {!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
