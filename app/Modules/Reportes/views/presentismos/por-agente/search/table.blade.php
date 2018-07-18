@@ -4,7 +4,7 @@
     <th>Personal</th>
     <th>CUIT</th>
     <th>Base</th>
-    <th>Acci&oacute;n</th>
+    <th></th>
     </thead>
     <tbody>
     @foreach ($agentes as $agente)
@@ -22,7 +22,7 @@
                 @if($agente->contrato)
                     {{ Form::open(['route' => 'reportesPresentismoIndividualReportePresentismos', 'method' => 'POST'])}}
                     <input type="hidden" name="agente" value="{{$agente->id}}">
-                    {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '200px') !!}
+{{--                    {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '200px') !!}--}}
                     {{ Form::submit('Ver licencias', ['class' => 'btn btn-primary']) }}
 
                     {{ Form::close() }}

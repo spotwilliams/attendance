@@ -25,7 +25,8 @@ if (!isset($agentes)) {
                 <hr/>
                 <div class="col-md-12 col-xs-12 table-responsive">
                     @if(!$agentes->isEmpty())
-                        <h4 class="box-tools pull-left">Se encontraron <span class="label label-info">{{$agentes->total()}}</span> agentes</h4>
+                        <h4 class="box-tools pull-left">Se encontraron <span
+                                    class="label label-info">{{$agentes->total()}}</span> agentes</h4>
                     @endif
                     <table class="table table-hover">
                         <thead>
@@ -54,10 +55,13 @@ if (!isset($agentes)) {
                 ordering: false,
                 info: false,
                 searching: false,
-                scrollY:        "700px",
-                scrollX:        true,
                 scrollCollapse: true,
+                @if(!$agentes->isEmpty())
+                scrollY: "700px",
+                scrollX: true,
                 fixedColumns: true,
+                hideEmptyCols: true
+                @endif
 
             });
         })
