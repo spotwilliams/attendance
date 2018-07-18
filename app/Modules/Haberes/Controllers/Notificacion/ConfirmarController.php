@@ -32,8 +32,15 @@ class ConfirmarController extends ParentController
         $this->endView       = 'Haberes::notificacion.end';
     }
     
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function regular(Request $request)
     {
+        $this->authorize('send', $this);
+        
         $condicions      = [];
         $this->emailView = 'Haberes::notificacion.email-regular';
         $periodo         = Periodo::findOrFail($request->input('periodo'));
@@ -52,8 +59,15 @@ class ConfirmarController extends ParentController
         
     }
     
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Http\RedirectResponse
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function libre(Request $request)
     {
+        $this->authorize('send', $this);
+    
         $this->emailView = 'Haberes::notificacion.email-libre';
         
         return $this->generateResponse($request);

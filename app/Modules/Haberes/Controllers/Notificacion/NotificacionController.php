@@ -29,8 +29,20 @@ class NotificacionController extends GeneralController
         $this->indexRoute = 'notificacionIndex';
     }
     
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
+    public function index()
+    {
+        $this->authorize('index', $this);
+        return parent::index();
+    }
+    
     public function sendRegular(Request $request)
     {
+        $this->authorize('sendRegular', $this);
+    
         $input = $request->all();
         try {
             /** @var Periodo $periodo */
@@ -75,7 +87,8 @@ class NotificacionController extends GeneralController
     
     public function sendLibre(Request $request)
     {
-        
+        $this->authorize('sendLibre', $this);
+    
         try {
             $input = $request->all();
             /** @var Periodo $periodo */

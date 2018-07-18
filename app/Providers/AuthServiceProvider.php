@@ -6,8 +6,13 @@ namespace Cat\Providers;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Haberes\Controllers\Modificador\ContratosController;
+use Cat\Modules\Haberes\Controllers\Notificacion\ByAgenteController;
+use Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController;
+use Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController;
+use Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController;
 use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\General;
 use Cat\Policies\Haberes\ModificadorContratosPolicy;
+use Cat\Policies\Haberes\NotificacionPolicy;
 use Cat\Policies\Reportes\Haberes\VistaPreviaReportePolicy;
 use Cat\Policies\RequestGatePolicy;
 use Cat\Policies\TipoPresentismoGatePolicy;
@@ -112,9 +117,12 @@ class AuthServiceProvider extends ServiceProvider
             RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
             JustificacionController::class => JustificacionPolicy::class,
             
-            HaberesGeneral::class   => HaberesGeneralPolicy::class,
-            HaberesReporte::class   => HaberesReportePolicy::class,
-            HaberesConfirmar::class => HaberesConfirmarPolicy::class,
+            NotificacionController::class => NotificacionPolicy::class,//index
+            ByAgenteController::class     => NotificacionPolicy::class,//search
+            ByFiltrosController::class    => NotificacionPolicy::class,//search
+            ConfirmarController::class    => NotificacionPolicy::class,//send
+            HaberesReporte::class         => HaberesReportePolicy::class,
+            HaberesConfirmar::class       => HaberesConfirmarPolicy::class,
             
             ContratosController::class => ModificadorContratosPolicy::class,
             

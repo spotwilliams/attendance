@@ -24,10 +24,14 @@ class PermissionCrudController extends CrudController
             'label' => 'Nombre permiso',
             'type'  => 'text',
         ]);
-        
-        
+    
+        $this->crud->addColumn([
+            'name'  => 'comentarios',
+            'label' => 'Descipcion',
+            'type'  => 'text',
+        ]);
         $this->crud->addField([
-            'name'  => 'name',
+            'name'  => 'comentarios',
             'label' => 'Nombre permiso',
             'type'  => 'text',
         ]);
