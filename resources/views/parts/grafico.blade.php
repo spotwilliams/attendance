@@ -26,7 +26,7 @@
                         <p class="text-center">
                             <strong>Hoy</strong> (presentismo/agentes)
                         </p>
-                        <div style="overflow: scroll; height: 520px; padding-left: 10px; padding-right: 10px">
+                        <div class="parent-template" style="overflow: scroll; max-height: 420px; padding-left: 10px; padding-right: 10px">
 
                             <div class="progress-group hidden template-progress">
                                 <span class="progress-text base-name"></span>

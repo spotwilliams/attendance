@@ -65,13 +65,6 @@
 
             </div>
             <div class="row">
-                <div class="col-xs-8">
-                    {{--<div class="checkbox">--}}
-                        {{--<label>--}}
-                            {{--<input type="checkbox" name="remember"> Remember Me--}}
-                        {{--</label>--}}
-                    {{--</div>--}}
-                </div>
                 <!-- /.col -->
                 <div class="col-xs-4">
                     <button type="submit" class="btn btn-primary ">Ingresar</button>
@@ -80,8 +73,6 @@
             </div>
         </form>
 
-{{--        <a href="{{ url('/password/reset') }}">I forgot my password</a><br>--}}
-{{--        <a href="{{ url('/register') }}" class="text-center">Register a new membership</a>--}}
 
     </div>
     <!-- /.login-box-body -->
