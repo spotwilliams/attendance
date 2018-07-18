@@ -33,7 +33,8 @@ if (isset($desde) and isset($hasta)) {
                     @endif
                 </td>
             @else
-                <td>S/D</td>
+                {{--<td>S/D</td>--}}
+                <td></td>
             @endif
         @endforeach
     </tr>

@@ -31,7 +31,7 @@ class PresentismoAsLine extends RowDataFormatter
         $this->comentarios = $comentarios;
         $this->allDays     = Calculation::getAllDaysBetween($this->desde, $this->hasta);
         $this->encabezado  = 'Apellido;Nombre;CUIT;DNI;Turno;Base;';
-        
+        $this->charEmpty   = '';
         foreach ($this->allDays as $fecha) {
             $this->encabezado .= $fecha . ' Codigo;';
             $this->encabezado .= $fecha . ' Estado;';
@@ -84,10 +84,10 @@ class PresentismoAsLine extends RowDataFormatter
                 }
                 
             } else {
-                $pres .= ';N/A' //codigo
-                    . ';N/A'; // injustificado
+                $pres .= ";{$this->charEmpty}" //codigo
+                    . ";{$this->charEmpty}"; // injustificado
                 if ($this->comentarios) {
-                    $pres .= ';N/A'; // comentario
+                    $pres .= ";{$this->charEmpty}"; // comentario
                 }
             }
         }

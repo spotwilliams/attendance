@@ -10,6 +10,8 @@ abstract class  RowDataFormatter
     /** @var  array */
     protected $encabezado;
     
+    protected $charEmpty = 'N/A';
+    
     protected $acentos
         = [
             '&aacute;' => 'á',
@@ -25,6 +27,7 @@ abstract class  RowDataFormatter
     {
         return $this->encabezado;
     }
+    
     protected function cleanAcentos($v)
     {
         foreach ($this->acentos as $acento => $char) {

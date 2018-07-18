@@ -105,6 +105,14 @@ class General extends ReporteController
     protected function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
+            ->whereHas('presentismos', function ($query) {
+                $query->whereDate('fecha', '>=', $this->desde)
+                    ->whereDate('fecha', '<=', $this->hasta);
+                if (!$this->tiposPresentismos->isEmpty()) {
+                    $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
+                }
+                
+            })
             ->with([
                 'presentismos' => function ($query) {
                     $query->whereDate('fecha', '>=', $this->desde)
@@ -114,7 +122,7 @@ class General extends ReporteController
                     if ($this->incluirComentarios) {
                         $query->with('comentarios.user');
                     }
-                    if(!$this->tiposPresentismos->isEmpty()) {
+                    if (!$this->tiposPresentismos->isEmpty()) {
                         $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
                     }
                 },
