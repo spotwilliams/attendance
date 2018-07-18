@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Presentismos a 5 d&iacute;as</h3>
+                <h3 class="box-title">Presentismo a 5 d&iacute;as</h3>
 
             </div>
             <!-- /.box-header -->
@@ -69,7 +69,7 @@
                         datasets: [
                             {
                                 type: 'line',
-                                label: 'Agentes activos del cuerpo ',
+                                label: 'Agentes activos ',
                                 // backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
                                 borderColor: window.chartColors.red,
                                 data: [

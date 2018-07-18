@@ -87,15 +87,15 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{!! route('haberesIndex') !!}">
-                <i class="fa fa-money"></i>
-                <span>Registro de facturas</span>
-            </a>
-        </li>
-        <li>
             <a href="{!! route('notificacionIndex') !!}">
                 <i class="fa fa-envelope"></i>
                 <span>Notificaci&oacute;n</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('haberesIndex') !!}">
+                <i class="fa fa-money"></i>
+                <span>Registro de facturas</span>
             </a>
         </li>
         <li>

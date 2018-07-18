@@ -88,7 +88,7 @@ class Descriptor extends MainDescriptor
         if (!isset(self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR])) {
             self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR]
                 = new Descriptor(Descriptor::PERIODO_ABIERTO_PARA_CALCULAR,
-                'El periodo seleccionado es el actual y no puede ser usado para calcular los montos.');
+                'El periodo seleccionado no puede ser usado para notificar o registrar facturación.');
         }
         
         return self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR];

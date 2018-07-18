@@ -137,13 +137,29 @@ class Periodo extends Model
      */
     public function validarSiPuedeCalcular()
     {
-        if ($this->fechaComprendida(new \DateTime('now'))) {
+        $today = new \DateTime('now');
+        if ($this->fechaComprendida($today)) {
             throw new PeriodoAbierto($this);
         } else {
-            return true;
+            return $this->validarSiEsFuturo($today);
         }
+        
     }
     
+    /**
+     * @param \DateTime $fecha
+     * @throws PeriodoAbierto
+     */
+    public function validarSiEsFuturo(\DateTime $fecha)
+    {
+        $hasta = new \DateTime($this->fecha_fin);
+        $hasta->setTime(0, 0, 0);
+        $fecha->setTime(0, 0, 0);
+        if ($hasta > $fecha) {
+            throw new PeriodoAbierto($this);
+    
+        }
+    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
