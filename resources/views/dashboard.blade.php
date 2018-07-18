@@ -1,14 +1,21 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h1>
-            Cuerpo de agentes de tr&aacute;nsito
-            <small>CABA</small>
-        </h1>
-    </section>
+
     <section class="content">
-        @include('parts.resumen')
+        <div class="row"
+        >
+            <div class="col-md-6">
+                @include('parts.imagen')
+            </div>
+            <div class="col-md-6">
+                <div class="row">
+
+                    @include('parts.resumen')
+                </div>
+            </div>
+        </div>
+        <br>
 
         @include('parts.grafico')
 
