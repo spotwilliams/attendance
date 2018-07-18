@@ -71,7 +71,11 @@ class ByAgenteController extends BusquedaController
                 'notificaciones' => function ($with) use ($periodo) {
                     $with->where('id_periodo', '=', $periodo->id);
                 },
+                'facturas' => function ($with) use ($periodo) {
+                    $with->where('id_periodo', '=', $periodo->id);
+                },
             ])
+            
             ->get();
         
         $service = new CalculadorBatch($agentes, $periodo);

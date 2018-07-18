@@ -21,13 +21,24 @@
                        class="label label-success"><i class="fa fa-eye"></i></a>
                 </td>
                 <td>
-                    <div class="checkbox checkbox-info checkbox-circle">
-                        <input type="checkbox" id="check_agente_{{$agente->id}}" class="agente-option" name="agentes[]"
-                               value="{{$agente->id}}">
-                        <label for="check_agente_{{$agente->id}}">
-                            {{$agente->apellido}}, {{$agente->nombre}}
-                        </label>
-                    </div>
+                    @if($agente->facturas->isEmpty())
+                        <div class="checkbox checkbox-info checkbox-circle">
+                            <input type="checkbox" id="check_agente_{{$agente->id}}" class="agente-option" name="agentes[]"
+                                   value="{{$agente->id}}">
+                            <label for="check_agente_{{$agente->id}}">
+                                {{$agente->apellido}}, {{$agente->nombre}}
+                            </label>
+                        </div>
+                    @else
+                        <div class="checkbox checkbox-info checkbox-circle disabled" aria-disabled="true">
+
+                            <label for="check_agente_{{$agente->id}}">
+                                {{$agente->apellido}}, {{$agente->nombre}}
+                                <span class="label label-warning">(ya registrado)</span>
+                            </label>
+                        </div>
+                    @endif
+
                 </td>
                 <td>{{$agente->cuit}}</td>
                 <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre'])}}</td>
