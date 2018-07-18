@@ -29,10 +29,15 @@ class SeederFromSqlFile extends Seeder
      */
     public function run()
     {
+        $this->file('');
+    }
+    
+    public function file($fileName)
+    {
         // Nro de lineas del file
         $bar = $this->command->getOutput()->createProgressBar(1269082);
         
-        $file = new SplFileObject('NOMBRE DEL ARCHIVO.CON EXTENSION');
+        $file = new SplFileObject($fileName);
         while (!$file->eof()) {
             try {
                 \Illuminate\Support\Facades\DB::insert($file->fgets());
@@ -40,7 +45,6 @@ class SeederFromSqlFile extends Seeder
             }
             $bar->advance();
         }
-        
     }
     
     
