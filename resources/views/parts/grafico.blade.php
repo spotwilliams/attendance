@@ -22,17 +22,20 @@
                     </div>
                     <!-- /.col -->
                     <div class="col-md-4">
+
                         <p class="text-center">
                             <strong>Hoy</strong> (presentismo/agentes)
                         </p>
+                        <div style="overflow: scroll; height: 520px; padding-left: 10px; padding-right: 10px">
 
-                        <div class="progress-group hidden template-progress">
-                            <span class="progress-text base-name"></span>
-                            <span class="progress-number"><b><span class="presentismo"></span></b>/<span
-                                        class="agentes"></span></span>
+                            <div class="progress-group hidden template-progress">
+                                <span class="progress-text base-name"></span>
+                                <span class="progress-number"><b><span class="presentismo"></span></b>/<span
+                                            class="agentes"></span></span>
 
-                            <div class="progress sm">
-                                <div class="progress-bar progress-bar-aqua"></div>
+                                <div class="progress sm">
+                                    <div class="progress-bar progress-bar-aqua"></div>
+                                </div>
                             </div>
                         </div>
 
@@ -136,7 +139,7 @@
                         $template.find('span.base-name').html(val.nombre);
                         $template.find('span.presentismo').html(val.presentismo.presentismo);
                         $template.find('span.agentes').html(val.agentes.agentes);
-                        $template.find('div.progress-bar').css('width', (val.presentismo.presentismo * 100 / val.agentes.agentes)+ '%');
+                        $template.find('div.progress-bar').css('width', (val.presentismo.presentismo * 100 / val.agentes.agentes) + '%');
                         $template.removeClass('template-progress hidden');
                         $parent.append($template);
                     });
