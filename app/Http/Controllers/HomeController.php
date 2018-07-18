@@ -48,7 +48,7 @@ class HomeController extends Controller
         
         $allPresen = Presentismo::where('id_periodo', '=', $periodo->id)
             ->count();
-        
+        $allPresen = $allPresen ?: 1;
         
         return view('home')
             ->with('cantBases', $cantBases)
@@ -124,7 +124,7 @@ class HomeController extends Controller
                 ->keyBy('base');
             
             foreach ($bases as $idBase => $base) {
-                $base->agentes  = $base->operativos->first() ?: [
+                $base->agentes     = $base->operativos->first() ?: [
                     'id_base' => $idBase,
                     'agentes' => 0,
                 ];
