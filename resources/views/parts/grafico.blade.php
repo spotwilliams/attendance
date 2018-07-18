@@ -2,7 +2,7 @@
     <div class="col-md-12">
         <div class="box">
             <div class="box-header with-border">
-                <h3 class="box-title">Presentismos de la semana</h3>
+                <h3 class="box-title">Presentismos a 5 d&iacute;as</h3>
 
             </div>
             <!-- /.box-header -->
@@ -23,125 +23,125 @@
                     <!-- /.col -->
                     <div class="col-md-4">
                         <p class="text-center">
-                            <strong>Goal Completion</strong>
+                            <strong>Hoy</strong> (presentismo/agentes)
                         </p>
 
-                        <div class="progress-group">
-                            <span class="progress-text">Add Products to Cart</span>
-                            <span class="progress-number"><b>160</b>/200</span>
+                        <div class="progress-group hidden template-progress">
+                            <span class="progress-text base-name"></span>
+                            <span class="progress-number"><b><span class="presentismo"></span></b>/<span
+                                        class="agentes"></span></span>
 
                             <div class="progress sm">
-                                <div class="progress-bar progress-bar-aqua" style="width: 80%"></div>
+                                <div class="progress-bar progress-bar-aqua"></div>
                             </div>
                         </div>
-                        <!-- /.progress-group -->
-                        <div class="progress-group">
-                            <span class="progress-text">Complete Purchase</span>
-                            <span class="progress-number"><b>310</b>/400</span>
 
-                            <div class="progress sm">
-                                <div class="progress-bar progress-bar-red" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <!-- /.progress-group -->
-                        <div class="progress-group">
-                            <span class="progress-text">Visit Premium Page</span>
-                            <span class="progress-number"><b>480</b>/800</span>
-
-                            <div class="progress sm">
-                                <div class="progress-bar progress-bar-green" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <!-- /.progress-group -->
-                        <div class="progress-group">
-                            <span class="progress-text">Send Inquiries</span>
-                            <span class="progress-number"><b>250</b>/500</span>
-
-                            <div class="progress sm">
-                                <div class="progress-bar progress-bar-yellow" style="width: 80%"></div>
-                            </div>
-                        </div>
-                        <!-- /.progress-group -->
                     </div>
-                    <!-- /.col -->
+                    <!-- /.row -->
                 </div>
-                <!-- /.row -->
             </div>
+            <!-- /.box -->
         </div>
-        <!-- /.box -->
+        <!-- /.col -->
     </div>
-    <!-- /.col -->
-</div>
-@section('scripts')
-    <script type="text/javascript">
-        $(document).ready(function () {
-            var timeFormat = 'MM/DD/YYYY HH:mm';
+    @section('scripts')
+        <script type="text/javascript">
+            $(document).ready(function () {
+                var timeFormat = 'MM/DD/YYYY HH:mm';
 
-            function newDateString(days) {
-                return moment().add(days, 'd').format(timeFormat);
-            }
+                var color = Chart.helpers.color;
 
-            var color = Chart.helpers.color;
-            var config = {
-                type: 'line',
-                data: {
-                    labels: [
-                        // "Red", "Blue", "Yellow", "Green", "Purple",
-                        @foreach($fechas as $fecha)
-                        moment('{{$fecha}}').format('D/MM/Y'),
-                        @endforeach
-                        // 'Agentes activos del cuerpo',
-                        // 'Presentismo cargado',
-                    ],
-                    datasets: [
-                        {
-                            type: 'line',
-                            label: 'Agentes activos del cuerpo ',
-                            // backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
-                            borderColor: window.chartColors.red,
-                            data: [
-                                @foreach($fechas as $fecha)
-                                {{--{{$cantAgentes}},--}}
-                                {{($activosByDay->get($fecha)) ? $activosByDay->get($fecha)->agentes : $cantAgentes}},
-
-                                @endforeach
-
-                            ],
-                        },
-                        {
-                            type: 'line',
-                            label: 'Presentismo cargado',
-                            backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
-                            borderColor: window.chartColors.blue,
-                            data: [
-                                @foreach($fechas as $fecha)
-                                {{($presentByDay->get($fecha)) ? $presentByDay->get($fecha)->presentismo : 0}},
-                                @endforeach
-                            ],
-                        },]
-                },
-                options: {
-                    title: {
-                        // text: 'Chart.js Combo Time Scale'
+                var fechas = {!! json_encode($fechas, false) !!};
+                var config = {
+                    type: 'line',
+                    data: {
+                        labels: [
+                            // "Red", "Blue", "Yellow", "Green", "Purple",
+                            @foreach($fechas as $fecha)
+                            moment('{{$fecha}}').format('D/MM/Y'),
+                            @endforeach
+                            // 'Agentes activos del cuerpo',
+                            // 'Presentismo cargado',
+                        ],
+                        datasets: [
+                            {
+                                type: 'line',
+                                label: 'Agentes activos del cuerpo ',
+                                // backgroundColor: color(window.chartColors.red).alpha(0.5).rgbString(),
+                                borderColor: window.chartColors.red,
+                                data: [
+                                    // Ver ajax
+                                ],
+                            },
+                            {
+                                type: 'line',
+                                label: 'Presentismo cargado',
+                                backgroundColor: color(window.chartColors.blue).alpha(0.5).rgbString(),
+                                borderColor: window.chartColors.blue,
+                                data: [
+                                    // Ver ajax
+                                ],
+                            },]
                     },
-                    // scales: {
-                    //     xAxes: [{
-                    //         type: 'integer',
-                    //         display: true,
-                    //         time: {
-                    format: timeFormat,
-                    round: 'day'
-                    // }
-                    // }],
-                    // },
-                }
-            };
+                    options: {
+                        format: timeFormat,
+                        round: 'day'
+                    }
+                };
 
-            // window.onload = function () {
-            var ctx = document.getElementById('canvas').getContext('2d');
-            window.myLine = new Chart(ctx, config);
+                $.getJSON('{{route('home.grafico')}}', function (data) {
+                    // Array de retorno
+                    var activos = [
+                        @foreach($fechas as $fecha)
+                        {{$cantAgentes}},
+                        @endforeach
+                    ];
+                    var posibleIndex = -1;
+                    $.each(data['activosByDay'], function (key, val) {
+                        posibleIndex = $.inArray(key.toString(), fechas);
+
+                        if (posibleIndex !== -1) {
+                            activos[posibleIndex] = parseInt(val.agentes);
+                        }
+                    });
+                    config.data.datasets[0].data = activos;
 
 
-        });
-    </script>
+                    posibleIndex = -1;
+                    var presentismos = [
+                        @foreach($fechas as $fecha)
+                            0,
+                        @endforeach
+                    ];
+                    $.each(data['presentByDay'], function (key, val) {
+                        posibleIndex = $.inArray(key.toString(), fechas);
+
+                        if (posibleIndex !== -1) {
+                            presentismos[posibleIndex] = parseInt(val.presentismo);
+                        }
+                    });
+                    config.data.datasets[1].data = presentismos;
+
+                    var ctx = document.getElementById('canvas').getContext('2d');
+                    window.myLine = new Chart(ctx, config);
+                });
+
+                $.getJSON('{{route('home.bases')}}', function (data) {
+
+                    var $parent = $('.template-progress').parent();
+                    $.each(data, function (key, val) {
+
+                        $template = $('.template-progress').clone();
+
+                        $template.find('span.base-name').html(val.nombre);
+                        $template.find('span.presentismo').html(val.presentismo.presentismo);
+                        $template.find('span.agentes').html(val.agentes.agentes);
+                        $template.find('div.progress-bar').css('width', (val.presentismo.presentismo * 100 / val.agentes.agentes)+ '%');
+                        $template.removeClass('template-progress hidden');
+                        $parent.append($template);
+                    });
+
+                })
+            });
+        </script>
 @append
