@@ -14,9 +14,6 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
             ->name('haberesIndex');
         
         // Paso 3
-        Route::post('calcular', Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@calcular')
-            ->name('haberesCalcular');
-        // Paso 4
         Route::post('registrar',
             Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@registarFactura')
             ->name('haberesRegistrarFactura');

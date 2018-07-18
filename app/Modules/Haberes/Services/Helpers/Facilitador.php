@@ -39,15 +39,15 @@ class Facilitador
     /**
      * @param Collection $agentes
      * @param Periodo $periodo
-     * @param $nrosFactura
+     * @throws \Exception
      */
-    public static function batch(Collection $agentes, Periodo $periodo, $nrosFactura)
+    public static function batch(Collection $agentes, Periodo $periodo)
     {
         try {
             DB::beginTransaction();
             
             foreach ($agentes as $agente) {
-                $support = new Registro($agente, $periodo, $nrosFactura[$agente->id]);
+                $support = new Registro($agente, $periodo, random_int(1000000, 9999999));
                 
                 $support->execute();
                 

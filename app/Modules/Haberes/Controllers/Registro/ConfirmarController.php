@@ -43,81 +43,31 @@ class ConfirmarController extends AppBaseController
         $this->endView       = 'Haberes::calculo.end';
     }
     
-    
-    /**
-     * @param Request $request
-     * @return \Illuminate\Http\RedirectResponse
-     */
-    public function calcular(Request $request)
-    {
-//        $this->authorize('disclaimer', $this);
-        
-        try {
-            /** @var Periodo $periodo */
-            $periodo = Periodo::findOrFail($request->input('periodo'));
-            
-            $this->validate($request, ['agentes' => 'required'], ['required' => 'Debe seleccionar al menos un agente']);
-            
-            $periodo->validarSiPuedeCalcular();
-            /** @var Builder $eloq */
-            $eloq = $this->getEloq($periodo, $request->input('agentes'));
-            
-            /** @var Collection $agentes */
-            $agentes    = $eloq->get();
-            $calculador = new CalculadorBatch($agentes, $periodo);
-            
-            return view($this->confirmarView)
-                ->with('periodo', $periodo)
-                ->with('agentes', $calculador->execute());
-            
-        } catch (ValidationException $e) {
-            Flash::error($e->validator->getMessageBag()->get('agentes')[0]);
-            
-            return view($this->searchView)
-                ->with('periodo', $periodo);
-        } catch (ModelNotFoundException $e) {
-            Flash::error('Debe seleccionar un periodo');
-            
-            return redirect()->route($this->indexRoute);
-        } catch (PeriodoAbierto $e) {
-            Flash::error($e->getMessage());
-            
-            return redirect()->route($this->indexRoute);
-        } catch (\Exception $exception) {
-            Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
-            
-            return redirect()->route($this->indexRoute);
-            
-        }
-        
-    }
-    
     /**
      * @param Request $request
      * @return \Illuminate\Http\RedirectResponse
      * @throws \Exception
-     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function registarFactura(Request $request)
     {
 //        $this->authorize('batch', $this);
-        
+    
+        $this->setRulesAccording()
+            ->validate($request, $this->rules, $this->messages);
         try {
-            
+    
             /** @var Periodo $periodo */
             $periodo = Periodo::findOrFail($request->input('periodo'));
-            
-            $this->setRulesAccording($request)
-                ->validate($request, $this->rules, $this->messages);
-            
+    
+    
             $periodo->validarSiPuedeCalcular();
             
-            $eloq = $this->getEloq($periodo, array_keys($request->input('facturas')));
+            $eloq = $this->getEloq($periodo, $request->input('agentes'));
             
             /** @var Collection $agentes */
             $agentes = $eloq->get();
-            
-            Facilitador::batch($agentes, $periodo, $request->input('facturas'));
+
+            Facilitador::batch($agentes, $periodo);
             
             $agentes = $eloq
                 ->with([
@@ -135,11 +85,11 @@ class ConfirmarController extends AppBaseController
                 ->with('agentes', $calculador->execute())
                 ->with('periodo', $periodo);
             
-        } catch (ValidationException $e) {
-            
-            Flash::error($e->validator->getMessageBag()->first());
-            
-            return $this->calcular($request);
+//        } catch (ValidationException $e) {
+//
+//            Flash::error($e->validator->getMessageBag()->first());
+//
+//            return $this->calcular($request);
             
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo');

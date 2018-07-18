@@ -49,7 +49,7 @@
         </div>
 
         <div class="box">
-            {!! Form::open(['method' => 'POST', 'route' => 'haberesCalcular']) !!}
+            {!! Form::open(['method' => 'POST', 'route' => 'haberesRegistrarFactura']) !!}
             <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
             <div class="box-header with-border">
@@ -61,7 +61,7 @@
                         <a class="btn btn-default ninguno" href="{{route('haberesIndex')}}"><i class="fa fa-backward"></i>&nbsp;Atr&aacute;s</a>
                         <a class="btn btn-default ninguno">Ninguno</a>
                         <a class="btn btn-default todos">Todos</a>
-                        <input type="submit" value="Siguiente" class="btn btn-primary">
+                        <input type="submit" value="Registrar" class="btn btn-primary">
                     </div>
                 </div>
             </div>
