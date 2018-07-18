@@ -3,6 +3,7 @@
 namespace Cat\Providers;
 
 // Crud Agentes
+use Cat\Http\Controllers\HomeController;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Haberes\Controllers\GeneralController;
@@ -12,6 +13,7 @@ use Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController;
 use Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController;
 use Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController;
 use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\General;
+use Cat\Policies\DashboardPolicy;
 use Cat\Policies\Haberes\ModificadorContratosPolicy;
 use Cat\Policies\Haberes\NotificacionPolicy;
 use Cat\Policies\Haberes\RegistroFacturacionPolicy;
@@ -157,7 +159,8 @@ class AuthServiceProvider extends ServiceProvider
             ReporteHaberesAgentes::class  => ReportePolicyHaber::class,
             ExportarHaberesAgentes::class => ExportarPolicyHaber::class,
             General::class                => VistaPreviaReportePolicy::class,
-        
+            
+            HomeController::class => DashboardPolicy::class,
         ];
     
     /**

@@ -8,6 +8,9 @@
         </h1>
     </section>
     <section class="content">
+        @include('parts.resumen')
+
+        @include('parts.grafico')
 
     </section>
 @endsection

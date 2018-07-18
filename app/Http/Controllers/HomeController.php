@@ -11,6 +11,7 @@ use Cat\Models\TipoPresentismo;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Repositories\PeriodoRepository;
 use Cat\User;
+use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Query\JoinClause;
 
 class HomeController extends Controller
@@ -32,34 +33,40 @@ class HomeController extends Controller
      */
     public function index(PeriodoRepository $repo)
     {
-        $today         = new \DateTime('now');
-        $start         = (new \DateTime('now'))->modify('-4day');
-        $fechaCierre   = Param::fechaCierre();
-        $cantBases     = Base::count();
-        $cantUsers     = User::count();
-        $periodo       = $repo->getOrCreatePeriodoActivo($today);
-        $fechas        = Calculation::getAllDaysBetween($start, $today);
-        $agentesActivo = AgenteRepository::getCountActivos();
-        
-        $tipoPresen = TipoPresentismo::where('codigo', '=', TipoPresentismo::PRESENTE)->first();
-        $presentes  = Presentismo::where('id_periodo', '=', $periodo->id)
-            ->where('id_tipo_presentismo', '=', $tipoPresen->id)
-            ->count();
-        
-        $allPresen = Presentismo::where('id_periodo', '=', $periodo->id)
-            ->count();
-        $allPresen = $allPresen ?: 1;
-        
-        return view('home')
-            ->with('cantBases', $cantBases)
-            ->with('cantUsers', $cantUsers)
-            ->with('cantAgentes', $agentesActivo)
-            ->with('periodo', $periodo)
-            ->with('fechaCierre', $fechaCierre)
-            ->with('presentes', $presentes)
-            ->with('allPresen', $allPresen)
-            ->with('indicePresen', round(($presentes * 100) / $allPresen), 2)
-            ->with('fechas', $fechas);
+        try {
+            $this->authorize('index', $this);
+            
+            $today         = new \DateTime('now');
+            $start         = (new \DateTime('now'))->modify('-4day');
+            $fechaCierre   = Param::fechaCierre();
+            $cantBases     = Base::count();
+            $cantUsers     = User::count();
+            $periodo       = $repo->getOrCreatePeriodoActivo($today);
+            $fechas        = Calculation::getAllDaysBetween($start, $today);
+            $agentesActivo = AgenteRepository::getCountActivos();
+            
+            $tipoPresen = TipoPresentismo::where('codigo', '=', TipoPresentismo::PRESENTE)->first();
+            $presentes  = Presentismo::where('id_periodo', '=', $periodo->id)
+                ->where('id_tipo_presentismo', '=', $tipoPresen->id)
+                ->count();
+            
+            $allPresen = Presentismo::where('id_periodo', '=', $periodo->id)
+                ->count();
+            $allPresen = $allPresen ?: 1;
+            
+            return view('dashboard')
+                ->with('cantBases', $cantBases)
+                ->with('cantUsers', $cantUsers)
+                ->with('cantAgentes', $agentesActivo)
+                ->with('periodo', $periodo)
+                ->with('fechaCierre', $fechaCierre)
+                ->with('presentes', $presentes)
+                ->with('allPresen', $allPresen)
+                ->with('indicePresen', round(($presentes * 100) / $allPresen), 2)
+                ->with('fechas', $fechas);
+        } catch (AuthorizationException $e) {
+            return view('home');
+        }
     }
     
     
