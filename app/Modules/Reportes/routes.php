@@ -102,19 +102,7 @@ Route::group([
      */
     Route::group(['prefix' => 'haberes'], function () {
         
-        Route::group(['prefix' => 'estado'], function () {
-            
-            Route::get('/', HaberesEstado::class . '@index')
-                ->name('reportesHaberesEstadoIndex');
-            
-            Route::post('/', HaberesEstado::class . '@search')
-                ->name('reportesHaberesEstadoSearch');
-            
-            Route::post('export', HaberesEstadoExport::class . '@export')
-                ->name('reportesHaberesEstadoExport');
-        });
-        
-        Route::group(['prefix' => 'agentes'], function () {
+        Route::group(['prefix' => 'agente'], function () {
             
             Route::get('/', HaberesAgentes::class . '@index')
                 ->name('reportesHaberesAgentesIndex');
@@ -133,8 +121,6 @@ Route::group([
             Route::post('/', HaberesVistaPrevia::class . '@search')
                 ->name('reportesHaberesVistaPreviaSearch');
             
-            Route::post('export', HaberesVistaPreviaExport::class . '@export')
-                ->name('reportesHaberesVistaPreviaExport');
         });
     });
 }

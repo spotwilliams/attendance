@@ -19,7 +19,7 @@
 
             </div>
         </div>
-        @include('Reportes::haberes-agentes.result.display')
+        @include('Reportes::haberes-agentes.table')
 
     </div>
 @endsection
