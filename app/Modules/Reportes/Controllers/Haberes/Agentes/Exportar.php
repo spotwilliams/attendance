@@ -2,8 +2,11 @@
 
 namespace Cat\Modules\Reportes\Controllers\Haberes\Agentes;
 
+use Cat\Models\Periodo;
 use Cat\Modules\Reportes\Services\Formatters\HaberesPorAgente;
+use Cat\Modules\Reportes\Services\Formatters\HaberesPorAgenteAsLine;
 use Cat\Modules\Reportes\Services\Reporte;
+use Cat\Modules\Reportes\Services\ReporteAsStream;
 use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 
@@ -20,10 +23,10 @@ class Exportar extends General
         $this->authorize('export', $this);
         $this->setupParams($request)
             ->setupQuery();
-        $formatter = new HaberesPorAgente();
-        $service   = new Reporte($this->query, $formatter);
+        $formatter = new HaberesPorAgenteAsLine(Periodo::whereIn('id', $this->periodos)->get());
+        $service   = new ReporteAsStream($this->query, $formatter);
         try {
-            $service->execute();
+            return $service->execute();
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
             

@@ -2,14 +2,15 @@
 /** @var \Illuminate\Support\Collection $agentes */
 if (!isset($data)) {
     $agentes = new \Illuminate\Support\Collection();
-    
+    $count = 0;
 } else {
     $agentes = new \Illuminate\Support\Collection($data->items());
+    $count = $data->total();
 }
 ?>
 <div class="box box-warning">
     <div class="box-header with-border">
-        <h3 class="box-title">Resultados obtenidos</h3>
+        <h3 class="box-title">Se econtraron <label class="label label-info">{{$count}}</label> agentes</h3>
     </div>
     <div class="box-body">
         <div class="col-md-12 col-xs-12 table-responsive">
@@ -67,14 +68,14 @@ if (!isset($data)) {
                         $facturas = $agente->facturas->keyBy('id_periodo');
                         $notificaciones = $agente->notificaciones->keyBy('id_periodo');
                         $haberes = $agente->haberes->keyBy('id_periodo');
+                        $service = new \Cat\Modules\Haberes\Services\Calculo\Calculador();
                         ?>
                         @foreach($periodosColection as $p)
                             <?php
-                            $service = new \Cat\Modules\Haberes\Services\Calculo\Calculador();
                             if ($haberes->get($p->id)) {
-                                $monto     = $haberes->get($p->id)->monto_facturado;
+                                $monto = $haberes->get($p->id)->monto_facturado;
                             } else {
-                                $monto     = $service->reset($agente, $p)->execute()->monto;
+                                $monto = $service->reset($agente, $p)->execute()->monto;
                             }
 
                             if ($facturas->get($p->id)) {
@@ -83,7 +84,7 @@ if (!isset($data)) {
                                 $facturado = '<label class="label label-warning">No</label>';
 
                             }
-                            if($notificaciones->get($p->id)) {
+                            if ($notificaciones->get($p->id)) {
                                 $notificado = '<label class="label label-success">Si</label>';
 
                             } else {

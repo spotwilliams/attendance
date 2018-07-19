@@ -1,5 +1,5 @@
 <?php
-$classMultiSelectContainer = 'col-md-4';
+$classMultiSelectContainer = 'col-md-6';
 ?>
 {!! Form::open(['route' => 'reportesHaberesAgentesSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
 
