@@ -144,15 +144,9 @@
             </a>
         </li>
         <li>
-            <a href="{!! route('reportesHaberesEstadoIndex') !!}">
-                <i class="fa fa-money"></i>
-                <span>Res&uacute;men de haberes</span>
-            </a>
-        </li>
-        <li>
             <a href="{!! route('reportesHaberesAgentesIndex') !!}">
                 <i class="fa fa-money"></i>
-                <span>Res&uacute;men de haberes por persona</span>
+                <span>Facturaci&oacute;n y Notificaci&oacute;n</span>
             </a>
         </li>
     </ul>
