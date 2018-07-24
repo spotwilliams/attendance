@@ -15,6 +15,7 @@ if (isset($desde) and isset($hasta)) {
 <th>Turno</th>
 <th>&Aacute;rea</th>
 <th>Tipo de contrato</th>
+<th>Resumen</th>
 
 @for($i = 0; $i < count($fechasToShow) ;$i++)
     <th>{{(new DateTime($fechasToShow[$i]))->format('d/m/y')}}</th>
