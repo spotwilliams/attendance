@@ -22,6 +22,7 @@ if (isset($desde) and isset($hasta)) {
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','turno', 'codigo'])}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','area', 'nombre'])}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['contrato','tipoContrato', 'descripcion'])}}</td>
+        <td>{{$agente->presentismos->count()}}</td>
         <?php
         $pByFecha = $agente->presentismos->keyBy('fecha');
         ?>

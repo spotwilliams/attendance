@@ -30,7 +30,7 @@ class PresentismoAsLine extends RowDataFormatter
         $this->hasta       = $hasta;
         $this->comentarios = $comentarios;
         $this->allDays     = Calculation::getAllDaysBetween($this->desde, $this->hasta);
-        $this->encabezado  = 'Apellido;Nombre;CUIT;DNI;Turno;Base;';
+        $this->encabezado  = 'Apellido;Nombre;CUIT;DNI;Turno;Base;Resumen;';
         $this->charEmpty   = '';
         foreach ($this->allDays as $fecha) {
             $this->encabezado .= $fecha . ' Codigo;';
@@ -51,7 +51,9 @@ class PresentismoAsLine extends RowDataFormatter
             $agente->cuit . ';' .
             $agente->dni . ';' .
             ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'turno']) . ';' .
-            ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']);
+            ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']) . ';' .
+            $agente->presentismos->count()
+        ;
         
         $presentismos = $this->transformPresentismo($agente->presentismos);
         
