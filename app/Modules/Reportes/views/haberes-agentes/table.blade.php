@@ -7,6 +7,9 @@ if (!isset($data)) {
     $agentes = new \Illuminate\Support\Collection($data->items());
     $count = $data->total();
 }
+if(!isset($periodosColection)) {
+    $periodosColection = new \Illuminate\Support\Collection();
+}
 ?>
 <div class="box box-warning">
     <div class="box-header with-border">

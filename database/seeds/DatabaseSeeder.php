@@ -31,10 +31,7 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-//        $this->parametros();
-//        $this->seguridad();
-//        $this->agentes();
-        $this->call(\Cat\Database\Seeds\Releases\R201803_1_nuevos_reques\FixFechaCierrePlantas::class);
+        $this->call(SeederFromSqlFile::class);
     }
     
     private function agentes()

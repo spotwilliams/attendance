@@ -41,7 +41,7 @@ class NotificacionController extends GeneralController
     
     public function sendRegular(Request $request)
     {
-        $this->authorize('sendRegular', $this);
+        $this->authorize('send', $this);
     
         $input = $request->all();
         try {
@@ -87,7 +87,7 @@ class NotificacionController extends GeneralController
     
     public function sendLibre(Request $request)
     {
-        $this->authorize('sendLibre', $this);
+        $this->authorize('send', $this);
     
         try {
             $input = $request->all();

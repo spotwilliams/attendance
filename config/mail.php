@@ -115,7 +115,7 @@ return [
     'driver' => 'smtp',
     'host'   => 'smtp.mailtrap.io',
     'port'   => 2525,
-    'from'   => ['address' => 'presentismo.control@gmail.com', 'name' => 'Notificaciones VyM'],
+    'from'   => ['address' => 'presentismo.control@gmail.com', 'name' => 'Cuerpo de agentes de transito CABA'],
     'username' => '8b4376060e8f0b',
     'password' => '5d93840d833c45',
     'sendmail' => '/usr/sbin/sendmail -bs',

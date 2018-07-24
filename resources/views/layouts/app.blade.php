@@ -194,6 +194,7 @@
 {!! Html::script('plugins/datatables-empty-columns/js/dataTables.hideEmptyColumns.min.js') !!}
 
 {!! Html::script('plugins/bootstrap-select/js/bootstrap-select.js') !!}
+{!! Html::script('plugins/bootstrap-select/js/i18n/defaults-es_ES.js') !!}
 {!! Html::script('plugins/slimScroll/js/jquery.slimscroll.min.js') !!}
 {!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
 {!! Html::script('plugins/select2/js/select2.min.js') !!}

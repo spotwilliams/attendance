@@ -18,19 +18,20 @@
         ?>
         <div class="box box-warning">
 
-            <div class="box-body text-center">
+            <div class="box-header text-center">
                 <h4 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> para
                     <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
                         '{{$mesFacturacion->format('y')}}</span> <span
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h4>
+
+            </div>
+            <div class="box-body text-center">
                 <div class="col-md-12">
                     @include('Haberes::notificacion.parts.disclaimer-regular')
                 </div>
+            </div>
 
-            </div>
-            <div class="box-footer">
-            </div>
         </div>
 
         <div class="box">

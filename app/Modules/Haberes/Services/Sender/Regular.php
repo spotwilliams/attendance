@@ -75,7 +75,7 @@ class Regular extends Sender
         
         $detalle = $this->getDetalle($agente);
         if ($detalle->diasADescontar > 0) {
-            $this->mensaje .= 'CON ' . $this->getDetalle($agente)->diasADescontar . ' DIAS DE DESCUENTO';
+            $this->mensaje .= ' CON ' . $this->getDetalle($agente)->diasADescontar . ' DIAS DE DESCUENTO';
         }
         
         return $this->mensaje;

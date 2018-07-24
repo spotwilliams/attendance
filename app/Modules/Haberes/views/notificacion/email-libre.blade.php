@@ -18,21 +18,20 @@
         ?>
         <div class="box box-warning">
 
-            <div class="box-body text-center">
+            <div class="box-header text-center">
                 <h4 class="box-title"><span class="label label-success">Notificaci&oacute;n de facturas</span> para
                     <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
                         '{{$mesFacturacion->format('y')}}</span> <span
                             class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
                 </h4>
+            </div>
+            <div class="box-body text-center">
                 <div class="col-md-12">
                     @include('Haberes::notificacion.parts.disclaimer-libre')
                 </div>
 
             </div>
-            <div class="box-footer">
-            </div>
         </div>
-
         <div class="box">
 
             {{Form::open(['class' => 'form-horizontal'])}}
@@ -135,7 +134,8 @@
                             <label class="col-sm-4 control-label">Mensaje</label>
 
                             <div class="col-sm-8">
-                                <textarea class="form-control" name="mensaje" maxlength="400" placeholder="Escriba un mensaje de hasta 400 caracteres">{{old('mensaje')}}</textarea>
+                                <textarea class="form-control" name="mensaje" maxlength="400"
+                                          placeholder="Escriba un mensaje de hasta 400 caracteres">{{old('mensaje')}}</textarea>
                                 @if($errors->has('mensaje'))
                                     <label>{{$errors->first('mensaje')}}</label>
                                 @endif
@@ -147,7 +147,8 @@
                             <label class="col-sm-4 control-label">Monto</label>
 
                             <div class="col-sm-8">
-                                <input type="text" class="form-control" name="monto" placeholder="$ 0.0" value="{{old('monto')}}">
+                                <input type="text" class="form-control" name="monto" placeholder="$ 0.0"
+                                       value="{{old('monto')}}">
                                 @if($errors->has('monto'))
                                     <label>{{$errors->first('monto')}}</label>
                                 @endif
