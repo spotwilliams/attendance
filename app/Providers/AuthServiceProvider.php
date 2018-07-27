@@ -73,8 +73,6 @@ use Cat\Modules\Reportes\Controllers\Presentismos\Individual as ReporteIndividua
 use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as ReporteIndividualSearch;
 use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
 // Reportes de Haberes
-use Cat\Modules\Reportes\Controllers\Haberes\Estado\General as ReporteHaberes;
-use Cat\Modules\Reportes\Controllers\Haberes\Estado\Exportar as ExportarHaberes;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\General as ReporteHaberesAgentes;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\Exportar as ExportarHaberesAgentes;
 use Cat\Policies\Reportes\Haberes\ReportePolicy as ReportePolicyHaber;
@@ -84,6 +82,7 @@ use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
 use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
 use Cat\Modules\Configuracion\Turnos\Controllers\CrudController as TurnosCrud;
 use Cat\Modules\Configuracion\TipoPresentismos\Controllers\CrudController as TipoPresentismosCrud;
+use Cat\Modules\Configuracion\FechaCierrePeriodo\Controllers\CrudController as FechaCierrePeriodoCrud;
 use Cat\Policies\Configuracion\Areas\ConfiguracionPolicy;
 
 // Seguridad
@@ -139,10 +138,11 @@ class AuthServiceProvider extends ServiceProvider
             ExportarReporteAgentes::class      => AgentesExportarReportePolicy::class,
             ExprotarReportePresentismos::class => PresentismosExportarReportePolicy::class,
             
-            AreasCrud::class            => ConfiguracionPolicy::class,
-            BasesCrud::class            => ConfiguracionPolicy::class,
-            TurnosCrud::class           => ConfiguracionPolicy::class,
-            TipoPresentismosCrud::class => ConfiguracionPolicy::class,
+            AreasCrud::class              => ConfiguracionPolicy::class,
+            BasesCrud::class              => ConfiguracionPolicy::class,
+            TurnosCrud::class             => ConfiguracionPolicy::class,
+            TipoPresentismosCrud::class   => ConfiguracionPolicy::class,
+            FechaCierrePeriodoCrud::class => ConfiguracionPolicy::class,
             
             PermissionCrudController::class => ConfiguracionPermisosPolicy::class,
             RoleCrudController::class       => ConfiguracionPermisosPolicy::class,
@@ -154,8 +154,6 @@ class AuthServiceProvider extends ServiceProvider
             Request::class                => RequestPolicy::class,
             
             // Reporte de Haberes
-            ReporteHaberes::class         => ReportePolicyHaber::class,
-            ExportarHaberes::class        => ExportarPolicyHaber::class,
             ReporteHaberesAgentes::class  => ReportePolicyHaber::class,
             ExportarHaberesAgentes::class => ExportarPolicyHaber::class,
             General::class                => VistaPreviaReportePolicy::class,

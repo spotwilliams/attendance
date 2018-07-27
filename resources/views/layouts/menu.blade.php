@@ -207,7 +207,11 @@
             <a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-lock"></i>
                 <span>Permisos</span></a>
         </li>
-
+        <li class="divider"></li>
+        <li>
+            <a href="{{ route('configuracion.fecha.cierre.index') }}"><i class="fa fa-calendar-check-o"></i>
+                <span>Fecha inicio periodo</span></a>
+        </li>
 
     </ul>
 </li>

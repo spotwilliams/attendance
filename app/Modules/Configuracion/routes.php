@@ -9,6 +9,11 @@ Route::group(['prefix' => 'configuracion', 'middleware' => ['web']], function ()
     Route::resource('turno', \Cat\Modules\Configuracion\Turnos\Controllers\CrudController::class);
     Route::resource('licencia', \Cat\Modules\Configuracion\TipoPresentismos\Controllers\CrudController::class);
 
+    Route::get('fecha/cierre', \Cat\Modules\Configuracion\FechaCierrePeriodo\Controllers\CrudController::class . '@index')
+        ->name('configuracion.fecha.cierre.index');
+
+    Route::post('fecha/cierre', \Cat\Modules\Configuracion\FechaCierrePeriodo\Controllers\CrudController::class . '@update')
+        ->name('configuracion.fecha.cierre.update');
     
     /**
      * Deletes
