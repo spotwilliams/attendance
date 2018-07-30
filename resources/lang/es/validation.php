@@ -84,6 +84,7 @@ return [
         'array'   => 'El campo :attribute debe contener :size elementos.',
     ],
     'cuit_unico'           => 'Ya existe un agente con este cuit.',
+    'cuit'           => 'El cuit provisto no cumple con el formato correcto.',
     'string'               => 'El campo :attribute debe ser una cadena de caracteres.',
     'timezone'             => 'El campo :attribute debe contener una zona válida.',
     'unique'               => 'El valor del campo :attribute ya está en uso.',
