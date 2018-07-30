@@ -33,26 +33,28 @@ class HomeController extends Controller
      */
     public function index(PeriodoRepository $repo)
     {
+        $today       = new \DateTime('now');
+        $periodo     = $repo->getOrCreatePeriodoActivo($today);
+        $fechaCierre = Param::fechaCierre();
+        $tipoPresen  = TipoPresentismo::where('codigo', '=', TipoPresentismo::PRESENTE)->first();
+        $presentes   = Presentismo::where('id_periodo', '=', $periodo->id)
+            ->where('id_tipo_presentismo', '=', $tipoPresen->id)
+            ->count();
+        
+        $allPresen     = Presentismo::where('id_periodo', '=', $periodo->id)
+            ->count();
+        $allPresen     = $allPresen ?: 1;
+        
+        $agentesActivo = AgenteRepository::getCountActivos();
+        
         try {
             $this->authorize('index', $this);
             
-            $today         = new \DateTime('now');
-            $start         = (new \DateTime('now'))->modify('-4day');
-            $fechaCierre   = Param::fechaCierre();
-            $cantBases     = Base::count();
-            $cantUsers     = User::count();
-            $periodo       = $repo->getOrCreatePeriodoActivo($today);
-            $fechas        = Calculation::getAllDaysBetween($start, $today);
-            $agentesActivo = AgenteRepository::getCountActivos();
+            $start     = (new \DateTime('now'))->modify('-4day');
+            $cantBases = Base::count();
+            $cantUsers = User::count();
+            $fechas    = Calculation::getAllDaysBetween($start, $today);
             
-            $tipoPresen = TipoPresentismo::where('codigo', '=', TipoPresentismo::PRESENTE)->first();
-            $presentes  = Presentismo::where('id_periodo', '=', $periodo->id)
-                ->where('id_tipo_presentismo', '=', $tipoPresen->id)
-                ->count();
-            
-            $allPresen = Presentismo::where('id_periodo', '=', $periodo->id)
-                ->count();
-            $allPresen = $allPresen ?: 1;
             
             return view('dashboard')
                 ->with('cantBases', $cantBases)
@@ -65,7 +67,12 @@ class HomeController extends Controller
                 ->with('indicePresen', round(($presentes * 100) / $allPresen), 2)
                 ->with('fechas', $fechas);
         } catch (AuthorizationException $e) {
-            return view('home');
+            return view('home')
+                ->with('periodo', $periodo)
+                ->with('fechaCierre', $fechaCierre)
+                ->with('indicePresen', round(($presentes * 100) / $allPresen), 2)
+                ->with('cantAgentes', $agentesActivo)
+                ;
         }
     }
     
@@ -125,7 +132,7 @@ class HomeController extends Controller
             $presen = Presentismo::selectRaw('operativos.id_base as base, count(operativos.id_base) as presentismo')
                 ->join('agentes', 'presentismos.id_agente', '=', 'agentes.id')
                 ->join('operativos', 'operativos.id_agente', '=', 'agentes.id')
-                ->whereDate('fecha', '=', new \DateTime('now'))
+                ->whereDate('fecha', '=', (new \DateTime('now'))->format('Y-m-d'))
                 ->groupBy('operativos.id_base')
                 ->get()
                 ->keyBy('base');
