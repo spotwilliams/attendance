@@ -47,6 +47,14 @@ if (!isset($agentes)) {
     </div>
 @endsection
 
+@section('css')
+    <style>
+
+        th, td {
+            text-align: center;
+        }
+    </style>
+@append
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {
@@ -55,13 +63,13 @@ if (!isset($agentes)) {
                 ordering: false,
                 info: false,
                 searching: false,
-                scrollCollapse: true,
-                @if(!$agentes->isEmpty())
-                scrollY: "700px",
-                scrollX: true,
-                fixedColumns: true,
-                hideEmptyCols: true
-                @endif
+                // scrollCollapse: true,
+                {{--                @if(!$agentes->isEmpty())--}}
+                // scrollY: "700px",
+                // scrollX: true,
+                // fixedColumns: true,
+                // hideEmptyCols: true
+                {{--@endif--}}
 
             });
         })
