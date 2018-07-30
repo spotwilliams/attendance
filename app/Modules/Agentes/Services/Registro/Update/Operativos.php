@@ -133,17 +133,22 @@ class Operativos extends Service
     protected function logCambioTurno(Operativo $operativo)
     {
         $today = Carbon::now();
-        /** @var  TurnoHistorico $tHistorico */
-        $tHistorico = TurnoHistorico::where('id_operativo', '=', $operativo->id)
-            ->whereDate('fecha_fin', '>=', $today)
-            ->orderBy('id', 'DESC')
-            ->first();
+        try {
+            
+            /** @var  TurnoHistorico $tHistorico */
+            $tHistorico = TurnoHistorico::where('id_operativo', '=', $operativo->id)
+                ->whereDate('fecha_fin', '>=', $today)
+                ->orderBy('id', 'DESC')
+                ->firstOrFail();
+            
+            // Update del actual en los historicos
+            $tHistorico->update([
+                'fecha_fin' => Carbon::yesterday()->format('Y-m-d'),
+            ]);
+        } catch (ModelNotFoundException $sinHistorico) {
         
-        // Update del actual en los historicos
-        $tHistorico->update([
-            'fecha_fin' => Carbon::yesterday()->format('Y-m-d'),
-        ]);
         
+        }
         // Registro del nuevo valor actual en los historicos
         TurnoHistorico::create([
             'id_operativo' => $operativo->id,
