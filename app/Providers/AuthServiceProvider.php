@@ -17,6 +17,7 @@ use Cat\Policies\DashboardPolicy;
 use Cat\Policies\Haberes\ModificadorContratosPolicy;
 use Cat\Policies\Haberes\NotificacionPolicy;
 use Cat\Policies\Haberes\RegistroFacturacionPolicy;
+use Cat\Policies\Reportes\Haberes\ReporteFacturacionPolicy;
 use Cat\Policies\Reportes\Haberes\VistaPreviaReportePolicy;
 use Cat\Policies\RequestGatePolicy;
 use Cat\Policies\TipoPresentismoGatePolicy;
@@ -58,7 +59,6 @@ use Cat\Policies\Presentismos\JustificacionPolicy;
 // Haberes
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController as HaberesReporte;
 use Cat\Policies\Haberes\ReportePolicy as HaberesReportePolicy;
-use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController as HaberesConfirmar;
 
 // Reportes
 use Cat\Modules\Reportes\Controllers\Agentes\General as ReporteAgentes;
@@ -75,8 +75,6 @@ use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
 // Reportes de Haberes
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\General as ReporteHaberesAgentes;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\Exportar as ExportarHaberesAgentes;
-use Cat\Policies\Reportes\Haberes\ReportePolicy as ReportePolicyHaber;
-use Cat\Policies\Reportes\Haberes\ExportarPolicy as ExportarPolicyHaber;
 // Configuracion
 use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
 use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
@@ -154,10 +152,11 @@ class AuthServiceProvider extends ServiceProvider
             Request::class                => RequestPolicy::class,
             
             // Reporte de Haberes
-            ReporteHaberesAgentes::class  => ReportePolicyHaber::class,
-            ExportarHaberesAgentes::class => ExportarPolicyHaber::class,
+            ReporteHaberesAgentes::class  => ReporteFacturacionPolicy::class,
+            ExportarHaberesAgentes::class => ReporteFacturacionPolicy::class,
             General::class                => VistaPreviaReportePolicy::class,
             
+            // Reporte de facturacion
             HomeController::class => DashboardPolicy::class,
         ];
     

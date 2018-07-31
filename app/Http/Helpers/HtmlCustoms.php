@@ -38,8 +38,8 @@ class HtmlCustoms
         ];
         
         $return                           = [];
-        $return ['constituido']           = $domicilioTemplate;
         $return ['nominal']               = $domicilioTemplate;
+        $return ['constituido']           = $domicilioTemplate;
         $return['nominal']['constituido'] = false;
         
         if (isset($input['session'])) {

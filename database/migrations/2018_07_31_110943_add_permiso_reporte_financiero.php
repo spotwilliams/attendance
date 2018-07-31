@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPermisosDashboard extends Migration
+class AddPermisoReporteFinanciero extends Migration
 {
     /**
      * Run the migrations.
@@ -13,17 +13,21 @@ class AddPermisosDashboard extends Migration
     public function up()
     {
         $ps = [
-            'name'        => 'Datos estadisticos inicio',
-            'comentarios' => 'Permite ver los datos estadisticos generados al inicio',
+            'name'        => 'Reporte de facturacion',
+            'comentarios' => 'Permite ver el reporte de facturacion',
         ];
-    
-        $permiso = new \Cat\Modules\Security\Models\Permission($ps);
         
-        $permiso->save();
-    
+        try {
+            $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Reporte de haberes')
+                ->firstOrFail();
+            $permiso->fill($ps)->save();
+        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
+            $permiso = new \Cat\Modules\Security\Models\Permission($ps);
+        }
+        
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
-    
+        
         $role->syncPermissions([$permiso]);
     }
     
@@ -32,18 +36,15 @@ class AddPermisosDashboard extends Migration
      */
     public function down()
     {
-    
         /** @var \Cat\Modules\Security\Models\Permission $permiso */
-        $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Datos estadisticos inicio')
+        $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Reporte de facturacion')
             ->first();
-    
+        
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
-    
-        $role->revokePermissionTo($permiso);
-    
-        $permiso->delete();
         
-       
+        $role->revokePermissionTo($permiso);
+        
+        $permiso->delete();
     }
 }

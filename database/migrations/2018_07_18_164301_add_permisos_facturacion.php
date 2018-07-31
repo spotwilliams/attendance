@@ -14,23 +14,40 @@ class AddPermisosFacturacion extends Migration
     {
         \Cat\Modules\Security\Models\Permission::where('name', '=', 'Calcular haberes')
             ->delete();
-    
+        
         $ps = [
             'name'        => 'Registro facturacion',
             'comentarios' => 'Permite registrar para un periodo a quienes se les facturo',
         ];
     
-        (new \Cat\Modules\Security\Models\Permission($ps))->save();
+        $permiso = new \Cat\Modules\Security\Models\Permission($ps);
+    
+        $permiso->save();
+    
+    
+        /** @var \Cat\Modules\Security\Models\Role $role */
+        $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
+        
+        $role->syncPermissions([$permiso]);
     }
-
+    
     /**
-     * Reverse the migrations.
-     *
-     * @return void
+     * @throws Exception
      */
     public function down()
     {
-        \Cat\Modules\Security\Models\Permission::where('name', '=', 'Registro facturacion')
-            ->delete();
+        
+        /** @var \Cat\Modules\Security\Models\Permission $permiso */
+        $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Registro facturacion')
+            ->first();
+        
+        /** @var \Cat\Modules\Security\Models\Role $role */
+        $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
+        
+        $role->revokePermissionTo($permiso);
+        
+        $permiso->delete();
+        
+        
     }
 }

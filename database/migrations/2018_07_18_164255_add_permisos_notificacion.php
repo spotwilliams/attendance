@@ -16,18 +16,35 @@ class AddPermisosNotificacion extends Migration
             'name'        => 'Notificacion de facturacion',
             'comentarios' => 'Permite enviar mails a los agentes con datos para facturar',
         ];
+        
+        $permiso = new \Cat\Modules\Security\Models\Permission($ps);
+        
+        $permiso->save();
     
-        (new \Cat\Modules\Security\Models\Permission($ps))->save();
+        /** @var \Cat\Modules\Security\Models\Role $role */
+        $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
+    
+        $role->syncPermissions([$permiso]);
     }
-
+    
     /**
-     * Reverse the migrations.
-     *
-     * @return void
+     * @throws Exception
      */
     public function down()
     {
-        \Cat\Modules\Security\Models\Permission::where('name', '=', 'Notificacion de facturacion')
-            ->delete();
+        
+        
+        /** @var \Cat\Modules\Security\Models\Permission $permiso */
+        $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Notificacion de facturacion')
+            ->first();
+        
+        /** @var \Cat\Modules\Security\Models\Role $role */
+        $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
+        
+        $role->revokePermissionTo($permiso);
+        
+        $permiso->delete();
+        
+        
     }
 }
