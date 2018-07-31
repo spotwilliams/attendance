@@ -57,8 +57,6 @@ class General extends ReporteController
     {
         $this->authorize('search', $this);
         $rules = [
-            'bases'   => 'required',
-            'turnos'  => 'required',
             'periodo' => 'required',
         ];
         
