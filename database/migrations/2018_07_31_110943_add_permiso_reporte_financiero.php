@@ -28,7 +28,7 @@ class AddPermisoReporteFinanciero extends Migration
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
         
-        $role->syncPermissions([$permiso]);
+        $role->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
     }
     
     /**

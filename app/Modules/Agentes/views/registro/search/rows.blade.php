@@ -1,3 +1,7 @@
+<?php
+$desdePre = (new DateTime('now'))->modify('-5day')->format('Y-m-d');
+$hastaPre =(new DateTime('now'))->modify('+5day')->format('Y-m-d');
+?>
 @forelse ($agentes as $agente)
     <tr>
         <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
