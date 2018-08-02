@@ -3,6 +3,7 @@
 namespace Cat\Exceptions;
 
 use Exception;
+use Illuminate\Http\RedirectResponse;
 use Illuminate\Support\Facades\Response;
 use Illuminate\Session\TokenMismatchException;
 use Illuminate\Validation\ValidationException;
@@ -11,6 +12,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
@@ -42,10 +44,9 @@ class Handler extends ExceptionHandler
     }
     
     /**
-     * Render an exception into an HTTP response.
-     *
-     * @param  \Illuminate\Http\Request $request
-     * @param  \Exception $e
+     * @param \Illuminate\Http\Request $request
+     * @param Exception $e
+     * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
     public function render($request, Exception $e)
     {
@@ -68,7 +69,19 @@ class Handler extends ExceptionHandler
             }
             
         }
+        if ($e instanceof NotFoundHttpException) {
+            return response(view('errors.404'));
+        }
         
-        return parent::render($request, $e);
+        $return = parent::render($request, $e);
+        
+        if($return instanceof RedirectResponse) {
+            return $return;
+        }
+//        dd();
+//
+//        return parent::render($request, $e);
+        
+        return response(view('errors.unknown'));
     }
 }
