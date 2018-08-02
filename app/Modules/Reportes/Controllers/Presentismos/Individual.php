@@ -9,11 +9,9 @@ use Cat\Modules\Reportes\Controllers\ReporteController;
 use Cat\Modules\Reportes\Services\Formatters\PresentismoAsLine;
 use Cat\Modules\Reportes\Services\ReporteAsStream;
 use Illuminate\Http\Request;
-use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\Facades\Response;
-use Cat\Modules\Reportes\Services\Formatters\Presentismo;
-use Cat\Modules\Reportes\Services\Reporte;
 use Laracasts\Flash\Flash;
 
 class Individual extends ReporteController
@@ -32,6 +30,11 @@ class Individual extends ReporteController
     /** @var  Agente */
     protected $agente;
     
+    /** @var  bool */
+    protected $incluirComentarios;
+    
+    /** @var  bool */
+    protected $incluirEstado;
     /**
      * @param Request $request
      * @return mixed
@@ -82,9 +85,12 @@ class Individual extends ReporteController
         $this->setupParams($request)
             ->setupQuery();
         
-        $service = new ReporteAsStream($this->query, new PresentismoAsLine($this->desde, $this->hasta), true);
+        
+        $formatter = new PresentismoAsLine($this->desde, $this->hasta, new Collection($this->tipos),
+            $this->incluirComentarios, $this->incluirEstado);
+        $service   = new ReporteAsStream($this->query, $formatter, true);
         try {
-           return  $service->execute();
+            return $service->execute();
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
             
@@ -119,7 +125,8 @@ class Individual extends ReporteController
         $this->agente = Agente::findOrFail($request->input('agente'));
         $this->tipos  = $request->input('tipos');
         $this->page   = (($request->input('page') !== null) ? $request->input('page') : 1);
-        
+        $this->incluirComentarios = (($request->input('incluir_comentario') !== null) ? true : false);
+        $this->incluirEstado      = (($request->input('incluir_estado') !== null) ? true : false);
         return $this;
     }
     

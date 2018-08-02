@@ -4,6 +4,7 @@ namespace Cat\Modules\Reportes\Services\Formatters;
 
 use Cat\Helpers\Calculation;
 use Cat\Helpers\ModelCreator;
+use Cat\Models\TipoPresentismo;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -24,20 +25,48 @@ class PresentismoAsLine extends RowDataFormatter
     /** @var string */
     protected $encabezado;
     
-    public function __construct(\DateTime $desde, \DateTime $hasta, $comentarios = true)
-    {
+    /** @var bool */
+    protected $estado;
+    
+    /** @var Collection */
+    protected $tipos;
+    
+    public function __construct(
+        \DateTime $desde,
+        \DateTime $hasta,
+        Collection $tipos,
+        $comentarios = true,
+        $estado = true
+    ) {
+        
         $this->desde       = $desde;
         $this->hasta       = $hasta;
         $this->comentarios = $comentarios;
-        $this->allDays     = Calculation::getAllDaysBetween($this->desde, $this->hasta);
-        $this->encabezado  = 'Apellido;Nombre;CUIT;DNI;Turno;Base;Resumen;';
-        $this->charEmpty   = '';
+        $this->estado      = $estado;
+        if ($tipos->isEmpty()) {
+            $this->tipos = TipoPresentismo::all();
+        } else {
+            $this->tipos = TipoPresentismo::whereIn('id', $tipos->toArray())->get();
+        }
+
+        $this->allDays    = Calculation::getAllDaysBetween($this->desde, $this->hasta);
+        $this->encabezado = 'Apellido;Nombre;CUIT;DNI;Turno;Base;';
+        $this->charEmpty  = '';
         foreach ($this->allDays as $fecha) {
             $this->encabezado .= $fecha . ' Codigo;';
-            $this->encabezado .= $fecha . ' Estado;';
+            
+            if ($this->estado) {
+                $this->encabezado .= $fecha . ' Estado;';
+            }
+            
             if ($this->comentarios) {
                 $this->encabezado .= $fecha . ' Comentarios;';
             }
+        }
+        
+        /** @var TipoPresentismo $tipo */
+        foreach ($this->tipos as $tipo) {
+            $this->encabezado .= $tipo->codigo . ';';
         }
         
     }
@@ -51,13 +80,12 @@ class PresentismoAsLine extends RowDataFormatter
             $agente->cuit . ';' .
             $agente->dni . ';' .
             ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'turno']) . ';' .
-            ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']) . ';' .
-            $agente->presentismos->count()
-        ;
+            ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']);
         
         $presentismos = $this->transformPresentismo($agente->presentismos);
+        $resumen      = $this->getResumen($agente->presentismos);
         
-        return $agenteReturn . $presentismos;
+        return $agenteReturn . $presentismos . $resumen;
     }
     
     /**
@@ -79,15 +107,22 @@ class PresentismoAsLine extends RowDataFormatter
                 $p = $presArray[$fecha];
                 
                 $pres .= ';' . $p['tipo_presentismo']['codigo'];
-                $pres .= ';' . (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
+                
+                if ($this->estado) {
+                    $pres .= ';' . (($p['injustificado'] == true) ? 'Injustificado' : 'Justificado');
+                }
+                
                 if ($this->comentarios) {
-                    
                     $pres .= ';' . $this->prepareComentarios($p['comentarios']);
                 }
                 
             } else {
-                $pres .= ";{$this->charEmpty}" //codigo
-                    . ";{$this->charEmpty}"; // injustificado
+                $pres .= ";{$this->charEmpty}"; //codigo
+                
+                if ($this->estado) {
+                    
+                    $pres .= ";{$this->charEmpty}"; // estado
+                }
                 if ($this->comentarios) {
                     $pres .= ";{$this->charEmpty}"; // comentario
                 }
@@ -97,6 +132,19 @@ class PresentismoAsLine extends RowDataFormatter
         return $pres;
         
         
+    }
+    
+    protected function getResumen(Collection $presentismos)
+    {
+        $resumen = ';';
+        $usados  = $presentismos->groupBy('tipoPresentismo.codigo');
+        
+        foreach ($this->tipos as $tipo) {
+            $counter = $usados->get($tipo->codigo);
+            $resumen .= ($counter ? $counter->count() : 0) . ';';
+        }
+        
+        return $resumen;
     }
     
     /**

@@ -34,8 +34,17 @@
             </div>
 
             <div class="col-md-12 col-xs-12">
-
-                <button type="submit" class="btn btn-default pull-right">Exportar</button>
+                <div class="btn-group">
+                    <button type="submit" class="btn btn-default">Exportar a excel</button>
+                    <button type="button" class="btn btn-default dropdown-toggle" data-toggle="dropdown">
+                        <span class="fa fa-gears"></span>
+                        <span class="sr-only">Toggle Dropdown</span>
+                    </button>
+                    <ul class="dropdown-menu" role="menu">
+                        <li><a href="#"><input type="checkbox" name="incluir_comentario"> Exportar con comentarios</a></li><li><a href="#"><input type="checkbox" name="incluir_estado"> Exportar con estados</a></li>
+                    </ul>
+                </div>
+                {{--<button type="submit" class="btn btn-default pull-right">Exportar</button>--}}
                 {{--<a class="btn btn-success">Actualizar calendario</a>--}}
             </div>
             {!! Form::close() !!}
