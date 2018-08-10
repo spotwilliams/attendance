@@ -184,7 +184,9 @@ class Agente extends Model
     
     /**
      * @param TipoPresentismo $ausencia
+     * @param \DateTime $fechaReferencia
      * @return int
+     * @throws AgenteSinTurno
      * @throws SinTopeONoEstablecido
      */
     public function getCantDiasDisponibles(TipoPresentismo $ausencia, \DateTime $fechaReferencia)
@@ -217,7 +219,7 @@ class Agente extends Model
             return $cantDiasPermitidos - $cantDiasConsumidos;
         } catch (ModelNotFoundException $diaPermitidoNoCargado) {
             return 1;
-            throw new SinTopeONoEstablecido($ausencia);
+            //throw new SinTopeONoEstablecido($ausencia);
         }
     }
     
@@ -228,7 +230,8 @@ class Agente extends Model
             ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
             ->where('injustificado', '=', false)
             ->whereDate('fecha', '>=', $fechaReferencia->format('Y-01-01'))
-            ->whereDate('fecha', '<=', $fechaReferencia->format('Y-m-d'))
+            // Verifico que en el presente year no tenga consumido los dias
+            ->whereDate('fecha', '<=', $fechaReferencia->format('Y-12-31'))
             ->count();
         
         return $dias;
