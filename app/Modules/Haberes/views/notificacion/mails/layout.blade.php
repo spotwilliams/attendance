@@ -31,10 +31,19 @@
             <table class="content" width="100%" cellpadding="0" cellspacing="0"
                    style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; margin: 0; padding: 0; width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%;">
                 <tr>
+                    <td>
+                        <div class="clearfix" style="min-height: 147px;
+                        background: url({{$message->embed(asset('/images/header-rrhh-01.jpg'))}}) no-repeat;
+background-position: center center;
+background-size: contain"></div>
+                    </td>
+                </tr>
+                <tr>
                     <td class="header"
+
                         style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 25px 0; text-align: center;">
-                        <a href="http://localhost"
-                           style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #bbbfc3; font-size: 19px; font-weight: bold; text-decoration: none; text-shadow: 0 1px 0 white;">
+                        <a
+                                style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #bbbfc3; font-size: 19px; font-weight: bold; text-decoration: none; text-shadow: 0 1px 0 white;">
                             {{$subject}}
                         </a>
                     </td>
@@ -46,15 +55,19 @@
                         <h1 style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #2F3133; font-size: 19px; font-weight: bold; margin-top: 0; text-align: left;">
                             Estimado/a: </h1>
                         <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; color: #74787E; font-size: 16px; line-height: 1.5em; margin-top: 0; text-align: left;">
-                            Usted ha recibido este mail debido a que el Cuerpo de Agentes de Tr&aacute;nsito desea notificarle que debe generar una factura con el siguiente detalle: </p>
+                            Usted ha recibido este mail debido a que el Cuerpo de Agentes de Tr&aacute;nsito desea
+                            notificarle que debe generar una factura con el siguiente detalle: </p>
                     </td>
                 </tr>
                 <!-- Email Body -->
                 <tr>
                     <td class="body" width="100%" cellpadding="0" cellspacing="0"
                         style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; background-color: #FFFFFF; border-bottom: 1px solid #EDEFF2; border-top: 1px solid #EDEFF2; margin: 0; padding: 0; width: 100%; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 100%;">
-
-                       @include('Haberes::notificacion.mails.table-body-template')
+                        <div class="clearfix">
+                            <br>
+                            @include('Haberes::notificacion.mails.table-body-template')
+                            <br>
+                        </div>
                     </td>
                 </tr>
 
@@ -63,11 +76,11 @@
                         <table class="footer" align="center" width="570" cellpadding="0" cellspacing="0"
                                style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; margin: 0 auto; padding: 0; text-align: center; width: 570px; -premailer-cellpadding: 0; -premailer-cellspacing: 0; -premailer-width: 570px;">
                             <tr>
-                                <td class="content-cell" align="center"
-                                    style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; padding: 35px;">
-                                    <p style="font-family: Avenir, Helvetica, sans-serif; box-sizing: border-box; line-height: 1.5em; margin-top: 0; color: #AEAEAE; font-size: 12px; text-align: center;">
-                                        Cuerpo de agentes de tránsito.
-                                    </p>
+                                <td>
+                                    <div class="clearfix" style="min-height: 147px;
+                        background: url({{$message->embed(asset('/images/zocalo-mail-01.png'))}}) no-repeat;
+background-position: center center;
+background-size: contain"></div>
                                 </td>
                             </tr>
                         </table>

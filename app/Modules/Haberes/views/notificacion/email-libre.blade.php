@@ -65,70 +65,9 @@
                         </div>
                     </div>
 
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Señor/es</label>
+                    @include('Haberes::notificacion.mails.fields-common')
 
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="GCBA" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Direcci&oacute;n</label>
 
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Av. Belgrano 840" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Localidad</label>
-
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Av. Belgrano 840" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">IVA</label>
-
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Excento" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">COndiciones de venta</label>
-
-                            <div class="col-sm-8">
-                                <input type="text" class="form-control" placeholder="Contado" disabled="">
-                            </div>
-                        </div>
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Fecha de factura</label>
-
-                            <div class="col-sm-8">
-                                <input class="form-control fecha" name="fecha_factura">
-                            </div>
-                        </div>
-
-                    </div>
-                    <div class="col-md-8">
-                        <div class="form-group">
-                            <label class="col-sm-4 control-label">Fecha de pago</label>
-
-                            <div class="col-sm-8">
-                                <input class="form-control fecha" name="fecha_pago">
-                            </div>
-                        </div>
-                    </div>
                     <div class="col-md-8">
                         <div class="form-group @if($errors->has('mensaje')) has-error @endif">
                             <label class="col-sm-4 control-label">Mensaje</label>
