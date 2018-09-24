@@ -97,7 +97,7 @@ if(!isset($periodosColection)) {
 
 
                             ?>
-                            <th><label class="label label-default">$ {{$monto}}</label></th>
+                            <th><label class="label label-default">$ {{round( $monto, 2)}}</label></th>
                             <th>{!! $notificado !!}</th>
                             <th>{!! $facturado !!}</th>
                         @endforeach

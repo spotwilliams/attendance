@@ -148,6 +148,9 @@ class General extends ReporteController
                         'funcion',
                     ]);
                 },
+                'presentismos' => function($with) {
+                    $with->whereIn('id_periodo', $this->periodos);
+                }
             ]);
         
         

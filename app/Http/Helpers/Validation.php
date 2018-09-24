@@ -13,7 +13,7 @@ class Validation
     public static function getDomicilioRules(Request $request)
     {
         $rules           = [
-            'domicilio.constituido.0'   => 'not_in:0',
+            //'domicilio.constituido.0'   => 'not_in:0',
             'domicilio.calle.0'         => 'required',
             'domicilio.numero.0'        => 'required|integer',
             'domicilio.codigo_postal.0' => 'integer',

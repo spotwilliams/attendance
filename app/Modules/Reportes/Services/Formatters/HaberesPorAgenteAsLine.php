@@ -39,8 +39,8 @@ class HaberesPorAgenteAsLine extends RowDataFormatter
             = $agente->apellido . ';' .
             $agente->nombre . ';' .
             $agente->cuit . ';' .
-            ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'turno']) . ';' .
-            ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre_base']);
+            ModelCreator::getDataFromModel($agente, ['operativo', 'turno', 'codigo']) . ';' .
+            ModelCreator::getDataFromModel($agente, ['operativo', 'base', 'nombre']);
         
         $haberes = $this->detallePorPeriodo(
             $agente,
