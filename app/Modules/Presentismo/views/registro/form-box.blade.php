@@ -1,4 +1,3 @@
-
 <div class="box box-warning @if(isset($collapsed)) collapsed-box @endif">
     <div class="box-header with-border">
         @if(isset($title))
@@ -15,7 +14,7 @@
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
         </div>
     </div>
-    {!! Form::open(['route' => 'presentismoPrepareListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
+    {!! Form::open(['route' => 'presentismoPrepareListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST', 'name' => 'presentismo-param-form']) !!}
 
     <div class="box-body">
         <div class="col-md-offset-2 col-md-8">
@@ -36,8 +35,8 @@
                             <i class="fa fa-calendar"></i>
                         </div>
                         <input type="text" class="form-control pull-right" id="rango" readonly>
-                        <input type="hidden" name="desde" class="form-control pull-right" id="desde" readonly>
-                        <input type="hidden" name="hasta" class="form-control pull-right" id="hasta" readonly>
+                        <input type="hidden" name="desde" id="desde">
+                        <input type="hidden" name="hasta" id="hasta">
                     </div>
                 </div>
             </div>
@@ -55,8 +54,17 @@
     <script type="text/javascript">
         $(document).ready(function () {
 //            var today = moment();
+                    @if(isset($desde))
+            var startDate = moment('{{$desde->format('Y-m-d')}}');
+                    @else
             var startDate = moment().subtract(5, 'day');
+                    @endif
+
+                @if(isset($hasta))
+            var endDate = moment('{{$hasta->format('Y-m-d')}}');
+            @else
             var endDate = moment().add(5, 'day');
+            @endif
             $('#desde').val(startDate.format('Y-MM-DD'));
             $('#hasta').val(endDate.format('Y-MM-DD'));
             $('select').selectpicker({});

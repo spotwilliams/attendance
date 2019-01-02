@@ -4,6 +4,7 @@ namespace Cat\Modules\Presentismo\Services\Validacion;
 
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Validation\Rules\EnComision;
 use Cat\Modules\Validation\Rules\NoEsFuturo;
 use Cat\Modules\Service;
 use Cat\Modules\Validation\Rules\Ausente;
@@ -41,6 +42,8 @@ class Validation extends Service
                 $this->rulesExecuter(PeriodoActivo::class)
                 and
                 $this->rulesExecuter(NoEsFuturo::class)
+                and
+                $this->rulesExecuter(EnComision::class)
             
             )
             and

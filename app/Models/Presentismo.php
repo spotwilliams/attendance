@@ -20,6 +20,9 @@ class Presentismo extends Model
             'id_periodo',
             'fecha',
             'id_tipo_presentismo',
+            'id_estado_contrato',
+            'id_tipo_contrato',
+            'id_turno',
             'injustificado',
         ];
     
@@ -49,4 +52,22 @@ class Presentismo extends Model
     {
         return $this->hasMany(Comentario::class, 'id_presentismo');
     }
+    
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function turno()
+    {
+        return $this->belongsTo(Turno::class, 'id_turno');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     **/
+    public function tipoContrato()
+    {
+        return $this->belongsTo(TipoContrato::class, 'id_tipo_contrato');
+    }
+    
 }

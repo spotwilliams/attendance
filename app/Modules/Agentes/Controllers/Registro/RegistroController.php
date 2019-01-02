@@ -27,10 +27,10 @@ class RegistroController extends AppBaseController
     }
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return View
+     * @param $base
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request, $base)
     {
@@ -42,11 +42,15 @@ class RegistroController extends AppBaseController
             ->with('agentes', $agentes);
     }
     
-    
+    /**
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function show($id)
     {
         $this->authorize('show', $this);
-    
+        
         try {
             // Se verifica que el agente exista
             $agente = Agente::findOrFail($id);
@@ -59,58 +63,6 @@ class RegistroController extends AppBaseController
             return redirect(route('agentesSearchIndex'));
             
         }
-        
-    }
-    
-    
-    /**
-     * @obsolete No se permiten eliminaciones
-     */
-    public function delete($id)
-    {
-        try {
-            $agente = Agente::findOrFail($id);
-            
-            return view('Agentes::registro.delete')
-                ->with('agente', $agente);
-        } catch (ModelNotFoundException $e) {
-            session()->flash('flash_notification.message',
-                'Se inten&oacute; acceder a informaci&oacute;n inexistente o no permitida');
-            session()->flash('flash_notification.level', 'warning');
-            
-            return view('Agentes::registro.index', ['base' => 1])->with('baseActual', 1);
-            
-        }
-        
-    }
-    
-    /**
-     * @obsolete No se permiten eliminaciones
-     */
-    public function destroy(Request $request)
-    {
-        try {
-            $agente   = Agente::findOrFail($request->input('agente'));
-            $services = [
-                Operativos::class,
-                Laborales::class,
-                Personales::class,
-            ];
-            foreach ($services as $service) {
-                (new $service($agente))->execute();
-            }
-            Flash::success('Se ha eliminado el agente seleccionado.');
-            
-        } catch (ModelNotFoundException $e) {
-            Flash::warning('Se inten&oacute; acceder a informaci&oacute;n inexistente o no permitida');
-            
-        } catch (\Exception $e) {
-            Flash::warning('Sucedi&oacute; un error al intentar borrar');
-            
-        }
-        
-        return redirect(route('agentesIndex', ['base' => 1]));
-        
         
     }
 }

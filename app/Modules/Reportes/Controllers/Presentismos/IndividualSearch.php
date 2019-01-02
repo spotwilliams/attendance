@@ -15,15 +15,24 @@ use Laracasts\Flash\Flash;
 
 class IndividualSearch extends BusquedaController
 {
-    
+    /**
+     * @param Request $request
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function index(Request $request)
     {
         $this->authorize('index', $this);
         
-        return view('Reportes::presentismos.por-agente.index')
+        return view('Reportes::presentismos.por-agente.search.index')
             ->with('agentes', Agente::where('id', '=', -1)->paginate(25));
     }
     
+    /**
+     * @param Request $request
+     * @return $this|\Illuminate\Support\Facades\Response
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function search(Request $request)
     {
         $this->authorize('search', $this);
@@ -33,55 +42,22 @@ class IndividualSearch extends BusquedaController
         /** @var LengthAwarePaginator $agentes */
         $agentes = $result->getData()['agentes'];
         
-        return view('Reportes::presentismos.por-agente.index')
+        return view('Reportes::presentismos.por-agente.search.index')
             ->with('agentes', $agentes)
             ->with('links', $this->getLinks($agentes, $request));
     }
     
+    /**
+     * @param LengthAwarePaginator $agentes
+     * @param Request $request
+     * @return string
+     */
     private function getLinks(LengthAwarePaginator $agentes, Request $request)
     {
         $presenter = new FormPresenter($agentes, 'presentismoPorAgenteSearch');
         $presenter->setInputsParams($request->all());
         
         return $agentes->links($presenter);
-    }
-    
-    public function prepareIndividualAgente(Request $request)
-    {
-        $this->authorize('prepareIndividualAgente', $this);
-        $input = $request->all();
-        
-        try {
-            /** @var Agente $agente */
-            $agente = Agente::findOrFail($input['agente']);
-            $base   = $agente->base();
-            // Controlamos que solo existan 10 dias como maximo
-            $dateRange = Calculation::prepareTenDaysDiff($input['desde'], $input['hasta']);
-            // Repo
-            $presentismoRepo = new PresentismoRepository(app());
-            $agentes         = $presentismoRepo
-                ->getEloquentAgentesBetweenDates(
-                    $base,
-                    $dateRange['desde'],
-                    $dateRange['hasta']
-                )
-                ->where('agentes.id', '=', $agente->id)
-                ->with('contrato.tipoContrato');
-            
-            /** @var LengthAwarePaginator $result */
-            $result = $agentes->paginate(25);
-            
-        } catch (ModelNotFoundException $e) {
-            Flash::error('El agente o la base no se enctraron');
-            
-            return redirect(route('presentismoPorAgenteIndex'));
-        }
-        
-        return view('Reportes::presentismos.por-agente.lista')
-            ->with('desde', $dateRange['desde'])
-            ->with('hasta', $dateRange['hasta'])
-            ->with('baseActual', $base)
-            ->with('agentes', $result);
     }
     
 }

@@ -10,6 +10,7 @@
 | and give it the controller to call when that URI is requested.
 |
 */
+
 use Illuminate\Support\Facades\Route;
 
 Route::get('/', function () {
@@ -26,14 +27,13 @@ Route::get('login', '\Cat\Http\Controllers\Auth\AuthController@showLoginForm');
 Route::post('login', '\Cat\Http\Controllers\Auth\AuthController@login');
 Route::get('logout', '\Cat\Http\Controllers\Auth\AuthController@logout');
 
-// Registration Routes...
-Route::get('register', '\Cat\Http\Controllers\Auth\AuthController@showRegistrationForm');
-Route::post('register', '\Cat\Http\Controllers\Auth\AuthController@register');
 
-// Password Reset Routes...
-Route::get('password/reset/{token?}', '\Cat\Http\Controllers\Auth\PasswordController@showResetForm');
-Route::post('password/email', '\Cat\Http\Controllers\Auth\PasswordController@sendResetLinkEmail');
-Route::post('password/reset', '\Cat\Http\Controllers\Auth\PasswordController@reset');
-
-
-Route::get('/home', 'HomeController@index');
+Route::group(['prefix' => 'home'], function () {
+    
+    Route::get('/', 'HomeController@index');
+    
+    Route::get('/grafico', 'HomeController@grafico')->name('home.grafico');
+    Route::get('/bases', 'HomeController@bases')->name('home.bases');
+    
+    
+});

@@ -3,6 +3,7 @@
 namespace Cat\Modules\Agentes\Services\Registro\Update;
 
 
+use Carbon\Carbon;
 use Cat\Models\Agente;
 use Cat\Models\Area;
 use Cat\Models\Base;
@@ -21,6 +22,7 @@ use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
 use Cat\Models\Turno;
+use Cat\Models\TurnoHistorico;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
@@ -96,8 +98,11 @@ class Operativos extends Service
                     ->firstOrFail();
                 $operativo->update($preliminarData);
                 
+                
             } catch (ModelNotFoundException $e) {
-                $operativo = Operativo::create($preliminarData);
+                $horario                      = Horario::create($this->horario);
+                $preliminarData['id_horario'] = $horario->id;
+                $operativo                    = Operativo::create($preliminarData);
             }
             
             // A partir de aqui Operativo siempre existe
@@ -113,6 +118,8 @@ class Operativos extends Service
                 $operativo->update(['id_horario' => $horario->id]);
             }
             
+            $this->logCambioTurno($operativo);
+            
             DB::commit();
             
             return $this->agente;
@@ -120,6 +127,38 @@ class Operativos extends Service
             DB::rollBack();
             throw $e;
         }
+    }
+    
+    
+    protected function logCambioTurno(Operativo $operativo)
+    {
+        $today = Carbon::now();
+        try {
+            
+            /** @var  TurnoHistorico $tHistorico */
+            $tHistorico = TurnoHistorico::where('id_operativo', '=', $operativo->id)
+                ->whereDate('fecha_fin', '>=', $today)
+                ->orderBy('id', 'DESC')
+                ->firstOrFail();
+            
+            // Update del actual en los historicos
+            $tHistorico->update([
+                'fecha_fin' => Carbon::yesterday()->format('Y-m-d'),
+            ]);
+        } catch (ModelNotFoundException $sinHistorico) {
+        
+        
+        }
+        // Registro del nuevo valor actual en los historicos
+        TurnoHistorico::create([
+            'id_operativo' => $operativo->id,
+            'id_turno'     => $this->turno->id,
+            'fecha_inicio' => Carbon::now()->format('Y-m-d'),
+        ]);
+        
+        // Se elimina la basura (todos aquellos registros generados en un mismo dia)
+        TurnoHistorico::where('fecha_inicio', '>', DB::raw('fecha_fin'))
+            ->delete();
     }
     
 }

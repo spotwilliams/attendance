@@ -1,0 +1,1 @@
+@extends('Haberes::notificacion.mails.layout')

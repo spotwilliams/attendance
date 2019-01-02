@@ -30,6 +30,8 @@ $estudios = $agente->estudio()->get();
                     <tr>
                         <th>Barrio:</th>
                         <td>{{$d->barrio}}</td>
+                        <th>C&oacute;digo postal:</th>
+                        <td>{{$d->codigo_postal}}</td>
                         <th>Provincia:</th>
                         <td colspan="2">{{$d->provincia}}</td>
                         <th>Es constituido:</th>

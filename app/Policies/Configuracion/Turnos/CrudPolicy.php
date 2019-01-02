@@ -21,6 +21,8 @@ class CrudPolicy extends SecurityPolicy
             $this->verifyOnlyControllerPermission($user, 'Crear turno')
             or
             $this->verifyOnlyControllerPermission($user, 'Modificar turno')
+            or
+            $this->verifyOnlyControllerPermission($user, 'Eliminar turno')
         );
     }
     
@@ -40,6 +42,17 @@ class CrudPolicy extends SecurityPolicy
     public function update(User $user)
     {
         return $this->verifyOnlyControllerPermission($user, 'Modificar turno');
+    }
+    
+    public function delete(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar turno');
+    }
+    
+    
+    public function destroy(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar turno');
     }
     
 }

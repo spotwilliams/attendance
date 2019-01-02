@@ -102,6 +102,7 @@ class FormPresenter implements PresenterContract
         $html = '<form method="post" action="' . $url . '">';
         
         $html .= '<input type="submit" name="page" value="' . $page . '" class="btn btn-default" ' . (($page === $this->paginator->currentPage() ? ' disabled ' : '')) . '/>';
+        $html .= '<input type="hidden" name="_token" value="' . csrf_token() . '" />';
         foreach ($this->params as $name => $value) {
             if (!is_array($value)) {
                 $html .= '<input type="hidden" name="' . $name . '" value="' . $value . '" />';

@@ -33,20 +33,22 @@ class GeneralController extends AppBaseController
     }
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function index(Request $request)
     {
         $this->authorize('index', $this);
-        // Se ejecuta para generar un periodo en caso que no exista
-        PeriodoRepository::getOrCreatePeriodoActivo();
-        
+
         return view('Presentismo::registro.index');
     }
     
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function prepareListaAgentes(Request $request)
     {
         // Se autoriza la vista

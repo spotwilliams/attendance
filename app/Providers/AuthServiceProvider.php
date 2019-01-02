@@ -3,12 +3,26 @@
 namespace Cat\Providers;
 
 // Crud Agentes
+use Cat\Http\Controllers\HomeController;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Haberes\Controllers\GeneralController;
+use Cat\Modules\Haberes\Controllers\Modificador\ContratosController;
+use Cat\Modules\Haberes\Controllers\Notificacion\ByAgenteController;
+use Cat\Modules\Haberes\Controllers\Notificacion\ByFiltrosController;
+use Cat\Modules\Haberes\Controllers\Notificacion\ConfirmarController;
+use Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController;
+use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\General;
+use Cat\Policies\DashboardPolicy;
+use Cat\Policies\Haberes\ModificadorContratosPolicy;
+use Cat\Policies\Haberes\NotificacionPolicy;
+use Cat\Policies\Haberes\RegistroFacturacionPolicy;
+use Cat\Policies\Reportes\Haberes\ReporteFacturacionPolicy;
+use Cat\Policies\Reportes\Haberes\VistaPreviaReportePolicy;
 use Cat\Policies\RequestGatePolicy;
 use Cat\Policies\TipoPresentismoGatePolicy;
 use Cat\User;
-use function foo\func;
+
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Http\Request;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
@@ -43,12 +57,8 @@ use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Policies\Presentismos\JustificacionPolicy;
 
 // Haberes
-use Cat\Modules\Haberes\Controllers\Registro\GeneralController as HaberesGeneral;
-use Cat\Policies\Haberes\GeneralPolicy as HaberesGeneralPolicy;
 use Cat\Modules\Haberes\Controllers\Registro\ReporteController as HaberesReporte;
 use Cat\Policies\Haberes\ReportePolicy as HaberesReportePolicy;
-use Cat\Modules\Haberes\Controllers\Registro\ConfirmarController as HaberesConfirmar;
-use Cat\Policies\Haberes\CierrePeriodoPolicy as HaberesConfirmarPolicy;
 
 // Reportes
 use Cat\Modules\Reportes\Controllers\Agentes\General as ReporteAgentes;
@@ -63,17 +73,14 @@ use Cat\Modules\Reportes\Controllers\Presentismos\Individual as ReporteIndividua
 use Cat\Modules\Reportes\Controllers\Presentismos\IndividualSearch as ReporteIndividualSearch;
 use Cat\Policies\Reportes\Presentismos\IndividualPolicy;
 // Reportes de Haberes
-use Cat\Modules\Reportes\Controllers\Haberes\Estado\General as ReporteHaberes;
-use Cat\Modules\Reportes\Controllers\Haberes\Estado\Exportar as ExportarHaberes;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\General as ReporteHaberesAgentes;
 use Cat\Modules\Reportes\Controllers\Haberes\Agentes\Exportar as ExportarHaberesAgentes;
-use Cat\Policies\Reportes\Haberes\ReportePolicy as ReportePolicyHaber;
-use Cat\Policies\Reportes\Haberes\ExportarPolicy as ExportarPolicyHaber;
 // Configuracion
 use Cat\Modules\Configuracion\Areas\Controllers\CrudController as AreasCrud;
 use Cat\Modules\Configuracion\Bases\Controllers\CrudController as BasesCrud;
 use Cat\Modules\Configuracion\Turnos\Controllers\CrudController as TurnosCrud;
 use Cat\Modules\Configuracion\TipoPresentismos\Controllers\CrudController as TipoPresentismosCrud;
+use Cat\Modules\Configuracion\FechaCierrePeriodo\Controllers\CrudController as FechaCierrePeriodoCrud;
 use Cat\Policies\Configuracion\Areas\ConfiguracionPolicy;
 
 // Seguridad
@@ -108,9 +115,20 @@ class AuthServiceProvider extends ServiceProvider
             RegistroPresentismo::class     => RegistroPresentismoPolicy::class,
             JustificacionController::class => JustificacionPolicy::class,
             
-            HaberesGeneral::class   => HaberesGeneralPolicy::class,
-            HaberesReporte::class   => HaberesReportePolicy::class,
-            HaberesConfirmar::class => HaberesConfirmarPolicy::class,
+            NotificacionController::class => NotificacionPolicy::class,
+            ByAgenteController::class     => NotificacionPolicy::class,
+            ByFiltrosController::class    => NotificacionPolicy::class,
+            ConfirmarController::class    => NotificacionPolicy::class,
+            
+            GeneralController::class                                             => RegistroFacturacionPolicy::class,
+            \Cat\Modules\Haberes\Controllers\Registro\ByAgenteController::class  => RegistroFacturacionPolicy::class,
+            \Cat\Modules\Haberes\Controllers\Registro\ByFiltrosController::class => RegistroFacturacionPolicy::class,
+            \Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class => RegistroFacturacionPolicy::class,
+            
+            HaberesReporte::class => HaberesReportePolicy::class,
+            //reporte
+            
+            ContratosController::class => ModificadorContratosPolicy::class,
             
             ReporteAgentes::class      => AgentesReportePolicy::class,
             ReportePresentismos::class => PresentismosReportePolicy::class,
@@ -118,10 +136,11 @@ class AuthServiceProvider extends ServiceProvider
             ExportarReporteAgentes::class      => AgentesExportarReportePolicy::class,
             ExprotarReportePresentismos::class => PresentismosExportarReportePolicy::class,
             
-            AreasCrud::class            => ConfiguracionPolicy::class,
-            BasesCrud::class            => ConfiguracionPolicy::class,
-            TurnosCrud::class           => ConfiguracionPolicy::class,
-            TipoPresentismosCrud::class => ConfiguracionPolicy::class,
+            AreasCrud::class              => ConfiguracionPolicy::class,
+            BasesCrud::class              => ConfiguracionPolicy::class,
+            TurnosCrud::class             => ConfiguracionPolicy::class,
+            TipoPresentismosCrud::class   => ConfiguracionPolicy::class,
+            FechaCierrePeriodoCrud::class => ConfiguracionPolicy::class,
             
             PermissionCrudController::class => ConfiguracionPermisosPolicy::class,
             RoleCrudController::class       => ConfiguracionPermisosPolicy::class,
@@ -130,15 +149,15 @@ class AuthServiceProvider extends ServiceProvider
             ReporteIndividual::class       => IndividualPolicy::class,
             ReporteIndividualSearch::class => IndividualPolicy::class,
             
-            Request::class => RequestPolicy::class,
+            Request::class                => RequestPolicy::class,
             
-            ReporteHaberes::class  => ReportePolicyHaber::class,
-            ExportarHaberes::class => ExportarPolicyHaber::class,
+            // Reporte de Haberes
+            ReporteHaberesAgentes::class  => ReporteFacturacionPolicy::class,
+            ExportarHaberesAgentes::class => ReporteFacturacionPolicy::class,
+            General::class                => VistaPreviaReportePolicy::class,
             
-            ReporteHaberesAgentes::class  => ReportePolicyHaber::class,
-            ExportarHaberesAgentes::class => ExportarPolicyHaber::class,
-        
-        
+            // Reporte de facturacion
+            HomeController::class => DashboardPolicy::class,
         ];
     
     /**

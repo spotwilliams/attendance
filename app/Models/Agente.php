@@ -3,15 +3,21 @@
 namespace Cat\Models;
 
 use Cat\Exceptions\AgenteSinTurno;
+use Cat\Models\Traits\AgenteUpperCase;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-
+/**
+ * Class Agente
+ * @property Operativo $operativo
+ * @package Cat\Models
+ */
 class Agente extends Model
 {
-    use SoftDeletes;
+    use SoftDeletes, AgenteUpperCase;
+    
     public $table = 'agentes';
     
     const CREATED_AT = 'created_at';
@@ -35,6 +41,13 @@ class Agente extends Model
             'id_contrato',
             'id_dias_disponibles',
             'id_estudio',
+            'avatar',
+            'observacion',
+            'profesion',
+            'email_gobierno',
+            'telefono_particular',
+            'telefono_casa',
+            'telefono_ht',
         ];
     
     /**
@@ -49,17 +62,22 @@ class Agente extends Model
      * @var array
      */
     public static $rules
-        = [
-            'nombre'           => 'required|max:255',
-            'apellido'         => 'required|max:255',
-            'fecha_nacimiento' => 'required|date',
-            'cuit'             => 'required|digits_between:4,20',
-            'dni'              => 'required|integer',
-            'telefono'         => 'required|digits_between:1,20',
-            'email'            => 'required|email',
+                          = [
+            'nombre'              => 'required|max:255',
+            'apellido'            => 'required|max:255',
+            'fecha_nacimiento'    => 'required|date',
+            'cuit'                => 'required|cuit|cuit_unico',
+            'dni'                 => 'required|integer',
+            //            'telefono'         => 'required|digits_between:1,20',
+            'telefono_particular' => 'required|digits_between:1,50',
+            'telefono_casa'       => 'digits_between:1,50',
+            'telefono_ht'         => 'digits_between:1,50',
+            'email'               => 'required|email',
+            'email_gobierno'      => 'email',
         
         
         ];
+    public static $avatar = 'default.jpg';
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -71,6 +89,7 @@ class Agente extends Model
     
     /**
      * @return Base
+     * @throws ModelNotFoundException
      **/
     public function base()
     {
@@ -101,6 +120,34 @@ class Agente extends Model
         return $this->hasOne(Contrato::class, 'id_agente');
     }
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasOne
+     **/
+    public function contratoActual()
+    {
+        return $this->hasOne(Contrato::class, 'id_agente')
+            ->orderBy('id', 'DESC')
+            ->limit(1);
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     **/
+    public function contratosHistoricos()
+    {
+        return $this->hasMany(ContratoHistorico::class, 'id_agente');
+    }
+    
+    /**
+     * @param \DateTime $fecha
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function contratoOnDate(\DateTime $fecha)
+    {
+        return $this->hasMany(ContratoHistorico::class, 'id_agente')
+            ->whereDate('fecha_ingreso', '<=', $fecha)
+            ->whereDate('fecha_fin', '>=', $fecha);
+    }
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\HasMany
@@ -137,7 +184,9 @@ class Agente extends Model
     
     /**
      * @param TipoPresentismo $ausencia
+     * @param \DateTime $fechaReferencia
      * @return int
+     * @throws AgenteSinTurno
      * @throws SinTopeONoEstablecido
      */
     public function getCantDiasDisponibles(TipoPresentismo $ausencia, \DateTime $fechaReferencia)
@@ -170,7 +219,7 @@ class Agente extends Model
             return $cantDiasPermitidos - $cantDiasConsumidos;
         } catch (ModelNotFoundException $diaPermitidoNoCargado) {
             return 1;
-            throw new SinTopeONoEstablecido($ausencia);
+            //throw new SinTopeONoEstablecido($ausencia);
         }
     }
     
@@ -181,9 +230,36 @@ class Agente extends Model
             ->where('id_tipo_presentismo', '=', $tipoPresentismo->id)
             ->where('injustificado', '=', false)
             ->whereDate('fecha', '>=', $fechaReferencia->format('Y-01-01'))
-            ->whereDate('fecha', '<=', $fechaReferencia->format('Y-m-d'))
+            // Verifico que en el presente year no tenga consumido los dias
+            ->whereDate('fecha', '<=', $fechaReferencia->format('Y-12-31'))
             ->count();
         
         return $dias;
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function facturas()
+    {
+        return $this->hasMany(FacturaFisica::class, 'id_agente');
+    }
+    
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function facturasByPeriodo(Periodo $periodo)
+    {
+        return $this->hasMany(FacturaFisica::class, 'id_agente')
+            ->where('id_periodo', '=', $periodo->id);
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function notificaciones()
+    {
+        return $this->hasMany(Notificacion::class, 'id_agente');
     }
 }

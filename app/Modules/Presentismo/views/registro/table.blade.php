@@ -12,14 +12,15 @@ while ($fecha <= $fechaToday) {
     $fechasToShow[] = [
         'data' => $fecha->format('Y-m-d'),
         'show' => $fecha->format('d/m'),
-        'day'  => $fecha->format('D')
+        'day'  => $fecha->format('D'),
+        'obj'  => new DateTime($fecha->format('Y-m-d'))
     ];
     $fecha->modify('+1day');
 }
 
 
 $selector = 'selectpicker';
-$idModal = 'comentarios-modal'
+$idModal  = 'comentarios-modal'
 ?>
 
 <table class="table hover" id="presentismos-table">
@@ -47,6 +48,7 @@ $idModal = 'comentarios-modal'
                     'X-CSRF-TOKEN': '{{ csrf_token() }}'
                 }
             });
+
             function activarPopOver() {
                 $('[data-toggle="popover"]')
                     .popover({

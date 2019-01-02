@@ -2,6 +2,7 @@
 
 namespace Cat\Helpers;
 
+use Carbon\Carbon;
 use Cat\Models\Agente;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
@@ -21,23 +22,24 @@ class HtmlCustoms
         ]
     ) {
         $domicilioTemplate = [
-            'id'           => '',
-            'id_agente'    => '',
-            'calle'        => '',
-            'numero'       => '',
-            'departamento' => '',
-            'piso'         => '',
-            'barrio'       => '',
-            'provincia'    => '',
-            'constituido'  => true,
-            'libre'        => '',
-            'created_at'   => '',
-            'updated_at'   => '',
+            'id'            => '',
+            'id_agente'     => '',
+            'calle'         => '',
+            'numero'        => '',
+            'departamento'  => '',
+            'piso'          => '',
+            'barrio'        => '',
+            'provincia'     => '',
+            'constituido'   => true,
+            'libre'         => '',
+            'codigo_postal' => '',
+            'created_at'    => '',
+            'updated_at'    => '',
         ];
         
         $return                           = [];
-        $return ['constituido']           = $domicilioTemplate;
         $return ['nominal']               = $domicilioTemplate;
+        $return ['constituido']           = $domicilioTemplate;
         $return['nominal']['constituido'] = false;
         
         if (isset($input['session'])) {
@@ -46,7 +48,7 @@ class HtmlCustoms
         (isset($input['model'])) {
             self::getMultiDomicilioFromModel($input['model'], $return);
         }
-
+        
         
         return $return;
     }
@@ -106,15 +108,16 @@ class HtmlCustoms
                 $key = 'nominal';
             }
             $salida[$key] = [
-                'calle'        => $input['calle'][$i],
-                'libre'        => $input['libre'][$i],
-                'numero'       => $input['numero'][$i],
-                'departamento' => $input['departamento'][$i],
-                'piso'         => $input['piso'][$i],
-                'barrio'       => $input['barrio'][$i],
-                'provincia'    => $input['provincia'][$i],
-                'constituido'  => $input['constituido'][$i],
-                'id'           => $input['id'][$i],
+                'calle'         => $input['calle'][$i],
+                'libre'         => $input['libre'][$i],
+                'numero'        => $input['numero'][$i],
+                'departamento'  => $input['departamento'][$i],
+                'piso'          => $input['piso'][$i],
+                'barrio'        => $input['barrio'][$i],
+                'provincia'     => $input['provincia'][$i],
+                'codigo_postal' => $input['codigo_postal'][$i],
+                'constituido'   => $input['constituido'][$i],
+                'id'            => $input['id'][$i],
             
             ];
         }
@@ -151,11 +154,11 @@ class HtmlCustoms
      */
     public static function getSelectForTipoPresentismo(
         Presentismo $p = null,
-        TipoContrato $tipoContrato,
-        $selector = 'selectpicker'
+        Agente $agente,
+        $selector = 'selectpicker',
+        \DateTime $fecha = null
     ) {
-        
-        $select = self::getSelect($p, $tipoContrato, $selector);
+        $select = self::getSelect($p, $agente, $selector, $fecha);
         $tools  = self::getButtonsTools($p);
         
         $html = "<div class='form-group'>$select $tools</div>";
@@ -164,28 +167,39 @@ class HtmlCustoms
     }
     
     
-    public static function getSelect(Presentismo $p = null, TipoContrato $tipoContrato, $selector = 'selectpicker')
-    {
+    public static function getSelect(
+        Presentismo $p = null,
+        Agente $agente,
+        $selector = 'selectpicker',
+        \DateTime $fecha
+    ) {
+        $date = (self::presentismoIsNull($p)) ? new Carbon($fecha->format('Y-m-d')) : new Carbon($p->fecha);
         /** @var Collection $tiposPresentismos */
-        $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
+        $tiposPresentismos = TipoPresentismosRepository::getByTipoContratoOnDate($agente, $date);
         
-        $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\">";
-        $option = "<option value=\"-1\">...</option>";
-        
-        $select .= $option;
-        /** @var TipoPresentismo $tp */
-        foreach ($tiposPresentismos as $tp) {
-            // Option
-            $seleccionado = ($tp->id === ($p == null ? -1 : $p->id_tipo_presentismo));
-            $option       = "<option value=\"$tp->id\"";
-            $option       .= $seleccionado ? ' selected' : '';
-            $option       .= " data-content=\"<span class='label' style='color: $tp->color_letra; background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
-            $option       .= ">$tp->descripcion</option>";
-            $select       .= $option;
+        if (!$tiposPresentismos->isEmpty()) {
+            
+            $select = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"80px\" data-size=\"5\" data-live-search-style='equals'>";
+            $option = "<option value=\"-1\">...</option>";
+            
+            $select .= $option;
+            /** @var TipoPresentismo $tp */
+            foreach ($tiposPresentismos as $tp) {
+                // Option
+                $seleccionado = ($tp->id === ($p == null ? -1 : $p->id_tipo_presentismo));
+                $option       = "<option value=\"$tp->id\"";
+                $option       .= ' data-tokens="' . $tp->codigo . '" ';
+                $option       .= $seleccionado ? ' selected' : '';
+                $option       .= " data-content=\"<span class='label' style='color: $tp->color_letra; background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
+                $option       .= ">$tp->descripcion</option>";
+                $select       .= $option;
+            }
+            
+            
+            $select .= '</select>';
+        } else {
+            $select = '<span class="label label-default">Sin contrato en esta fecha</span>';
         }
-        
-        
-        $select .= '</select>';
         
         return $select;
     }
@@ -203,7 +217,7 @@ class HtmlCustoms
     {
         $tildeClass    = ($p && ($p->comentario == 'SI')) ? 'fa-comment text-yellow' : 'fa-comment-o';
         $idPresentismo = $p ? $p->id : -1;
-        $btnDisabled   = ($p == null || ($p->id_tipo_presentismo == -1) )  ? 'disabled' : '';
+        $btnDisabled   = ($p == null || ($p->id_tipo_presentismo == -1)) ? 'disabled' : '';
         
         
         $buttonComment = "<button type='button' data-id-presentismo='$idPresentismo' class='btn btn-default dialog-comentary' $btnDisabled><i class='fa $tildeClass'></i></button>";
@@ -211,23 +225,32 @@ class HtmlCustoms
         return $buttonComment;
     }
     
+    /**
+     * @param Presentismo|null $p
+     * @return bool
+     */
+    private static function presentismoIsNull(Presentismo $p = null)
+    {
+        return ($p === null) or ($p->id === -1) or ($p->id === null);
+    }
+    
     public static function getButtonWithPopOver(Presentismo $p = null)
     {
-        $injustificado = ($p && ($p->injustificado == true)) ? true : false;
-        $disabled      = (($p != null) && ($p->id_tipo_presentismo != -1)) ? '' : 'disabled';
+        $injustificado = ((!self::presentismoIsNull($p)) && ($p->injustificado == true)) ? true : false;
+        $disabled      = ((!self::presentismoIsNull($p)) && ($p->id_tipo_presentismo != -1)) ? '' : 'disabled';
         $title         = ($injustificado ? '<label class="label label-danger"> Injustificado</label>' : '<label class="label label-info"> Justificado</label>');
         $label         = ($injustificado ? 'Justificado' : 'Injustificado');
         $classToggle   = ($injustificado ? 'label-info' : 'label-danger');
         $message       = "Click para marcar el presentismo como <label class=\"label $classToggle\">$label</label>";
         $toggles       = 'data-toggle=\'popover\' data-trigger=\'hover\'';
-        
-        if ($p) {
+        if (!self::presentismoIsNull($p)) {
+            
             $classButton = ($injustificado ? 'fa-check-square text-red' : 'fa-check-square text-green');
         } else {
             $classButton = 'fa-check-square-o';
         }
         $icon   = "<i class='fa $classButton'></i>";
-        $data   = 'data-presentismo=\'' . (($p === null) ? '' : $p->toJson()) . '\'';
+        $data   = 'data-presentismo=\'' . (self::presentismoIsNull($p) ? '' : $p->toJson()) . '\'';
         $button = "<button type='button' class='btn btn-default' $data $toggles data-title='$title' data-content='$message' $disabled>$icon</button>";
         
         return $button;
@@ -237,13 +260,14 @@ class HtmlCustoms
     public static function getSelectByTipoContrato(
         TipoContrato $tipoContrato,
         $multiple = false,
-        $selector = 'selectpicker'
+        $selector = 'selectpicker',
+        $with = '150px'
     ) {
         
         /** @var Collection $tiposPresentismos */
         $tiposPresentismos = TipoPresentismosRepository::getByTipoContrato($tipoContrato);
         $multipleOpt       = (($multiple === true) ? 'name="tipos[]" multiple multiple data-actions-box="true" ' : ' name="tipo" ');
-        $select            = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"150px\" data-size=\"5\" $multipleOpt >";
+        $select            = "<select class=\"$selector form-control\" data-live-search=\"true\" data-width=\"$with\" data-size=\"5\" $multipleOpt >";
         
         $option = ($multiple) ? '' : "<option value=\"-1\">...</option>";
         
@@ -252,6 +276,7 @@ class HtmlCustoms
         foreach ($tiposPresentismos as $tp) {
             // Option
             $option = "<option value=\"$tp->id\"";
+            $option .= ' data-tokens="' . $tp->codigo . '" ';
             $option .= " data-content=\"<span class='label' style='color: $tp->color_letra; background-color: $tp->color;'>$tp->descripcion ($tp->codigo)</span>\"";
             $option .= ">$tp->descripcion</option>";
             $select .= $option;

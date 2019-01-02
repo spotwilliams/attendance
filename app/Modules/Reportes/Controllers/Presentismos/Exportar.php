@@ -2,11 +2,9 @@
 
 namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
-use Cat\Helpers\Calculation;
-use Cat\Modules\Reportes\Services\Formatters\Presentismo;
-use Cat\Modules\Reportes\Services\Reporte;
+use Cat\Modules\Reportes\Services\Formatters\PresentismoAsLine;
+use Cat\Modules\Reportes\Services\ReporteAsStream;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Response;
 use Laracasts\Flash\Flash;
 
@@ -26,11 +24,13 @@ class Exportar extends General
         $this->setupParams($request)
             ->setupQuery();
         
-        $formatter = new Presentismo($this->desde, $this->hasta);
-        $service   = new Reporte($this->query, $formatter);
+        $formatter = new PresentismoAsLine($this->desde, $this->hasta, $this->tiposPresentismos, $this->incluirComentarios, $this->incluirEstado);
+        $service   = new ReporteAsStream($this->query, $formatter);
+        
         try {
-            $service->execute();
+            return $service->execute();
         } catch (\Exception $e) {
+            
             Flash::error($e->getMessage());
             
             return redirect(route('reportesPresentismoGeneralIndex'));
@@ -43,6 +43,9 @@ class Exportar extends General
         $this->query
             ->with([
                 'presentismos' => function ($query) {
+                    if (!$this->tiposPresentismos->isEmpty()) {
+                        $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
+                    }
                     $query->whereDate('fecha', '>=', $this->desde)
                         ->whereDate('fecha', '<=', $this->hasta)
                         ->orderBy('fecha', 'ASC')

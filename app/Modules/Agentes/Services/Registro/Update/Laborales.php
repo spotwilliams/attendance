@@ -5,106 +5,147 @@ namespace Cat\Modules\Agentes\Services\Registro\Update;
 
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
-use Cat\Models\DiaDisponible;
-use Cat\Models\Domicilio;
-use Cat\Models\EstadoContrato;
-use Cat\Models\Estudio;
-use Cat\Models\JornadaLaborable;
-use Cat\Models\Operativo;
-use Cat\Models\Presentismo;
-use Cat\Models\TipoContrato;
-use Cat\Models\TipoPresentismo;
+use Cat\Models\ContratoHistorico;
+use Cat\Modules\Agentes\Repositories\AgenteRepository;
+use Cat\Modules\Agentes\Services\Registro\Traits\LaboralesSetup;
 use Cat\Modules\Service;
-use Cat\Repositories\JornadaLaborableRepository;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class Laborales extends Service
 {
-    /** @var Agente */
-    protected $agente;
     
-    /** @var  string */
-    protected $ficha;
-    
-    /** @var  \DateTime */
-    protected $fecha;
-    
-    /** @var  string Cast to decimal */
-    protected $monto;
-    
-    /** @var  EstadoContrato */
-    protected $estado;
-    
-    /** @var  TipoContrato */
-    protected $tipo;
-    
-    /** @var  string */
-    protected $id_sial;
-    
-    /** @var  \DateTime */
-    protected $fecha_baja;
-    
-    /** @var  string */
-    protected $comentario_baja;
-    
-    /** @var  \DateTime */
-    protected $tipo_inscripcion;
-    
-    /** @var  \DateTime */
-    protected $fecha_ingreso_gobierno;
-    
+    use LaboralesSetup;
     
     public function __construct(Agente $agente, $input)
     {
-        $this->agente  = $agente;
-        $this->id_sial = $input['id_sial'];
-        $this->ficha   = $input['ficha'];
-        $this->monto   = str_replace(',', '.', $input['monto']);
-        $this->fecha   = new \DateTime($input['fecha_ingreso']);
-        $this->estado  = EstadoContrato::findOrFail($input['id_estado_contrato']);
-        $this->tipo    = TipoContrato::findOrFail($input['id_tipo_contrato']);
-        
-        $this->fecha_ingreso_gobierno = new \DateTime($input['fecha_ingreso_gobierno']);
-        $this->tipo_inscripcion       = $input['tipo_inscripcion'];
-        $this->fecha_baja             = ($this->estado->esActivo() ? null : new \DateTime($input['fecha_baja']));
-        $this->comentario_baja        = ($this->estado->esActivo() ? null : $input['comentario_baja']);
+        // Shared with Store
+        $this->setup($agente, $input);
     }
+    
     
     public function execute()
     {
-        $data = [
-            'fecha_ingreso'          => $this->fecha->format('Y-m-d'),
-            'id_tipo_contrato'       => $this->tipo->id,
-            'id_estado_contrato'     => $this->estado->id,
-            'id_agente'              => $this->agente->id,
-            'id_sial'                => $this->id_sial,
-            'ficha'                  => $this->ficha,
-            'monto'                  => floatval($this->monto),
-            'fecha_baja'             => $this->fecha_baja,
-            'comentario_baja'        => $this->comentario_baja,
-            'tipo_inscripcion'       => $this->tipo_inscripcion,
-            'fecha_ingreso_gobierno' => $this->fecha_ingreso_gobierno,
-        ];
+        // Es el ultimo contrato que se registro
+        
         try {
             DB::beginTransaction();
-            try {
-                $this->agente
-                    ->contrato()
-                    ->firstOrFail()
-                    ->update($data);;
-            } catch (ModelNotFoundException $e) {
-                Contrato::create($data);
-            }
             
+            
+            $contratoActual = $this->agente
+                ->contrato()
+                ->with('estadoContrato')
+                ->with('tipoContrato')
+                ->orderBy('id', 'DESC')
+                ->firstOrFail();
+            
+            // Actualizo los datos segun los solicitado
+            $data = $this->getData();
+            $contratoActual->update(array_filter($data));
+            
+            $this->logCambioContrato($contratoActual);
+            
+            AgenteRepository::storeCountActivos();
             DB::commit();
             
             return $this->agente;
+            
+            
         } catch (QueryException $e) {
             DB::rollBack();
             throw $e;
         }
+        
     }
     
+    public function logCambioContrato(Contrato $contratoActual)
+    {
+        $data = $this->getData();
+        
+        
+        $operaciones = [
+            // Cambio de tipo
+            -1 => [
+                // Cambio de estado
+                -1 => [
+                    'updateFechaFinContratoHistoricoAnterior',
+                    'updateFechaFinEstadoContratoHistoricoAnterior',
+                    'createContratoHistorico',
+                ],
+                // Se mantiene el estado
+                0  => [
+                    'updateFechaFinContratoHistoricoAnterior',
+                    'createContratoHistorico',
+                ],
+            ],
+            // Se mantiene el tipo
+            0  => [
+                // Cambio de estado
+                -1 => [
+                    'updateFechaFinEstadoContratoHistoricoAnterior',
+                    'createContratoHistorico',
+                ],
+                // Se mantiene el estado
+                0  => [
+                    'updateContratoHistorico',
+                ],
+            ],
+        ];
+        
+        
+        $tipo   = ($contratoActual->tipoContrato->id - $this->tipo->id) ? -1 : 0;
+        $estado = ($contratoActual->estadoContrato->id - $this->estado->id) ? -1 : 0;
+        
+        foreach ($operaciones[$tipo][$estado] as $operacion) {
+            $this->{$operacion}($contratoActual);
+        }
+        
+    }
+    
+    private function createContratoHistorico(Contrato $contratoActual)
+    {
+        ContratoHistorico::create(array_filter($this->getData()));
+    }
+    
+    private function updateContratoHistorico(Contrato $contratoActual)
+    {
+        /** @var ContratoHistorico $historicoActual */
+        $historicoActual = $this->agente->contratosHistoricos()
+            ->orderBy('id', 'DESC')
+            ->firstOrFail();
+        
+        $historicoActual->update(array_filter($this->getData()));
+        
+    }
+    
+    private function updateFechaFinContratoHistoricoAnterior(Contrato $contratoActual)
+    {
+        $historicoActual = $this->agente->contratosHistoricos()
+            ->orderBy('id', 'DESC')
+            ->firstOrFail();
+        
+        
+        $fechaFin = (new \DateTime($contratoActual->fecha_ingreso));
+        $fechaFin->modify('-1day');
+        
+        $historicoActual->update([
+            'fecha_fin' => $fechaFin->format('Y-m-d'),
+        ]);
+        
+        
+    }
+    
+    private function updateFechaFinEstadoContratoHistoricoAnterior(Contrato $contratoActual)
+    {
+        $historicoActual = $this->agente->contratosHistoricos()
+            ->orderBy('id', 'DESC')
+            ->firstOrFail();
+        
+        $fechaFin = (new \DateTime($contratoActual->fecha_estado_desde));
+        $fechaFin->modify('-1day');
+        
+        $historicoActual->update([
+            'fecha_estado_hasta' => $fechaFin->format('Y-m-d'),
+        ]);
+    }
 }

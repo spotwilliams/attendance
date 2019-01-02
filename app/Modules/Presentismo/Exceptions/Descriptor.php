@@ -3,18 +3,28 @@
 namespace Cat\Modules\Presentismo\Exceptions;
 
 use Cat\Exceptions\MainDescriptor;
+use Cat\Models\Base;
+use Cat\Models\Periodo;
 use Cat\Models\TipoPresentismo;
+use Cat\Models\Turno;
+use Cat\Modules\Reportes\Services\Formatters\Agente;
 
 class Descriptor extends MainDescriptor
 {
+    const DEBUG                              = 0001;
     const CONTRATO_INACTIVO                  = 1000;
     const CONTRATO_NO_LOCACION               = 2000;
     const SIN_DIAS_DISPONIBLES               = 3000;
     const PERIODO_CERRADO                    = 4000;
+    const BASE_TURNO_SIN_PERIODO             = 4001;
+    const PERIODO_ABIERTO_PARA_CALCULAR      = 4002;
     const TIPO_PRESENTISMO_SIN_DIAS_CARGADOS = 5000;
     const TIPO_PRESENTISMO_NO_SE_JUSTIFICA   = 6000;
     const TIPO_PRESENTISMO_NO_SE_INJUSTIFICA = 7000;
-    const FECHA_FUTURA = 8000;
+    const ESTADO_CONTRATO_EN_COMISION        = 9000;
+    const FECHA_FUTURA                       = 8000;
+    const FECHA_FUERA_DEL_LIMITE             = 8001;
+    const PERIODO_FACTURADO                  = 10000;
     
     
     public static function contratoInactivo()
@@ -64,18 +74,32 @@ class Descriptor extends MainDescriptor
         if (!isset(self::$errorMap[Descriptor::PERIODO_CERRADO])) {
             self::$errorMap[Descriptor::PERIODO_CERRADO]
                 = new Descriptor(Descriptor::PERIODO_CERRADO,
-                'La fecha es de un periodo ya cerrado para esta base');
+                'La fecha pertenece a un periodo ya facturado para este agente');
         }
         
         return self::$errorMap[Descriptor::PERIODO_CERRADO];
     }
     
-    public static function fechaFutura()
+    /**
+     * @return self
+     */
+    public static function periodoAbiertoParaCalcular()
+    {
+        if (!isset(self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR])) {
+            self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR]
+                = new Descriptor(Descriptor::PERIODO_ABIERTO_PARA_CALCULAR,
+                'El periodo seleccionado no puede ser usado para notificar o registrar facturación.');
+        }
+        
+        return self::$errorMap[Descriptor::PERIODO_ABIERTO_PARA_CALCULAR];
+    }
+    
+    public static function fechaFutura(TipoPresentismo $tipo)
     {
         if (!isset(self::$errorMap[Descriptor::FECHA_FUTURA])) {
             self::$errorMap[Descriptor::FECHA_FUTURA]
                 = new Descriptor(Descriptor::FECHA_FUTURA,
-                'La fecha es mayor a la de hoy');
+                "'$tipo->codigo' no puede asignarse en una fecha posterior a la de hoy.");
         }
         
         return self::$errorMap[Descriptor::FECHA_FUTURA];
@@ -103,5 +127,63 @@ class Descriptor extends MainDescriptor
         return self::$errorMap[Descriptor::TIPO_PRESENTISMO_NO_SE_INJUSTIFICA];
     }
     
+    public static function baseTurnoSinPeriodo(Periodo $periodo, Base $base, Turno $turno)
+    {
+        if (!isset(self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO])) {
+            $fC  = (new \DateTime($periodo->fecha_comienzo))->format('d/m/Y');
+            $fF  = (new \DateTime($periodo->fecha_fin))->format('d/m/Y');
+            $msg = "El periodo comprendido entre $fC y $fF no existe para la base $base->nombre y turno $turno->codigo.";
+            
+            self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO]
+                = new Descriptor(Descriptor::BASE_TURNO_SIN_PERIODO, $msg);
+        }
+        
+        return self::$errorMap[Descriptor::BASE_TURNO_SIN_PERIODO];
+    }
     
+    
+    public static function estadoContratoEnComision(TipoPresentismo $tipo)
+    {
+        if (!isset(self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION])) {
+            self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION]
+                = new Descriptor(Descriptor::ESTADO_CONTRATO_EN_COMISION,
+                'Los agentes en comisión solo pueden tener presentismo \'EX\'');
+        }
+        
+        return self::$errorMap[Descriptor::ESTADO_CONTRATO_EN_COMISION];
+    }
+    
+    public static function debug(\Exception $exception)
+    {
+        $message = "Mensaje: {$exception->getMessage()}. File: {$exception->getFile()}. Line: {$exception->getLine()}. Trace: {$exception->getTraceAsString()}";
+        if (!isset(self::$errorMap[Descriptor::DEBUG])) {
+            
+            self::$errorMap[Descriptor::DEBUG] = new Descriptor(Descriptor::DEBUG, $message);
+        }
+        
+        return self::$errorMap[Descriptor::DEBUG];
+    }
+    
+    public static function periodoFacturado()
+    {
+        $message = "El periodo ya fue facturado por el agente.";
+        if (!isset(self::$errorMap[Descriptor::PERIODO_FACTURADO])) {
+            
+            self::$errorMap[Descriptor::PERIODO_FACTURADO] = new Descriptor(Descriptor::PERIODO_FACTURADO, $message);
+        }
+        
+        return self::$errorMap[Descriptor::PERIODO_FACTURADO];
+    }
+    
+    
+    public static function fechaFueraDelLimite()
+    {
+        $message = 'No se pueden cargar presentismos mas allá de los ' . config('cat.limite_dias_planta') . ' dias.';
+        if (!isset(self::$errorMap[Descriptor::FECHA_FUERA_DEL_LIMITE])) {
+            
+            self::$errorMap[Descriptor::FECHA_FUERA_DEL_LIMITE] = new Descriptor(Descriptor::FECHA_FUERA_DEL_LIMITE, $message);
+        }
+        
+        return self::$errorMap[Descriptor::FECHA_FUERA_DEL_LIMITE];
+    }
 }

@@ -11,51 +11,65 @@
     </div>
 </div>
 
+<div class="row">
+    <div class="col-md-8">
 
-<div class="form-group @if($errors->has('nombre')) has-error @endif">
-    {!! Form::label('nombre', 'Nombre *', ['class' => 'col-sm-2 control-label']) !!}
-    <div class="col-sm-8">
-        {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
-        @if($errors->has('nombre'))
-            <span class="help-block">{{$errors->first('nombre')}}</span>
-        @endif
+        <div class="form-group @if($errors->has('nombre')) has-error @endif">
+            {!! Form::label('nombre', 'Nombre *', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+                {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+                @if($errors->has('nombre'))
+                    <span class="help-block">{{$errors->first('nombre')}}</span>
+                @endif
+            </div>
+        </div>
+
+
+        <div class="form-group @if($errors->has('apellido')) has-error @endif">
+            {!! Form::label('apellido', 'Apellido *', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+                {!! Form::text('apellido', null, ['class' => 'form-control']) !!}
+                @if($errors->has('apellido'))
+                    <span class="help-block">{{$errors->first('apellido')}}</span>
+                @endif
+            </div>
+        </div>
+
+        <div class="form-group @if($errors->has('dni')) has-error @endif">
+            {!! Form::label('dni', 'DNI *', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+                {!! Form::text('dni', null, ['class' => 'form-control']) !!}
+                @if($errors->has('dni'))
+                    <span class="help-block">{{$errors->first('dni')}}</span>
+                @endif
+            </div>
+        </div>
+
+
+        <div class="form-group @if($errors->has('fecha_nacimiento')) has-error @endif">
+            {!! Form::label('fecha_nacimiento', 'Fecha de nacimiento', ['class' => 'col-sm-3 control-label']) !!}
+            <div class="col-sm-9">
+                {!! Form::hidden('fecha_nacimiento', null, ['class' => 'form-control']) !!}
+                <input type="text" name="fecha_nacimiento_show" class="form-control">
+                {{--        {!! Form::text('fecha_nacimiento', null, ['class' => 'form-control']) !!}--}}
+                @if($errors->has('fecha_nacimiento'))
+                    <span class="help-block">{{$errors->first('fecha_nacimiento')}}</span>
+                @endif
+            </div>
+        </div>
+    </div>
+
+    <div class="col-md-4 ">
+
+        <img class="img-responsive img-circle"
+             src="{{URL::asset('uploads/avatars/'.(isset($agente)?$agente->avatar:\Cat\Models\Agente::$avatar))}}"
+             alt="User profile picture"
+             style="margin:0 auto;width:150px;"
+        >
+
+        {!! Form::file('avatar', ['style'=> 'margin:0 auto;', 'class'=>'filestyle', 'data-input'=> 'false','accept'=> 'image/x-png,image/png,image/gif,image/jpeg' ,'data-buttonName'=>'btn-primary'])!!}
     </div>
 </div>
-
-
-<div class="form-group @if($errors->has('apellido')) has-error @endif">
-    {!! Form::label('apellido', 'Apellido *', ['class' => 'col-sm-2 control-label']) !!}
-    <div class="col-sm-8">
-        {!! Form::text('apellido', null, ['class' => 'form-control']) !!}
-        @if($errors->has('apellido'))
-            <span class="help-block">{{$errors->first('apellido')}}</span>
-        @endif
-    </div>
-</div>
-
-<div class="form-group @if($errors->has('dni')) has-error @endif">
-    {!! Form::label('dni', 'DNI *', ['class' => 'col-sm-2 control-label']) !!}
-    <div class="col-sm-8">
-        {!! Form::text('dni', null, ['class' => 'form-control']) !!}
-        @if($errors->has('dni'))
-            <span class="help-block">{{$errors->first('dni')}}</span>
-        @endif
-    </div>
-</div>
-
-
-<div class="form-group @if($errors->has('fecha_nacimiento')) has-error @endif">
-    {!! Form::label('fecha_nacimiento', 'Fecha de nacimiento', ['class' => 'col-sm-2 control-label']) !!}
-    <div class="col-sm-8">
-        {!! Form::hidden('fecha_nacimiento', null, ['class' => 'form-control']) !!}
-        <input type="text" name="fecha_nacimiento_show" class="form-control">
-        {{--        {!! Form::text('fecha_nacimiento', null, ['class' => 'form-control']) !!}--}}
-        @if($errors->has('fecha_nacimiento'))
-            <span class="help-block">{{$errors->first('fecha_nacimiento')}}</span>
-        @endif
-    </div>
-</div>
-
 <div class="form-group @if($errors->has('cuit')) has-error @endif">
     {!! Form::label('cuit', 'CUIT *', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
@@ -75,13 +89,42 @@
         @endif
     </div>
 </div>
-
-<div class="form-group @if($errors->has('telefono')) has-error @endif">
-    {!! Form::label('telefono', 'Telefono de contacto *', ['class' => 'col-sm-2 control-label']) !!}
+<div class="form-group @if($errors->has('email_gobierno')) has-error @endif">
+    {!! Form::label('email_gobierno', 'Email gobierno', ['class' => 'col-sm-2 control-label']) !!}
     <div class="col-sm-8">
-        {!! Form::text('telefono', null, ['class' => 'form-control']) !!}
-        @if($errors->has('telefono'))
-            <span class="help-block">{{$errors->first('telefono')}}</span>
+        {!! Form::text('email_gobierno', null, ['class' => 'form-control']) !!}
+        @if($errors->has('email_gobierno'))
+            <span class="help-block">{{$errors->first('email_gobierno')}}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('telefono_particular')) has-error @endif">
+    {!! Form::label('telefono_particular', 'Tel&eacute;fono particular *', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono_particular', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono_particular'))
+            <span class="help-block">{{$errors->first('telefono_particular')}}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('telefono_casa')) has-error @endif">
+    {!! Form::label('telefono_casa', 'Tel&eacute;fono de casa', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono_casa', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono_casa'))
+            <span class="help-block">{{$errors->first('telefono_casa')}}</span>
+        @endif
+    </div>
+</div>
+
+<div class="form-group @if($errors->has('telefono_ht')) has-error @endif">
+    {!! Form::label('telefono_ht', 'Tel&eacute;fono HT', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('telefono_ht', null, ['class' => 'form-control']) !!}
+        @if($errors->has('telefono_ht'))
+            <span class="help-block">{{$errors->first('telefono_ht')}}</span>
         @endif
     </div>
 </div>
@@ -111,6 +154,15 @@
          'F' => 'Mujer',
          'M' => 'Hombre',
           ], null, ['class' => 'form-control']) !!}
+    </div>
+</div>
+<div class="form-group @if($errors->has('profesion')) has-error @endif">
+    {!! Form::label('profesion', 'Profesi&oacute;n', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::text('profesion', null, ['class' => 'form-control']) !!}
+        @if($errors->has('profesion'))
+            <span class="help-block">{{$errors->first('profesion')}}</span>
+        @endif
     </div>
 </div>
 {{-- Estudios --}}
@@ -257,16 +309,13 @@ $control = 0;
                     </div>
 
 
-                    <div class="col-sm-2">
-                        <h4> <span class="label label-default">
-                                @if($dom['constituido'] == true)
-                                    Constituido
-                                @else
-                                    Real
-                                @endif
-                            </span>
-                        </h4>
-                        <input type="hidden" name="domicilio[constituido][]" value="{{$dom['constituido']== true ?1:0}}"/>
+                    <div class="col-sm-2 @if($errors->has("domicilio.codigo_postal.$control" )) has-error @endif">
+                        <input type="text" class="form-control" value="{{$dom['codigo_postal']}}"
+                               placeholder="C&oacute;digo postal"
+                               name="domicilio[codigo_postal][]">
+                        @if($errors->has("domicilio.codigo_postal.$control"))
+                            <span class="help-block">{{$errors->first("domicilio.codigo_postal.$control")}}</span>
+                        @endif
                     </div>
 
 
@@ -276,6 +325,18 @@ $control = 0;
                         <input type="text" class="form-control" value="{{$dom['libre']}}" placeholder="Otro"
                                name="domicilio[libre][]">
                     </div>
+                    <div class="col-sm-2">
+                        <h4> <span class="label label-default">
+                                @if($dom['constituido'] == true)
+                                    Constituido
+                                @else
+                                    Real
+                                @endif
+                            </span>
+                        </h4>
+                        <input type="hidden" name="domicilio[constituido][]"
+                               value="{{$dom['constituido']== true ?1:0}}"/>
+                    </div>
                 </div>
                 <hr>
             </div>
@@ -283,6 +344,15 @@ $control = 0;
     </div>
 </div>
 
+<div class="form-group @if($errors->has('observacion')) has-error @endif">
+    {!! Form::label('observacion', 'Observaci&oacute;n', ['class' => 'col-sm-2 control-label']) !!}
+    <div class="col-sm-8">
+        {!! Form::textarea('observacion', null, ['class' => 'form-control']) !!}
+        @if($errors->has('observacion'))
+            <span class="help-block">{{$errors->first('observacion')}}</span>
+        @endif
+    </div>
+</div>
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
@@ -398,6 +468,11 @@ $control = 0;
 //                    console.log($('[name="fecha_nacimiento"]').val())
                     });
 
+            var im = new Inputmask("99-99999999-9");
+            im.mask('input[name="cuit"]');
+
+            // Alineacion de  la imagen y el seleccionar archivo
+            $('.bootstrap-filestyle').prop('style', 'margin: 0px auto')
         });
 
     </script>

@@ -31,14 +31,14 @@ class OperativosController extends AppBaseController
     
     
     /**
-     * Show the form for creating a new Presentismo.
-     *
-     * @return Response
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create($id)
     {
         $this->authorize('create', $this);
-        
+        /** @var Agente $agente */
         $agente = Agente::find($id);
         
         if (empty($agente)) {
@@ -46,19 +46,20 @@ class OperativosController extends AppBaseController
             
             return redirect(route('agentesCreatePersonales'));
         }
+        if($agente->contrato()->first()) {
+            return redirect(route('agentesEditOperativos', $id));
+        }
         
         return view('Agentes::registro.create')
             ->with('tab', 'operativos')
-            ->with('agente', $id);
+            ->with('agente', $agente);
     }
     
     
     /**
-     * Store a newly created Presentismo in storage.
-     *
      * @param Request $request
-     *
-     * @return Response
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -91,11 +92,9 @@ class OperativosController extends AppBaseController
     
     
     /**
-     * Show the form for editing the specified Presentismo.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
@@ -105,7 +104,11 @@ class OperativosController extends AppBaseController
             $agente = Agente::with('operativo.turno')
                 ->with('operativo.base')
                 ->findOrFail($id);
-    
+
+            if(!$agente->operativo) {
+                return redirect(route('agentesCreateOperativos', $id));
+            }
+
             if (($agente->operativo) and ($agente->operativo->base) and ($agente->operativo->turno)) {
                 Gate::allows('work-bases', [[$agente->operativo->base->id]]);
                 Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
@@ -117,17 +120,15 @@ class OperativosController extends AppBaseController
         }
         
         return view('Agentes::registro.edit')
-            ->with('agente', $agente->id)
+            ->with('agente', $agente)
             ->with('operativo', $agente->operativo()->first())
             ->with('tab', 'operativos');
     }
     
     /**
-     * Update the specified Presentismo in storage.
-     *
      * @param Request $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request)
     {
@@ -155,7 +156,7 @@ class OperativosController extends AppBaseController
             
         } catch (\Exception $e) {
             
-            Flash::error('No se pudo actualizar los datos operativos');
+            Flash::error('No se pudo actualizar los datos operativos' . $e->getMessage());
             
             return redirect(route('agentesEditOperativos', ['id' => $agente->id]));
             

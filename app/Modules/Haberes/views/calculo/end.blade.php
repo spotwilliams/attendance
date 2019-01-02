@@ -1,127 +1,79 @@
-<?php
-
-/** @var \DateTime $fecha */
-/** @var \Cat\Models\Periodo $periodo */
-$fecha      = new DateTime($periodo->fecha_comienzo);
-$fechaToday = (new DateTime($periodo->fecha_fin));
-
-$fechasToShow = [];
-
-while ($fecha < $fechaToday) {
-    $fechasToShow[] = ['data' => $fecha->format('Y-m-d'), 'show' => $fecha->format('d/m')];
-    $fecha->modify('+1day');
-}
-
-?>
-
 @extends('layouts.app')
 
 @section('content')
 
     <div class="content">
         <div class="clearfix"></div>
+
         @include('flash::message')
 
         <div class="clearfix"></div>
+        <?php
 
+        $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_fin);
+        $mesFacturacion->addMonth(1);
+
+        $start = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_comienzo);
+        $end = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_fin);
+        ?>
         <div class="box box-warning">
             <div class="box-header with-border">
-                <h3 class="box-title">C&aacute;lculo de haberes</h3>
+                <h3 class="box-title">Registro facturas para <span class="label label-info">{{trans('month.'.$mesFacturacion->format('m'))}}
+                        '{{$mesFacturacion->format('y')}}</span> <span
+                            class="label label-default">({{$start->format('d/m/Y')}} - {{$end->format('d/m/Y')}})</span>
+                </h3>
             </div>
 
             <div class="box-body">
-                <div class="form-group col-sm-10 col-sm-offset-1">
-                    <div class="progress-group ">
-                        <span class="progress-text">Paso 4</span>
-                        <span class="progress-number"><b>4</b>/4</span>
 
-                        <div class="progress">
-                            <div class="progress-bar progress-bar-yellow" style="width: 100%"></div>
-                        </div>
-                    </div>
-                    <div class="">
-                        <!-- Info Boxes Style 2 -->
-                        <div class="info-box bg-olive">
-                            <span class="info-box-icon"><i class="fa fa-building"></i></span>
+                <div class="col-md-10 col-md-offset-1">
 
-                            <div class="info-box-content">
-                                <span class="info-box-text">Base</span>
-                                <span class="info-box-number">{{$base->nombre}}</span>
+                    <div class="form-group">
+                        <div class="progress-group">
+                            <span class="progress-text">Paso 4 - Resumen</span>
+                            <span class="progress-number"><b>4</b>/4</span>
 
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 100%"></div>
-                                </div>
-
+                            <div class="progress">
+                                <div class="progress-bar progress-bar-yellow" style="width: 100%"></div>
                             </div>
-                            <!-- /.info-box-content -->
                         </div>
-                        <!-- /.info-box -->
-                        <div class="info-box bg-olive">
-                            <span class="info-box-icon"><i class="fa fa-calendar"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Periodo</span>
-                                <span class="info-box-number">{{(new DateTime($periodo->fecha_comienzo))->format('d/m/Y')}}
-                                    hasta {{(new DateTime($periodo->fecha_fin))->format('d/m/Y')}}</span>
-
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
-                        <div class="info-box bg-olive">
-                            <span class="info-box-icon"><i class="fa fa-clock-o"></i></span>
-
-                            <div class="info-box-content">
-                                <span class="info-box-text">Turno</span>
-                                <span class="info-box-number">{{$turno->codigo}}
-                                    {{--({{$turno->descripcion}})--}}
-                                </span>
-
-                                <div class="progress">
-                                    <div class="progress-bar" style="width: 100%"></div>
-                                </div>
-                            </div>
-                            <!-- /.info-box-content -->
-                        </div>
-                        <!-- /.info-box -->
                     </div>
                 </div>
 
-                <tr>
-                    <td colspan="10">
-                        <div class="col-md-4">
-                            <a class="btn btn-default" href="{{route('haberesSelectBase')}}">Volver</a>
-                        </div>
-                        <div class="col-md-4">
-                            {!! Form::open(['route' => 'haberesNotificar']) !!}
-                            {!! Form::hidden('periodo', $periodo->id) !!}
-                            {!! Form::hidden('base', $base->id) !!}
-                            {!! Form::hidden('turno', $turno->id) !!}
-                            <input type="submit"
-                                   class="btn btn-primary"
-                                   value='Notificar via mail'/>
-                            {!! Form::close() !!}
-                        </div>
-                        <div class="col-md-4">
-                            {!! Form::open(['route' => 'haberesReporte', 'method' => 'POST']) !!}
-                            {!! Form::hidden('periodo', $periodo->id) !!}
-                            {!! Form::hidden('turno', $turno->id) !!}
-                            {!! Form::hidden('base', $base->id) !!}
-                            <button type="submit" class="btn btn-success pull-right">
-                                <i class="fa fa-download"></i> Obtener reporte
-                            </button>
-                            {!! Form::close() !!}
-                        </div>
+            </div>
+            <div class="box-footer">
+            </div>
+        </div>
 
+        <div class="box">
 
-                    </td>
-                </tr>
+            <div class="box-header with-border">
+                <h3 class="box-title">
+                    Se regist&oacute; factura para <span
+                            class="label label-info">@if(isset($agentes)){{$agentes->count()}}@else{{0}}@endif</span>
+                    agentes</h3>
+                <div class="box-tools pull-right">
+                    <div class="btn-group">
+                        <a class="btn btn-default ninguno" href="{{route('haberesIndex')}}"><i class="fa fa-undo"></i>&nbsp;Volver</a>
+                    </div>
+                </div>
             </div>
 
+            <div class="box-body">
+                <div class="col-md-12">
+                    @include('Haberes::calculo.parts.table-resumen')
+                </div>
+
+            </div>
         </div>
     </div>
-
 @endsection
+
+
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+        })
+    </script>
+@append
+

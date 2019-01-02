@@ -2,9 +2,17 @@
 
 namespace Cat\Models;
 
+use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
+/**
+ * Class Periodo
+ * @property string fecha_comienzo
+ * @property string fecha_fin
+ * @package Cat\Models
+ */
 class Periodo extends Model
 {
     
@@ -53,6 +61,7 @@ class Periodo extends Model
      * @param Base $base
      * @param Turno $turno
      * @return bool
+     * @throws BaseTurnoSinPeriodo
      */
     public function estaActivo(Base $base, Turno $turno)
     {
@@ -65,7 +74,8 @@ class Periodo extends Model
             return ($estado->abierto == true);
             
         } catch (ModelNotFoundException $e) {
-            return false;
+            throw new BaseTurnoSinPeriodo($this, $base, $turno);
+//            return false;
         }
         
     }
@@ -120,4 +130,42 @@ class Periodo extends Model
         }
     }
     
+    /**
+     * Verifica si se pueden calcular los montos tomando como referencia una fecha particular
+     * @throws PeriodoAbierto
+     * @return true
+     */
+    public function validarSiPuedeCalcular()
+    {
+        $today = new \DateTime('now');
+        if ($this->fechaComprendida($today)) {
+            throw new PeriodoAbierto($this);
+        } else {
+            return $this->validarSiEsFuturo($today);
+        }
+        
+    }
+    
+    /**
+     * @param \DateTime $fecha
+     * @throws PeriodoAbierto
+     */
+    public function validarSiEsFuturo(\DateTime $fecha)
+    {
+        $hasta = new \DateTime($this->fecha_fin);
+        $hasta->setTime(0, 0, 0);
+        $fecha->setTime(0, 0, 0);
+        if ($hasta > $fecha) {
+            throw new PeriodoAbierto($this);
+    
+        }
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function facturas()
+    {
+        return $this->hasMany(FacturaFisica::class, 'id_periodo');
+    }
 }

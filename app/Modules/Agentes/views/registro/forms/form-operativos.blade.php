@@ -12,7 +12,7 @@
     </div>
 </div>
 
-<input type="hidden" name="agente" value="{{$agente}}">
+<input type="hidden" name="agente" value="{{$agente->id}}">
 
 <?php
 $gerencias = [-1 => 'Seleccione...'];

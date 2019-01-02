@@ -4,6 +4,8 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
 use Cat\Helpers\Validation;
+use Cat\Http\Requests\LaboralesRequest;
+use Cat\Http\Requests\LaboralesRequestUpdate;
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
@@ -11,8 +13,8 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Laborales as Update;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
 use Illuminate\Support\Facades\Response;
@@ -32,9 +34,9 @@ class LaboralesController extends AppBaseController
     
     
     /**
-     * Show the form for creating a new Presentismo.
-     *
-     * @return Response
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create($id)
     {
@@ -47,21 +49,22 @@ class LaboralesController extends AppBaseController
             
             return redirect(route('agentesCreatePersonales'));
         }
-        
+
+        if($agente->contrato()->first()) {
+            return redirect(route('agentesEditLaborales', $id));
+        }
         return view('Agentes::registro.create')
             ->with('tab', 'laborales')
-            ->with('agente', $id);
+            ->with('agente', $agente);
     }
     
     
     /**
-     * Store a newly created Presentismo in storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @param LaboralesRequest $request
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function store(Request $request)
+    public function store(LaboralesRequest $request)
     {
         $this->authorize('store', $this);
         
@@ -94,21 +97,29 @@ class LaboralesController extends AppBaseController
     
     
     /**
-     * Show the form for editing the specified Presentismo.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
         $this->authorize('edit', $this);
         
         try {
+            /** @var Agente $agente */
             $agente = Agente::with('operativo.turno')
                 ->with('operativo.base')
                 ->findOrFail($id);
-    
+
+            try {
+                /** @var Contrato $contrato */
+                $contrato = $agente->contrato()
+                ->firstOrFail();
+
+            } catch (ModelNotFoundException $e) {
+                return redirect(route('agentesCreateLaborales', $id));
+            }
+
             if (($agente->operativo) and ($agente->operativo->base) and ($agente->operativo->turno)) {
                 Gate::allows('work-bases', [[$agente->operativo->base->id]]);
                 Gate::allows('work-turnos', [[$agente->operativo->turno->id]]);
@@ -120,23 +131,20 @@ class LaboralesController extends AppBaseController
         }
         
         return view('Agentes::registro.edit')
-            ->with('agente', $agente->id)
-            ->with('contrato', $agente->contrato()->first())
+            ->with('agente', $agente)
+            ->with('contrato', $contrato)
             ->with('tab', 'laborales');
     }
     
     /**
-     * Update the specified Presentismo in storage.
-     *
-     * @param Request $request
-     *
-     * @return Response
+     * @param LaboralesRequestUpdate $request
+     * @return \Illuminate\Http\RedirectResponse|\Illuminate\Routing\Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function update(Request $request)
+    public function update(LaboralesRequestUpdate $request)
     {
         $this->authorize('update', $this);
         
-        $this->validate($request, Validation::getContratoRules($request));
         
         $input = $request->all();
         
@@ -159,36 +167,11 @@ class LaboralesController extends AppBaseController
             
         } catch (\Exception $e) {
             
-            Flash::error('No se pudo actualizar los datos laborales.');
+            Flash::error('No se pudo actualizar los datos laborales');
             
             return redirect(route('agentesEditLaborales', ['id' => $agente->id]));
             
         }
     }
-    
-    /**
-     * Remove the specified Presentismo from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
-     */
-    public function destroy($id)
-    {
-        $this->authorize('destroy', $this);
-        
-        $presentismo = $this->agenteRepository->findWithoutFail($id);
-        
-        if (empty($presentismo)) {
-            Flash::error('Presentismo not found');
-            
-            return redirect(route('Presentismo::registro.index'));
-        }
-        
-        $this->agenteRepository->delete($id);
-        
-        Flash::success('Presentismo deleted successfully.');
-        
-        return redirect(route('Presentismo::registro.index'));
-    }
+
 }

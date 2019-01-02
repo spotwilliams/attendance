@@ -21,6 +21,8 @@ class CrudPolicy extends SecurityPolicy
             $this->verifyOnlyControllerPermission($user, 'Crear base')
             or
             $this->verifyOnlyControllerPermission($user, 'Modificar base')
+            or
+            $this->verifyOnlyControllerPermission($user, 'Eliminar base')
         );
     }
     
@@ -40,6 +42,17 @@ class CrudPolicy extends SecurityPolicy
     public function update(User $user)
     {
         return $this->verifyOnlyControllerPermission($user, 'Modificar base');
+    }
+
+    public function delete(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar base');
+    }
+    
+    
+    public function destroy(User $user)
+    {
+        return $this->verifyOnlyControllerPermission($user, 'Eliminar base');
     }
     
 }

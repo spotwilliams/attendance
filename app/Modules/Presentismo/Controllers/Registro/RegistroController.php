@@ -6,8 +6,11 @@ use Cat\Exceptions\FaltanDatosObligatorios;
 use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\EnComision;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Services\Registro\Destroy;
 use Cat\Modules\Presentismo\Services\Validacion\ValidationNonType;
@@ -43,16 +46,18 @@ class RegistroController extends AppBaseController
                 'message'     => $faltanDatos->getMessage(),
                 'agente'      => $agente->id,
                 'presentismo' => new Presentismo(['id_tipo_presentismo' => -1]),
-                'button'      => HtmlCustoms::getButtonWithPopOver(null, false, true),
+                'button'      => HtmlCustoms::getButtonWithPopOver(null),
             ], 403);
         } catch (\Exception $exception) {
             $agente = Agente::find($request->input('agente'));
-    
+            
             return Response::json([
                 'message'     => 'Hubo un error inesperado.',
+                'tech'        => $exception->getMessage(),
+                'track'       => $exception->getTraceAsString(),
                 'agente'      => $agente->id,
                 'presentismo' => new Presentismo(['id_tipo_presentismo' => -1]),
-                'button'      => HtmlCustoms::getButtonWithPopOver(null, false, true),
+                'button'      => HtmlCustoms::getButtonWithPopOver(null),
             ], 403);
         }
         
@@ -89,6 +94,11 @@ class RegistroController extends AppBaseController
         return $operation;
     }
     
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
     public function store(Request $request)
     {
         try {
@@ -137,6 +147,11 @@ class RegistroController extends AppBaseController
         }
     }
     
+    /**
+     * @param Request $request
+     * @return mixed
+     * @throws \Exception
+     */
     public function saveOrUpdate(Request $request)
     {
         $input  = $request->all();
@@ -162,6 +177,15 @@ class RegistroController extends AppBaseController
             $code    = 500;
         } catch (FechaFutura $e) {
             
+            $message = $e->getMessage();
+            $code    = 500;
+        } catch (BaseTurnoSinPeriodo $e) {
+            $message = $e->getMessage();
+            $code    = 500;
+        } catch (EnComision $e) {
+            $message = $e->getMessage();
+            $code    = 500;
+        } catch (Validation $e) {
             $message = $e->getMessage();
             $code    = 500;
         }

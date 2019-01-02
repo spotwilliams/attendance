@@ -1,156 +1,80 @@
 <?php
 
-namespace Cat\Modules\Haberes\Controllers\Registro;
+namespace Cat\Modules\Haberes\Controllers;
 
+use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Base;
 use Cat\Models\Contrato;
 use Cat\Models\EstadoPeriodo;
 use Cat\Models\Haber;
+use Cat\Models\Operativo;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
+use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Pagination\LengthAwarePaginator;
+use Illuminate\Support\Collection;
 use Illuminate\Validation\ValidationException;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Illuminate\Support\Facades\Response;
 
 class GeneralController extends AppBaseController
 {
-    /** @var  PresentismoRepository */
-    private $presentismoRepository;
     
-    public function __construct(PresentismoRepository $presentismoRepo)
+    /** @var string */
+    protected $indexView;
+    
+    /** @var string */
+    protected $searchView;
+    
+    /** @var string */
+    protected $indexRoute;
+    
+    
+    public function __construct()
     {
-        $this->presentismoRepository = $presentismoRepo;
         $this->middleware('auth');
         
+        $this->indexView  = 'Haberes::calculo.seleccionar-periodos';
+        $this->searchView = 'Haberes::calculo.seleccionar-agentes';
+        $this->indexRoute = 'haberesIndex';
     }
     
     /**
-     * Display a listing of the Presentismo.
-     *
-     * @param Request $request
-     * @return Response
+     * @return \Illuminate\Contracts\View\Factory|View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function selectBase(Request $request)
+    public function index()
     {
-        $this->authorize('selectBase', $this);
+        $this->authorize('index', $this);
         
-        return view('Haberes::calculo.index-base');
+        return view($this->indexView);
     }
     
-    /**
-     * @param Request $request
-     * @return View
-     */
-    public function selectPeriodo(Request $request)
-    {
-        $this->authorize('selectPeriodo', $this);
-        
-        $this->validate($request, ['base' => 'not_in:-1', 'turno' => 'not_in:-1']);
-        
-        $this->authorize('base', $request);
-        $this->authorize('turno', $request);
-        
-        $base  = Base::find($request->input('base'));
-        $turno = Turno::find($request->input('turno'));
-        
-        return view('Haberes::calculo.index-periodo')
-            ->with('base', $base)
-            ->with('turno', $turno);
-    }
     
-    public function prepareListaAgentes(Request $request)
+    public function search(Request $request)
     {
-        $this->authorize('prepareListaAgentes', $this);
         try {
+            /** @var Periodo $periodo */
+            $periodo = Periodo::findOrFail($request->input('periodo'));
             
-            $this->validate(
-                $request,
-                ['periodo' => 'not_in:-1']
-            );
-        } catch (ValidationException $e) {
-            $base  = Base::find($request->input('base'));
-            $turno = Turno::find($request->input('turno'));
+            $periodo->validarSiPuedeCalcular();
             
-            return view('Haberes::calculo.index-periodo')
-                ->with('base', $base)
-                ->with('turno', $turno)
-                ->withErrors($e->validator->getMessageBag());
-        }
-        
-        $input  = $request->all();
-        $params = [
-            'base'    => $input['base'],
-            'periodo' => $input['periodo'],
-            'turno'   => $input['turno'],
-        ];
-        
-        return redirect(route('haberesListaAgentes', $params));
-        
-    }
-    
-    public function listaAgentes(Request $request, $base, $periodo, $turno)
-    {
-        $this->authorize('listaAgentes', $this);
-        
-        try {
-            $periodo       = Periodo::findOrFail($periodo);
-            $base          = Base::findOrFail($base);
-            $turno         = Turno::findOrFail($turno);
-            $estadoPeriodo = EstadoPeriodo::where('id_periodo', '=', $periodo->id)
-                ->where('id_base', '=', $base->id)
-                ->where('id_turno', '=', $turno->id)
-                ->first();
-            $tipoLocacion  = array_keys(TipoContrato::where('codigo', '=', Contrato::TIPO_LOCACION)
-                ->get(['id'])
-                ->keyBy('id')
-                ->toArray());
-            
-            $agentesYaConfirmados = Haber::where('id_periodo', '=', $periodo->id)
-                ->get(['id_agente'])->toArray();
-            
-            $agentes = $this
-                ->presentismoRepository
-                ->getEloquentAgentes($base->id, $periodo);
-
-            $agentes
-                ->select([
-                    'agentes.id as id',
-                    'agentes.nombre as nombre',
-                    'agentes.apellido as apellido',
-                    'agentes.cuit as cuit',
-                ])
-                // Override the condition
-                ->with([
-                    'presentismos' => function ($presentismos) use ($periodo) {
-                        $presentismos
-                            ->where('id_periodo', '=', $periodo->id)
-//                            ->where('injustificado', '=', true)
-                            ->orderBy('fecha', 'ASC');
-                    },
-                ])
-                ->with('contrato.tipoContrato')
-                ->whereNotIn('agentes.id', $agentesYaConfirmados)
-                ->whereIn('contratos.id_tipo_contrato', $tipoLocacion)
-                ->where('operativos.id_turno', '=', $turno->id);
-            
-            return view('Haberes::calculo.lista')
-                ->with('agentes', $agentes->paginate(25))
-                ->with('base', $base)
-                ->with('periodo', $periodo)
-                ->with('estadoPeriodo', $estadoPeriodo)
-                ->with('turno', $turno);
+            return view($this->searchView)
+                ->with('periodo', $periodo);
         } catch (ModelNotFoundException $e) {
-            Flash::error('No se ha podido continuar. Intente nuevamente');
+            Flash::error('Debe seleccionar un periodo de la lista');
             
-            return view('Haberes::calculo.index-base')
-                ->with('baseActual', 1);
+            return redirect(route($this->indexRoute));
+        } catch (PeriodoAbierto $e) {
+            Flash::error($e->getMessage());
+            
+            return redirect()->route($this->indexRoute);
         }
-        
     }
 }

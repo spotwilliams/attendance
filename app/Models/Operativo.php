@@ -4,7 +4,10 @@ namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * Class Operativo
+ * @package Cat\Models
+ */
 class Operativo extends Model
 {
     
@@ -29,10 +32,10 @@ class Operativo extends Model
     
     public static $rules
         = [
-            'id_funcion'   => 'not_in:-1',
-            'id_base'      => 'not_in:-1',
-            'id_turno'     => 'not_in:-1',
-            'id_horario'   => 'not_in:-1',
+            'id_funcion' => 'not_in:-1',
+            'id_base'    => 'not_in:-1',
+            'id_turno'   => 'not_in:-1',
+            'id_horario' => 'not_in:-1',
         ];
     
     /**
@@ -51,35 +54,73 @@ class Operativo extends Model
         return $this->belongsTo(Base::class, 'id_base');
     }
     
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function agente()
     {
         return $this->belongsTo(Agente::class, 'id_agente');
     }
     
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function gerencia()
     {
         return $this->belongsTo(Gerencia::class, 'id_gerencia');
     }
     
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function cargo()
     {
         return $this->belongsTo(Cargo::class, 'id_cargo');
     }
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function funcion()
     {
         return $this->belongsTo(Funcion::class, 'id_funcion');
     }
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function horario()
     {
         return $this->belongsTo(Horario::class, 'id_horario');
     }
     
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
     public function turno()
     {
         return $this->belongsTo(Turno::class, 'id_turno');
+    }
+    
+    /**
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function turnosHistorico()
+    {
+        return $this->belongsTo(TurnoHistorico::class, 'id_operativo');
+    }
+    
+    /**
+     * @param \DateTime $fecha
+     * @return mixed
+     */
+    public function turnoOnDate(\DateTime $fecha)
+    {
+        return $this->hasMany(TurnoHistorico::class, 'id_operativo')
+            ->whereDate('fecha_inicio', '<=', $fecha)
+            ->whereDate('fecha_fin', '>=', $fecha);
     }
 }

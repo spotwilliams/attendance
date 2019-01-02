@@ -2,90 +2,138 @@
 
 namespace Cat\Modules\Haberes\Controllers\Registro;
 
-use Cat\Models\Agente;
-use Cat\Models\Base;
 use Cat\Models\Periodo;
-use Cat\Models\Turno;
+use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Haberes\Services\Helpers\Facilitador;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Database\Query\Builder;
 use Illuminate\Http\Request;
+use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Laracasts\Flash\Flash;
+use Cat\Modules\Haberes\Controllers\Eloquenteable;
 
 class ConfirmarController extends AppBaseController
 {
-    /** @var  PresentismoRepository */
-    private $presentismoRepository;
+    /** Trait que me permite generar reglas dinamicas para los campos factura */
+    use Ruleable, Eloquenteable;
     
-    public function __construct(PresentismoRepository $presentismoRepo)
+    /** @var string */
+    protected $searchView;
+    
+    /** @var string */
+    protected $confirmarView;
+    
+    /** @var string */
+    protected $endView;
+    
+    /** @var string */
+    protected $indexRoute;
+    
+    public function __construct()
     {
-        $this->presentismoRepository = $presentismoRepo;
         $this->middleware('auth');
-        
+        $this->searchView    = 'Haberes::calculo.seleccionar-agentes';
+        $this->indexRoute    = 'haberesIndex';
+        $this->confirmarView = 'Haberes::calculo.confirmar-montos';
+        $this->searchView    = 'Haberes::calculo.seleccionar-agentes';
+        $this->endView       = 'Haberes::calculo.end';
     }
     
-    public function disclaimer(Request $request)
+    /**
+     * @param Request $request
+     * @return \Illuminate\Http\RedirectResponse
+     * @throws \Exception
+     */
+    public function registarFactura(Request $request)
     {
-        $this->authorize('disclaimer', $this);
-        
+        $this->authorize('send', $this);
+    
         try {
-            $input = $request->all();
+        $this->setRulesAccording()
+            ->validate($request, $this->rules, $this->messages);
             
             /** @var Periodo $periodo */
-            $periodo = Periodo::findOrFail($input['periodo']);
-            $base    = Base::findOrFail($input['base']);
-            $turno   = Turno::findOrFail($input['turno']);
+            $periodo = Periodo::findOrFail($request->input('periodo'));
             
-            if ($periodo->fechaComprendida(new \DateTime('now'))) {
-                Flash::error('No se puede cerrrar el periodo actual, debe seleccionar un peri&oacute;do que no incluya la fecha actual');
-                
-                return redirect(route('haberesListaAgentes', [
-                    'base'    => $base,
-                    'periodo' => $periodo,
-                    'turno'   => $turno,
-                ]));
-            }
+            $periodo->validarSiPuedeCalcular();
             
-            return view('Haberes::calculo.disclaimer')
-                ->with('base', $base)
-                ->with('periodo', $periodo)
-                ->with('turno', $turno);
+            $eloq = $this->getEloq($periodo, $request->input('agentes'));
             
+            /** @var Collection $agentes */
+            $agentes = $eloq->get();
             
+            Facilitador::batch($agentes, $periodo);
+            
+            Flash::success('Facturacion registrada correctamente');
+            
+            return redirect()->route($this->indexRoute);
+            
+        } catch (ValidationException $e) {
+//
+            Flash::error($e->validator->getMessageBag()->first());
+
+//
+            return $this->calcular($request);
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Debe seleccionar un periodo');
+            
+            return redirect()->route($this->indexRoute);
+        } catch (PeriodoAbierto $e) {
+            Flash::error($e->getMessage());
+            
+            return redirect()->route($this->indexRoute);
         } catch (\Exception $exception) {
-            Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
+            Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
             
-            return redirect()->back();
+            return redirect()->route($this->indexRoute);
+            
+        }
+    }
+    
+    public function calcular(Request $request)
+    {
+//        $this->authorize('disclaimer', $this);
+        
+        try {
+            /** @var Periodo $periodo */
+            $periodo = Periodo::findOrFail($request->input('periodo'));
+            
+            $this->validate($request, ['agentes' => 'required'], ['required' => 'Debe seleccionar al menos un agente']);
+            
+            $periodo->validarSiPuedeCalcular();
+            /** @var Builder $eloq */
+            $eloq = $this->getEloq($periodo, $request->input('agentes'));
+            
+            /** @var Collection $agentes */
+            $agentes    = $eloq->get();
+            $calculador = new CalculadorBatch($agentes, $periodo);
+            
+            return view($this->confirmarView)
+                ->with('periodo', $periodo)
+                ->with('agentes', $calculador->execute());
+            
+        } catch (ValidationException $e) {
+            Flash::error($e->validator->getMessageBag()->get('agentes')[0]);
+            
+            return view($this->searchView)
+                ->with('periodo', $periodo);
+        } catch (ModelNotFoundException $e) {
+            Flash::error('Debe seleccionar un periodo');
+            
+            return redirect()->route($this->indexRoute);
+        } catch (PeriodoAbierto $e) {
+            Flash::error($e->getMessage());
+            
+            return redirect()->route($this->indexRoute);
+        } catch (\Exception $exception) {
+            Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
+            
+            return redirect()->route($this->indexRoute);
             
         }
         
     }
-    
-    public function batch(Request $request)
-    {
-        $this->authorize('batch', $this);
-    
-        try {
-            $input   = $request->all();
-            $periodo = Periodo::findOrFail($input['periodo']);
-            $base    = Base::find($input['base']);
-            $turno   = Turno::findOrFail($input['turno']);
-            
-            Facilitador::batch($base, $periodo, $turno);
-            Flash::success('Periodo cerrado con &eacute;xito');
-            
-            return view('Haberes::calculo.end')
-                ->with('periodo', $periodo)
-                ->with('base', $base)
-                ->with('turno', $turno);
-            
-        } catch (ModelNotFoundException $exception) {
-            Flash::error('Hubo un error durante la ejecución. Intente nuevamente');
-            
-            return redirect()->back();
-            
-        }
-    }
-    
 }

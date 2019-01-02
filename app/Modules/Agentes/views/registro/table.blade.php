@@ -1,5 +1,7 @@
 <?php
 $idModal = 'modal-agentes';
+$desdePre = (new DateTime('now'))->modify('-5day')->format('Y-m-d');
+$hastaPre =(new DateTime('now'))->modify('+5day')->format('Y-m-d');
 ?>
 
 <table class="table table-hover" id="presentismos-table">
@@ -15,7 +17,7 @@ $idModal = 'modal-agentes';
             <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
 {{--            <td>{{$agente->dni}}</td>--}}
             <td>{{$agente->cuit}}</td>
-            @include('Agentes::registro.commons.operaciones-celda')
+            @include('Agentes::registro.commons.operaciones-celda', ['desdePre' => $desdePre, 'hastaPre' => $hastaPre ])
 
         </tr>
     @endforeach

@@ -152,14 +152,6 @@ class Calculation
             }
             $agente->presentismos = $presentismosGroupBy->get('injustificado');
             
-//            if($agente->id == 3645) {
-//                dd(
-////                    $fechasResigradas,
-////                    $fechasQueFaltan,
-////                    self::getPresentismoGroupByJustificacion($agente)
-//                    $agente->presentismos
-//                );
-//            }
         }
         
         return $agentesConPresentsimos;

@@ -26,7 +26,15 @@
                         </div>
                         <div class="col-md-4">
                             <div class="input-group">
-                                {{ Form::text('cuit', Request::input('cuit'), ['id' => 'cuit', 'placeholder' => 'CUIT', 'class' => 'form-control']) }}
+                                <?php
+                                $cuitsInputs = '';
+                                if (Request::input('cuit')) {
+
+                                    $cuitsInputs = is_array(Request::input('cuit')) ? implode(',',
+                                        Request::input('cuit')) : Request::input('cuit');
+                                }
+                                ?>
+                                <input type="text" name="cuit" value="{{$cuitsInputs}}" class="form-control">
                                 <span class="input-group-btn">
                                 {{ Form::submit('Buscar', ['class' => 'btn btn-info btn-flat']) }}
                             </span>
@@ -68,3 +76,10 @@
     </div>
 @endsection
 
+@section('scripts')
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('input[name="cuit"].form-control').tokenfield();
+        })
+    </script>
+@append

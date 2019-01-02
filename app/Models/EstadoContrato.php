@@ -4,14 +4,18 @@ namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
+use Illuminate\Support\Collection;
 
 
 class EstadoContrato extends Model
 {
     use SoftDeletes;
+    
     const ESTADO_ACTIVO = 'ACTIVO';
     
     const ESTADO_BAJA = 'BAJA';
+    
+    const ESTADO_COMISION = 'COMISION';
     
     public $table = 'estado_contratos';
     
@@ -55,8 +59,8 @@ class EstadoContrato extends Model
     
     
     /**
-     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
-     **/
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
     public function hijos()
     {
         return $this->hasMany(EstadoContrato::class, 'id_padre', 'id');
@@ -80,6 +84,9 @@ class EstadoContrato extends Model
         }
     }
     
+    /**
+     * @return Collection
+     */
     public static function getEstadosEquivalentesBajas()
     {
         $estadoBajaPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_BAJA)->first();
@@ -88,5 +95,26 @@ class EstadoContrato extends Model
             ->orWhere('id_padre', '=', $estadoBajaPadre->id)
             ->get();
         
+    }
+    
+    /**
+     * @return Collection
+     */
+    public static function getEstadosEquivalentesActivos()
+    {
+        $estadoActivoPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first();
+        
+        return EstadoContrato::where('id', '=', $estadoActivoPadre->id)
+            ->orWhere('id_padre', '=', $estadoActivoPadre->id)
+            ->get();
+        
+    }
+    
+    /**
+     * @return EstadoContrato
+     */
+    public static function comision()
+    {
+        return self::where('estado', '=', self::ESTADO_COMISION)->first();
     }
 }

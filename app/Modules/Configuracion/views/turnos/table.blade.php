@@ -11,7 +11,11 @@
             <td>{!! $turnoModel->descripcion !!}</td>
             <td>
                 <div class='btn-group'>
-                    <a href="{!! route('configuracion.turno.edit', [$turnoModel->id]) !!}" class='btn btn-primary btn-md'><i class="fa fa-edit"></i></a>
+                    <a href="{!! route('configuracion.turno.edit', [$turnoModel->id]) !!}" class='btn btn-primary btn-sm'><i class="fa fa-edit"></i></a>
+                    <a href="{!! route('configuracion.turno.delete', [$turnoModel->id]) !!}"
+                       class='btn btn-danger btn-sm'>
+                        <i class="fa fa-trash"></i>
+                    </a>
                 </div>
             </td>
         </tr>

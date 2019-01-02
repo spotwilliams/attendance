@@ -10,6 +10,10 @@
             <td>
                 <div class='btn-group'>
                     <a href="{!! route('configuracion.area.edit', [$area->id]) !!}" class='btn btn-primary btn-sm'><i class="fa fa-edit"></i></a>
+                    <a href="{!! route('configuracion.area.delete', [$area->id]) !!}"
+                       class='btn btn-danger btn-sm'>
+                        <i class="fa fa-trash"></i>
+                    </a>
                 </div>
             </td>
         </tr>

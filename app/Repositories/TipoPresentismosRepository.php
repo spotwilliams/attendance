@@ -2,12 +2,15 @@
 
 namespace Cat\Repositories;
 
+use Carbon\Carbon;
 use Cat\Helpers\Cache;
 use Cat\Models\Agente;
+use Cat\Models\ContratoHistorico;
 use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;
 use Illuminate\Support\Collection;
 
@@ -53,6 +56,39 @@ class TipoPresentismosRepository
         return $bases;
     }
     
+    public static function getByTipoContratoOnDate(Agente $agente, \DateTime $date = null, $cache = true)
+    {
+        if ($date !== null) {
+            
+            try {
+                /** @var ContratoHistorico $contrato */
+                $contrato = $agente->contratoOnDate($date)
+                    ->with('tipoContrato')
+                    ->firstOrFail();
+                
+                $tipoContratoEloquent = TipoPresentismo::where('aplica', '=', $contrato->tipoContrato->codigo)
+                    ->orWhere('aplica', '=', 'TODOS');
+                
+                $key = $contrato->tipoContrato->codigo . '_tipos_presentismo';
+                if ($cache) {
+                    $tiposPresentismos = Cache::get($key, function () use ($tipoContratoEloquent) {
+                        return $tipoContratoEloquent->get();
+                    });
+                } else {
+                    $tiposPresentismos = $tipoContratoEloquent->get();
+                }
+                
+                return $tiposPresentismos;
+            } catch (ModelNotFoundException $sinCotratoVigente) {
+                return new Collection();
+            }
+        } else {
+            // No se especifio una fecha....
+            return new Collection();
+            
+        }
+    }
+    
     /**
      * @param Agente $agente
      * @param Periodo $periodo
@@ -78,6 +114,12 @@ class TipoPresentismosRepository
         
     }
     
+    /**
+     * @param Agente $agente
+     * @param Periodo $periodo
+     * @return int
+     * @obsolete
+     */
     public static function getCantFaltasInjustificadas(Agente $agente, Periodo $periodo)
     {
         /** @var Collection $faltas */

@@ -13,12 +13,16 @@ if (isset($desde) and isset($hasta)) {
 
 @foreach($agentes as $agente)
     <tr>
+        <td><a href="{{route('agentesShow', ['id' => $agente->id])}}" data-toggle="popover" title="Ver datos"
+               data-content="Abre la ficha del agente en otra pesta&ntilde;a" target="_blank"
+               class="label label-success"><i class="fa fa-eye"></i></a></td>
         <td>{{$agente->apellido}}, {{$agente->nombre}}</td>
         <td>{{$agente->cuit}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','base', 'nombre'])}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','turno', 'codigo'])}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['operativo','area', 'nombre'])}}</td>
         <td>{{\Cat\Helpers\ModelCreator::getDataFromModel($agente,['contrato','tipoContrato', 'descripcion'])}}</td>
+        <td>{{$agente->presentismos->count()}}</td>
         <?php
         $pByFecha = $agente->presentismos->keyBy('fecha');
         ?>
@@ -30,7 +34,8 @@ if (isset($desde) and isset($hasta)) {
                     @endif
                 </td>
             @else
-                <td>S/D</td>
+                {{--<td>S/D</td>--}}
+                <td></td>
             @endif
         @endforeach
     </tr>
@@ -44,4 +49,4 @@ if (isset($desde) and isset($hasta)) {
             });
         })
     </script>
-    @append
+@append

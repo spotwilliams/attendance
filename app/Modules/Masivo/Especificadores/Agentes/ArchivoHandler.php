@@ -56,12 +56,13 @@ class ArchivoHandler extends ExcelHandler
                 $this->clearPossibleMistakes($row);
                 
                 $listaErrores[] = [
-                    '#'        => $i + 2,
-                    'nombre'   => $row->nombre,
-                    'apellido' => $row->apellido,
-                    'dni'      => $row->dni,
-                    'cuit'     => $row->cuit,
-                    'mensaje'  => 'Los datos provistos no se han podido procesar, por favor reviselos e intente nuevamente',
+                    '#'               => $i + 2,
+                    'nombre'          => $row->nombre,
+                    'apellido'        => $row->apellido,
+                    'dni'             => $row->dni,
+                    'cuit'            => $row->cuit,
+                    'mensaje'         => 'Los datos provistos no se han podido procesar, por favor reviselos e intente nuevamente',
+                    'mensaje_tecnico' => $e->getMessage(),
                 ];
             }
         }
@@ -89,7 +90,11 @@ class ArchivoHandler extends ExcelHandler
         return $storeService->execute();
     }
     
-    
+    /**
+     * @param CellCollection $row
+     * @param Agente $agente
+     * @throws \Exception
+     */
     private function handleLaborales(CellCollection $row, Agente $agente)
     {
         $input        = LaboralesMapper::toInput($row);

@@ -4,10 +4,12 @@ namespace Cat\Models;
 
 use Cat\Modules\Security\Models\Role;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\SoftDeletes;
 
 
 class Turno extends Model
 {
+    use SoftDeletes;
     
     public $table = 'turnos';
     
@@ -41,5 +43,11 @@ class Turno extends Model
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'turno_roles', 'turno_id', 'role_id');
+    }
+    
+    public function operativos()
+    {
+        return $this->hasMany(Operativo::class, 'id_turno');
+        
     }
 }

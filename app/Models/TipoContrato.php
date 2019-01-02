@@ -3,6 +3,7 @@
 namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Support\Collection;
 
 
 class TipoContrato extends Model
@@ -21,6 +22,9 @@ class TipoContrato extends Model
         $this->hasMany(Contrato::class, 'id_tipo_contrato');
     }
     
+    /**
+     * @return Collection
+     */
     public static function getEquivalentesLocacion()
     {
         return TipoContrato::where('codigo', '=', self::TIPO_LOCACION)->get();

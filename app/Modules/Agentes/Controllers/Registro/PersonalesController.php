@@ -13,9 +13,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Redirector;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Illuminate\Support\Facades\Response;
 
 class PersonalesController extends AppBaseController
 {
@@ -32,9 +30,8 @@ class PersonalesController extends AppBaseController
     
     
     /**
-     * Show the form for creating a new Presentismo.
-     *
-     * @return View
+     * @return $this
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function create()
     {
@@ -46,11 +43,9 @@ class PersonalesController extends AppBaseController
     
     
     /**
-     * Store a newly created Presentismo in storage.
-     *
      * @param Request $request
-     *
-     * @return Redirector
+     * @return $this|\Illuminate\Http\RedirectResponse|Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function store(Request $request)
     {
@@ -63,7 +58,7 @@ class PersonalesController extends AppBaseController
         $agente = new Agente($input);
         
         try {
-            $service = new Store($agente, $input['domicilio'], $input['estudio']);
+            $service = new Store($agente, $input['domicilio'], $input['estudio'], $request->file('avatar'));
             $service->execute();
             
             return redirect(route('agentesCreateLaborales', ['id' => $agente->id]));
@@ -86,11 +81,9 @@ class PersonalesController extends AppBaseController
     
     
     /**
-     * Show the form for editing the specified Presentismo.
-     *
-     * @param  int $id
-     *
-     * @return View
+     * @param $id
+     * @return $this|\Illuminate\Http\RedirectResponse|Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function edit($id)
     {
@@ -118,17 +111,16 @@ class PersonalesController extends AppBaseController
     }
     
     /**
-     * Update the specified Presentismo in storage.
-     *
      * @param Request $request
-     *
-     * @return Response
+     * @return \Illuminate\Http\RedirectResponse|Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function update(Request $request)
     {
         $this->authorize('update', $this);
         
-        $rules = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
+        $rules         = array_merge(Agente::$rules, Validation::getDomicilioRules($request));
+        $rules['cuit'] = 'required|cuit';
         
         $this->validate($request, $rules);
         $input  = $request->all();
@@ -142,7 +134,7 @@ class PersonalesController extends AppBaseController
         
         try {
             
-            $service = new Update($agente, $input);
+            $service = new Update($agente, $input, $request->file('avatar'));
             $service->execute();
             Flash::success('Datos personales actualizados correctamente.');
             
@@ -160,11 +152,9 @@ class PersonalesController extends AppBaseController
     }
     
     /**
-     * Remove the specified Presentismo from storage.
-     *
-     * @param  int $id
-     *
-     * @return Response
+     * @param $id
+     * @return \Illuminate\Http\RedirectResponse|Redirector
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function destroy($id)
     {

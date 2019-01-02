@@ -2,6 +2,7 @@
 
 namespace Cat\Repositories;
 
+use Carbon\Carbon;
 use Cat\Models\Base;
 use Cat\Models\EstadoPeriodo;
 use Cat\Models\JornadaLaborable;
@@ -34,35 +35,31 @@ class PeriodoRepository extends BaseRepository
         
         
         if ($periodo == null) {
-            // Buscar el ultimo periodo creado y crear uno a partir de este
-            $ultimoPeriodo = Periodo::getUltimoPeriodo();
             
-            $fInicioUltimoPeriodo = new \DateTime($ultimoPeriodo->fecha_comienzo);
-            $fInicioUltimoPeriodo->modify('+1month');// me ayuda a cambiar de año
+            if ($fecha === null) {
+                $fecha = new Carbon();
+            } else {
+                $fecha = Carbon::createFromTimestamp($fecha->getTimestamp());
+            }
             
-            $fechaInicioNuevoPeriodo = new \DateTime();
-            $fechaInicioNuevoPeriodo->setDate(
-                $fInicioUltimoPeriodo->format('Y'),
-                $fInicioUltimoPeriodo->format('m'),
-                16
-            );
+            $start = Carbon::createFromTimestamp($fecha->getTimestamp());
+            $end   = Carbon::createFromTimestamp($fecha->getTimestamp());
             
-            $fFinUltimoPeriodo = new \DateTime($ultimoPeriodo->fecha_fin);
-            $fFinUltimoPeriodo->modify('+1month');// me ayuda a cambiar de año
-            
-            $fechaFinNuevoPeriodo = new \DateTime();
-            $fechaFinNuevoPeriodo->setDate(
-                $fFinUltimoPeriodo->format('Y'),
-                $fFinUltimoPeriodo->format('m'),
-                15
-            );
+            // 2da quincena del mes, implica periodo nuevo
+            if ($fecha->day >= config('cat.periodo_comienzo')) {
+                $end->modify('+1month');
+            } else {
+                $start->modify('-1month');
+            }
+            $comienzoPeriodo = Carbon::create($start->year, $start->month, config('cat.periodo_comienzo'));
+            $finPeriodo      = Carbon::create($end->year, $end->month, config('cat.periodo_fin'));
             
             $periodo = Periodo::create([
-                'fecha_comienzo' => $fechaInicioNuevoPeriodo->format('Y-m-d'),
-                'fecha_fin'      => $fechaFinNuevoPeriodo->format('Y-m-d'),
-                'cant_dias'      => $ultimoPeriodo->cant_dias,
+                'fecha_comienzo' => $comienzoPeriodo->format('Y-m-d'),
+                'fecha_fin'      => $finPeriodo->format('Y-m-d'),
+                'cant_dias'      => config('cat.periodo_comienzo'),
             ]);
-            static::activarPeriodoEnBasesYTurnos($periodo);
+            
         }
         
         return $periodo;
@@ -72,6 +69,7 @@ class PeriodoRepository extends BaseRepository
      * Asigna el periodo activo a las bases
      * @param Periodo $periodo
      * @param Base|null $base si es null activa el periodo para todas las bases
+     * @obsolete
      */
     public static function activarPeriodoEnBasesYTurnos(Periodo $periodo, Base $base = null, Turno $turno = null)
     {

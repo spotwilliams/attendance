@@ -10,6 +10,7 @@ use Cat\Models\Estudio;
 use Cat\Models\JornadaLaborable;
 use Cat\Models\Presentismo;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Modules\Service;
 use Cat\Repositories\JornadaLaborableRepository;
 use Illuminate\Database\QueryException;
@@ -42,7 +43,9 @@ class Personales extends Service
             
             $this->agente
                 ->delete();
-            
+    
+            AgenteRepository::storeCountActivos();
+    
             DB::commit();
             
             return $this->agente;

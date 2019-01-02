@@ -2,16 +2,14 @@
 
 namespace Cat\Modules\Reportes\Controllers\Presentismos;
 
+use Cat\Helpers\Pagination\FormPresenterWithOptions;
 use Cat\Models\Agente;
-use Cat\Models\Base;
-use Cat\Models\Turno;
 use Cat\Modules\Reportes\Controllers\ReporteController;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
-use Illuminate\Support\Facades\Response;
 
 class General extends ReporteController
 {
@@ -42,9 +40,16 @@ class General extends ReporteController
     /** @var  bool */
     protected $incluirComentarios;
     
+    /** @var  bool */
+    protected $incluirEstado;
+    
     /** @var Collection */
     protected $tiposPresentismos;
     
+    /**
+     * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
+     * @throws \Illuminate\Auth\Access\AuthorizationException
+     */
     public function index()
     {
         $this->authorize('index', $this);
@@ -53,10 +58,9 @@ class General extends ReporteController
     }
     
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function search(Request $request)
     {
@@ -97,6 +101,7 @@ class General extends ReporteController
         $this->tiposPresentismos  = new Collection($request->input('tipo_presentismo'));
         $this->tipoContratos      = new Collection($request->input('tipoContratos'));
         $this->incluirComentarios = (($request->input('incluir_comentario') !== null) ? true : false);
+        $this->incluirEstado      = (($request->input('incluir_estado') !== null) ? true : false);
         $this->page               = (($request->input('page') !== null) ? $request->input('page') : 1);
         
         return $this;
@@ -105,6 +110,14 @@ class General extends ReporteController
     protected function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
+            ->whereHas('presentismos', function ($query) {
+                $query->whereDate('fecha', '>=', $this->desde)
+                    ->whereDate('fecha', '<=', $this->hasta);
+                if (!$this->tiposPresentismos->isEmpty()) {
+                    $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
+                }
+                
+            })
             ->with([
                 'presentismos' => function ($query) {
                     $query->whereDate('fecha', '>=', $this->desde)
@@ -114,7 +127,7 @@ class General extends ReporteController
                     if ($this->incluirComentarios) {
                         $query->with('comentarios.user');
                     }
-                    if(!$this->tiposPresentismos->isEmpty()) {
+                    if (!$this->tiposPresentismos->isEmpty()) {
                         $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
                     }
                 },
@@ -166,5 +179,27 @@ class General extends ReporteController
         
         
         return $this;
+    }
+    
+    protected function getExportForm(LengthAwarePaginator $paginator, Request $request, $route)
+    {
+        /** @var FormPresenterWithOptions $presenter */
+        $presenter = new FormPresenterWithOptions($paginator, $route);
+        $presenter->setInputsParams($request->all());
+        
+        
+        $options = [
+            [
+                'name' => 'incluir_comentario',
+                'text' => 'Exportar con comentarios',
+            ],
+            [
+                'name' => 'incluir_estado',
+                'text' => 'Exportar con estados',
+            ],
+        ];
+        
+        
+        return $presenter->renderOne('Exportar a excel', $options);
     }
 }

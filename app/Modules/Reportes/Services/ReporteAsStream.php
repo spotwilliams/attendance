@@ -5,6 +5,7 @@ namespace Cat\Modules\Reportes\Services;
 use Cat\Modules\Reportes\Services\Formatters\RowDataFormatter;
 use Cat\Modules\Service;
 use Illuminate\Database\Eloquent\Builder;
+use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Facades\Response;
 
 class ReporteAsStream extends Service
@@ -31,37 +32,46 @@ class ReporteAsStream extends Service
     
     
     /**
-     * @return bool
+     * @return mixed
      */
     public function execute()
     {
         // 5 hs threshold
         ini_set('max_execution_time', 18000);
         ini_set('memory_limit', '-1');
-
-
-        return Response::stream(function () {
         
-        $page = 1;
-            echo (implode(',', $this->rowFormatter->getEncabezado())) . PHP_EOL;
-        do {
-            $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
-            
-            $page++;
-            foreach ($models->items() as $model) {
-                $data = $this->rowFormatter->format($model);
-                echo (str_replace( '\r\n','',implode(',', $data))) . PHP_EOL;
+        
+        return Response::stream(function () {
+            $page       = 1;
+            $allRecords = 0;
+            echo  $this->rowFormatter->getEncabezado() . "\r\n";
+            try {
+                
+                do {
+                    /** @var LengthAwarePaginator $models */
+                    $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
+                    
+                    $page++;
+                    foreach ($models->items() as $model) {
+                        $allRecords++;
+                        $field  = $this->rowFormatter->format($model);
+                        
+                        echo $field . "\r\n";
+                        
+                    }
+                    flush();
+                } while ($models->isEmpty() ? false : true);
+            } catch (\Exception $e) {
+                echo ($e->getMessage()) . $e->getFile() . $e->getLine();
             }
-            flush();
-        } while (false);
-
+            
         }, 200, [
 //             Stream headers
-            'Content-type'        => 'text/csv',
-            'Content-disposition' => 'attachment;filename=ReportePresentismo.csv',
-            'Pragma'              => 'no-cache',
-            'Cache-Control'       => 'no-cache, no-store, must-revalidate',
-            'Expires'             => '0',
+'Content-type'        => 'text/csv',
+'Content-disposition' => 'attachment;filename=ReportePresentismo.csv',
+'Pragma'              => 'no-cache',
+'Cache-Control'       => 'no-cache, no-store, must-revalidate',
+'Expires'             => '0',
         ]);
         
     }

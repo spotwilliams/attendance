@@ -5,17 +5,20 @@ namespace Cat\Modules\Presentismo\Controllers\Registro;
 use Cat\Helpers\HtmlCustoms;
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeInjustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeJustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
+use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Services\Registro\Injustificar;
 use Cat\Modules\Presentismo\Services\Registro\Justificar;
 use Cat\Modules\Validation\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
+use Cat\Modules\Validation\Rules\PeriodoActivo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
@@ -90,6 +93,15 @@ class JustificacionController extends AppBaseController
             $message  = $e->getMessage();
             $code     = 500;
             $disabled = true;
+        } catch (BaseTurnoSinPeriodo $e) {
+            $message  = $e->getMessage();
+            $code     = 500;
+            $disabled = true;
+        } catch (Validation $e) {
+            $message  = $e->getMessage();
+            $code     = 500;
+            $disabled = true;
+            
         }
         
         
@@ -110,7 +122,7 @@ class JustificacionController extends AppBaseController
             try {
                 $this->authorize('injustificar', $this);
                 /** @var Presentismo $presentismo */
-                $presentismo = Presentismo::with('tipoPresentismo')->findOrFail($request->input('id'));
+                $presentismo = Presentismo::with(['tipoPresentismo', 'agente'])->findOrFail($request->input('id'));
                 
                 $agente = Agente::findOrFail($request->input('id_agente'));
                 if (!Gate::allows('work-licencia', [$agente, $presentismo->tipoPresentismo])) {
@@ -125,17 +137,27 @@ class JustificacionController extends AppBaseController
                     'agente'      => $presentismo->agente()->first()->id,
                     'presentismo' => $presentismo,
                     'button'      => HtmlCustoms::getButtonsTools($presentismo),
-
+                
                 ], 403);
             }
             
-            $service = new Injustificar($presentismo);
+            $ruleDias = new PeriodoActivo(
+                $presentismo->agente,
+                $presentismo->tipoPresentismo,
+                new \DateTime($presentismo->fecha)
+            );
+            $ruleDias->check();
+            $service  = new Injustificar($presentismo);
             
             $service->execute();
             
             $message = 'Se ha injustificado la falta.';
             $code    = 200;
         } catch (NoSePuedeInjustificar $e) {
+            $message  = $e->getMessage();
+            $code     = 500;
+            $disabled = true;
+        } catch (Validation $e) {
             $message  = $e->getMessage();
             $code     = 500;
             $disabled = true;

@@ -22,7 +22,8 @@
                 <!-- Profile Image -->
                 <div class="box box-warning">
                     <div class="box-body box-profile">
-                        <img class="profile-user-img img-responsive img-circle" src="{{URL::asset('images/CABA1.png')}}"
+                        <img class="profile-user-img img-responsive img-circle"
+                             src="{{URL::asset('uploads/avatars/'.$agente->avatar)}}"
                              alt="User profile picture">
 
                         <h3 class="profile-username text-center">{{$agente->apellido}}, {{$agente->nombre}}</h3>
@@ -37,10 +38,19 @@
                                 <b>DNI</b> <a class="pull-right">{{$agente->dni}}</a>
                             </li>
                             <li class="list-group-item">
-                                <b>Telefono</b> <a class="pull-right">{{$agente->telefono}}</a>
+                                <b>Tel&eacute;fono particular</b> <a class="pull-right">{{$agente->telefono_particular}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Tel&eacute;fono casa</b> <a class="pull-right">{{$agente->telefono_casa}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Tel&eacute;fono HT</b> <a class="pull-right">{{$agente->telefono_ht}}</a>
                             </li>
                             <li class="list-group-item">
                                 <b>Email</b> <a class="pull-right">{{$agente->email}}</a>
+                            </li>
+                            <li class="list-group-item">
+                                <b>Email gobierno</b> <a class="pull-right">{{$agente->email_gobierno}}</a>
                             </li>
 
                             <li class="list-group-item">
@@ -53,6 +63,18 @@
                                     {{($agente->sexo === ''?'':($agente->sexo ==='F'? 'Femenimo': 'Masculino'))}}
                                 </a>
                             </li>
+                            <li class="list-group-item">
+                                <b>Profesi&oacute;n</b><a class="pull-right">
+
+                                    {{$agente->profesion}}
+                                </a>
+                            </li>
+                            @if($agente->observacion)
+                                <li class="list-group-item">
+                                <b>Observaci&oacute;n: </b>
+                                        {{$agente->observacion}}
+                                </li>
+                            @endif
                         </ul>
                     </div>
                     <!-- /.box-body -->
