@@ -1,0 +1,62 @@
+version: '3'
+services:
+
+  #PHP Service
+  app_cat:
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    image: digitalocean.com/php
+    container_name: app_cat
+    restart: unless-stopped
+    tty: true
+    environment:
+      SERVICE_NAME: app_cat
+      SERVICE_TAGS: dev
+    working_dir: /var/www
+    volumes:
+      - ./:/var/www
+      - ./Docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
+    networks:
+      - app-network-cat
+
+  #Nginx Service
+  webserver_cat:
+    image: nginx:alpine
+    container_name: webserver_cat
+    restart: unless-stopped
+    tty: true
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./:/var/www
+      - ./Docker/nginx/conf.d/:/etc/nginx/conf.d/
+    networks:
+      - app-network-cat
+
+  #MySQL Service
+  db_cat:
+    image: postgres
+    container_name: db_cat
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: cat
+      POSTGRES_USER: cat
+      POSTGRES_DB: cat
+      SERVICE_NAME: db_cat
+    ports:
+      - 5432:5432
+    volumes:
+      - pgdatacat:/var/lib/postgresql/data
+    networks:
+      - app-network-cat
+
+#Docker Networks
+networks:
+  app-network-cat:
+    driver: bridge
+#Volumes
+volumes:
+  pgdatacat:
+    driver: local
