@@ -62,7 +62,7 @@ class Contratos extends Service
 //                ->get();
             
             // Actualizo cada contrato
-            $fechaFin = ((int)$this->fechaContrato->format('Y') + 1) . '-12-31';
+            $fechaFin = ((int)$this->fechaContrato->format('Y')) . '-12-31';
             
             foreach ($contratosLocacionActivos as $contrato) {
                 
