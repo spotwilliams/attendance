@@ -87,9 +87,21 @@
     </a>
     <ul class="dropdown-menu" role="menu">
         <li>
-            <a href="{!! route('haberesSelectBase') !!}">
+            <a href="{!! route('notificacionIndex') !!}">
+                <i class="fa fa-envelope"></i>
+                <span>Notificaci&oacute;n</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('haberesIndex') !!}">
                 <i class="fa fa-money"></i>
-                <span>C&aacute;lculo de haberes</span>
+                <span>Registro de facturas</span>
+            </a>
+        </li>
+        <li>
+            <a href="{!! route('modificacionMasivaContratosIndex') !!}">
+                <i class="fa fa-file-text-o"></i>
+                <span>Modificaci&oacute;n masiva de contratos</span>
             </a>
         </li>
     </ul>
@@ -126,15 +138,15 @@
         </li>
         <li class="divider"></li>
         <li>
-            <a href="{!! route('reportesHaberesEstadoIndex') !!}">
-                <i class="fa fa-money"></i>
-                <span>Res&uacute;men de haberes</span>
+            <a href="{!! route('reportesHaberesVistaPreviaIndex') !!}">
+                <i class="fa fa-search"></i>
+                <span>Control de base</span>
             </a>
         </li>
         <li>
             <a href="{!! route('reportesHaberesAgentesIndex') !!}">
                 <i class="fa fa-money"></i>
-                <span>Res&uacute;men de haberes por persona</span>
+                <span>Facturaci&oacute;n y Notificaci&oacute;n</span>
             </a>
         </li>
     </ul>
@@ -195,7 +207,11 @@
             <a href="{{ route('seguridad.permission.index') }}"><i class="fa fa-lock"></i>
                 <span>Permisos</span></a>
         </li>
-
+        <li class="divider"></li>
+        <li>
+            <a href="{{ route('configuracion.fecha.cierre.index') }}"><i class="fa fa-calendar-check-o"></i>
+                <span>Fecha inicio periodo</span></a>
+        </li>
 
     </ul>
 </li>

@@ -21,5 +21,26 @@ return [
         
         ],
     ],
+    /*
+     * Cantidad de dias permitidos para cargar una fecha de contrato
+     */
+    'fecha_contrato_registro' => 90,
+    'cant_dias_navegacion' => 5,
+    
+    /*
+     * Dia del mes que el periodo inicia y termina
+     */
+    'periodo_comienzo' => 16,
+    'periodo_fin' => 15,
+    'cant_dias' => 30,
 
+    /*
+     * Monto del contrato por defecto
+     */
+    'monto_contrato' => 16002,
+    
+    /*
+     * Cantidad de dias previo a evitar cambiar el presentismos para planta
+     */
+    'limite_dias_planta' => 90,
 ];

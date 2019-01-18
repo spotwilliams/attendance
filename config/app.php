@@ -170,6 +170,8 @@ return [
         Yajra\Datatables\DatatablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
         Krucas\Notification\NotificationServiceProvider::class,
+        Intervention\Image\ImageServiceProvider::class,
+         Arcanedev\LogViewer\LogViewerServiceProvider::class,
     ],
     
     /*
@@ -219,7 +221,8 @@ return [
         'Html'      => Collective\Html\HtmlFacade::class,
         'Flash'     => Laracasts\Flash\Flash::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
-    
+        'Image'     => Intervention\Image\Facades\Image::class,
+        // 'LogViewer' => \Arcanedev\LogViewer\Facades\LogViewer::class,
     ],
 
 ];

@@ -20,6 +20,11 @@
 {!! Html::style('plugins/awesome-bootstrap-checkbox/css/awesome-bootstrap-checkbox.css') !!}
 {!! Html::style('plugins/colorpicker/css/bootstrap-colorpicker.min.css') !!}
 {!! Html::style('plugins/datatables-buttons-1.3.1/css/buttons.dataTables.css') !!}
+{!! Html::style('plugins/inputmask/css/inputmask.css') !!}
+{!! Html::style('plugins/fullcalendar/css/fullcalendar.min.css') !!}
+{!! Html::style('plugins/sliptree-bootstrap-tokenfield/css/bootstrap-tokenfield.min.css') !!}
+{!! Html::style('plugins/sliptree-bootstrap-tokenfield/css/tokenfield-typeahead.min.css') !!}
+
 {!! Html::style('css/style.css') !!}
 <!-- Ionicons -->
     @yield('css')
@@ -54,10 +59,9 @@
                             <!-- User Account Menu -->
                             <li class="dropdown user user-menu">
                                 <!-- Menu Toggle Button -->
-                                <a href="#" class="dropdown-toggle clearfix" data-toggle="dropdown">
+                                <a href="#" class="dropdown-toggle" data-toggle="dropdown">
                                     <!-- The user image in the navbar-->
-                                    <img src="{{URL::asset('images/CABA1.png')}}"
-                                         class="user-image" alt="User Image"/>
+                                    <img src="{{URL::asset('images/CABA1.png')}}" class="user-image" alt="User Image"/>
                                     <!-- hidden-xs hides the username on small devices so only the image appears. -->
                                     <span class="hidden-xs">{!! Auth::user()->name !!}</span>
                                 </a>
@@ -183,10 +187,15 @@
 @endif
 
 {!! Html::script('plugins/jquery/js/jquery.min.js') !!}
+
 {!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
 {!! Html::script('plugins/datatables/js/dataTables.fixedHeader.min.js') !!}
 {!! Html::script('plugins/datatables/js/dataTables.responsive.min.js') !!}
-{!! Html::script('plugins/bootstrap-select/js/bootstrap-select.min.js') !!}
+{!! Html::script('plugins/datatables-empty-columns/js/dataTables.hideEmptyColumns.min.js') !!}
+
+{!! Html::script('plugins/bootstrap-select/js/bootstrap-select.js') !!}
+{!! Html::script('plugins/bootstrap-select/js/i18n/defaults-es_ES.js') !!}
+{!! Html::script('plugins/slimScroll/js/jquery.slimscroll.min.js') !!}
 {!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
 {!! Html::script('plugins/select2/js/select2.min.js') !!}
 {!! Html::script('plugins/iCheck/js/icheck.min.js') !!}
@@ -198,12 +207,9 @@
 {{-- Input file --}}
 {!! Html::script('plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js') !!}
 
-{{-- Helper Cat --}}
-{!! Html::script('js/helpers.js') !!}
-{!! Html::script('js/defaults.js') !!}
-
 {!! Html::script('plugins/pace/js/pace.min.js') !!}
 {!! Html::script('plugins/moment/js/moment.js') !!}
+{!! Html::script('plugins/chart/js/Chart.js') !!}
 
 {!! Html::script('plugins/daterangepicker/js/daterangepicker.js') !!}
 
@@ -212,7 +218,16 @@
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.colVis.js') !!}
 {!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') !!}
 {!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
+{!! Html::script('plugins/inputmask/js/jquery.inputmask.bundle.min.js') !!}
+{!! Html::script('plugins/fullcalendar/js/fullcalendar.min.js') !!}
+
+{!! Html::script('plugins/sliptree-bootstrap-tokenfield/js/bootstrap-tokenfield.min.js') !!}
+
 {{--{!! Html::script('plugins/datatables-double-scroll/js/datatables-double-scroll.js') !!}--}}
+
+{{-- Helper Cat --}}
+{!! Html::script('js/helpers.js') !!}
+{!! Html::script('js/defaults.js') !!}
 
 
 

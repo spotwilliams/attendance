@@ -74,7 +74,7 @@ class Exportar extends General
             ])
             ->with([
                 'contrato.tipoContrato' => function ($tipo) {
-                    $tipo->select(['id', 'descripcion']);
+                    $tipo->select(['id', 'descripcion', 'codigo']);
                 },
             ])
             ->with([

@@ -11,7 +11,7 @@
                 @endforeach
             </select>
         </div>
-        <a class="btn btn-primary col-sm-2 col-xs-2" id="go-to-base">Ver base</a>
+        <a class="btn btn-primary col-sm-2 col-xs-2" href="{{route($routeName, 2)}}" id="go-to-base">Ver base</a>
     </div>
 </div>
 

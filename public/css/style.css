@@ -17,5 +17,17 @@ i.overlay-td {
 }
 
 /*div.dropdown-menu  {*/
-    /*max-width: 50px !important;*/
+/*max-width: 50px !important;*/
 /*}*/
+
+.panel .has-error .form-control {
+    color: #dd4b39 !important;
+    border-color: #dd4b39 !important;
+    box-shadow: none !important;
+}
+
+.has-error .help-block {
+    border-color: #dd4b39 !important;
+    box-shadow: none;
+    color: #dd4b39;
+}

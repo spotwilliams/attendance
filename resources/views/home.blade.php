@@ -1,8 +1,15 @@
 @extends('layouts.app')
 
 @section('content')
-<div class="container">
-    <div class="row">
-    </div>
-</div>
+    <section class="content">
+        <div class="row">
+            <div class="col-md-6 text-center">
+                @include('parts.imagen')
+            </div>
+            <div class="col-md-6">
+                @include('parts.resumen')
+            </div>
+
+        </div>
+    </section>
 @endsection

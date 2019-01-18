@@ -1,6 +1,6 @@
 <?php
 
-$periodos = \Cat\Models\Periodo::select(['*'])->orderBy('id', 'DESC')->get();
+$periodos = \Cat\Models\Periodo::select(['*'])->orderBy('fecha_comienzo', 'DESC')->get();
 $multiple = (!isset($multiple) ? '' : $multiple);
 $name     = ($multiple !== '') ? 'periodo[]' : 'periodo';
 ?>

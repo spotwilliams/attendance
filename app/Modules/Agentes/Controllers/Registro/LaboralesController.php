@@ -13,6 +13,7 @@ use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Laborales as Update;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
@@ -144,7 +145,7 @@ class LaboralesController extends AppBaseController
     public function update(LaboralesRequestUpdate $request)
     {
         $this->authorize('update', $this);
-        
+
         
         $input = $request->all();
         

@@ -15,8 +15,8 @@ class CreateComentarioTable extends Migration
         Schema::create('comentarios', function (Blueprint $table) {
             $table->integer('id', true);
             $table->string('comentario', 600)->nullable();
+            $table->integer('id_user')->unsigned()->index('comentario_es_de_user_idx')->nullable();
             $table->integer('id_presentismo')->index('comentario_es_para_presentismo_idx');
-            $table->integer('id_user')->index('comentario_es_de_user_idx')->nullable();
             $table->timestamps();
         });
         

@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Reportes\Services\Formatters;
 
+use Cat\Models\TipoContrato;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
@@ -42,7 +43,7 @@ class Agente extends RowDataFormatter
                 'tipoContrato',
                 'descripcion')),
             'Tipo de inscripcion'               => $this->getIfYouCan($agente, 'contrato', 'tipo_inscripcion'),
-            'Monto factura'                     => $this->getIfYouCan($agente, 'contrato', 'monto'),
+            'Monto factura'                     => 0,
             'Estado'                            => $this->getIfYouCan($agente->contrato, 'estadoContrato',
                 'descripcion'),
             'Fecha baja'                        => $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_baja'),
@@ -51,7 +52,10 @@ class Agente extends RowDataFormatter
             'Observacion'                       => $agente->observacion,
             'Profesion'                         => $agente->profesion,
         ];
-        
+        // Solo los tipo locacion tienen un monto valido de contrato. Los demas los sacamos de la vista
+        if(TipoContrato::TIPO_LOCACION === $this->getIfYouCan($agente->contrato, 'tipoContrato', 'codigo')){
+            $data['Monto factura'] = $this->getIfYouCan($agente, 'contrato', 'monto');
+        }
         $horario = $this->getIfYouCan($agente->operativo, 'horario',
                 'hora_entrada') . ' - ' . $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada');
         
