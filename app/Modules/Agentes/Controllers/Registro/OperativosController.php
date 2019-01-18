@@ -46,7 +46,7 @@ class OperativosController extends AppBaseController
             
             return redirect(route('agentesCreatePersonales'));
         }
-        if($agente->contrato()->first()) {
+        if($agente->operativo()->first()) {
             return redirect(route('agentesEditOperativos', $id));
         }
         

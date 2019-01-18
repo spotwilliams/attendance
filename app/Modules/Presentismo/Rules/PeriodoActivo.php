@@ -35,7 +35,7 @@ class PeriodoActivo extends Rule
             ->with('tipoContrato')
             ->first();
         
-        $this->{$this->map[$contrato->tipoContrato->codigo]}();
+        return $this->{$this->map[$contrato->tipoContrato->codigo]}();
         
     }
     
