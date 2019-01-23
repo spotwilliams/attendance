@@ -68,12 +68,11 @@ class General extends ReporteController
         
         return view('Reportes::agentes.index-general');
     }
-    
+
     /**
-     * Display a listing of the Presentismo.
-     *
      * @param Request $request
-     * @return Response
+     * @return mixed
+     * @throws \Illuminate\Auth\Access\AuthorizationException
      */
     public function search(Request $request)
     {
@@ -107,7 +106,7 @@ class General extends ReporteController
     
     protected function setupParams(Request $request)
     {
-        if (($request->input('fecha_contrato_desde') !== '') and ($request->input('fecha_contrato_hasta') !== '')) {
+        if (($request->input('fecha_contrato_desde')) and ($request->input('fecha_contrato_hasta'))) {
             $this->fechaContrato['desde']   = new \DateTime($request->input('fecha_contrato_desde'));
             $this->fechaContrato['hasta']   = new \DateTime($request->input('fecha_contrato_hasta'));
             $this->contratosEnFechaContrato = Contrato::select('id')
@@ -116,7 +115,7 @@ class General extends ReporteController
                 ->get();
             
         }
-        if (($request->input('fecha_ingreso_desde') !== '') and ($request->input('fecha_ingreso_hasta') !== '')) {
+        if (($request->input('fecha_ingreso_desde')) and ($request->input('fecha_ingreso_hasta'))) {
             $this->fechaIngreso['desde'] = new \DateTime($request->input('fecha_ingreso_desde'));
             $this->fechaIngreso['hasta'] = new \DateTime($request->input('fecha_ingreso_hasta'));
             

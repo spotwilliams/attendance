@@ -2,6 +2,7 @@
 
 namespace Cat\Modules\Reportes\Services\Formatters;
 
+use Cat\Models\EstadoContrato;
 use Cat\Models\TipoContrato;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
@@ -13,7 +14,7 @@ class Agente extends RowDataFormatter
     {
         return $this->toExcelRow($agente);
     }
-    
+
     protected function toExcelRow(Model $agente)
     {
         $data = [
@@ -46,8 +47,8 @@ class Agente extends RowDataFormatter
             'Monto factura'                     => 0,
             'Estado'                            => $this->getIfYouCan($agente->contrato, 'estadoContrato',
                 'descripcion'),
-            'Fecha baja'                        => $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_baja'),
-            'Comentario baja'                   => $this->getIfYouCan($agente, 'contrato', 'comentario_baja'),
+            'Fecha baja'                        => $this->getFechaBaja($agente),
+            'Comentario baja'                   => $this->getComentarioBaja($agente),
             'Estudios'                          => $this->tieneEstudios($agente->estudio),
             'Observacion'                       => $agente->observacion,
             'Profesion'                         => $agente->profesion,
@@ -58,23 +59,38 @@ class Agente extends RowDataFormatter
         }
         $horario = $this->getIfYouCan($agente->operativo, 'horario',
                 'hora_entrada') . ' - ' . $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada');
-        
+
         if ($this->getIfYouCan($agente->operativo, 'horario', 'eximido') === true) {
             $horario .= ' (Eximido)';
         }
         if ($this->getIfYouCan($agente->operativo, 'horario', 'rotativo') === true) {
             $horario .= ' (Rotativo)';
         }
-        
+
         $data['Horario'] = $horario;
-        
+
         $domicilios = $this->tieneDomicilios($agente->domicilios);
-        
+
         return array_merge($data, $domicilios);
-        
-        
+
+
     }
-    
+    private function getFechaBaja($agente)
+    {
+        $bajas = EstadoContrato::getEstadosEquivalentesBajas()->pluck('id')->toArray();
+        if(in_array($this->getIfYouCan($agente, 'contrato', 'id_estado_contrato'), $bajas)) {
+            return $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_fin');
+        }
+        return '';
+    }
+    private function getComentarioBaja($agente)
+    {
+        $bajas = EstadoContrato::getEstadosEquivalentesBajas()->pluck('id')->toArray();
+        if(in_array($this->getIfYouCan($agente, 'contrato', 'id_estado_contrato'), $bajas)) {
+            return $this->getIfYouCan($agente, 'contrato', 'comentario');
+        }
+        return '';
+    }
     private function getIfYouCan(Model $model = null, $entity = '', $name = '')
     {
         if ($model) {
@@ -85,10 +101,10 @@ class Agente extends RowDataFormatter
                 }
             }
         }
-        
+
         return '';
     }
-    
+
     private function getIfYouCanAsDate(Model $model = null, $entity = '', $name = '', $format = 'd/m/Y')
     {
         $temp = $this->getIfYouCan($model, $entity, $name);
@@ -98,7 +114,7 @@ class Agente extends RowDataFormatter
             return '';
         }
     }
-    
+
     protected function tieneDomicilios(Collection $domicilios = null)
     {
         $return = [
@@ -106,7 +122,7 @@ class Agente extends RowDataFormatter
             'Domicilio real'        => '',
         ];
         if ($domicilios) {
-            
+
             foreach ($domicilios as $domicilio) {
                 $dom = "Calle: {$domicilio->calle} - Nro: {$domicilio->numero} - Dpto: {$domicilio->departamento} - Piso: {$domicilio->piso} - Barrio: {$domicilio->barrio} - Prov: {$domicilio->provincia} - Codigo postal: {$domicilio->codigo_postal} - Otro: {$domicilio->libre}";
                 if ($domicilio->constituido === true) {
@@ -116,22 +132,22 @@ class Agente extends RowDataFormatter
                 }
             }
         }
-        
+
         return $return;
     }
-    
+
     protected function tieneEstudios(Collection $estudios = null)
     {
-        
+
         $return = '';
         if ($estudios) {
-            
+
             foreach ($estudios as $estudio) {
                 $return .= "Carrera: {$estudio->carrera} - Institucion: {$estudio->institucion} - Estado : {$estudio->estado}";
             }
         }
-        
+
         return $return;
     }
-    
+
 }
