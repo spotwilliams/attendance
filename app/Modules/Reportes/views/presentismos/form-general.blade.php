@@ -35,6 +35,19 @@ $classMultiSelectContainer = 'col-md-6 col-lg-6 col-xs-6';
     <div class="{{$classMultiSelectContainer}}">
         @include('common.bases.as-checkbox', ['label' => 'Bases'])
     </div>
+    <div class="{{$classContainer}}">
+        <div class="form-group">
+            <label class="{{$classLabel}} control-label">Incluir sin presentismos</label>
+            <div class="{{$classField}}">
+                <div class="checkbox checkbox-info checkbox-circle">
+                    <input type="checkbox" value="true" id="incluir_sin_presentismo" name="incluir_sin_presentismo" @if(isset($incluir_sin_presentismo) and ($incluir_sin_presentismo == true)) checked @endif>
+                    <label for="incluir_sin_presentismo">
+                        Si
+                    </label>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="{{$classMultiSelectContainer}}">
         @include('common.turnos.as-checkbox', ['label' => 'Turnos'])
     </div>

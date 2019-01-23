@@ -5,6 +5,7 @@ namespace Cat\Modules\Reportes\Controllers\Presentismos;
 use Cat\Helpers\Pagination\FormPresenterWithOptions;
 use Cat\Models\Agente;
 use Cat\Modules\Reportes\Controllers\ReporteController;
+use Doctrine\DBAL\Query\QueryBuilder;
 use Illuminate\Database\Query\JoinClause;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
@@ -45,7 +46,9 @@ class General extends ReporteController
     
     /** @var Collection */
     protected $tiposPresentismos;
-    
+
+    /** @var bool */
+    protected $incluirSinPresentismos;
     /**
      * @return \Illuminate\Contracts\View\Factory|\Illuminate\View\View
      * @throws \Illuminate\Auth\Access\AuthorizationException
@@ -84,6 +87,7 @@ class General extends ReporteController
             ->with('desde', $this->desde)
             ->with('hasta', $this->hasta)
             ->with('incluir_comentarios', $this->incluirComentarios)
+            ->with('incluir_sin_presentismo', $this->incluirSinPresentismos)
             ->with('links', $this->getLinksLikeForm($return, $request, 'reportesPresentismoGeneralSearch'))
             ->with('exportar', $this->getExportForm($return, $request, 'reportesPresentismoGeneralExport'));
         
@@ -103,22 +107,43 @@ class General extends ReporteController
         $this->incluirComentarios = (($request->input('incluir_comentario') !== null) ? true : false);
         $this->incluirEstado      = (($request->input('incluir_estado') !== null) ? true : false);
         $this->page               = (($request->input('page') !== null) ? $request->input('page') : 1);
-        
+
+        $this->incluirSinPresentismos = (($request->input('incluir_sin_presentismo') !== null) ? true : false);
         return $this;
     }
-    
+
+
+    private function incluirSinPresentismos() {
+        return Agente::select(['agentes.*']);
+    }
+
+    /**
+     * Retorna la query qye excluye los agentes que no tienen cargado los presentismos
+     * @return QueryBuilder
+     */
+    private function excluirSinPresentismos() {
+
+        return Agente::select(['agentes.*'])
+                ->whereHas('presentismos', function ($query) {
+                    $query->whereDate('fecha', '>=', $this->desde)
+                            ->whereDate('fecha', '<=', $this->hasta);
+                    if (!$this->tiposPresentismos->isEmpty()) {
+                        $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
+                    }
+
+                });
+    }
+
     protected function setupQuery()
     {
-        $this->query = Agente::select(['agentes.*'])
-            ->whereHas('presentismos', function ($query) {
-                $query->whereDate('fecha', '>=', $this->desde)
-                    ->whereDate('fecha', '<=', $this->hasta);
-                if (!$this->tiposPresentismos->isEmpty()) {
-                    $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
-                }
-                
-            })
-            ->with([
+
+        if($this->incluirSinPresentismos) {
+            $this->query = $this->incluirSinPresentismos();
+        } else {
+            $this->query = $this->excluirSinPresentismos();
+        }
+
+        $this->query->with([
                 'presentismos' => function ($query) {
                     $query->whereDate('fecha', '>=', $this->desde)
                         ->whereDate('fecha', '<=', $this->hasta)
