@@ -111,6 +111,10 @@ return [
             'date'     => 'Formato de fecha incorrecto',
             'before'   => 'La fecha de contrato no puede ser mayor a la actual',
         ],
+        'fecha_ingreso' => [
+            'fecha_contrato_futuro' => 'La fecha no puede ser superior a la de hoy',
+            'fecha_contrato'        => 'La fecha no puede ser anterior a ' . config('cat.fecha_contrato_registro') . ' d&iacute;as',
+        ],
         'gerencias'           => [
             'required' => 'Debe seleccinar al menos una gerencia',
         ],
