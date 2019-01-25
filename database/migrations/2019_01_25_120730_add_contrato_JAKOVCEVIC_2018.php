@@ -17,11 +17,14 @@ class AddContratoJAKOVCEVIC2018 extends Migration
         $this->data = [
                 'monto' => config('cat.monto_contrato'),
                 'fecha_ingreso' => '2018-01-01',
-                'id_estado_contrato' => 1, // id estado activo en la DB
+                'id_estado_contrato' => 2, // id estado activo en la DB
                 'id_tipo_contrato' => 8, // id locacion de servicios en la DB
                 'fecha_ingreso_gobierno' => '2018-01-01',
 //                'id_sial' => 'xxx',
 //                'ficha' => '',
+                'comentario' => null,
+                'fecha_estado_desde' => null,
+                'fecha_estado_hasta' => null,
                 'tipo_inscripcion' => 'Regimen simplificado',
                 'fecha_fin' => '2018-12-31'
         ];
