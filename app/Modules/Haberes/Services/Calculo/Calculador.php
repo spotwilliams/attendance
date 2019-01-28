@@ -23,11 +23,12 @@ class Calculador extends Service
     
     /** @var  \stdClass */
     protected $detalle;
-    
+
     /**
      * @param Agente $agente
      * @param Periodo $periodo
      * @return $this
+     * @throws \Exception
      */
     public function reset(Agente $agente, Periodo $periodo)
     {
@@ -35,11 +36,12 @@ class Calculador extends Service
         
         return $this;
     }
-    
+
     /**
      * @param Agente $agente
      * @param Periodo $periodo
      * @return $this
+     * @throws \Exception
      */
     private function load(Agente $agente, Periodo $periodo)
     {
@@ -96,8 +98,8 @@ class Calculador extends Service
         
         /** @var int $diasADescontar Cantidad de dias con faltas no justificadas */
         $this->detalle->diasADescontar = $this->detalle->sema + $this->detalle->tardEqui + $this->detalle->fins;
-        
-        $this->detalle->monto = floatval($this->detalle->montoContrato - ($this->detalle->montoDescontable * $this->detalle->diasADescontar));
+        // Se trunca a pedido del cliente
+        $this->detalle->monto = (int)floatval($this->detalle->montoContrato - ($this->detalle->montoDescontable * $this->detalle->diasADescontar));
         
         return $this->detalle;
     }
