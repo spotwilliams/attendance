@@ -14,7 +14,7 @@ use Illuminate\Support\Collection;
 
 class Calculador extends Service
 {
-    const FACTOR_DIVISION = 21;
+    const FACTOR_DIVISION = 30;
     /** @var Agente */
     protected $agente;
     
@@ -57,12 +57,12 @@ class Calculador extends Service
         $this->detalle->monto    = 0;
         try {
             $contrato = $this->agente->contratoOnDate(new \DateTime($periodo->fecha_comienzo))->firstOrFail();
-            $monto    = $contrato->monto;
+            $monto    = (int)$contrato->monto;
         } catch (ModelNotFoundException $sinContrato) {
             $monto = 0;
         }
         $this->detalle->montoContrato    = $monto;
-        $this->detalle->montoDescontable = floatval($this->detalle->montoContrato / Calculador::FACTOR_DIVISION);
+        $this->detalle->montoDescontable = round($this->detalle->montoContrato / Calculador::FACTOR_DIVISION);
         $this->detalle->diasADescontar   = 0;
         
         return $this;
