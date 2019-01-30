@@ -230,7 +230,9 @@
 {!! Html::script('js/defaults.js') !!}
 
 
-
+<script type="text/javascript">
+    $.fn.selectpicker.Constructor.DEFAULTS.actionsBox = true;
+</script>
 @yield('scripts')
 </body>
 </html>
