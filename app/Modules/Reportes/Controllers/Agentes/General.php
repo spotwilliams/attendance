@@ -148,6 +148,7 @@ class General extends ReporteController
     protected function setupQuery()
     {
         $this->query = Agente::select(['agentes.*'])
+            ->distinct('agentes.id')
             ->with('domicilios')
             ->with('estudio')
             ->with('operativo.base')
