@@ -56,7 +56,8 @@ class Calculador extends Service
         $this->detalle->tardEqui = 0;
         $this->detalle->monto    = 0;
         try {
-            $contrato = $this->agente->contratoOnDate(new \DateTime($periodo->fecha_comienzo))->firstOrFail();
+            $date     = (new \DateTime($periodo->fecha_comienzo))->modify('+2 month');
+            $contrato = $this->agente->contratoOnDate($date)->firstOrFail();
             $monto    = (int)$contrato->monto;
         } catch (ModelNotFoundException $sinContrato) {
             $monto = 0;
