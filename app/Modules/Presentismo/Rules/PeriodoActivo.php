@@ -4,6 +4,7 @@ namespace Cat\Modules\Validation\Rules;
 
 use Cat\Exceptions\AgenteSinBase;
 use Cat\Exceptions\AgenteSinTurno;
+use Cat\Helpers\PermisoEspecialChecker;
 use Cat\Models\Contrato;
 use Cat\Models\FacturaFisica;
 use Cat\Models\Periodo;
@@ -16,7 +17,6 @@ use Cat\Modules\Security\Models\Permission;
 use Cat\Repositories\PeriodoRepository;
 use Cat\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Support\Facades\Auth;
 
 class PeriodoActivo extends Rule
 {
@@ -98,12 +98,7 @@ class PeriodoActivo extends Rule
      */
     protected function checkSpecialPermission()
     {
-        $permiso = Permission::where('name', '=', $this->permisoEspecial)->first();
-
-        /** @var User $user */
-        $user = Auth::user();
-
-        return $user->hasAnyPermission($permiso);
+       return PermisoEspecialChecker::check($this->permisoEspecial);
     }
     
 }
