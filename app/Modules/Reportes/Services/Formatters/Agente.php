@@ -79,7 +79,11 @@ class Agente extends RowDataFormatter
     {
         $bajas = EstadoContrato::getEstadosEquivalentesBajas()->pluck('id')->toArray();
         if(in_array($this->getIfYouCan($agente, 'contrato', 'id_estado_contrato'), $bajas)) {
-            return $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_fin');
+            if($this->getIfYouCan($agente, 'contrato', 'fecha_estado_desde') == null) {
+                return $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_fin');
+            } else {
+                return $this->getIfYouCanAsDate($agente, 'contrato', 'fecha_estado_desde');
+            }
         }
         return '';
     }

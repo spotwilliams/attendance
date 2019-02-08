@@ -3,10 +3,10 @@
 /** @var \Cat\Models\Agente $agente */
 try {
     /** @var \Cat\Models\Contrato $contrato */
-    $contrato = $agente->contratoActual()->firstOrFail();
+    $contrato = $agente->contratoActual;
     /** @var \Cat\Models\TipoContrato $tipoContrato */
-    $tipoContrato   = $contrato->tipoContrato()->firstOrFail();
-    $estadoContrato = $contrato->estadoContrato()->firstOrFail();
+    $tipoContrato   = $contrato->tipoContrato;
+    $estadoContrato = $contrato->estadoContrato;
 } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 }
 
@@ -69,7 +69,11 @@ try {
                 @if(!$estadoContrato->esActivo())
                     <tr>
                         <th>Fecha de baja:</th>
+                        @if($contrato->fecha_estado_desde === null)
+                        <td>{{(new DateTime($contrato->fecha_fin))->format('d/m/Y')}}</td>
+                        @else
                         <td>{{(new DateTime($contrato->fecha_estado_desde))->format('d/m/Y')}}</td>
+                        @endif
                     </tr>
                     <tr>
                         <th>Comentarios de la baja:</th>
