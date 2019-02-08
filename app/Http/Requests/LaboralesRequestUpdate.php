@@ -3,13 +3,14 @@
 namespace Cat\Http\Requests;
 
 use Carbon\Carbon;
+use Cat\Helpers\PermisoEspecialChecker;
 use Cat\Helpers\Validation;
 use Cat\Models\Agente;
 use Cat\Models\EstadoContrato;
 
 class LaboralesRequestUpdate extends LaboralesRequest
 {
-    
+    protected $permisoEspecial = 'Cargar contratos pasados';
     
     /**
      * Get the validation rules that apply to the request.
@@ -25,8 +26,9 @@ class LaboralesRequestUpdate extends LaboralesRequest
         if (($agente !== null) and ($agente->contrato) and ($agente->contrato->fecha_ingreso === $this->input('fecha_ingreso'))) {
             $rules['fecha_ingreso'] = 'required|date|fecha_contrato_futuro';
         } else {
-            
-            $rules['fecha_ingreso'] = 'required|date|fecha_contrato_futuro|fecha_contrato';
+            // Si tengo un permiso especial, entonces no necesito usar esta validacion
+            $fechaContratoRule = PermisoEspecialChecker::check($this->permisoEspecial) ? '' : '|fecha_contrato';
+            $rules['fecha_ingreso'] = 'required|date|fecha_contrato_futuro' . $fechaContratoRule;
         }
         
         return $rules;
