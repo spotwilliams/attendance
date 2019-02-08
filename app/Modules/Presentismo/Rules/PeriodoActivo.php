@@ -12,13 +12,20 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFueraDelLimite;
 use Cat\Modules\Presentismo\Exceptions\Validacion\GeneralDebug;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoFacturado;
+use Cat\Modules\Security\Models\Permission;
 use Cat\Repositories\PeriodoRepository;
+use Cat\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Illuminate\Support\Facades\Auth;
 
 class PeriodoActivo extends Rule
 {
+    /** @var string  */
+    protected $permisoEspecial = 'Cargar presentismo pasado';
+
     /** @var Periodo */
     protected $periodo;
+
     protected $map
         = [
             TipoContrato::TIPO_LOCACION          => 'checkLocacion',
@@ -34,9 +41,13 @@ class PeriodoActivo extends Rule
         $contrato = $this->agente->contratoOnDate($this->fecha)
             ->with('tipoContrato')
             ->first();
-        
-        return $this->{$this->map[$contrato->tipoContrato->codigo]}();
-        
+
+        if($this->checkSpecialPermission()) {
+            return true;
+        } else {
+            return $this->{$this->map[$contrato->tipoContrato->codigo]}();
+        }
+
     }
     
     /**
@@ -79,6 +90,20 @@ class PeriodoActivo extends Rule
             throw new FechaFueraDelLimite($this->agente, $this->fecha, $this->tipoAusente, $this->periodo);
         }
         
+    }
+
+    /**
+     * Verifica si el usuario tiene permisos para saltearse esta regla
+     * @return bool
+     */
+    protected function checkSpecialPermission()
+    {
+        $permiso = Permission::where('name', '=', $this->permisoEspecial)->first();
+
+        /** @var User $user */
+        $user = Auth::user();
+
+        return $user->hasAnyPermission($permiso);
     }
     
 }
