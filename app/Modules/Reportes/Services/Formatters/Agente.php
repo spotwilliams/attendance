@@ -57,8 +57,8 @@ class Agente extends RowDataFormatter
         if(TipoContrato::TIPO_LOCACION === $this->getIfYouCan($agente->contrato, 'tipoContrato', 'codigo')){
             $data['Monto factura'] = $this->getIfYouCan($agente, 'contrato', 'monto');
         }
-        $horario = $this->getIfYouCan($agente->operativo, 'horario',
-                'hora_entrada') . ' - ' . $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada');
+
+        $horario = $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada') . ' - ' . $this->getIfYouCan($agente->operativo, 'horario', 'hora_salida');
 
         if ($this->getIfYouCan($agente->operativo, 'horario', 'eximido') === true) {
             $horario .= ' (Eximido)';
