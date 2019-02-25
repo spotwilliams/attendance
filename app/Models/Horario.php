@@ -4,7 +4,13 @@ namespace Cat\Models;
 
 use Illuminate\Database\Eloquent\Model;
 
-
+/**
+ * Class Horario
+ * @package Cat\Models
+ *
+ * @property string hora_entrada
+ * @property string hora_salida
+ */
 class Horario extends Model
 {
     
