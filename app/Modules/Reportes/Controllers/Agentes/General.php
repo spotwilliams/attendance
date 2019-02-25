@@ -154,6 +154,7 @@ class General extends ReporteController
             ->with('operativo.base')
             ->with('operativo.turno')
             ->with('operativo.cargo')
+            ->with('operativo.horario')
             ->with('operativo.funcion')
             ->with('operativo.area')
             ->with('operativo.gerencia')
