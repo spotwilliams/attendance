@@ -58,16 +58,10 @@ class Agente extends RowDataFormatter
             $data['Monto factura'] = $this->getIfYouCan($agente, 'contrato', 'monto');
         }
 
-        $horario = $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada') . ' - ' . $this->getIfYouCan($agente->operativo, 'horario', 'hora_salida');
-
-        if ($this->getIfYouCan($agente->operativo, 'horario', 'eximido') === true) {
-            $horario .= ' (Eximido)';
-        }
-        if ($this->getIfYouCan($agente->operativo, 'horario', 'rotativo') === true) {
-            $horario .= ' (Rotativo)';
-        }
-
-        $data['Horario'] = $horario;
+        $data['Hora entrada'] = $this->getIfYouCan($agente->operativo, 'horario', 'hora_entrada');
+        $data['Hora salida'] = $this->getIfYouCan($agente->operativo, 'horario', 'hora_salida');;
+        $data['Rotativo'] = $this->getIfYouCan($agente->operativo, 'horario', 'rotativo') ? 'Rotativo' : '';
+        $data['Eximido'] = $this->getIfYouCan($agente->operativo, 'horario', 'eximido') ? 'Eximido' : '';
 
         $domicilios = $this->tieneDomicilios($agente->domicilios);
 
