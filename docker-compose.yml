@@ -1,0 +1,74 @@
+version: '3'
+services:
+  php:
+    container_name: attendance_php_1
+    build: docker/php
+    ports:
+     - "80:80"
+     - "443:443"
+    volumes:
+     - .:/var/www/html
+     - ./docker/php/custom.ini:/usr/local/etc/php/conf.d/custom.ini:ro
+     - ./docker/apache:/etc/apache2/sites-enabled:ro
+    networks:
+     - appnet
+  redis:
+    container_name: attendance_redis_1
+    image: redis:alpine
+    ports:
+      - "6379:6379"
+    networks:
+     - appnet
+  node:
+    container_name: attendance_node_1
+    build: docker/node
+    command: node dev-server.js
+    working_dir: /usr/src/app
+    volumes:
+     - .:/usr/src/app
+    ports:
+     - "81:81"
+    networks:
+     - appnet
+  db:
+    container_name: attendance_db_1
+    image: postgres:latest
+    ports:
+     - "5432:5432"
+    environment:
+      POSTGRES_PASSWORD: attendance
+      POSTGRES_DB: attendance
+      POSTGRES_USER: attendance
+    volumes:
+     - data:/var/lib/postgresql/data
+    networks:
+     - appnet
+  mail:
+    container_name: attendance_mail_1
+    image: mailhog/mailhog:latest
+    ports:
+     - "8025:8025"
+    networks:
+     - appnet
+  s3:
+    container_name: attendance_s3_1
+    image: minio/minio
+    ports:
+      - "9000:9000"
+    environment:
+      MINIO_ACCESS_KEY: minio
+      MINIO_SECRET_KEY: 12345678
+    volumes:
+      - s3:/data
+    networks:
+     - appnet
+    command: server /data
+    # See README.md
+networks:
+  appnet:
+    driver: "bridge"
+volumes:
+  data:
+    driver: "local"
+  s3:
+    driver: "local"
