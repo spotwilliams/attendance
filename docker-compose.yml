@@ -1,67 +1,56 @@
-version: '3'
 services:
-
-  #PHP Service
-  app_cat:
+  web.cat:
     build:
-      context: ./
+      context: './vendor/laravel/sail/runtimes/8.4'
       dockerfile: Dockerfile
-    image: digitalocean.com/php
-    container_name: app_cat
-#    restart: unless-stopped
-    tty: true
-    environment:
-      COMPOSE_PROJECT_NAME: cat
-      SERVICE_NAME: app_cat
-      SERVICE_TAGS: dev
-    working_dir: /var/www
-    volumes:
-      - ./:/var/www
-      - ./Docker/php/local.ini:/usr/local/etc/php/conf.d/local.ini
-    networks:
-      - app-network-cat
-
-  #Nginx Service
-  webserver_cat:
-    image: nginx:alpine
-    container_name: webserver_cat
-#    restart: unless-stopped
-    environment:
-      COMPOSE_PROJECT_NAME: cat
-    tty: true
+      args:
+        WWWGROUP: '${WWWGROUP}'
+    image: 'sail-8.4/app'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
     ports:
-      - "80:80"
-      - "443:443"
+      - '${APP_PORT:-80}:80'
+      - '${VITE_PORT:-5173}:${VITE_PORT:-5173}'
+    environment:
+      WWWUSER: '${WWWUSER}'
+      LARAVEL_SAIL: 1
+      XDEBUG_MODE: '${SAIL_XDEBUG_MODE:-off}'
+      XDEBUG_CONFIG: '${SAIL_XDEBUG_CONFIG:-client_host=host.docker.internal}'
+      IGNITION_LOCAL_SITES_PATH: '${PWD}'
     volumes:
-      - ./:/var/www
-      - ./Docker/nginx/conf.d/:/etc/nginx/conf.d/
+      - '.:/var/www/html'
     networks:
-      - app-network-cat
-
-  #MySQL Service
-  db_cat:
-    image: postgres
-    container_name: db_cat
-    environment:
-      COMPOSE_PROJECT_NAME: cat
-#    restart: unless-stopped
-    environment:
-      POSTGRES_PASSWORD: cat
-      POSTGRES_USER: cat
-      POSTGRES_DB: cat
-      SERVICE_NAME: db_cat
+      - sail
+    depends_on:
+      - db.cat
+  db.cat:
+    image: 'mysql/mysql-server:8.0'
     ports:
-      - 5432:5432
+      - '${FORWARD_DB_PORT:-3306}:3306'
+    environment:
+      MYSQL_ROOT_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ROOT_HOST: '%'
+      MYSQL_DATABASE: '${DB_DATABASE}'
+      MYSQL_USER: '${DB_USERNAME}'
+      MYSQL_PASSWORD: '${DB_PASSWORD}'
+      MYSQL_ALLOW_EMPTY_PASSWORD: 1
+      MYSQL_EXTRA_OPTIONS: '${MYSQL_EXTRA_OPTIONS:-}'
     volumes:
-      - pgdatacat:/var/lib/postgresql/data
+      - './sail-mysql:/var/lib/mysql'
+      - './vendor/laravel/sail/database/mysql/create-testing-database.sh:/docker-entrypoint-initdb.d/10-create-testing-database.sh'
     networks:
-      - app-network-cat
-
-#Docker Networks
+      - sail
+    healthcheck:
+      test:
+        - CMD
+        - mysqladmin
+        - ping
+        - '-p${DB_PASSWORD}'
+      retries: 3
+      timeout: 5s
 networks:
-  app-network-cat:
+  sail:
     driver: bridge
-#Volumes
 volumes:
-  pgdatacat:
+  sail-mysql:
     driver: local
