@@ -76,7 +76,7 @@ trait Create
     {
         $fields_with_relationships = $this->getRelationFields($form);
 
-        foreach ($fields_with_relationships as $key => $field) {
+        foreach ($fields_with_relationships as $field) {
             if (isset($field['pivot']) && $field['pivot']) {
                 $values = isset($data[$field['name']]) ? $data[$field['name']] : [];
                 $model->{$field['name']}()->sync($values);

@@ -1,9 +1,9 @@
 <?php
 
-namespace Cat\Masivo\Especificadores\Presentismos;
+namespace Cat\Modules\Masivo\Especificadores\Presentismos;
 
-use Cat\Masivo\Especificadores\Archivo;
-use Cat\Masivo\Especificadores\ExcelHandler;
+use Cat\Modules\Masivo\Especificadores\Archivo;
+use Cat\Modules\Masivo\Especificadores\ExcelHandler;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\TipoPresentismo;

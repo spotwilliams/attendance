@@ -12,27 +12,33 @@ class AddNewPermisosModificarPresentismoPasado extends Migration
      */
     public function up()
     {
-        $permiso = [
+        $permisoData = [
                 'id' => null,
                 'name' => 'Cargar presentismo pasado',
                 'comentarios' => 'Permite registar el presentismo fuera de los limites permitidos normalmente',
         ];
         /** @var \Cat\Modules\Security\Models\Permission $permiso */
-        $permiso = new \Cat\Modules\Security\Models\Permission($permiso);
-        $permiso->save();
+        $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
+            ['name' => $permisoData['name']],
+            $permisoData
+        );
 
-
-        $rol = [
+        $rolData = [
                 'id' => null,
                 'name' => 'Cargador presentismo en dias pasados'
         ];
         /** @var \Cat\Modules\Security\Models\Role $rol */
-        $rol = new \Cat\Modules\Security\Models\Role($rol);
-        $rol->save();
+        $rol = \Cat\Modules\Security\Models\Role::firstOrCreate(
+            ['name' => $rolData['name']],
+            $rolData
+        );
         $rol->syncPermissions($permiso);
 
-        $rol = \Cat\Modules\Security\Models\Role::where('name', '=', 'Permisos full')->first();
-        $rol->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
+        $rolFull = \Cat\Modules\Security\Models\Role::where('name', '=', 'Permisos full')->first();
+        // Only sync if role exists (requires seed data)
+        if ($rolFull !== null) {
+            $rolFull->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
+        }
     }
 
     /**

@@ -12,7 +12,7 @@ use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Query\Builder;

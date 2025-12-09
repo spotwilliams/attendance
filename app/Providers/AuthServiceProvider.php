@@ -47,9 +47,9 @@ use Cat\Masivo\Controllers\Presentismos\Registro as PresentismoMasivo;
 use Cat\Policies\Agentes\PresentismosPolicy as PresentismoMasivoPolicy;
 
 // Registro Presentismo
-use Cat\Modules\Presentismo\Controllers\Registro\GeneralController as PresentismoGeneral;
+use Cat\Modules\Presentismo\Controllers\GeneralController as PresentismoGeneral;
 use Cat\Policies\Presentismos\GeneralPolicy as PresentismoGeneralPolicy;
-use Cat\Modules\Presentismo\Controllers\Registro\PorAgenteController as PresentismoPorAgente;
+use Cat\Modules\Presentismo\Controllers\PorAgenteController as PresentismoPorAgente;
 use Cat\Policies\Presentismos\PorAgentePolicy;
 use Cat\Modules\Presentismo\Controllers\Registro\RegistroController as RegistroPresentismo;
 use Cat\Policies\Presentismos\RegistroPolicy as RegistroPresentismoPolicy;

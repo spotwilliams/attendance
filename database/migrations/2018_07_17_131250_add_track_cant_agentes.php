@@ -12,8 +12,10 @@ class AddTrackCantAgentes extends Migration
      */
     public function up()
     {
-        
-        \Cat\Modules\Agentes\Repositories\AgenteRepository::storeCountActivos();
+        // Only run if estado_contratos has data (requires seed data)
+        if (\Cat\Models\EstadoContrato::count() > 0) {
+            \Cat\Modules\Agentes\Repositories\AgenteRepository::storeCountActivos();
+        }
     }
     
     /**

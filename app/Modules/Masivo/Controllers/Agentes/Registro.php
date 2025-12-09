@@ -1,10 +1,10 @@
 <?php
 
-namespace Cat\Masivo\Controllers\Agentes;
+namespace Cat\Modules\Masivo\Controllers\Agentes;
 
 
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Masivo\Services\Agentes\Procesador;
+use Cat\Modules\Masivo\Services\Agentes\Procesador;
 use Cat\Models\Base;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Support\Facades\Gate;

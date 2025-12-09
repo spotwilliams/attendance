@@ -1,8 +1,8 @@
 <?php
 
-namespace Cat\Masivo\Especificadores\Mappers;
+namespace Cat\Modules\Masivo\Especificadores\Mappers;
 
-use Cat\Masivo\Helpers\DataCleaner;
+use Cat\Modules\Masivo\Helpers\DataCleaner;
 use Cat\Models\EstadoContrato;
 use Cat\Models\TipoContrato;
 use Maatwebsite\Excel\Collections\CellCollection;

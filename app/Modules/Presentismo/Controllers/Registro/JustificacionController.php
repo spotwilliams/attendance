@@ -15,7 +15,7 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Services\Registro\Injustificar;
 use Cat\Modules\Presentismo\Services\Registro\Justificar;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
 use Cat\Modules\Validation\Rules\PeriodoActivo;

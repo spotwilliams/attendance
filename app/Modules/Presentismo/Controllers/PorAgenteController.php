@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Presentismo\Controllers\Registro;
+namespace Cat\Modules\Presentismo\Controllers;
 
 use Cat\Exceptions\AgenteSinBase;
 use Cat\Exceptions\AgenteSinTurno;
@@ -10,7 +10,7 @@ use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Repositories\PeriodoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

@@ -10,9 +10,9 @@
 */
 use Illuminate\Support\Facades\Route;
 use Cat\Modules\Presentismo\Controllers\Registro\RegistroController;
-use Cat\Modules\Presentismo\Controllers\Registro\GeneralController;
+use Cat\Modules\Presentismo\Controllers\GeneralController;
 use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
-use Cat\Modules\Presentismo\Controllers\Registro\PorAgenteController;
+use Cat\Modules\Presentismo\Controllers\PorAgenteController;
 use Cat\Modules\Presentismo\Controllers\Registro\ComentarioController;
 
 Route::group(

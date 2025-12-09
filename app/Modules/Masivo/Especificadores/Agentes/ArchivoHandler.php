@@ -1,9 +1,9 @@
 <?php
 
-namespace Cat\Masivo\Especificadores\Agentes;
+namespace Cat\Modules\Masivo\Especificadores\Agentes;
 
-use Cat\Masivo\Especificadores\Archivo;
-use Cat\Masivo\Especificadores\ExcelHandler;
+use Cat\Modules\Masivo\Especificadores\Archivo;
+use Cat\Modules\Masivo\Especificadores\ExcelHandler;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales as PersonalesStore;
@@ -12,12 +12,12 @@ use Cat\Modules\Agentes\Services\Registro\Store\Operativos as OperativosStore;
 use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Personales as PersonalesDestroy;
 use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Laborales as LaboralesDestroy;
 use Cat\Modules\Agentes\Services\Registro\Destroy\Forced\Operativos as OperativosDestroy;
-use Cat\Masivo\Especificadores\Mappers\Laborales as LaboralesMapper;
-use Cat\Masivo\Especificadores\Mappers\Operativos as OperativosMapper;
+use Cat\Modules\Masivo\Especificadores\Mappers\Laborales as LaboralesMapper;
+use Cat\Modules\Masivo\Especificadores\Mappers\Operativos as OperativosMapper;
 use Illuminate\Support\Facades\Log;
 use Laracasts\Flash\Flash;
 use Maatwebsite\Excel\Collections\CellCollection;
-use Cat\Masivo\Especificadores\Mappers\Personales as PersonalesMapper;
+use Cat\Modules\Masivo\Especificadores\Mappers\Personales as PersonalesMapper;
 use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 

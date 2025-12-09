@@ -16,19 +16,24 @@ class AddPermisoReporteFinanciero extends Migration
             'name'        => 'Reporte de facturacion',
             'comentarios' => 'Permite ver el reporte de facturacion',
         ];
-        
-        try {
-            $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Reporte de haberes')
-                ->firstOrFail();
+
+        $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Reporte de haberes')->first();
+        if ($permiso !== null) {
             $permiso->fill($ps)->save();
-        } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
-            $permiso = new \Cat\Modules\Security\Models\Permission($ps);
+        } else {
+            $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
+                ['name' => $ps['name']],
+                $ps
+            );
         }
-        
+
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
-        
-        $role->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
+
+        // Only sync if role exists (requires seed data)
+        if ($role !== null) {
+            $role->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
+        }
     }
     
     /**

@@ -1,13 +1,13 @@
 <?php
 
-namespace Cat\Modules\Presentismo\Controllers\Registro;
+namespace Cat\Modules\Presentismo\Controllers;
 
 use Cat\Helpers\Calculation;
 use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Base;
 use Cat\Models\Periodo;
 use Cat\Models\Turno;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Repositories\PeriodoRepository;
 use Cat\Repositories\UserRepository;

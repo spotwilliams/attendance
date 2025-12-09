@@ -21,8 +21,8 @@ use Cat\Database\Security\RolSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-//    const SIZE_AGENTE = 500;
-//    const SIZE_AREAS  = 10;
+    const SIZE_AGENTE = 500;
+    const SIZE_AREAS  = 10;
     
     /**
      * Run the database seeds.
@@ -31,7 +31,9 @@ class DatabaseSeeder extends Seeder
      */
     public function run()
     {
-        $this->call(SeederFromSqlFile::class);
+        $this->parametros();
+        $this->seguridad();
+        //$this->agentes();
     }
     
     private function agentes()

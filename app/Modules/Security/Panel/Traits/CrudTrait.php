@@ -47,7 +47,7 @@ trait CrudTrait
      */
     public function addFakes($columns = ['extras'])
     {
-        foreach ($columns as $key => $column) {
+        foreach ($columns as $column) {
             $column_contents = $this->{$column};
 
             if (! is_object($this->{$column})) {

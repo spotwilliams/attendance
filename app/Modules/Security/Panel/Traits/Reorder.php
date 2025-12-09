@@ -21,7 +21,7 @@ trait Reorder
     {
         $count = 0;
 
-        foreach ($request as $key => $entry) {
+        foreach ($request as $entry) {
             if ($entry['item_id'] != '' && $entry['item_id'] != null) {
                 $item = $this->model->find($entry['item_id']);
                 $item->parent_id = $entry['parent_id'];

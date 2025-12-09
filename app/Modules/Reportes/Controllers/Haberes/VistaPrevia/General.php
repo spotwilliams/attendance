@@ -5,7 +5,7 @@ namespace Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia;
 use Cat\Models\Base;
 use Cat\Models\Periodo;
 use Cat\Models\Turno;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;

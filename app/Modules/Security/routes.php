@@ -26,15 +26,15 @@ Route::group(
             ],
             function () {
                 Route::resource('permission', PermissionCrudController::class);
-                
+
                 Route::resource('rol', RoleCrudController::class);
 
 //                \CRUD::resource('role', RoleCrudController::class);
-                
+
 //                Route::get('usuarios/search', UserCrudController::class . '@search');
-                
+
                 Route::resource('usuario', UserCrudController::class);
-                
+
 //                Route::get('usuario', UserCrudController::class . '@index')
 //                    ->name('listaUsuarios');
             });

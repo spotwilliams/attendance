@@ -13,7 +13,7 @@ class AddContratoJAKOVCEVIC2018 extends Migration
     public function __construct()
     {
         // id de JAKOVCEVIC = 4468
-        $this->agente = \Cat\Models\Agente::findOrFail(4468);
+        $this->agente = \Cat\Models\Agente::find(4468);
         $this->data = [
                 'monto' => config('cat.monto_contrato'),
                 'fecha_ingreso' => '2018-01-01',
@@ -33,6 +33,10 @@ class AddContratoJAKOVCEVIC2018 extends Migration
 
     public function up()
     {
+        // Only run if specific agent exists (requires seed data)
+        if ($this->agente === null) {
+            return;
+        }
 
         $service = new \Cat\Modules\Agentes\Services\Registro\Store\Laborales($this->agente, $this->data);
 
@@ -46,6 +50,11 @@ class AddContratoJAKOVCEVIC2018 extends Migration
      */
     public function down()
     {
+        // Only run if specific agent exists (requires seed data)
+        if ($this->agente === null) {
+            return;
+        }
+
         /** @var \Illuminate\Database\Query\Builder $contrato */
         $contrato = \Cat\Models\Contrato::where('id_agente', '=', $this->agente->id);
         /** @var \Illuminate\Database\Query\Builder $contHist */

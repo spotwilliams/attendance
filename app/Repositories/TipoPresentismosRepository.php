@@ -2,7 +2,6 @@
 
 namespace Cat\Repositories;
 
-use Carbon\Carbon;
 use Cat\Helpers\Cache;
 use Cat\Models\Agente;
 use Cat\Models\ContratoHistorico;
@@ -135,7 +134,7 @@ class TipoPresentismosRepository
             }
         }
         if (self::isWorkingOnWeekend($agente)) {
-            $diasADescontar = $diasADescontar * config('cat.presentismos.equivalencia.injustificado.fin_semana');
+            $diasADescontar *= config('cat.presentismos.equivalencia.injustificado.fin_semana');
         }
         
         return $diasADescontar;

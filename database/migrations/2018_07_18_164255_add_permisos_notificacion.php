@@ -16,15 +16,19 @@ class AddPermisosNotificacion extends Migration
             'name'        => 'Notificacion de facturacion',
             'comentarios' => 'Permite enviar mails a los agentes con datos para facturar',
         ];
-        
-        $permiso = new \Cat\Modules\Security\Models\Permission($ps);
-        
-        $permiso->save();
-    
+
+        $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
+            ['name' => $ps['name']],
+            $ps
+        );
+
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
-    
-        $role->syncPermissions([$permiso]);
+
+        // Only sync if role exists (requires seed data)
+        if ($role !== null) {
+            $role->syncPermissions([$permiso]);
+        }
     }
     
     /**

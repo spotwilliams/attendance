@@ -105,7 +105,7 @@ class Registro extends Service
         // en la tabla de dias disponibles. Las validaciones previas deben poder
         /** @var DiaDisponible $diaDisponible */
         if ($diaDisponible <> null) {
-            $diaDisponible->cant_dias = $diaDisponible->cant_dias + $add;
+            $diaDisponible->cant_dias += $add;
             $diaDisponible->update();
         }
     }

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Masivo\Services\Presentismos;
+namespace Cat\Modules\Masivo\Services\Presentismos;
 
 use Cat\Models\Base;
 use Cat\Models\Turno;

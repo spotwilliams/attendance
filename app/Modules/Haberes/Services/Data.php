@@ -9,7 +9,7 @@ use Cat\Models\Operativo;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Models\Turno;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Doctrine\DBAL\Query\QueryException;
 
 class Data
