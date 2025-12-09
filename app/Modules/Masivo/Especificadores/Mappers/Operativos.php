@@ -1,9 +1,9 @@
 <?php
 
-namespace Cat\Masivo\Especificadores\Mappers;
+namespace Cat\Modules\Masivo\Especificadores\Mappers;
 
 use Carbon\Carbon;
-use Cat\Masivo\Helpers\DataCleaner;
+use Cat\Modules\Masivo\Helpers\DataCleaner;
 use Cat\Models\Agente;
 use Cat\Models\Base;
 use Cat\Models\Gerencia;

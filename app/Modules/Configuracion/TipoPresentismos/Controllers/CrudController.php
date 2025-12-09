@@ -3,17 +3,17 @@
 namespace Cat\Modules\Configuracion\TipoPresentismos\Controllers;
 
 use Cat\Helpers\Cache;
+use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\DiaPermitido;
 use Cat\Models\TipoPresentismo;
+use Cat\Modules\Configuracion\TipoPresentismos\Repositories\TipoPresentismoRepository;
 use Cat\Modules\Configuracion\TipoPresentismos\Requests\CreateTipoPresentismoRequest;
 use Cat\Modules\Configuracion\TipoPresentismos\Requests\UpdateTipoPresentismoRequest;
-use Cat\Modules\Configuracion\TipoPresentismos\Repositories\TipoPresentismoRepository;
-use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
-use Laracasts\Flash\Flash;
-use Illuminate\View\View;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
+use Illuminate\View\View;
+use Laracasts\Flash\Flash;
+use Prettus\Repository\Criteria\RequestCriteria;
 
 class CrudController extends AppBaseController
 {

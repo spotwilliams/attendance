@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Masivo\Especificadores;
+namespace Cat\Modules\Masivo\Especificadores;
 
 use Cat\Models\Base;
 use Maatwebsite\Excel\Facades\Excel;

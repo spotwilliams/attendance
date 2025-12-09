@@ -17,14 +17,18 @@ class AddPermisosDashboard extends Migration
             'comentarios' => 'Permite ver los datos estadisticos generados al inicio',
         ];
     
-        $permiso = new \Cat\Modules\Security\Models\Permission($ps);
-        
-        $permiso->save();
-    
+        $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
+            ['name' => $ps['name']],
+            $ps
+        );
+
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
-    
-        $role->syncPermissions([$permiso]);
+
+        // Only sync if role exists (requires seed data)
+        if ($role !== null) {
+            $role->syncPermissions([$permiso]);
+        }
     }
     
     /**

@@ -14,21 +14,24 @@ class AddPermisosFacturacion extends Migration
     {
         \Cat\Modules\Security\Models\Permission::where('name', '=', 'Calcular haberes')
             ->delete();
-        
+
         $ps = [
             'name'        => 'Registro facturacion',
             'comentarios' => 'Permite registrar para un periodo a quienes se les facturo',
         ];
-    
-        $permiso = new \Cat\Modules\Security\Models\Permission($ps);
-    
-        $permiso->save();
-    
-    
+
+        $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
+            ['name' => $ps['name']],
+            $ps
+        );
+
         /** @var \Cat\Modules\Security\Models\Role $role */
         $role = \Cat\Modules\Security\Models\Role::find(1);//permisos full
-        
-        $role->syncPermissions([$permiso]);
+
+        // Only sync if role exists (requires seed data)
+        if ($role !== null) {
+            $role->syncPermissions([$permiso]);
+        }
     }
     
     /**

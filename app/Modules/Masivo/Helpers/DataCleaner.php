@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Masivo\Helpers;
+namespace Cat\Modules\Masivo\Helpers;
 
 class DataCleaner
 {

@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Validation\Repositories;
+namespace Cat\Modules\Presentismo\Repositories;
 
 use Cat\Models\Agente;
 use Cat\Models\Base;

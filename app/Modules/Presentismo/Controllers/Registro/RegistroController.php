@@ -14,7 +14,7 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
 use Cat\Modules\Presentismo\Services\Registro\Destroy;
 use Cat\Modules\Presentismo\Services\Validacion\ValidationNonType;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Presentismo;
 use Illuminate\Auth\Access\AuthorizationException;

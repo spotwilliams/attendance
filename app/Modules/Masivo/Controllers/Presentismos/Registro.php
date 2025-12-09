@@ -1,11 +1,11 @@
 <?php
 
-namespace Cat\Masivo\Controllers\Presentismos;
+namespace Cat\Modules\Masivo\Controllers\Presentismos;
 
 
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Masivo\Services\Presentismos\Procesador;
-use Cat\Masivo\Services\Presentismos\Generator;
+use Cat\Modules\Masivo\Services\Presentismos\Procesador;
+use Cat\Modules\Masivo\Services\Presentismos\Generator;
 use Cat\Models\Base;
 use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

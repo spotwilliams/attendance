@@ -9,9 +9,9 @@
 |
 */
 use Illuminate\Support\Facades\Route;
-use Cat\Masivo\Controllers\Agentes\Registro as AgentesMasivoController;
-use Cat\Masivo\Controllers\Presentismos\Registro as PresentismosMasivoController;
-use Cat\Masivo\Controllers\Inicial\Registro as InicialMasivoController;
+use Cat\Modules\Masivo\Controllers\Agentes\Registro as AgentesMasivoController;
+use Cat\Modules\Masivo\Controllers\Presentismos\Registro as PresentismosMasivoController;
+use Cat\Modules\Masivo\Controllers\Inicial\Registro as InicialMasivoController;
 
 Route::group(
     ['middleware' => ['web']],

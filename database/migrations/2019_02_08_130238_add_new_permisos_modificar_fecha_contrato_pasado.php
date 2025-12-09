@@ -12,28 +12,33 @@ class AddNewPermisosModificarFechaContratoPasado extends Migration
      */
     public function up()
     {
-        $permiso = [
+        $permisoData = [
                 'id' => null,
                 'name' => 'Cargar contratos pasados',
                 'comentarios' => 'Permite registar contratos con fecha de inicio anterior al limite permitido',
         ];
         /** @var \Cat\Modules\Security\Models\Permission $permiso */
-        $permiso = new \Cat\Modules\Security\Models\Permission($permiso);
-        $permiso->save();
+        $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
+            ['name' => $permisoData['name']],
+            $permisoData
+        );
 
-
-        $rol = [
+        $rolData = [
                 'id' => null,
                 'name' => 'Cargador contratos con fecha inicio pasado'
         ];
         /** @var \Cat\Modules\Security\Models\Role $rol */
-        $rol = new \Cat\Modules\Security\Models\Role($rol);
-        $rol->save();
+        $rol = \Cat\Modules\Security\Models\Role::firstOrCreate(
+            ['name' => $rolData['name']],
+            $rolData
+        );
         $rol->syncPermissions($permiso);
 
-        $rol = \Cat\Modules\Security\Models\Role::where('name', '=', 'Permisos full')->first();
-        $rol->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
-
+        $rolFull = \Cat\Modules\Security\Models\Role::where('name', '=', 'Permisos full')->first();
+        // Only sync if role exists (requires seed data)
+        if ($rolFull !== null) {
+            $rolFull->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
+        }
     }
 
     /**

@@ -5,7 +5,6 @@ namespace Cat\Repositories;
 use Cat\Helpers\Cache;
 use Cat\Models\Base;
 use Cat\Models\TipoContrato;
-use Illuminate\Support\Facades\Auth;
 
 class BaseRepository
 {

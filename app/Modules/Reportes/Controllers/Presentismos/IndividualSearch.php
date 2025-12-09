@@ -6,7 +6,7 @@ use Cat\Helpers\Calculation;
 use Cat\Helpers\Pagination\FormPresenter;
 use Cat\Models\Agente;
 use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
-use Cat\Modules\Validation\Repositories\PresentismoRepository;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;

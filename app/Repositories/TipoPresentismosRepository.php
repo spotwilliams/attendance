@@ -2,7 +2,6 @@
 
 namespace Cat\Repositories;
 
-use Carbon\Carbon;
 use Cat\Helpers\Cache;
 use Cat\Models\Agente;
 use Cat\Models\ContratoHistorico;

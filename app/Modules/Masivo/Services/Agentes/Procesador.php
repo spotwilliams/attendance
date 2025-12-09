@@ -1,9 +1,9 @@
 <?php
 
-namespace Cat\Masivo\Services\Agentes;
+namespace Cat\Modules\Masivo\Services\Agentes;
 
-use Cat\Masivo\Especificadores\Agentes\ArchivoHandler;
-use Cat\Masivo\Services\Common;
+use Cat\Modules\Masivo\Especificadores\Agentes\ArchivoHandler;
+use Cat\Modules\Masivo\Services\Common;
 use Cat\Models\Base;
 use Illuminate\Http\UploadedFile;
 
