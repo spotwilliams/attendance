@@ -20,7 +20,7 @@ trait Columns
 
         // if array, add a column for each of the items
         if (is_array($columns) && count($columns)) {
-            foreach ($columns as $key => $column) {
+            foreach ($columns as $column) {
                 // if label and other details have been defined in the array
                 if (is_array($columns[0])) {
                     $this->addColumn($column);
@@ -75,7 +75,7 @@ trait Columns
     public function addColumns($columns)
     {
         if (count($columns)) {
-            foreach ($columns as $key => $column) {
+            foreach ($columns as $column) {
                 $this->addColumn($column);
             }
         }

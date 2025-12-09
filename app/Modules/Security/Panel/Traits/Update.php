@@ -47,7 +47,7 @@ trait Update
             if (! isset($fields[$k]['value'])) {
                 if (isset($field['subfields'])) {
                     $fields[$k]['value'] = [];
-                    foreach ($field['subfields'] as $key => $subfield) {
+                    foreach ($field['subfields'] as $subfield) {
                         $fields[$k]['value'][] = $entry->{$subfield['name']};
                     }
                 } else {

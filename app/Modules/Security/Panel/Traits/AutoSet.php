@@ -49,7 +49,7 @@ trait AutoSet
     {
         $table_columns = \Schema::getColumnListing($this->model->getTable());
 
-        foreach ($table_columns as $key => $column) {
+        foreach ($table_columns as $column) {
             $column_type = \Schema::getColumnType($this->model->getTable(), $column);
             $this->db_column_types[$column]['type'] = trim(preg_replace('/\(\d+\)(.*)/i', '', $column_type));
             $this->db_column_types[$column]['default'] = ''; // no way to do this using DBAL?!

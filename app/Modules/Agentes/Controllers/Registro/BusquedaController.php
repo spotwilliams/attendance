@@ -77,7 +77,7 @@ class BusquedaController extends AppBaseController
         }
         
         if ($this->apellido) {
-            
+
             $this->agentesEloquent
                 ->where('apellido', 'ILIKE', "%$this->apellido%");
             //                ->where(DB::raw('unaccent(apellido)'), 'ILIKE', DB::raw("unaccent('%$apellido%')"))

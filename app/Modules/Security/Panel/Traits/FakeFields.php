@@ -60,7 +60,7 @@ trait FakeFields
 
         // json_encode all fake_value columns in the database, so they can be properly stored and interpreted
         if (count($fake_field_columns_to_encode)) {
-            foreach ($fake_field_columns_to_encode as $key => $value) {
+            foreach ($fake_field_columns_to_encode as $value) {
                 $request[$value] = json_encode($request[$value]);
             }
         }

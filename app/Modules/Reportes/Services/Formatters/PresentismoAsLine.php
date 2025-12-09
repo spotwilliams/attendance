@@ -120,7 +120,7 @@ class PresentismoAsLine extends RowDataFormatter
                 $pres .= ";{$this->charEmpty}"; //codigo
                 
                 if ($this->estado) {
-                    
+
                     $pres .= ";{$this->charEmpty}"; // estado
                 }
                 if ($this->comentarios) {

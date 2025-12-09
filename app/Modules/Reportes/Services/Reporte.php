@@ -47,22 +47,22 @@ class Reporte extends Service
         Excel::create('Reporte', function ($writer) {
             /** @var LaravelExcelWriter $writer */
             $writer->sheet('Reporte', function ($sheet) {
-                
+
                 /** @var Paginator $models */
                 $page = 1;
                 $data = [];
                 do {
                     $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
-                    
+
                     $page++;
                     foreach ($models->items() as $model) {
                         $data [] = $this->rowFormatter->format($model);
                     }
-                    
+
                 } while ($models->hasMorePages());
                 $sheet->fromArray($data);
             });
-            
+
             // Esta solucion la podemos especificar para que se pueda exportar really big size files
 //            return Response::stream(function () use ($query) {
 //                $query->chunk(1000, function ($rows) {

@@ -48,7 +48,7 @@ trait Access
      */
     public function hasAccessToAny($permission_array)
     {
-        foreach ($permission_array as $key => $permission) {
+        foreach ($permission_array as $permission) {
             if (in_array($permission, $this->access)) {
                 return true;
             }
@@ -66,7 +66,7 @@ trait Access
      */
     public function hasAccessToAll($permission_array)
     {
-        foreach ($permission_array as $key => $permission) {
+        foreach ($permission_array as $permission) {
             if (! in_array($permission, $this->access)) {
                 return false;
             }

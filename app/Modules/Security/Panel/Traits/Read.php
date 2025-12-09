@@ -33,7 +33,7 @@ trait Read
     {
         $entries = $this->query->get();
         // add the fake columns for each entry
-        foreach ($entries as $key => $entry) {
+        foreach ($entries as $entry) {
             $entry->addFakes($this->getFakeColumnsAsArray());
         }
         
@@ -141,7 +141,7 @@ trait Read
     public function getRowViews($entry)
     {
         $response = [];
-        foreach ($this->columns as $key => $column) {
+        foreach ($this->columns as $column) {
             $response[] = $this->getCellView($column, $entry);
         }
         
