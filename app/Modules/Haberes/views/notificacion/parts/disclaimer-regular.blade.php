@@ -1,10 +1,10 @@
 <?php
 
-$mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_fin);
+$mesFacturacion = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $periodo->fecha_fin);
 $mesFacturacion->addMonth(1);
 
-$start = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_comienzo);
-$end = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_fin);
+$start = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $periodo->fecha_comienzo);
+$end = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $periodo->fecha_fin);
 ?>
 
 <div class="col-md-offset-3 col-md-6">

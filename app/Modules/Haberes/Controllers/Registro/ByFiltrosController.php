@@ -75,7 +75,7 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
         /** @var Collection $return */
         $return = $this->query
             ->with([
-                'notificaciones' => function ($with) use ($periodo) {
+                'notificaciones' => function ($with) use ($periodo): void {
                     $with->where('id_periodo', '=', $periodo->id);
                 },
             ])
@@ -118,7 +118,7 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
             ->with('operativo.turno')
             ->with('contrato.tipoContrato');
         
-        $this->query->join('operativos', function ($join) {
+        $this->query->join('operativos', function ($join): void {
             /** @var JoinClause $join */
             $join->on('operativos.id_agente', '=', 'agentes.id');
             if (!$this->bases->isEmpty()) {
@@ -142,7 +142,7 @@ class ByFiltrosController extends \Cat\Modules\Reportes\Controllers\ReporteContr
             }
             
         });
-        $this->query->join('contratos', function ($join) {
+        $this->query->join('contratos', function ($join): void {
             /** @var JoinClause $join */
             $join->on('contratos.id_agente', '=', 'agentes.id');
             

@@ -104,7 +104,7 @@ class Individual extends ReporteController
      */
     protected function setupParams(Request $request)
     {
-        $today = Carbon::today();
+        $today = \Illuminate\Support\Facades\Date::today();
         
         if ($request->input('start')) {
             $this->desde = new \DateTime($request->input('start'));
@@ -137,7 +137,7 @@ class Individual extends ReporteController
     {
         $this->query = Agente::select(['agentes.*'])
             ->with([
-                'presentismos' => function ($query) {
+                'presentismos' => function ($query): void {
                     
                     $query->whereDate('fecha', '>=', $this->desde)
                         ->whereDate('fecha', '<=', $this->hasta);
@@ -152,12 +152,12 @@ class Individual extends ReporteController
             ])
             ->where('agentes.id', '=', $this->agente->id)
             ->with([
-                'operativo.base' => function ($query) {
+                'operativo.base' => function ($query): void {
                     $query->select(['id', 'nombre as nombre_base', 'nombre']);
                 },
             ])
             ->with([
-                'operativo.turno' => function ($query) {
+                'operativo.turno' => function ($query): void {
                     $query->select(['id', 'codigo as turno', 'codigo']);
                 },
             ])

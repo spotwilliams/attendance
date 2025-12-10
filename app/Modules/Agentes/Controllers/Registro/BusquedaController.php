@@ -52,13 +52,13 @@ class BusquedaController extends AppBaseController
     
     protected function prepareQuery()
     {
-        $this->nombre   = $this->cleanMyInput(Input::get('nombre'));
-        $this->apellido = $this->cleanMyInput(Input::get('apellido'));
+        $this->nombre   = $this->cleanMyInput(\Illuminate\Support\Facades\Request::input('nombre'));
+        $this->apellido = $this->cleanMyInput(\Illuminate\Support\Facades\Request::input('apellido'));
         $this->cuit     = [];
         
-        if (!empty(Input::get('cuit'))) {
+        if (!empty(\Illuminate\Support\Facades\Request::input('cuit'))) {
             
-            $cuitsInput = is_array(Input::get('cuit')) ? Input::get('cuit') : explode(',', Input::get('cuit'));
+            $cuitsInput = is_array(\Illuminate\Support\Facades\Request::input('cuit')) ? \Illuminate\Support\Facades\Request::input('cuit') : explode(',', \Illuminate\Support\Facades\Request::input('cuit'));
             foreach ($cuitsInput as $cuitIn) {
                 $this->cuit[] = $this->cleanMyInput($cuitIn);
             }

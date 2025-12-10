@@ -15,9 +15,7 @@ class FuncionRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_funciones', function () {
-                return Funcion::all();
-            });
+            $bases = Cache::get('all_funciones', fn() => Funcion::all());
         } else {
             $bases = Funcion::all();
         }

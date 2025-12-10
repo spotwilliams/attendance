@@ -116,7 +116,7 @@ class CrudPanel
     {
         $complete_route = $route . '.index';
         
-        if (!\Route::has($complete_route)) {
+        if (!\Illuminate\Support\Facades\Route::has($complete_route)) {
             throw new \Exception('There are no routes for this route name.', 404);
         }
         
@@ -166,9 +166,7 @@ class CrudPanel
      */
     public function getFirstOfItsTypeInArray($type, $array)
     {
-        return array_first($array, function ($key, $item) use ($type) {
-            return $item['type'] == $type;
-        });
+        return \Illuminate\Support\Arr::first($array, fn($key, $item) => $item['type'] == $type);
     }
     
     // ------------
@@ -211,9 +209,7 @@ class CrudPanel
             }
             
             return $this->{$items} = array_merge($elements,
-                array_filter($this->{$items}, function ($item) use ($items) {
-                    return !in_array($item['name'], $this->sort[$items]);
-                }));
+                array_filter($this->{$items}, fn($item) => !in_array($item['name'], $this->sort[$items])));
         }
         
         return $this->{$items};

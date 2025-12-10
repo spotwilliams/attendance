@@ -23,7 +23,7 @@ class HaberesPorAgenteAsLine extends RowDataFormatter
         $this->charEmpty  = '';
         
         foreach ($this->periodos as $periodo) {
-            $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $periodo->fecha_fin);
+            $mesFacturacion = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $periodo->fecha_fin);
             $mesFacturacion->addMonth(1);
             
             $periodoName      = trans('month.' . $mesFacturacion->format('m'))

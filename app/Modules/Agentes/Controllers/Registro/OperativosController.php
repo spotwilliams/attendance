@@ -77,8 +77,8 @@ class OperativosController extends AppBaseController
             return redirect(route('agentesShow', ['id' => $input['agente']]));
         } catch (\Exception $e) {
             
-            $validator = Validator::make(['operacion' => null], ['operation |required']);
-            $validator->after(function ($validator) use ($e) {
+            $validator = Validator::make(['operacion' => null], [['operation ', 'required']]);
+            $validator->after(function ($validator) use ($e): void {
                 $validator->errors()->add('operacion', 'No se pudo guardar el dato operativo');
             });
             

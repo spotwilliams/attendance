@@ -82,7 +82,7 @@ class CrudController extends BaseController
         
         // fallback to global request instance
         if (is_null($request)) {
-            $request = \Request::instance();
+            $request = \Illuminate\Support\Facades\Request::instance();
         }
         
         // insert item in the db
@@ -91,7 +91,7 @@ class CrudController extends BaseController
         // show a success message
         Flash::success('Guardado correctamente');
 
-        return \Redirect::to($this->crud->route);
+        return \Illuminate\Support\Facades\Redirect::to($this->crud->route);
         
     }
     
@@ -131,7 +131,7 @@ class CrudController extends BaseController
         
         // fallback to global request instance
         if (is_null($request)) {
-            $request = \Request::instance();
+            $request = \Illuminate\Support\Facades\Request::instance();
         }
         
         // update the row in the db
@@ -141,7 +141,7 @@ class CrudController extends BaseController
         // show a success message
         Flash::success('Actualizado correctamente');
         
-        return \Redirect::to($this->crud->route);
+        return \Illuminate\Support\Facades\Redirect::to($this->crud->route);
     }
     
     /**
@@ -213,7 +213,7 @@ class CrudController extends BaseController
     {
         $this->crud->hasAccessOrFail('reorder');
         
-        $all_entries = \Request::input('tree');
+        $all_entries = \Illuminate\Support\Facades\Request::input('tree');
         
         if (count($all_entries)) {
             $count = $this->crud->updateTreeOrder($all_entries);
@@ -266,7 +266,7 @@ class CrudController extends BaseController
             
             // add the buttons as the last column
             if ($this->crud->buttons->where('stack', 'line')->count()) {
-                $row_items[] = \View::make('Security::crud.inc.button_stack', ['stack' => 'line'])
+                $row_items[] = \Illuminate\Support\Facades\View::make('Security::crud.inc.button_stack', ['stack' => 'line'])
                     ->with('crud', $this->crud)
                     ->with('entry', $entry)
                     ->render();
@@ -274,7 +274,7 @@ class CrudController extends BaseController
             
             // add the details_row buttons as the first column
             if ($this->crud->details_row) {
-                array_unshift($row_items, \View::make('Security::crud.columns.details_row_button')
+                array_unshift($row_items, \Illuminate\Support\Facades\View::make('Security::crud.columns.details_row_button')
                     ->with('crud', $this->crud)
                     ->with('entry', $entry)
                     ->render());

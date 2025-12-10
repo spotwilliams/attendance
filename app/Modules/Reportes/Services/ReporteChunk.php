@@ -47,9 +47,9 @@ class ReporteChunk extends Service
         ini_set('memory_limit', '-1');
         
         
-        return Excel::create('Reporte', function ($writer) {
+        return Excel::create('Reporte', function ($writer): void {
             /** @var LaravelExcelWriter $writer */
-            $writer->sheet('Reporte', function ($sheet) {
+            $writer->sheet('Reporte', function ($sheet): void {
                 
                 /** @var LaravelExcelWorksheet $sheet */
                 /** @var Paginator $models */

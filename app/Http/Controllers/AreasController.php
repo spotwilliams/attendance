@@ -26,7 +26,7 @@ class AreasController extends AppBaseController
      * Display a listing of the Areas.
      *
      * @param Request $request
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function index(Request $request)
     {
@@ -40,7 +40,7 @@ class AreasController extends AppBaseController
     /**
      * Show the form for creating a new Areas.
      *
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function create()
     {
@@ -52,7 +52,7 @@ class AreasController extends AppBaseController
      *
      * @param CreateAreasRequest $request
      *
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function store(CreateAreasRequest $request)
     {
@@ -70,7 +70,7 @@ class AreasController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function show($id)
     {
@@ -90,7 +90,7 @@ class AreasController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function edit($id)
     {
@@ -111,7 +111,7 @@ class AreasController extends AppBaseController
      * @param  int              $id
      * @param UpdateAreasRequest $request
      *
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function update($id, UpdateAreasRequest $request)
     {
@@ -135,7 +135,7 @@ class AreasController extends AppBaseController
      *
      * @param  int $id
      *
-     * @return Response
+     * @return \Illuminate\Support\Facades\Response
      */
     public function destroy($id)
     {

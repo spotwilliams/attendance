@@ -15,7 +15,7 @@ use Cat\Modules\Masivo\Controllers\Inicial\Registro as InicialMasivoController;
 
 Route::group(
     ['middleware' => ['web']],
-    function () {
+    function (): void {
         
         /**
          * Agentes

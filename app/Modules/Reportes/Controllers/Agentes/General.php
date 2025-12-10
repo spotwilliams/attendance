@@ -173,7 +173,7 @@ class General extends ReporteController
             (!$this->areas->isEmpty())
         ) {
             
-            $this->query->join('operativos', function ($join) {
+            $this->query->join('operativos', function ($join): void {
                 /** @var JoinClause $join */
                 $join->on('operativos.id_agente', '=', 'agentes.id');
                 if (!$this->bases->isEmpty()) {
@@ -213,7 +213,7 @@ class General extends ReporteController
             (!$this->estadoContratos->isEmpty()) or
             (!$this->iibbs->isEmpty())
         ) {
-            $this->query->join('contratos', function ($join) {
+            $this->query->join('contratos', function ($join): void {
                 /** @var JoinClause $join */
                 $join->on('contratos.id_agente', '=', 'agentes.id');
                 
@@ -257,7 +257,7 @@ class General extends ReporteController
             (!$this->estadoEstudio->isEmpty()) or
             (!$this->nivelEstudio->isEmpty())
         ) {
-            $this->query->join('estudios', function ($join) {
+            $this->query->join('estudios', function ($join): void {
                 /** @var JoinClause $join */
                 $join->on('estudios.id_agente', '=', 'agentes.id');
                 

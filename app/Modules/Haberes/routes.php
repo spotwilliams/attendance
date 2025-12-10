@@ -3,11 +3,11 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function () {
+Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (): void {
     /**
      * Registro de facturas
      */
-    Route::group(['prefix' => 'facturas'], function () {
+    Route::group(['prefix' => 'facturas'], function (): void {
         
         // Paso 1
         Route::get('index', \Cat\Modules\Haberes\Controllers\GeneralController::class . '@index')
@@ -18,7 +18,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
             Cat\Modules\Haberes\Controllers\Registro\ConfirmarController::class . '@registarFactura')
             ->name('haberesRegistrarFactura');
         
-        Route::group(['prefix' => 'search'], function () {
+        Route::group(['prefix' => 'search'], function (): void {
             
             // Paso 2
             Route::post('/', Cat\Modules\Haberes\Controllers\GeneralController::class . '@search')
@@ -35,7 +35,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
         
     });
     
-    Route::group(['prefix' => 'notificacion'], function () {
+    Route::group(['prefix' => 'notificacion'], function (): void {
         
         // Paso 1
         Route::get('index', \Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@index')
@@ -46,8 +46,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
             ->name('notificacionCalcular');
         
         // Paso 4
-        Route::group(['prefix' => 'notificar'], function () {
-            Route::group(['prefix' => 'regular'], function () {
+        Route::group(['prefix' => 'notificar'], function (): void {
+            Route::group(['prefix' => 'regular'], function (): void {
                 
                 // Paso 4.1
                 Route::post('confirmar',
@@ -59,7 +59,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
                     ->name('enviarNotificacionRegular');
             });
             
-            Route::group(['prefix' => 'libre'], function () {
+            Route::group(['prefix' => 'libre'], function (): void {
                 
                 // Paso 4.1
                 Route::post('confirmar',
@@ -73,7 +73,7 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
             
         });
         
-        Route::group(['prefix' => 'search'], function () {
+        Route::group(['prefix' => 'search'], function (): void {
             
             // Paso 2
             Route::post('/', \Cat\Modules\Haberes\Controllers\Notificacion\NotificacionController::class . '@search')
@@ -106,8 +106,8 @@ Route::group(['middleware' => ['web'], 'prefix' => 'administracion'], function (
     /**
      * Modificacion Masivo
      */
-    Route::group(['prefix' => 'modicacion'], function () {
-        Route::group(['prefix' => 'masivo'], function () {
+    Route::group(['prefix' => 'modicacion'], function (): void {
+        Route::group(['prefix' => 'masivo'], function (): void {
             
             Route::get('contrato',
                 \Cat\Modules\Haberes\Controllers\Modificador\ContratosController::class . '@index')

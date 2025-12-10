@@ -42,7 +42,7 @@ class Exportar extends General
         parent::setupQuery();
         $this->query
             ->with([
-                'presentismos' => function ($query) {
+                'presentismos' => function ($query): void {
                     if (!$this->tiposPresentismos->isEmpty()) {
                         $query->whereIn('id_tipo_presentismo', $this->tiposPresentismos->toArray());
                     }
@@ -50,7 +50,7 @@ class Exportar extends General
                         ->whereDate('fecha', '<=', $this->hasta)
                         ->orderBy('fecha', 'ASC')
                         ->with([
-                            'tipoPresentismo' => function ($tipo) {
+                            'tipoPresentismo' => function ($tipo): void {
                                 $tipo->select([
                                     'id',
                                     'codigo',
@@ -62,17 +62,17 @@ class Exportar extends General
                 },
             ])
             ->with([
-                'operativo.base' => function ($with) {
+                'operativo.base' => function ($with): void {
                     $with->select(['id', 'nombre as nombre_base']);
                 },
             ])
             ->with([
-                'operativo.turno' => function ($turno) {
+                'operativo.turno' => function ($turno): void {
                     $turno->select(['id', 'codigo as turno']);
                 },
             ])
             ->with([
-                'contrato.tipoContrato' => function ($tipo) {
+                'contrato.tipoContrato' => function ($tipo): void {
                     $tipo->select(['id', 'descripcion as tipo_contrato']);
                 },
             ]);

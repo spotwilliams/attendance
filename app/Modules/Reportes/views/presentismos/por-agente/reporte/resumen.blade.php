@@ -1,7 +1,5 @@
 <?php
-$resumen = $agente->presentismos->groupBy(function ($presentismo, $key) {
-    return $presentismo->tipoPresentismo->codigo . '@' . $presentismo->tipoPresentismo->color;
-});
+$resumen = $agente->presentismos->groupBy(fn($presentismo, $key) => $presentismo->tipoPresentismo->codigo . '@' . $presentismo->tipoPresentismo->color);
 ?>
 
 <div class="box box-warning">

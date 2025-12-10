@@ -32,11 +32,14 @@ class AddNewPermisosModificarPresentismoPasado extends Migration
             ['name' => $rolData['name']],
             $rolData
         );
-        $rol->syncPermissions($permiso);
+        // Only sync if pivot table exists
+        if (\Schema::hasTable('role_has_permissions')) {
+            $rol->syncPermissions($permiso);
+        }
 
         $rolFull = \Cat\Modules\Security\Models\Role::where('name', '=', 'Permisos full')->first();
-        // Only sync if role exists (requires seed data)
-        if ($rolFull !== null) {
+        // Only sync if role exists and pivot table exists
+        if ($rolFull !== null && \Schema::hasTable('role_has_permissions')) {
             $rolFull->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
         }
     }

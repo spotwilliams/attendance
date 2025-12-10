@@ -52,7 +52,7 @@ class ModuleServiceProvider extends ServiceProvider
         $this->app->afterResolving('blade.compiler', function (BladeCompiler $bladeCompiler) {
             
             $bladeCompiler->directive('haspermission', function ($permission) {
-//                Cat\Modules\Security\Helpers\Checker::hasPermission($permission)
+                // Cat\Modules\Security\Helpers\Checker::hasPermission($permission)
                 return "<?php if(\Cat\Modules\Security\Helpers\Checker::hasPermission($permission)): ?>";
             });
             $bladeCompiler->directive('endhaspermission', function () {

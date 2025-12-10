@@ -119,7 +119,7 @@ class General extends ReporteController
             ])
             // Override the condition
             ->with([
-                'presentismos' => function ($presentismos) {
+                'presentismos' => function ($presentismos): void {
                     $presentismos
                         ->where('id_periodo', '=', $this->periodo->id)
 //                            ->where('injustificado', '=', true)

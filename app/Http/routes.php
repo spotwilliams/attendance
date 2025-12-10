@@ -13,9 +13,7 @@
 
 use Illuminate\Support\Facades\Route;
 
-Route::get('/', function () {
-    return redirect('/home');
-});
+Route::get('/', fn() => redirect('/home'));
 
 
 /*
@@ -28,7 +26,7 @@ Route::post('login', '\Cat\Http\Controllers\Auth\AuthController@login');
 Route::get('logout', '\Cat\Http\Controllers\Auth\AuthController@logout');
 
 
-Route::group(['prefix' => 'home'], function () {
+Route::group(['prefix' => 'home'], function (): void {
     
     Route::get('/', 'HomeController@index');
     

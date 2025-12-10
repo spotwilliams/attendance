@@ -17,7 +17,7 @@ use Cat\Modules\Presentismo\Controllers\Registro\ComentarioController;
 
 Route::group(
     ['middleware' => ['web']],
-    function () {
+    function (): void {
         /**
          * General
          */

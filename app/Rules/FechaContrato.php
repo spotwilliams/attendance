@@ -15,9 +15,9 @@ class FechaContrato
      */
     public function validate($attribute, $fecha)
     {
-        $today = Carbon::today();
+        $today = \Illuminate\Support\Facades\Date::today();
         
-        $fecha = Carbon::createFromFormat('Y-m-d', (new \DateTime($fecha))->format('Y-m-d'));
+        $fecha = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', (new \DateTime($fecha))->format('Y-m-d'));
         
         /** @var \DateInterval $diff */
         $diff = $fecha->diffInDays($today, false);

@@ -60,11 +60,11 @@ class Generator
     {
         $this->generateTemplateCopy();
         $this->moveTemplateCopy();
-        $excel = Excel::load($this->getFullNewFileName(), function ($reader) {
+        $excel = Excel::load($this->getFullNewFileName(), function ($reader): void {
             /** @var LaravelExcelReader $reader */
             
             /** @var RowCollection $sheet */
-            $reader->sheet($this->sheetName, function ($sheet) {
+            $reader->sheet($this->sheetName, function ($sheet): void {
                 /** @var Collection $operativos */
                 
                 $operativos = AgenteRepository::getAgentesByBaseByTurno($this->base, $this->turno);

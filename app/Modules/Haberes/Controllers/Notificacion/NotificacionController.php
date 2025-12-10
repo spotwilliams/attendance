@@ -49,7 +49,7 @@ class NotificacionController extends GeneralController
             $periodo = Periodo::findOrFail($input['periodo']);
             /** @var Collection $agentes */
             $agentes = $this->getEloq($periodo, $input['agentes'])
-                ->whereDoesntHave('notificaciones', function ($where) use ($periodo) {
+                ->whereDoesntHave('notificaciones', function ($where) use ($periodo): void {
                     $where->where('id_periodo', '=', $periodo->id)
                         ->where('tipo', '=', Notificacion::REGULAR);
                     

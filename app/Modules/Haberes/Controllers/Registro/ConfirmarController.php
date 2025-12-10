@@ -69,7 +69,7 @@ class ConfirmarController extends AppBaseController
             
             Flash::success('Facturacion registrada correctamente');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
             
         } catch (ValidationException $e) {
 //
@@ -80,15 +80,15 @@ class ConfirmarController extends AppBaseController
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
         } catch (\Exception $exception) {
             Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
             
         }
     }
@@ -123,15 +123,15 @@ class ConfirmarController extends AppBaseController
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
         } catch (\Exception $exception) {
             Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
             
         }
         

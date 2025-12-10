@@ -36,7 +36,7 @@ class Data
         $agentes
             // Override the condition
             ->with([
-                'presentismos' => function ($presentismos) use ($periodo) {
+                'presentismos' => function ($presentismos) use ($periodo): void {
                     $presentismos
                         ->whereDate('fecha', '>=', $periodo->fecha_comienzo)
                         ->whereDate('fecha', '<=', $periodo->fecha_fin)

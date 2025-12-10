@@ -115,10 +115,10 @@ class HomeController extends Controller
     {
         try {
             $bases = Base::with([
-                'operativos' => function ($with) {
+                'operativos' => function ($with): void {
                     $with->selectRaw('id_base, count(id_agente) as agentes')
-                        ->whereHas('agente', function ($whereHasAgente) {
-                            $whereHasAgente->whereHas('contrato', function ($whereHasContrato) {
+                        ->whereHas('agente', function ($whereHasAgente): void {
+                            $whereHasAgente->whereHas('contrato', function ($whereHasContrato): void {
                                 $whereHasContrato->whereIn('id_estado_contrato',
                                     EstadoContrato::getEstadosEquivalentesActivos()->pluck('id'));
                             });

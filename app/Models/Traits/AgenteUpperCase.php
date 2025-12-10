@@ -7,42 +7,42 @@ use Cat\Helpers\StringHelper;
 
 trait AgenteUpperCase
 {
-    public function setNombreAttribute($value)
+    protected function setNombreAttribute($value)
     {
         $this->attributes['nombre'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setApellidoAttribute($value)
+    protected function setApellidoAttribute($value)
     {
         $this->attributes['apellido'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setDniAttribute($value)
+    protected function setDniAttribute($value)
     {
         $this->attributes['dni'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setCuitAttribute($value)
+    protected function setCuitAttribute($value)
     {
         $this->attributes['cuit'] = str_replace('-', '', $value);
     }
     
-    public function setEmailAttribute($value)
+    protected function setEmailAttribute($value)
     {
         $this->attributes['email'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setObservacionAttribute($value)
+    protected function setObservacionAttribute($value)
     {
         $this->attributes['observacion'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setProfesionAttribute($value)
+    protected function setProfesionAttribute($value)
     {
         $this->attributes['profesion'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setEmailGobiernoAttribute($value)
+    protected function setEmailGobiernoAttribute($value)
     {
         $this->attributes['email_gobierno'] = strtoupper(StringHelper::removeAccents($value));
     }

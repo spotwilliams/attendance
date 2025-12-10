@@ -15,9 +15,7 @@ class TipoContratoRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_tipo_contratos', function () {
-                return TipoContrato::all();
-            });
+            $bases = Cache::get('all_tipo_contratos', fn() => TipoContrato::all());
         } else {
             $bases = TipoContrato::all();
         }

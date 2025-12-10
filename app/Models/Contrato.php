@@ -121,7 +121,7 @@ class Contrato extends Model
         if (in_array($mes, $meses)) {
             return $mes;
         } else {
-            return array_first($meses);
+            return \Illuminate\Support\Arr::first($meses);
         }
     }
 }

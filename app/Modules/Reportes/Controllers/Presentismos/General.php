@@ -124,7 +124,7 @@ class General extends ReporteController
     private function excluirSinPresentismos() {
 
         return Agente::select(['agentes.*'])
-                ->whereHas('presentismos', function ($query) {
+                ->whereHas('presentismos', function ($query): void {
                     $query->whereDate('fecha', '>=', $this->desde)
                             ->whereDate('fecha', '<=', $this->hasta);
                     if (!$this->tiposPresentismos->isEmpty()) {
@@ -144,7 +144,7 @@ class General extends ReporteController
         }
 
         $this->query->with([
-                'presentismos' => function ($query) {
+                'presentismos' => function ($query): void {
                     $query->whereDate('fecha', '>=', $this->desde)
                         ->whereDate('fecha', '<=', $this->hasta)
                         ->orderBy('fecha', 'ASC')
@@ -161,7 +161,7 @@ class General extends ReporteController
             ->with('operativo.turno')
             ->with('contrato.tipoContrato');
         
-        $this->query->join('operativos', function ($join) {
+        $this->query->join('operativos', function ($join): void {
             /** @var JoinClause $join */
             $join->on('operativos.id_agente', '=', 'agentes.id');
             if (!$this->bases->isEmpty()) {
@@ -185,7 +185,7 @@ class General extends ReporteController
             }
             
         });
-        $this->query->join('contratos', function ($join) {
+        $this->query->join('contratos', function ($join): void {
             /** @var JoinClause $join */
             $join->on('contratos.id_agente', '=', 'agentes.id');
             

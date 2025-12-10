@@ -16,7 +16,7 @@ class AddPermisosNotificacion extends Migration
             'name'        => 'Notificacion de facturacion',
             'comentarios' => 'Permite enviar mails a los agentes con datos para facturar',
         ];
-
+        
         $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
             ['name' => $ps['name']],
             $ps

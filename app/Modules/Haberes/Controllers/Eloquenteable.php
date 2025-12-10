@@ -28,18 +28,18 @@ trait Eloquenteable
     {
         return $agenteEloq
             ->with([
-                'presentismos'   => function ($with) use ($periodo) {
+                'presentismos'   => function ($with) use ($periodo): void {
                     /** @var Builder $with */
                     $with->where('id_periodo', '=', $periodo->id)
                         ->with('turno')
                         ->with('tipoPresentismo')
                         ->with('tipoContrato');
                 },
-                'facturas'       => function ($with) use ($periodo) {
+                'facturas'       => function ($with) use ($periodo): void {
                     /** @var Builder $with */
                     $with->where('id_periodo', '=', $periodo->id);
                 },
-                'notificaciones' => function ($with) use ($periodo) {
+                'notificaciones' => function ($with) use ($periodo): void {
                     /** @var Builder $with */
                     $with->where('id_periodo', '=', $periodo->id);
                 },

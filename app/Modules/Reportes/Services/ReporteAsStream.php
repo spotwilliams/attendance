@@ -41,7 +41,7 @@ class ReporteAsStream extends Service
         ini_set('memory_limit', '-1');
         
         
-        return Response::stream(function () {
+        return Response::stream(function (): void {
             $page       = 1;
             $allRecords = 0;
             echo  $this->rowFormatter->getEncabezado() . "\r\n";

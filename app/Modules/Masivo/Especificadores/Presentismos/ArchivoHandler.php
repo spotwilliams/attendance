@@ -75,7 +75,7 @@ class ArchivoHandler extends ExcelHandler
             }
         }
         
-        $fileErrores->sheet('Errores', function ($sheet) {
+        $fileErrores->sheet('Errores', function ($sheet): void {
             
             $sheet->fromArray($this->listaErrores);
             

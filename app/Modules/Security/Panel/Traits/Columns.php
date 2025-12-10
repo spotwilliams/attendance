@@ -139,9 +139,7 @@ trait Columns
      */
     public function remove($entity, $fields)
     {
-        return array_values(array_filter($this->{$entity}, function ($field) use ($fields) {
-            return ! in_array($field['name'], (array) $fields);
-        }));
+        return array_values(array_filter($this->{$entity}, fn($field) => ! in_array($field['name'], (array) $fields)));
     }
 
     /**

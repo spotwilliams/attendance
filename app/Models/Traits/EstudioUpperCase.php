@@ -6,12 +6,12 @@ use Cat\Helpers\StringHelper;
 
 trait EstudioUpperCase
 {
-    public function setCarreraAttribute($value)
+    protected function setCarreraAttribute($value)
     {
         $this->attributes['carrera'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setInstitucionAttribute($value)
+    protected function setInstitucionAttribute($value)
     {
         $this->attributes['institucion'] = strtoupper(StringHelper::removeAccents($value));
     }

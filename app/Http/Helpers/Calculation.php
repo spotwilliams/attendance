@@ -164,9 +164,7 @@ class Calculation
      */
     private static function getPresentismoGroupByJustificacion(Agente $agente)
     {
-        $presentismos = $agente->presentismos->groupBy(function ($item, $key) {
-            return ($item->injustificado === true) ? 'injustificado' : 'justificado';
-        });
+        $presentismos = $agente->presentismos->groupBy(fn($item, $key) => ($item->injustificado === true) ? 'injustificado' : 'justificado');
         if ($presentismos->get('injustificado') === null) {
             $presentismos['injustificado'] = new Collection([]);
         }

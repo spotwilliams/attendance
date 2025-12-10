@@ -15,7 +15,7 @@ use Cat\Modules\Security\Controllers\RoleCrudController;
 
 Route::group(
     ['middleware' => ['web']],
-    function () {
+    function (): void {
         Route::group(
             [
                 'prefix'     => 'seguridad',
@@ -24,7 +24,7 @@ Route::group(
 //                    'admin',
                 ],
             ],
-            function () {
+            function (): void {
                 Route::resource('permission', PermissionCrudController::class);
 
                 Route::resource('rol', RoleCrudController::class);

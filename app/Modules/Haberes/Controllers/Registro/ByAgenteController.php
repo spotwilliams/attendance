@@ -57,7 +57,7 @@ class ByAgenteController extends BusquedaController
         parent::prepareQuery();
         
         // Solo los agentes con locacion
-        $this->agentesEloquent->join('contratos', function ($join) {
+        $this->agentesEloquent->join('contratos', function ($join): void {
             /** @var JoinClause $join */
             $join->on('contratos.id_agente', '=', 'agentes.id');
             
@@ -71,10 +71,10 @@ class ByAgenteController extends BusquedaController
         $agentes = $this->agentesEloquent
             ->with('operativo.base')
             ->with([
-                'notificaciones' => function ($with) use ($periodo) {
+                'notificaciones' => function ($with) use ($periodo): void {
                     $with->where('id_periodo', '=', $periodo->id);
                 },
-                'facturas' => function ($with) use ($periodo) {
+                'facturas' => function ($with) use ($periodo): void {
                     $with->where('id_periodo', '=', $periodo->id);
                 },
             ])
@@ -95,7 +95,7 @@ class ByAgenteController extends BusquedaController
         $presenter->setInputsParams([
             'nombre'   => $this->nombre,
             'apellido' => $this->apellido,
-            'cuit'     => Input::get('cuit'),
+            'cuit'     => \Illuminate\Support\Facades\Request::input('cuit'),
         ]);
         
         return $agentes->links($presenter);
