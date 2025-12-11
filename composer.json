@@ -9,17 +9,18 @@
   "type": "project",
   "require": {
     "php": "^7.2.5|^8.0",
-    "laravel/framework": "^6.0",
-    "laravelcollective/html": "^6",
-    "jlapp/swaggervel": "dev-master",
     "doctrine/dbal": "~2.3",
-    "maatwebsite/excel": "^3",
-    "spatie/laravel-permission": "^4",
-    "intervention/image": "^2.4",
-    "laracasts/flash": "*",
-    "laravel/helpers": "*",
     "fideloper/proxy": "^4.4",
-    "laravel/tinker": "^2.5"
+    "intervention/image": "^2.4",
+    "jlapp/swaggervel": "dev-master",
+    "laracasts/flash": "*",
+    "laravel/framework": "^6.0",
+    "laravel/helpers": "*",
+    "laravel/tinker": "^2.5",
+    "laravelcollective/html": "^6",
+    "maatwebsite/excel": "^3",
+    "prettus/l5-repository": "^3.0",
+    "spatie/laravel-permission": "^4"
   },
   "require-dev": {
     "fzaninotto/faker": "~1.4",

@@ -4,11 +4,16 @@ namespace Cat\Repositories;
 
 use Cat\Modules\Security\Models\BaseRole;
 use Cat\Modules\Security\Models\TurnoRole;
+use Cat\User;
 use Illuminate\Support\Facades\Auth;
 
-class UserRepository
+class UserRepository extends BaseRepository
 {
-    
+    public function model()
+    {
+        return User::class;
+    }
+
     public static function getBasesAllowed($baseIds)
     {
         $baseIds     = (is_array($baseIds) ? $baseIds : [$baseIds]);

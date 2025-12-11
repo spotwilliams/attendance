@@ -2,20 +2,10 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
-use Cat\Helpers\HtmlCustoms;
-use Cat\Models\Agente;
-use Cat\Models\Comentario;
-use Cat\Models\TipoPresentismo;
-use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
-use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
-use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
-use Cat\Modules\Presentismo\Services\Registro\Destroy;
-use Cat\Modules\Presentismo\Services\Validacion\ValidationNonType;
-use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
+use Cat\Models\Comentario;
 use Cat\Models\Presentismo;
-use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Eloquent\ModelNotFoundException;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;

@@ -12,7 +12,6 @@ use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Repositories\PeriodoRepository;
 use Cat\User;
 use Illuminate\Auth\Access\AuthorizationException;
-use Illuminate\Database\Query\JoinClause;
 
 class HomeController extends Controller
 {

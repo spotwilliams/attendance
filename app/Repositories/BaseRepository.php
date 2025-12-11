@@ -5,8 +5,9 @@ namespace Cat\Repositories;
 use Cat\Helpers\Cache;
 use Cat\Models\Base;
 use Cat\Models\TipoContrato;
+use Prettus\Repository\Eloquent\BaseRepository as Prettus;
 
-class BaseRepository
+abstract class BaseRepository extends Prettus
 {
     
     /**

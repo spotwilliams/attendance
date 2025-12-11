@@ -1,7 +1,6 @@
 <?php
 
 use Cat\Helpers\Calculation;
-use Illuminate\Support\Facades\Gate;
 
 if (isset($periodo)) {
     /** @var \Cat\Models\Periodo $periodo */
@@ -53,11 +52,12 @@ if (isset($periodo)) {
                         @foreach($a->presentismos->sortBy('fecha')->all() as $p)
                             @if($p->injustificado !== false)
                                 <div class="col-xs-2">
-                                    <?php $fecha = (new DateTime($p->fecha));?>
+                                        <?php $fecha = (new DateTime($p->fecha)); ?>
 
                                     <label>{{(new DateTime($p->fecha))->format('d/m/y')}}
                                         (@lang('day.'. $fecha->format('D')))</label>
-                                    <input type="hidden" class="data-agente" data-agente="{{json_encode($a->getAttributes())}}">
+                                    <input type="hidden" class="data-agente"
+                                           data-agente="{{json_encode($a->getAttributes())}}">
                                     <input type="hidden" class="data-fecha" data-fecha="{{$p->fecha}}">
                                     {!! \Cat\Helpers\HtmlCustoms::getSelectForTipoPresentismo($p, $a, 'selectpicker', $fecha) !!}
                                 </div>

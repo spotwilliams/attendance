@@ -3,8 +3,9 @@
 namespace Cat\Modules\Presentismo\Controllers\Registro;
 
 use Cat\Helpers\HtmlCustoms;
+use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Agente;
-use Cat\Models\TipoPresentismo;
+use Cat\Models\Presentismo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeInjustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeJustificar;
@@ -12,16 +13,12 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
-use Cat\Modules\Presentismo\Services\Helpers\Facilitador;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Modules\Presentismo\Services\Registro\Injustificar;
 use Cat\Modules\Presentismo\Services\Registro\Justificar;
-use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
-use Cat\Http\Controllers\AppBaseController;
-use Cat\Models\Presentismo;
 use Cat\Modules\Validation\Rules\PeriodoActivo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Database\QueryException;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
 use Illuminate\Support\Facades\Response;
