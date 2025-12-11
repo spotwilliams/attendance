@@ -9,9 +9,9 @@ use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
-use InfyOm\Generator\Common\BaseRepository;
+//use Cat\Repositories\BaseRepository;
 
-class PresentismoRepository extends BaseRepository
+class PresentismoRepository //extends BaseRepository
 {
     /**
      * @var array

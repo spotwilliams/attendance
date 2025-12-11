@@ -3,7 +3,7 @@
 namespace Cat\Repositories;
 
 use Cat\Models\FacturaFisica;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
 /**
  * Class FacturaFisicaRepository

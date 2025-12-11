@@ -12,9 +12,9 @@ use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
-class AgenteRepository extends BaseRepository
+class AgenteRepository //extends BaseRepository
 {
     public function model()
     {
