@@ -4,7 +4,6 @@ namespace Cat\Modules\Reportes\Services\Formatters;
 
 use Cat\Helpers\Calculation;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Support\Collection;
 
 
 class HaberesEstado extends RowDataFormatter

@@ -28,10 +28,10 @@
                             <div class="input-group">
                                 <?php
                                 $cuitsInputs = '';
-                                if (Request::input('cuit')) {
+                                if (\Illuminate\Support\Facades\Request::input('cuit')) {
 
-                                    $cuitsInputs = is_array(Request::input('cuit')) ? implode(',',
-                                        Request::input('cuit')) : Request::input('cuit');
+                                    $cuitsInputs = is_array(\Illuminate\Support\Facades\Request::input('cuit')) ? implode(',',
+                                        \Illuminate\Support\Facades\Request::input('cuit')) : \Illuminate\Support\Facades\Request::input('cuit');
                                 }
                                 ?>
                                 <input type="text" name="cuit" value="{{$cuitsInputs}}" class="form-control">

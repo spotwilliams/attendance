@@ -83,8 +83,8 @@ class LaboralesController extends AppBaseController
             return redirect(route('agentesCreateOperativos', ['id' => $agente->id]));
         } catch (\Exception $e) {
             
-            $validator = Validator::make(['operacion' => null], ['operation |required']);
-            $validator->after(function ($validator) use ($e) {
+            $validator = Validator::make(['operacion' => null], [['operation ', 'required']]);
+            $validator->after(function ($validator) use ($e): void {
                 $validator->errors()->add('operacion', Error::getRespuestaAdecuada($e, 'agente'));
             });
             

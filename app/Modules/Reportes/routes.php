@@ -26,14 +26,14 @@ use Cat\Modules\Reportes\Controllers\Haberes\VistaPrevia\Exportar as HaberesVist
 Route::group([
     'middleware' => ['web'],
     'prefix'     => 'reportes',
-], function () {
+], function (): void {
     
     /**
      * Agentes
      */
-    Route::group(['prefix' => 'agentes'], function () {
+    Route::group(['prefix' => 'agentes'], function (): void {
         
-        Route::group(['prefix' => 'general'], function () {
+        Route::group(['prefix' => 'general'], function (): void {
             
             
             Route::get('/', AgentesGeneral::class . '@index')
@@ -50,9 +50,9 @@ Route::group([
     /**
      * Presentismos
      */
-    Route::group(['prefix' => 'presentismo'], function () {
+    Route::group(['prefix' => 'presentismo'], function (): void {
         
-        Route::group(['prefix' => 'general'], function () {
+        Route::group(['prefix' => 'general'], function (): void {
             
             Route::get('/', PresentismosGeneral::class . '@index')
                 ->name('reportesPresentismoGeneralIndex');
@@ -68,7 +68,7 @@ Route::group([
     /**
      * Individuales
      */
-    Route::group(['prefix' => 'individual'], function () {
+    Route::group(['prefix' => 'individual'], function (): void {
         
         // Muestra el index
         Route::get('/', PresentismosIndividualSearch::class . '@index')
@@ -100,9 +100,9 @@ Route::group([
     /**
      * Haberes
      */
-    Route::group(['prefix' => 'haberes'], function () {
+    Route::group(['prefix' => 'haberes'], function (): void {
         
-        Route::group(['prefix' => 'agente'], function () {
+        Route::group(['prefix' => 'agente'], function (): void {
             
             Route::get('/', HaberesAgentes::class . '@index')
                 ->name('reportesHaberesAgentesIndex');
@@ -114,7 +114,7 @@ Route::group([
                 ->name('reportesHaberesAgentesExport');
         });
         
-        Route::group(['prefix' => 'vista-previa'], function () {
+        Route::group(['prefix' => 'vista-previa'], function (): void {
             Route::get('/', HaberesVistaPrevia::class . '@index')
                 ->name('reportesHaberesVistaPreviaIndex');
             

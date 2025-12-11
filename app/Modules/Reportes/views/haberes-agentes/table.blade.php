@@ -33,7 +33,7 @@ if(!isset($periodosColection)) {
                     @else
                         @foreach($periodosColection as $p)
                             <?php
-                            $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $p->fecha_fin);
+                            $mesFacturacion = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $p->fecha_fin);
                             $mesFacturacion->addMonth(1);
                             ?>
                             <th colspan="3">{{trans('month.'.$mesFacturacion->format('m'))}}

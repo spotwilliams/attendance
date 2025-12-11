@@ -109,25 +109,25 @@ class UserCrudController extends CrudController
         
         // insert item in the db
         if ($request->input('password')) {
-            $item = $this->crud->create(\Request::except(['redirect_after_save']));
+            $item = $this->crud->create(\Illuminate\Support\Facades\Request::except(['redirect_after_save']));
             
             // now bcrypt the password
             $item->password = bcrypt($request->input('password'));
             $item->save();
         } else {
-            $item = $this->crud->create(\Request::except(['redirect_after_save', 'password']));
+            $item = $this->crud->create(\Illuminate\Support\Facades\Request::except(['redirect_after_save', 'password']));
         }
         
         // show a success message
         Flash::success('Guardado correctamente');
         
         // redirect the user where he chose to be redirected
-        switch (\Request::input('redirect_after_save')) {
+        switch (\Illuminate\Support\Facades\Request::input('redirect_after_save')) {
             case 'current_item_edit':
-                return \Redirect::to($this->crud->route . '/' . $item->id . '/edit');
+                return \Illuminate\Support\Facades\Redirect::to($this->crud->route . '/' . $item->id . '/edit');
             
             default:
-                return \Redirect::to(\Request::input('redirect_after_save'));
+                return \Illuminate\Support\Facades\Redirect::to(\Illuminate\Support\Facades\Request::input('redirect_after_save'));
         }
     }
     
@@ -137,7 +137,7 @@ class UserCrudController extends CrudController
         //encrypt password and set it to request
         $this->crud->hasAccessOrFail('update');
         
-        $dataToUpdate = \Request::except(['redirect_after_save', 'password']);
+        $dataToUpdate = \Illuminate\Support\Facades\Request::except(['redirect_after_save', 'password']);
         
         //encrypt password
         if ($request->input('password')) {
@@ -145,11 +145,11 @@ class UserCrudController extends CrudController
         }
         
         // update the row in the db
-        $this->crud->update(\Request::get($this->crud->model->getKeyName()), $dataToUpdate);
+        $this->crud->update(\Illuminate\Support\Facades\Request::get($this->crud->model->getKeyName()), $dataToUpdate);
         
         // show a success message
         Flash::success('Actualizado correctamente');
         
-        return \Redirect::to($this->crud->route);
+        return \Illuminate\Support\Facades\Redirect::to($this->crud->route);
     }
 }

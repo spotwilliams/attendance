@@ -132,7 +132,7 @@ class Operativos extends Service
     
     protected function logCambioTurno(Operativo $operativo)
     {
-        $today = Carbon::now();
+        $today = \Illuminate\Support\Facades\Date::now();
         try {
             
             /** @var  TurnoHistorico $tHistorico */
@@ -143,7 +143,7 @@ class Operativos extends Service
             
             // Update del actual en los historicos
             $tHistorico->update([
-                'fecha_fin' => Carbon::yesterday()->format('Y-m-d'),
+                'fecha_fin' => \Illuminate\Support\Facades\Date::yesterday()->format('Y-m-d'),
             ]);
         } catch (ModelNotFoundException $sinHistorico) {
         
@@ -153,7 +153,7 @@ class Operativos extends Service
         TurnoHistorico::create([
             'id_operativo' => $operativo->id,
             'id_turno'     => $this->turno->id,
-            'fecha_inicio' => Carbon::now()->format('Y-m-d'),
+            'fecha_inicio' => \Illuminate\Support\Facades\Date::now()->format('Y-m-d'),
         ]);
         
         // Se elimina la basura (todos aquellos registros generados en un mismo dia)

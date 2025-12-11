@@ -15,8 +15,8 @@ class FechaContratoFuturo
      */
     public function validate($attribute, $fecha)
     {
-        $today = Carbon::today();
-        $fecha = Carbon::createFromFormat('Y-m-d', (new \DateTime($fecha))->format('Y-m-d'));
+        $today = \Illuminate\Support\Facades\Date::today();
+        $fecha = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', (new \DateTime($fecha))->format('Y-m-d'));
 
         if ($fecha->gt($today)) {
             // Implica que le fecha de contrato es a futuro

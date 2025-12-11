@@ -15,9 +15,7 @@ class EstadoContratoRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_estado_contratos', function () {
-                return EstadoContrato::all();
-            });
+            $bases = Cache::get('all_estado_contratos', fn() => EstadoContrato::all());
         } else {
             $bases = EstadoContrato::all();
         }

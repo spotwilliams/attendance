@@ -150,13 +150,7 @@ return [
         /*
          * Infyom Generator And Dependant Service Providers...
          */
-        Barryvdh\LaravelIdeHelper\IdeHelperServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class,
         Collective\Html\HtmlServiceProvider::class,
-        Laracasts\Flash\FlashServiceProvider::class,
-        Prettus\Repository\Providers\RepositoryServiceProvider::class,
-        \InfyOm\Generator\InfyOmGeneratorServiceProvider::class,
-        InfyOm\AdminLTETemplates\AdminLTETemplatesServiceProvider::class,
         /*
          * Application Service Providers...
          */
@@ -164,14 +158,9 @@ return [
         Cat\Providers\AuthServiceProvider::class,
         Cat\Providers\EventServiceProvider::class,
         Cat\Providers\RouteServiceProvider::class,
-        Way\Generators\GeneratorsServiceProvider::class,
-        Xethron\MigrationsGenerator\MigrationsGeneratorServiceProvider::class,
         Cat\Modules\ModuleServiceProvider::class,
-        Yajra\Datatables\DatatablesServiceProvider::class,
         Maatwebsite\Excel\ExcelServiceProvider::class,
-        Krucas\Notification\NotificationServiceProvider::class,
         Intervention\Image\ImageServiceProvider::class,
-         Arcanedev\LogViewer\LogViewerServiceProvider::class,
     ],
     
     /*
@@ -219,10 +208,7 @@ return [
         'View'      => Illuminate\Support\Facades\View::class,
         'Form'      => Collective\Html\FormFacade::class,
         'Html'      => Collective\Html\HtmlFacade::class,
-        'Flash'     => Laracasts\Flash\Flash::class,
         'Excel'     => Maatwebsite\Excel\Facades\Excel::class,
         'Image'     => Intervention\Image\Facades\Image::class,
-        // 'LogViewer' => \Arcanedev\LogViewer\Facades\LogViewer::class,
     ],
-
 ];

@@ -13,7 +13,7 @@ use Illuminate\Database\QueryException;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Log;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
 class PeriodoRepository extends BaseRepository
 {
@@ -39,11 +39,11 @@ class PeriodoRepository extends BaseRepository
             if ($fecha === null) {
                 $fecha = new Carbon();
             } else {
-                $fecha = Carbon::createFromTimestamp($fecha->getTimestamp());
+                $fecha = \Illuminate\Support\Facades\Date::createFromTimestamp($fecha->getTimestamp());
             }
             
-            $start = Carbon::createFromTimestamp($fecha->getTimestamp());
-            $end   = Carbon::createFromTimestamp($fecha->getTimestamp());
+            $start = \Illuminate\Support\Facades\Date::createFromTimestamp($fecha->getTimestamp());
+            $end   = \Illuminate\Support\Facades\Date::createFromTimestamp($fecha->getTimestamp());
             
             // 2da quincena del mes, implica periodo nuevo
             if ($fecha->day >= config('cat.periodo_comienzo')) {
@@ -51,8 +51,8 @@ class PeriodoRepository extends BaseRepository
             } else {
                 $start->modify('-1month');
             }
-            $comienzoPeriodo = Carbon::create($start->year, $start->month, config('cat.periodo_comienzo'));
-            $finPeriodo      = Carbon::create($end->year, $end->month, config('cat.periodo_fin'));
+            $comienzoPeriodo = \Illuminate\Support\Facades\Date::create($start->year, $start->month, config('cat.periodo_comienzo'));
+            $finPeriodo      = \Illuminate\Support\Facades\Date::create($end->year, $end->month, config('cat.periodo_fin'));
             
             $periodo = Periodo::create([
                 'fecha_comienzo' => $comienzoPeriodo->format('Y-m-d'),

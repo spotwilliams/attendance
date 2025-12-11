@@ -6,42 +6,42 @@ use Cat\Helpers\StringHelper;
 
 trait DomicilioUpperCase
 {
-    public function setCodigoPostalAttribute($value)
+    protected function setCodigoPostalAttribute($value)
     {
         $this->attributes['codigo_postal'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setCalleAttribute($value)
+    protected function setCalleAttribute($value)
     {
         $this->attributes['calle'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setNumeroAttribute($value)
+    protected function setNumeroAttribute($value)
     {
         $this->attributes['numero'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setDeptartamentoAttribute($value)
+    protected function setDeptartamentoAttribute($value)
     {
         $this->attributes['deptartamento'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setPisoAttribute($value)
+    protected function setPisoAttribute($value)
     {
         $this->attributes['piso'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setBarrioAttribute($value)
+    protected function setBarrioAttribute($value)
     {
         $this->attributes['barrio'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setProvinciaAttribute($value)
+    protected function setProvinciaAttribute($value)
     {
         $this->attributes['provincia'] = strtoupper(StringHelper::removeAccents($value));
     }
     
-    public function setLibreAttribute($value)
+    protected function setLibreAttribute($value)
     {
         $this->attributes['libre'] = strtoupper(StringHelper::removeAccents($value));
     }

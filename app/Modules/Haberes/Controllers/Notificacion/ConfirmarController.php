@@ -48,7 +48,7 @@ class ConfirmarController extends ParentController
         $condicions[] = [
             'where'    => 'whereDoesntHave',
             'column'   => 'notificaciones',
-            'callable' => function ($whereHasNot) use ($periodo) {
+            'callable' => function ($whereHasNot) use ($periodo): void {
                 /** @var Builder $whereHasNot */
                 $whereHasNot->where('id_periodo', '=', $periodo->id)
                     ->where('tipo', '=', Notificacion::REGULAR);
@@ -108,16 +108,16 @@ class ConfirmarController extends ParentController
         } catch (ModelNotFoundException $e) {
             Flash::error('Debe seleccionar un periodo');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
         } catch (\Exception $exception) {
             Log::error($exception);
             Flash::error('Hubo un error inesperado durante la ejecución, intente nuevamente');
             
-            return redirect()->route($this->indexRoute);
+            return to_route($this->indexRoute);
             
         }
     }

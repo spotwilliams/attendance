@@ -25,7 +25,7 @@ if ($agente->operativo()->first()) {
             $NombreSubgerencia = $gerencia->nombre;
         } else {
 
-            if (str_contains(strtolower($gerencia->nombre), 'subgerencia')) {
+            if (\Illuminate\Support\Str::contains(strtolower($gerencia->nombre), 'subgerencia')) {
                 $NombreSubgerencia = $gerencia->nombre;
             } else {
                 $nombreGerencia = $gerencia->nombre;

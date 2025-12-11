@@ -9,9 +9,9 @@ use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
-use InfyOm\Generator\Common\BaseRepository;
+//use Cat\Repositories\BaseRepository;
 
-class PresentismoRepository extends BaseRepository
+class PresentismoRepository //extends BaseRepository
 {
     /**
      * @var array
@@ -71,7 +71,7 @@ class PresentismoRepository extends BaseRepository
         $activo       = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first(['id']);
         $date         = ($fechaFin === null) ? new \DateTime('tomorrow') : $fechaFin;
         $eloquent     = Agente::with([
-            'presentismos' => function ($presentismos) use ($periodo, $date) {
+            'presentismos' => function ($presentismos) use ($periodo, $date): void {
                 $presentismos
                     ->where('id_periodo', '=', $periodo->id)
                     ->whereDate('fecha', '<=', $date->format('Y-m-d'));
@@ -97,7 +97,7 @@ class PresentismoRepository extends BaseRepository
     {
         $activo       = EstadoContrato::getEstadosEquivalentesActivos();
         $eloquent     = Agente::with([
-            'presentismos' => function ($presentismos) use ($desde, $hasta) {
+            'presentismos' => function ($presentismos) use ($desde, $hasta): void {
                 $presentismos
                     ->whereDate('fecha', '>=', $desde->format('Y-m-d'))
                     ->whereDate('fecha', '<=', $hasta->format('Y-m-d'))

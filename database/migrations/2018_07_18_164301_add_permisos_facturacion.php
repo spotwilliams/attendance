@@ -14,12 +14,12 @@ class AddPermisosFacturacion extends Migration
     {
         \Cat\Modules\Security\Models\Permission::where('name', '=', 'Calcular haberes')
             ->delete();
-
+        
         $ps = [
             'name'        => 'Registro facturacion',
             'comentarios' => 'Permite registrar para un periodo a quienes se les facturo',
         ];
-
+    
         $permiso = \Cat\Modules\Security\Models\Permission::firstOrCreate(
             ['name' => $ps['name']],
             $ps

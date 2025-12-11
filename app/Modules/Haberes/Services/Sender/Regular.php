@@ -69,7 +69,7 @@ class Regular extends Sender
     
     protected function getMessage(Agente $agente)
     {
-        $mesFacturacion = \Carbon\Carbon::createFromFormat('Y-m-d', $this->periodo->fecha_fin);
+        $mesFacturacion = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $this->periodo->fecha_fin);
         $mesFacturacion->addMonth(1);
         $this->mensaje = 'HONORARIOS CORRESPONDIENTES A ' . strtoupper(trans('month.' . $mesFacturacion->format('m'))) . ' DEL ' . $mesFacturacion->format('Y');
         

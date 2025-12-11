@@ -3,7 +3,7 @@
 namespace App\Repositories;
 
 use App\Models\Contratos;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
 class ContratosRepository extends BaseRepository
 {

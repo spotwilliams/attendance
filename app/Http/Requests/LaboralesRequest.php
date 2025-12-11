@@ -28,7 +28,7 @@ class LaboralesRequest extends Request
         return Validation::getContratoRules($this);
     }
     
-    public function validate()
+    public function validateResolved()
     {
         parent::validate();
         
@@ -39,12 +39,12 @@ class LaboralesRequest extends Request
     
     protected function validateFechasIngreso()
     {
-        $ingresoGobierno = Carbon::createFromFormat(
+        $ingresoGobierno = \Illuminate\Support\Facades\Date::createFromFormat(
             'Y-m-d',
             (new \DateTime($this->input('fecha_ingreso_gobierno')))->format('Y-m-d')
         );
         
-        $fechaContrato = Carbon::createFromFormat(
+        $fechaContrato = \Illuminate\Support\Facades\Date::createFromFormat(
             'Y-m-d',
             (new \DateTime($this->input('fecha_ingreso')))->format('Y-m-d')
         );
@@ -72,12 +72,12 @@ class LaboralesRequest extends Request
         $validator = $this->getValidatorInstance();
         if (EstadoContrato::comision()->id === EstadoContrato::find($this->input('id_estado_contrato'))->id) {
             
-            $desde = $fechaContrato = Carbon::createFromFormat(
+            $desde = $fechaContrato = \Illuminate\Support\Facades\Date::createFromFormat(
                 'Y-m-d',
                 (new \DateTime($this->input('fecha_estado_desde')))->format('Y-m-d')
             );
             
-            $hasta = $fechaContrato = Carbon::createFromFormat(
+            $hasta = $fechaContrato = \Illuminate\Support\Facades\Date::createFromFormat(
                 'Y-m-d',
                 (new \DateTime($this->input('fecha_estado_hasta')))->format('Y-m-d')
             );
@@ -90,8 +90,8 @@ class LaboralesRequest extends Request
                 $this->failedValidation($validator);
             }
             
-            $fIngreso = Carbon::createFromFormat('Y-m-d', $this->input('fecha_ingreso'));
-            $fFin     = Carbon::createFromFormat('Y-m-d', $this->input('fecha_fin'));
+            $fIngreso = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $this->input('fecha_ingreso'));
+            $fFin     = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', $this->input('fecha_fin'));
             
             
             if (!$desde->between($fIngreso, $fFin)) {

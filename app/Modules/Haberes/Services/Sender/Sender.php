@@ -96,7 +96,7 @@ abstract class Sender extends Service
                         'data'    => $this->data,
                         'subject' => $this->subject,
                     ],
-                    function ($message) use ($agente) {
+                    function ($message) use ($agente): void {
                         /** @var Message $message */
                         $message->to($agente->email);
                         $message->subject($this->subject);

@@ -20,11 +20,11 @@ class AppBaseController extends Controller
 {
     public function sendResponse($result, $message)
     {
-        return Response::json(ResponseUtil::makeResponse($message, $result));
+        return \Illuminate\Support\Facades\Response::json(ResponseUtil::makeResponse($message, $result));
     }
 
     public function sendError($error, $code = 404)
     {
-        return Response::json(ResponseUtil::makeError($error), $code);
+        return \Illuminate\Support\Facades\Response::json(ResponseUtil::makeError($error), $code);
     }
 }

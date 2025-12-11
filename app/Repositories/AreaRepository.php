@@ -16,9 +16,7 @@ class AreaRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_areas', function () {
-                return Area::all();
-            });
+            $bases = Cache::get('all_areas', fn() => Area::all());
         } else {
             $bases = Area::all();
         }

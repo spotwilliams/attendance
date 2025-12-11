@@ -30,7 +30,6 @@ class Kernel extends HttpKernel
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Cat\Http\Middleware\VerifyCsrfToken::class,
-            \Krucas\Notification\Middleware\NotificationMiddleware::class,
         ],
 
         'api' => [

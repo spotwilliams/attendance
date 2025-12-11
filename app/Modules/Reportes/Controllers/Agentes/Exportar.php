@@ -43,42 +43,42 @@ class Exportar extends General
             ->with('domicilios')
             ->with('estudio')
             ->with([
-                'operativo.base' => function ($with) {
+                'operativo.base' => function ($with): void {
                     $with->select(['id', 'nombre']);
                 },
             ])
             ->with([
-                'operativo.turno' => function ($turno) {
+                'operativo.turno' => function ($turno): void {
                     $turno->select(['id', 'descripcion', 'codigo']);
                 },
             ])
             ->with([
-                'operativo.cargo' => function ($cargo) {
+                'operativo.cargo' => function ($cargo): void {
                     $cargo->select(['id', 'nombre']);
                 },
             ])
             ->with([
-                'operativo.funcion' => function ($funcion) {
+                'operativo.funcion' => function ($funcion): void {
                     $funcion->select(['id', 'nombre']);
                 },
             ])
             ->with([
-                'operativo.area' => function ($area) {
+                'operativo.area' => function ($area): void {
                     $area->select(['id', 'nombre']);
                 },
             ])
             ->with([
-                'operativo.gerencia' => function ($gerencia) {
+                'operativo.gerencia' => function ($gerencia): void {
                     $gerencia->select(['id', 'nombre']);
                 },
             ])
             ->with([
-                'contrato.tipoContrato' => function ($tipo) {
+                'contrato.tipoContrato' => function ($tipo): void {
                     $tipo->select(['id', 'descripcion', 'codigo']);
                 },
             ])
             ->with([
-                'contrato.estadoContrato' => function ($estado) {
+                'contrato.estadoContrato' => function ($estado): void {
                     $estado->select(['id', 'descripcion']);
                 },
             ]);

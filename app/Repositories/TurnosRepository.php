@@ -11,9 +11,7 @@ class TurnosRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_turnos', function () {
-                return Turno::orderBy('codigo', 'ASC')->get();
-            });
+            $bases = Cache::get('all_turnos', fn() => Turno::orderBy('codigo', 'ASC')->get());
         } else {
             $bases = Turno::orderBy('codigo', 'ASC')->get();
         }
@@ -30,7 +28,7 @@ class TurnosRepository
             ->distinct()
             ->join('operativos', 'turnos.id', '=', 'operativos.id_turno')
             ->join('agentes', 'agentes.id', '=', 'operativos.id_agente')
-            ->join('contratos', function ($joinClause) {
+            ->join('contratos', function ($joinClause): void {
                 /** @var \Illuminate\Support\Collection $tipo */
                 /** @var \Illuminate\Database\Query\JoinClause $joinClause */
                 

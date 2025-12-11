@@ -108,7 +108,7 @@ class General extends ReporteController
     {
         $this->query = Agente::select(['*']);
         
-        $this->query->whereHas('operativo', function ($query) {
+        $this->query->whereHas('operativo', function ($query): void {
             
             if ($this->bases) {
                 $query->whereIn('id_base', $this->bases);
@@ -123,24 +123,24 @@ class General extends ReporteController
                 $query->whereIn('id_funcion', $this->funciones);
             }
         })
-            ->whereHas('contrato', function ($has) {
+            ->whereHas('contrato', function ($has): void {
                 $locacion = TipoContrato::getEquivalentesLocacion()->pluck('id');
                 $activo   = EstadoContrato::getEstadosEquivalentesActivos()->pluck('id');
                 $has->whereIn('id_tipo_contrato', $locacion)
                     ->whereIn('id_estado_contrato', $activo);
             })
             ->with([
-                'facturas'       => function ($with) {
+                'facturas'       => function ($with): void {
                     $with->whereIn('id_periodo', $this->periodos);
                 },
-                'notificaciones' => function ($with) {
+                'notificaciones' => function ($with): void {
                     $with->whereIn('id_periodo', $this->periodos)
                         ->where('tipo', '=', Notificacion::REGULAR);
                 },
-                'haberes'        => function ($with) {
+                'haberes'        => function ($with): void {
                     $with->whereIn('id_periodo', $this->periodos);
                 },
-                'operativo'      => function ($with) {
+                'operativo'      => function ($with): void {
                     $with->with([
                         'base',
                         'turno',
@@ -148,7 +148,7 @@ class General extends ReporteController
                         'funcion',
                     ]);
                 },
-                'presentismos' => function($with) {
+                'presentismos' => function($with): void {
                     $with->whereIn('id_periodo', $this->periodos);
                 }
             ]);

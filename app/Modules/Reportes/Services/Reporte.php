@@ -44,9 +44,9 @@ class Reporte extends Service
         ini_set('memory_limit', '-1');
         
         
-        Excel::create('Reporte', function ($writer) {
+        Excel::create('Reporte', function ($writer): void {
             /** @var LaravelExcelWriter $writer */
-            $writer->sheet('Reporte', function ($sheet) {
+            $writer->sheet('Reporte', function ($sheet): void {
 
                 /** @var Paginator $models */
                 $page = 1;

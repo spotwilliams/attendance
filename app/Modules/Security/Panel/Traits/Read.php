@@ -157,18 +157,18 @@ trait Read
     public function getCellView($column, $entry)
     {
         if (!isset($column['type'])) {
-            return \View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry',
+            return \Illuminate\Support\Facades\View::make('crud::columns.text')->with('crud', $this)->with('column', $column)->with('entry',
                 $entry)->render();
         } else {
             if (view()->exists('vendor.backpack.crud.columns.' . $column['type'])) {
-                return \View::make('vendor.backpack.crud.columns.' . $column['type'])->with('crud',
+                return \Illuminate\Support\Facades\View::make('vendor.backpack.crud.columns.' . $column['type'])->with('crud',
                     $this)->with('column', $column)->with('entry', $entry)->render();
             } else {
                 if (view()->exists('crud::columns.' . $column['type'])) {
-                    return \View::make('crud::columns.' . $column['type'])->with('crud', $this)->with('column',
+                    return \Illuminate\Support\Facades\View::make('crud::columns.' . $column['type'])->with('crud', $this)->with('column',
                         $column)->with('entry', $entry)->render();
                 } else {
-                    return \View::make('crud::columns.text')->with('crud', $this)->with('column',
+                    return \Illuminate\Support\Facades\View::make('crud::columns.text')->with('crud', $this)->with('column',
                         $column)->with('entry', $entry)->render();
                 }
             }

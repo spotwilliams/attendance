@@ -3,7 +3,7 @@
 namespace Cat\Modules\Configuracion\TipoPresentismos\Repositories;
 
 use Cat\Models\TipoPresentismo;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
 class TipoPresentismoRepository extends BaseRepository
 {

@@ -17,7 +17,7 @@ use Cat\Modules\Agentes\Controllers\Registro\BusquedaController;
 
 Route::group(
     ['middleware' => ['web']],
-    function () {
+    function (): void {
         /**
          * Generales
          */

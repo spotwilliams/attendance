@@ -15,9 +15,7 @@ class CargoRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_cargos', function () {
-                return Cargo::all();
-            });
+            $bases = Cache::get('all_cargos', fn() => Cargo::all());
         } else {
             $bases = Cargo::all();
         }

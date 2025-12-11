@@ -3,9 +3,9 @@
 namespace Cat\Modules\Configuracion\Areas\Repositories;
 
 use Cat\Models\Area;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
-class AreaRepository extends BaseRepository
+class AreaRepository// extends BaseRepository
 {
     /**
      * @var array

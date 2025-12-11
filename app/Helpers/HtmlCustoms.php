@@ -9,7 +9,6 @@ use Cat\Models\TipoContrato;
 use Cat\Models\TipoPresentismo;
 use Cat\Repositories\TipoPresentismosRepository;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Auth;
 
 class HtmlCustoms
 {

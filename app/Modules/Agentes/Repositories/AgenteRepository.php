@@ -12,9 +12,9 @@ use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
-class AgenteRepository extends BaseRepository
+class AgenteRepository //extends BaseRepository
 {
     public function model()
     {
@@ -60,7 +60,7 @@ class AgenteRepository extends BaseRepository
      */
     public static function getCountActivos()
     {
-        $agentesActivo = Agente::whereHas('contrato', function ($where) {
+        $agentesActivo = Agente::whereHas('contrato', function ($where): void {
             /** @var Collection $activos */
             $activos = EstadoContrato::getEstadosEquivalentesActivos();
             $where->whereIn('id_estado_contrato', $activos->pluck('id')->toArray());

@@ -34,7 +34,7 @@ class LaboralesRequestUpdate extends LaboralesRequest
         return $rules;
     }
     
-    public function validate()
+    public function validateResolved()
     {
         parent::validate();
         

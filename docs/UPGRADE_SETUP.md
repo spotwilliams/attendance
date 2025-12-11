@@ -17,6 +17,7 @@ The following files have been created to support your modernization process:
 **Location:** `docker/php/7.4/`
 
 Files created:
+
 - `Dockerfile` - PHP 7.4 Sail-based configuration
 - `php.ini` - PHP settings (100M uploads, pcov enabled)
 - `supervisord.conf` - Process management
@@ -160,6 +161,7 @@ open http://localhost
 ```
 
 **Test Checklist:**
+
 - [ ] Application boots successfully
 - [ ] Login works
 - [ ] Dashboard loads
@@ -210,11 +212,13 @@ alias sail74-bash='sail74 exec web.cat bash'
 ```
 
 Then reload:
+
 ```bash
 source ~/.zshrc  # or ~/.bashrc
 ```
 
 Usage:
+
 ```bash
 sail74 up -d
 sail74-bash
@@ -224,14 +228,14 @@ sail-composer install
 
 ## 📊 Modernization Phases Overview
 
-| Phase | PHP | Laravel | Duration | Status |
-|-------|-----|---------|----------|--------|
-| **Phase 1** | 5.6 → 7.4 | 5.2 | 2-3 weeks | 🟡 Ready to start |
-| **Phase 2** | 7.4 | 5.2 → 6.0 | 3-4 weeks | ⚪ Pending |
-| **Phase 3** | 7.4 → 8.1 | 6 → 8 | 3-4 weeks | ⚪ Pending |
-| **Phase 4** | 8.1 | 8 → 10 | 2-3 weeks | ⚪ Pending |
-| **Phase 5** | 8.1 → 8.3 | 10 → 12 | 2-3 weeks | ⚪ Pending |
-| **Total** | | | **12-17 weeks** | |
+| Phase       | PHP       | Laravel   | Duration        | Status            |
+|-------------|-----------|-----------|-----------------|-------------------|
+| **Phase 1** | 5.6 → 7.4 | 5.2       | 2-3 weeks       | 🟡 Ready to start |
+| **Phase 2** | 7.4       | 5.2 → 6.0 | 3-4 weeks       | ⚪ Pending         |
+| **Phase 3** | 7.4 → 8.1 | 6 → 8     | 3-4 weeks       | ⚪ Pending         |
+| **Phase 4** | 8.1       | 8 → 10    | 2-3 weeks       | ⚪ Pending         |
+| **Phase 5** | 8.1 → 8.3 | 10 → 12   | 2-3 weeks       | ⚪ Pending         |
+| **Total**   |           |           | **12-17 weeks** |                   |
 
 ## 📝 Next Steps After Phase 1
 
@@ -245,16 +249,16 @@ Once Phase 1 is complete and stable:
    ```
 
 2. **Deploy to staging** (if available)
-   - Test thoroughly in staging environment
-   - Monitor for errors
-   - Performance testing
+    - Test thoroughly in staging environment
+    - Monitor for errors
+    - Performance testing
 
 3. **Start Phase 2** (Laravel 5.2 → 6.0)
    ```bash
    git checkout -b upgrade/laravel-6.0
    ```
-   - Follow instructions in `modernize.md`
-   - Phase 2 includes major Excel package rewrite
+    - Follow instructions in `modernize.md`
+    - Phase 2 includes major Excel package rewrite
 
 ## 🆘 Troubleshooting
 
@@ -283,6 +287,7 @@ sail74 exec web.cat chown -R sail:sail /var/www/html
 ### Database Connection Failed
 
 Check `.env`:
+
 ```env
 DB_CONNECTION=pgsql
 DB_HOST=db.cat        # Must be 'db.cat' not 'localhost'
@@ -342,3 +347,5 @@ You're all set! Follow these steps:
 6. ✅ Begin upgrade process
 
 Good luck! 🚀
+
+The audit was disabled. Enabled after all upgrades

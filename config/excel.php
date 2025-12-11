@@ -22,7 +22,7 @@ return array(
         | memory|gzip|serialized|igbinary|discISAM|apc|memcache|temp|wincache|sqlite|sqlite3
         |
         */
-        'driver'   => 'sqlite',
+        'driver'   => 'memory',
 
         /*
         |--------------------------------------------------------------------------
@@ -171,7 +171,7 @@ return array(
         | having the appropriate fonts installed.
         |
         */
-        'autosize-method'             => PHPExcel_Shared_Font::AUTOSIZE_METHOD_APPROX,
+        'autosize-method'             => \PhpOffice\PhpSpreadsheet\Shared\Font::AUTOSIZE_METHOD_APPROX,
 
         /*
         |--------------------------------------------------------------------------

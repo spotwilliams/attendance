@@ -3,7 +3,7 @@
 namespace Cat\Modules\Configuracion\Turnos\Repositories;
 
 use Cat\Models\Turno;
-use InfyOm\Generator\Common\BaseRepository;
+use Cat\Repositories\BaseRepository;
 
 class TurnoModelRepository extends BaseRepository
 {

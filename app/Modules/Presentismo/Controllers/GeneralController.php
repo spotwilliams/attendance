@@ -4,21 +4,16 @@ namespace Cat\Modules\Presentismo\Controllers;
 
 use Cat\Helpers\Calculation;
 use Cat\Helpers\Pagination\FormPresenter;
-use Cat\Models\Base;
-use Cat\Models\Periodo;
-use Cat\Models\Turno;
-use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Cat\Repositories\PeriodoRepository;
+use Cat\Models\Base;
+use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Repositories\UserRepository;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Illuminate\Support\Facades\Response;
 
 class GeneralController extends AppBaseController
 {

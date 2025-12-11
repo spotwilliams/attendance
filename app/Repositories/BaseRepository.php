@@ -5,8 +5,9 @@ namespace Cat\Repositories;
 use Cat\Helpers\Cache;
 use Cat\Models\Base;
 use Cat\Models\TipoContrato;
+use Prettus\Repository\Eloquent\BaseRepository as Prettus;
 
-class BaseRepository
+abstract class BaseRepository extends Prettus
 {
     
     /**
@@ -17,9 +18,7 @@ class BaseRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_bases', function () {
-                return Base::all();
-            });
+            $bases = Cache::get('all_bases', fn() => Base::all());
         } else {
             $bases = Base::all();
         }
@@ -37,7 +36,7 @@ class BaseRepository
             ->distinct()
             ->join('operativos', 'bases.id', '=', 'operativos.id_base')
             ->join('agentes', 'agentes.id', '=', 'operativos.id_agente')
-            ->join('contratos', function ($joinClause) {
+            ->join('contratos', function ($joinClause): void {
                 /** @var \Illuminate\Support\Collection $tipo */
                 /** @var \Illuminate\Database\Query\JoinClause $joinClause */
                 

@@ -79,7 +79,7 @@ class NuevosRequerimientos extends Seeder
         
         $agentesEloq = Agente::whereIn('id', $presentismos->pluck('id_agente'))
             ->with([
-                'contrato' => function ($with) {
+                'contrato' => function ($with): void {
                     $with
                         ->with('estadoContrato')
                         ->with('tipoContrato');

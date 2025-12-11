@@ -16,7 +16,7 @@ trait CrudTrait
     public static function getPossibleEnumValues($field_name)
     {
         $instance = new static(); // create an instance of the model to be able to get the table name
-        $type = DB::select(DB::raw('SHOW COLUMNS FROM '.$instance->getTable().' WHERE Field = "'.$field_name.'"'))[0]->Type;
+        $type = \Illuminate\Support\Facades\DB::select(\Illuminate\Support\Facades\DB::raw('SHOW COLUMNS FROM '.$instance->getTable().' WHERE Field = "'.$field_name.'"'))[0]->Type;
         preg_match('/^enum\((.*)\)$/', $type, $matches);
         $enum = [];
         foreach (explode(',', $matches[1]) as $value) {
@@ -29,7 +29,7 @@ trait CrudTrait
     public static function isColumnNullable($column_name)
     {
         $instance = new static(); // create an instance of the model to be able to get the table name
-        $answer = DB::select(DB::raw("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='".$instance->getTable()."' AND COLUMN_NAME='".$column_name."' AND table_schema='".env('DB_DATABASE')."'"))[0];
+        $answer = \Illuminate\Support\Facades\DB::select(\Illuminate\Support\Facades\DB::raw("SELECT IS_NULLABLE FROM INFORMATION_SCHEMA.COLUMNS WHERE TABLE_NAME='".$instance->getTable()."' AND COLUMN_NAME='".$column_name."' AND table_schema='".env('DB_DATABASE')."'"))[0];
 
         return $answer->IS_NULLABLE === 'YES';
     }

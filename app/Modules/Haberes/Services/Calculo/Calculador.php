@@ -76,9 +76,7 @@ class Calculador extends Service
     {
         
         /** @var Collection $presentismos */
-        $presentismos = $this->agente->presentismos->groupBy(function ($presentismo) {
-            return $presentismo->injustificado === true ? 'injustificado' : 'justificado';
-        });
+        $presentismos = $this->agente->presentismos->groupBy(fn($presentismo) => $presentismo->injustificado === true ? 'injustificado' : 'justificado');
         /** @var Presentismo $presentismo */
         if ($presentismos->has('injustificado')) {
             /** @var Presentismo $preInjustificado */

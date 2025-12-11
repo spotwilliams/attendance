@@ -16,9 +16,7 @@ class GerenciaRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_gerencias', function () {
-                return Gerencia::all();
-            });
+            $bases = Cache::get('all_gerencias', fn() => Gerencia::all());
         } else {
             $bases = Gerencia::all();
         }

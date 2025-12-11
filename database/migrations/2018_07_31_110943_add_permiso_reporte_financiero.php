@@ -16,7 +16,7 @@ class AddPermisoReporteFinanciero extends Migration
             'name'        => 'Reporte de facturacion',
             'comentarios' => 'Permite ver el reporte de facturacion',
         ];
-
+        
         $permiso = \Cat\Modules\Security\Models\Permission::where('name', '=', 'Reporte de haberes')->first();
         if ($permiso !== null) {
             $permiso->fill($ps)->save();

@@ -59,14 +59,14 @@ class ContratosController extends AppBaseController
         /** @var Collection $agentes */
         $agentes = Agente::whereIn('id', $operativos->pluck('id_agente'))
             ->with([
-                'operativo' => function ($with) {
+                'operativo' => function ($with): void {
                     $with
                         ->with('base')
                         ->with('turno')
                         ->with('gerencia');
                 },
             ])
-            ->whereHas('contrato', function ($wherehas) {
+            ->whereHas('contrato', function ($wherehas): void {
                 $wherehas->whereIn('id_tipo_contrato', TipoContrato::getEquivalentesLocacion()->pluck('id'));
             })
             ->with('contrato.tipoContrato')

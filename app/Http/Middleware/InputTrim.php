@@ -18,7 +18,7 @@ class InputTrim
         // credit to @t202wes - https://gist.github.com/drakakisgeo/3bba2a2600b4c554f836#gistcomment-1970006
         $input = $request->all();
         if ($input) {
-            array_walk_recursive($input, function (&$item) {
+            array_walk_recursive($input, function (&$item): void {
                 $item = trim($item);
                 $item = ($item == "") ? null : $item;
             });

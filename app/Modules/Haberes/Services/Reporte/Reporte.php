@@ -32,9 +32,9 @@ class Reporte extends Service
      */
     public function execute()
     {
-        Excel::create('Reporte', function ($writer) {
+        Excel::create('Reporte', function ($writer): void {
             /** @var LaravelExcelWriter $writer */
-            $writer->sheet('Haberes', function ($sheet) {
+            $writer->sheet('Haberes', function ($sheet): void {
                 
                 /** @var  LaravelExcelWorksheet $sheet */
                 $data  = [];

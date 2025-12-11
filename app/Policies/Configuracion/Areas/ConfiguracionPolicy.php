@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Policies\Configuracion;
+namespace Cat\Policies\Configuracion\Areas;
 
 use Cat\Policies\SecurityPolicy;
 use Cat\User;

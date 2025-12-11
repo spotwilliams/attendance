@@ -24,9 +24,7 @@ class TipoPresentismosRepository
     public static function getAll($cache = true)
     {
         if ($cache) {
-            $bases = Cache::get('all_tipos_presentismo', function () {
-                return TipoPresentismo::all();
-            });
+            $bases = Cache::get('all_tipos_presentismo', fn() => TipoPresentismo::all());
         } else {
             $bases = TipoPresentismo::all();
         }
@@ -45,9 +43,7 @@ class TipoPresentismosRepository
             ->orWhere('aplica', '=', 'TODOS');
         $key                  = $tipoContrato->codigo . '_tipos_presentismo';
         if ($cache) {
-            $bases = Cache::get($key, function () use ($tipoContratoEloquent) {
-                return $tipoContratoEloquent->get();
-            });
+            $bases = Cache::get($key, fn() => $tipoContratoEloquent->get());
         } else {
             $bases = $tipoContratoEloquent->get();
         }
@@ -70,9 +66,7 @@ class TipoPresentismosRepository
                 
                 $key = $contrato->tipoContrato->codigo . '_tipos_presentismo';
                 if ($cache) {
-                    $tiposPresentismos = Cache::get($key, function () use ($tipoContratoEloquent) {
-                        return $tipoContratoEloquent->get();
-                    });
+                    $tiposPresentismos = Cache::get($key, fn() => $tipoContratoEloquent->get());
                 } else {
                     $tiposPresentismos = $tipoContratoEloquent->get();
                 }
