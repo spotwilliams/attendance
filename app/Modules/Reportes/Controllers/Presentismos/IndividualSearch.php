@@ -53,7 +53,7 @@ class IndividualSearch extends BusquedaController
         $presenter = new FormPresenter($agentes, 'presentismoPorAgenteSearch');
         $presenter->setInputsParams($request->all());
         
-        return $agentes->links($presenter);
+        return $presenter->render();
     }
     
 }

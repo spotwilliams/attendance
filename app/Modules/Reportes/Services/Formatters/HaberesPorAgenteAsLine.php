@@ -3,10 +3,10 @@
 namespace Cat\Modules\Reportes\Services\Formatters;
 
 use Cat\Helpers\ModelCreator;
+use Cat\Models\Agente;
+use Cat\Modules\Haberes\Services\Calculo\Calculador;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
-use \Cat\Modules\Haberes\Services\Calculo\Calculador;
-use Cat\Models\Agente;
 
 class HaberesPorAgenteAsLine extends RowDataFormatter
 {

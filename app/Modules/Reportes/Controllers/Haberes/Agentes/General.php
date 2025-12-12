@@ -8,11 +8,11 @@ use Cat\Models\EstadoContrato;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
+use Cat\Modules\Reportes\Controllers\ReporteController;
 use Illuminate\Http\Request;
 use Illuminate\Pagination\LengthAwarePaginator;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\View;
-use Cat\Modules\Reportes\Controllers\ReporteController;
 use Laracasts\Flash\Flash;
 
 class General extends ReporteController

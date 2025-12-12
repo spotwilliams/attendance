@@ -2,15 +2,12 @@
 
 namespace Cat\Helpers\Pagination;
 
-use Illuminate\Pagination\BootstrapThreeNextPreviousButtonRendererTrait;
 use Illuminate\Pagination\UrlWindow;
 use Illuminate\Support\HtmlString;
 use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
-use Illuminate\Contracts\Pagination\Presenter as PresenterContract;
 
-class FormPresenter implements PresenterContract
+class FormPresenter
 {
-    use BootstrapThreeNextPreviousButtonRendererTrait;
     
     /**
      * The paginator implementation.
@@ -210,8 +207,53 @@ class FormPresenter implements PresenterContract
         if ($page == $this->paginator->currentPage()) {
             return $this->getActivePageWrapper($page);
         }
-        
+
         return $this->getAvailablePageWrapper($url, $page, $rel);
     }
-    
+
+    /**
+     * Get the previous page pagination element.
+     *
+     * @param  string  $text
+     * @return string
+     */
+    protected function getPreviousButton($text = '&laquo;')
+    {
+        if ($this->paginator->currentPage() <= 1) {
+            return $this->getDisabledTextWrapper($text);
+        }
+
+        $url = $this->paginator->url($this->paginator->currentPage() - 1);
+
+        return $this->getAvailablePageWrapper($url, $text, 'prev');
+    }
+
+    /**
+     * Get the next page pagination element.
+     *
+     * @param  string  $text
+     * @return string
+     */
+    protected function getNextButton($text = '&raquo;')
+    {
+        if (!$this->paginator->hasMorePages()) {
+            return $this->getDisabledTextWrapper($text);
+        }
+
+        $url = $this->paginator->url($this->paginator->currentPage() + 1);
+
+        return $this->getAvailablePageWrapper($url, $text, 'next');
+    }
+
+    /**
+     * Get HTML wrapper for the currently active page link.
+     *
+     * @param  string  $text
+     * @return string
+     */
+    protected function getActivePageWrapper($text)
+    {
+        return '<li class="active"><span>' . $text . '</span></li>';
+    }
+
 }

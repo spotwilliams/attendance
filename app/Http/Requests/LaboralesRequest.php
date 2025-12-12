@@ -2,7 +2,6 @@
 
 namespace Cat\Http\Requests;
 
-use Carbon\Carbon;
 use Cat\Helpers\Validation;
 use Cat\Models\EstadoContrato;
 
@@ -30,7 +29,8 @@ class LaboralesRequest extends Request
     
     public function validateResolved()
     {
-        parent::validate();
+        parent::validateResolved();
+
         
         $this->validateFechasIngreso();
         

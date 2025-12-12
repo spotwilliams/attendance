@@ -1,10 +1,9 @@
 <?php
 
-namespace Cat\Modules\Validation\Rules;
+namespace Cat\Modules\Presentismo\Rules;
 
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
-use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Models\TipoPresentismo;
 
 class Ausente extends Rule

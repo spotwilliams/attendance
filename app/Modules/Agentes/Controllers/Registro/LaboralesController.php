@@ -4,21 +4,18 @@ namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Handlers\Error;
 use Cat\Helpers\Validation;
+use Cat\Http\Controllers\AppBaseController;
 use Cat\Http\Requests\LaboralesRequest;
 use Cat\Http\Requests\LaboralesRequestUpdate;
 use Cat\Models\Agente;
 use Cat\Models\Contrato;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
-use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Laborales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Laborales as Update;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Gate;
-use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Validator;
 use Laracasts\Flash\Flash;
-use Illuminate\Support\Facades\Response;
 
 class LaboralesController extends AppBaseController
 {

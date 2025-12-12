@@ -13,7 +13,6 @@ use Symfony\Component\HttpKernel\Exception\HttpException;
 use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Symfony\Component\HttpKernel\Exception\MethodNotAllowedHttpException;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
-use Symfony\Component\Routing\Exception\MethodNotAllowedException;
 
 class Handler extends ExceptionHandler
 {
@@ -78,10 +77,14 @@ class Handler extends ExceptionHandler
         if($return instanceof RedirectResponse) {
             return $return;
         }
-//        dd();
-//
-//        return parent::render($request, $e);
-        
+
+        if (config('app.debug')) {
+            return parent::render($request, $e);
+
+        }
+
+        // Log the exception details before returning a generic error view
+        $this->report($e);
         return response(view('errors.unknown'));
     }
 }

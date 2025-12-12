@@ -41,6 +41,11 @@ trait FakeColumns
             }
         }
 
+
+        // TODO: remove this obsolete code
+        return $fake_field_columns_to_encode;
+
+
         if (! count($fake_field_columns_to_encode)) {
             return ['extras'];
         }

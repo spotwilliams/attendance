@@ -2,11 +2,9 @@
 
 namespace Cat\Http\Requests;
 
-use Carbon\Carbon;
 use Cat\Helpers\PermisoEspecialChecker;
 use Cat\Helpers\Validation;
 use Cat\Models\Agente;
-use Cat\Models\EstadoContrato;
 
 class LaboralesRequestUpdate extends LaboralesRequest
 {

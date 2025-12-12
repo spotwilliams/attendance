@@ -21,7 +21,7 @@ if ($agente->operativo()->first()) {
 
         if ($gerenciaPadre !== null) {
 
-            $nombreGerencia    = $gerenciaPadre->nombre;
+            $nombreGerencia = $gerenciaPadre->nombre;
             $NombreSubgerencia = $gerencia->nombre;
         } else {
 
@@ -112,4 +112,3 @@ if ($agente->operativo()->first()) {
         @endif
     </div>
 </div>
-

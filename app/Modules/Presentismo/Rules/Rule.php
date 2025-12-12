@@ -6,7 +6,7 @@
  * Time: 12:13
  */
 
-namespace Cat\Modules\Validation\Rules;
+namespace Cat\Modules\Presentismo\Rules;
 
 
 use Cat\Models\Agente;

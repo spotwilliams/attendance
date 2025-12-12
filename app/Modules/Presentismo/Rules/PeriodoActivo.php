@@ -1,21 +1,15 @@
 <?php
 
-namespace Cat\Modules\Validation\Rules;
+namespace Cat\Modules\Presentismo\Rules;
 
-use Cat\Exceptions\AgenteSinBase;
-use Cat\Exceptions\AgenteSinTurno;
 use Cat\Helpers\PermisoEspecialChecker;
 use Cat\Models\Contrato;
 use Cat\Models\FacturaFisica;
 use Cat\Models\Periodo;
 use Cat\Models\TipoContrato;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFueraDelLimite;
-use Cat\Modules\Presentismo\Exceptions\Validacion\GeneralDebug;
-use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoCerrado;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoFacturado;
-use Cat\Modules\Security\Models\Permission;
 use Cat\Repositories\PeriodoRepository;
-use Cat\User;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class PeriodoActivo extends Rule
