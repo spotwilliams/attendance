@@ -37,8 +37,6 @@ abstract class ReporteController extends AppBaseController
     protected function getLinksLikeForm(LengthAwarePaginator $paginator, Request $request,  $route)
     {
         /** @var FormPresenter $presenter */
-//        $presenter = new FormPresenter($paginator, $route);
-//        $presenter->setInputsParams($request->all());
 
         return $paginator->links();
     }
