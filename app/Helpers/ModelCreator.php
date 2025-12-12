@@ -3,7 +3,6 @@
 namespace Cat\Helpers;
 
 
-use function foo\func;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 

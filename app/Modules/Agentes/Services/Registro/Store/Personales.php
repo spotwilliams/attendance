@@ -7,7 +7,6 @@ use Cat\Helpers\ImageHelper;
 use Cat\Models\Agente;
 use Cat\Models\Domicilio;
 use Cat\Models\Estudio;
-use Cat\Modules\Agentes\Exceptions\Registro\EntidadDuplicada;
 use Cat\Modules\Agentes\Services\Registro\CheckEstudiosAndDomicilio;
 use Cat\Modules\Service;
 use Illuminate\Database\QueryException;

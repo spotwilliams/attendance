@@ -47,6 +47,8 @@ trait CrudTrait
      */
     public function addFakes($columns = ['extras'])
     {
+        // TODO: obsolete code. Remove all panel approach
+        return;
         foreach ($columns as $column) {
             $column_contents = $this->{$column};
 

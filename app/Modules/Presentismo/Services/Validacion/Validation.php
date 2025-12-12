@@ -4,13 +4,13 @@ namespace Cat\Modules\Presentismo\Services\Validacion;
 
 use Cat\Models\Agente;
 use Cat\Models\TipoPresentismo;
-use Cat\Modules\Validation\Rules\EnComision;
-use Cat\Modules\Validation\Rules\NoEsFuturo;
+use Cat\Modules\Presentismo\Rules\EnComision;
+use Cat\Modules\Presentismo\Rules\NoEsFuturo;
 use Cat\Modules\Service;
-use Cat\Modules\Validation\Rules\Ausente;
-use Cat\Modules\Validation\Rules\PeriodoActivo;
-use Cat\Modules\Validation\Rules\Presente;
-use Cat\Modules\Validation\Rules\Rule;
+use Cat\Modules\Presentismo\Rules\Ausente;
+use Cat\Modules\Presentismo\Rules\PeriodoActivo;
+use Cat\Modules\Presentismo\Rules\Presente;
+use Cat\Modules\Presentismo\Rules\Rule;
 
 class Validation extends Service
 {

@@ -16,7 +16,7 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Cat\Modules\Presentismo\Services\Registro\Injustificar;
 use Cat\Modules\Presentismo\Services\Registro\Justificar;
-use Cat\Modules\Validation\Rules\PeriodoActivo;
+use Cat\Modules\Presentismo\Rules\PeriodoActivo;
 use Illuminate\Auth\Access\AuthorizationException;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Http\Request;

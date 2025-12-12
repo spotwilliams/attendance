@@ -20,7 +20,7 @@ trait Read
     public function getEntry($id)
     {
         $entry = $this->model->findOrFail($id);
-        
+
         return $entry->withFakes();
     }
     
@@ -36,7 +36,6 @@ trait Read
         foreach ($entries as $entry) {
             $entry->addFakes($this->getFakeColumnsAsArray());
         }
-        
         return $entries;
     }
     

@@ -9,8 +9,8 @@ use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeJustificar;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinDiasDisponibles;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
 use Cat\Modules\Service;
-use Cat\Modules\Validation\Rules\Ausente;
-use Cat\Modules\Validation\Rules\PeriodoActivo;
+use Cat\Modules\Presentismo\Rules\Ausente;
+use Cat\Modules\Presentismo\Rules\PeriodoActivo;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 

@@ -136,7 +136,7 @@ class GeneralController extends AppBaseController
             ->with('funcion', new Collection($funcion))
             ->with('turnos', new Collection($turnos))
             ->with('areas', new Collection($areas))
-            ->with('links', $result->links($presenter))
+            ->with('links', $presenter->render())
             ->with('baseActual', $base)
             ->with('agentes', $result);
     }

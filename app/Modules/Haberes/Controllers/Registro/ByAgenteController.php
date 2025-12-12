@@ -98,7 +98,7 @@ class ByAgenteController extends BusquedaController
             'cuit'     => \Illuminate\Support\Facades\Request::input('cuit'),
         ]);
         
-        return $agentes->links($presenter);
+        return $presenter->render();
     }
     
 }

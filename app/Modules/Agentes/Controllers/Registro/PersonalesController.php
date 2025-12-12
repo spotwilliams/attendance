@@ -3,10 +3,10 @@
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
 use Cat\Helpers\Validation;
+use Cat\Http\Controllers\AppBaseController;
 use Cat\Models\Agente;
 use Cat\Modules\Agentes\Exceptions\Registro\EntidadDuplicada;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
-use Cat\Http\Controllers\AppBaseController;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales as Store;
 use Cat\Modules\Agentes\Services\Registro\Update\Personales as Update;
 use Illuminate\Database\Eloquent\ModelNotFoundException;

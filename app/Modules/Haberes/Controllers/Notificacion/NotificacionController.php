@@ -5,16 +5,16 @@ namespace Cat\Modules\Haberes\Controllers\Notificacion;
 use Cat\Helpers\ErrorLogger;
 use Cat\Models\Notificacion;
 use Cat\Models\Periodo;
+use Cat\Modules\Haberes\Controllers\Eloquenteable;
+use Cat\Modules\Haberes\Controllers\GeneralController;
 use Cat\Modules\Haberes\Services\Calculo\CalculadorBatch;
 use Cat\Modules\Haberes\Services\Sender\Libre;
 use Cat\Modules\Haberes\Services\Sender\Regular;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
+use Illuminate\Validation\ValidationException;
 use Krucas\Notification\Facades\Notification;
 use Laracasts\Flash\Flash;
-use Cat\Modules\Haberes\Controllers\GeneralController;
-use Cat\Modules\Haberes\Controllers\Eloquenteable;
-use Illuminate\Validation\ValidationException;
 
 class NotificacionController extends GeneralController
 {

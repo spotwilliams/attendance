@@ -2,12 +2,6 @@
 
 namespace Cat\Helpers\Pagination;
 
-use Illuminate\Pagination\BootstrapThreeNextPreviousButtonRendererTrait;
-use Illuminate\Pagination\UrlWindow;
-use Illuminate\Support\HtmlString;
-use Illuminate\Contracts\Pagination\Paginator as PaginatorContract;
-use Illuminate\Contracts\Pagination\Presenter as PresenterContract;
-
 class FormPresenterWithOptions extends FormPresenter
 {
     

@@ -10,8 +10,8 @@ use Cat\Models\Estudio;
 use Cat\Modules\Agentes\Services\Registro\CheckEstudiosAndDomicilio;
 use Cat\Modules\Service;
 use Illuminate\Database\QueryException;
-use Illuminate\Support\Facades\DB;
 use Illuminate\Http\UploadedFile;
+use Illuminate\Support\Facades\DB;
 
 class Personales extends Service
 {

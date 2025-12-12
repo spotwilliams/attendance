@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Modules\Validation\Rules;
+namespace Cat\Modules\Presentismo\Rules;
 
 use Cat\Models\TipoPresentismo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\FechaFutura;
