@@ -27,13 +27,16 @@ return RectorConfig::configure()
 
         // Laravel upgrade sets (5.2 -> 6.0)
         // Apply incrementally: each set upgrades TO that version
-        LaravelSetList::LARAVEL_53,  // 5.2 -> 5.3
-        LaravelSetList::LARAVEL_54,  // 5.3 -> 5.4
-        LaravelSetList::LARAVEL_55,  // 5.4 -> 5.5
-        LaravelSetList::LARAVEL_56,  // 5.5 -> 5.6
-        LaravelSetList::LARAVEL_57,  // 5.6 -> 5.7
-        LaravelSetList::LARAVEL_58,  // 5.7 -> 5.8
-        LaravelSetList::LARAVEL_60,  // 5.8 -> 6.0
+//        LaravelSetList::LARAVEL_53,  // 5.2 -> 5.3
+//        LaravelSetList::LARAVEL_54,  // 5.3 -> 5.4
+//        LaravelSetList::LARAVEL_55,  // 5.4 -> 5.5
+//        LaravelSetList::LARAVEL_56,  // 5.5 -> 5.6
+//        LaravelSetList::LARAVEL_57,  // 5.6 -> 5.7
+//        LaravelSetList::LARAVEL_58,  // 5.7 -> 5.8
+//        LaravelSetList::LARAVEL_60,  // 5.8 -> 6.0
+
+        // Laravel 6.0 -> 7.0 upgrade
+        LaravelSetList::LARAVEL_70,
 
         // Laravel code quality improvements
         LaravelSetList::LARAVEL_CODE_QUALITY,

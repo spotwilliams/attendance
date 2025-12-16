@@ -1,6 +1,11 @@
 <?php
 
-class TestCase extends Illuminate\Foundation\Testing\TestCase
+namespace Tests;
+
+use Cat\User;
+use Illuminate\Foundation\Testing\TestCase as BaseTestCase;
+
+abstract class TestCase extends BaseTestCase
 {
     /**
      * The base URL to use while testing the application.
@@ -16,10 +21,36 @@ class TestCase extends Illuminate\Foundation\Testing\TestCase
      */
     public function createApplication()
     {
-        $app = require __DIR__.'/../bootstrap/app.php';
+        $app = require __DIR__ . '/../bootstrap/app.php';
 
-        $app->make(Illuminate\Contracts\Console\Kernel::class)->bootstrap();
+        $app->make(\Illuminate\Contracts\Console\Kernel::class)->bootstrap();
 
         return $app;
+    }
+
+    /**
+     * Get an authenticated user for testing.
+     *
+     * @return User|null
+     */
+    protected function getTestUser(): ?User
+    {
+        return User::first();
+    }
+
+    /**
+     * Act as the first available user.
+     *
+     * @return $this
+     */
+    protected function actingAsTestUser()
+    {
+        $user = $this->getTestUser();
+
+        if ($user) {
+            return $this->actingAs($user);
+        }
+
+        $this->markTestSkipped('No test user available in database');
     }
 }
