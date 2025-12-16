@@ -83,6 +83,8 @@ class Handler extends ExceptionHandler
 
         }
 
+        // Log the exception details before returning a generic error view
+        $this->report($e);
         return response(view('errors.unknown'));
     }
 }
