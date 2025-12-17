@@ -5,7 +5,7 @@ namespace Cat\Modules\Configuracion\Areas\Repositories;
 use Cat\Models\Area;
 use Cat\Repositories\BaseRepository;
 
-class AreaRepository// extends BaseRepository
+class AreaRepository extends BaseRepository
 {
     /**
      * @var array

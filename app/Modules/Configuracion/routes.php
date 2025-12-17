@@ -16,7 +16,7 @@ Route::name('configuracion.')
 
 // Routes with custom names
 Route::middleware('web')
-    ->group(function () {
+    ->group(function (): void {
 
         /**
          * Deletes

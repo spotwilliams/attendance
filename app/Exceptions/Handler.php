@@ -37,7 +37,7 @@ class Handler extends ExceptionHandler
      * @param  \Exception $e
      * @return void
      */
-    public function report(Exception $e)
+    public function report(\Throwable $e)
     {
         parent::report($e);
     }
@@ -47,7 +47,7 @@ class Handler extends ExceptionHandler
      * @param Exception $e
      * @return \Illuminate\Contracts\Routing\ResponseFactory|\Symfony\Component\HttpFoundation\Response
      */
-    public function render($request, Exception $e)
+    public function render($request, \Throwable $e)
     {
         if ($e instanceof TokenMismatchException) {
             return response(view('errors.expired'), 500);
