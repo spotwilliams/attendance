@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateEstadoContratosTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateEstadoContratosTable extends Migration
      */
     public function up()
     {
-        Schema::create('estado_contratos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('estado_contratos', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->string('estado', 45);
             $table->string('descripcion', 100)->nullable();
@@ -22,8 +21,6 @@ class CreateEstadoContratosTable extends Migration
             $table->softDeletes();
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -31,7 +28,6 @@ class CreateEstadoContratosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('estado_contratos');
+        \Illuminate\Support\Facades\Schema::drop('estado_contratos');
     }
-    
-}
+};

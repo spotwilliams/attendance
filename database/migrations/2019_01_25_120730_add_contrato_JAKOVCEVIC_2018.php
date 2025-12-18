@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddContratoJAKOVCEVIC2018 extends Migration
+return new class extends Migration
 {
     protected function getData(): array
     {
@@ -20,7 +20,6 @@ class AddContratoJAKOVCEVIC2018 extends Migration
             'fecha_fin' => '2018-12-31'
         ];
     }
-
     public function up()
     {
         // id de JAKOVCEVIC = 4468
@@ -34,7 +33,6 @@ class AddContratoJAKOVCEVIC2018 extends Migration
         $service = new \Cat\Modules\Agentes\Services\Registro\Store\Laborales($agente, $this->getData());
         $service->execute();
     }
-
     /**
      * Reverse the migrations.
      *
@@ -65,4 +63,4 @@ class AddContratoJAKOVCEVIC2018 extends Migration
         $contrato->forceDelete();
         $contHist->delete();
     }
-}
+};

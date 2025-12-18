@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class RoleHasTurnoTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class RoleHasTurnoTable extends Migration
     {
         $config = config('laravel-permission.table_names');
         
-        Schema::create('turno_roles', function (Blueprint $table) use ($config) {
+        \Illuminate\Support\Facades\Schema::create('turno_roles', function (Blueprint $table) use ($config): void {
             $table->integer('turno_id');
             $table->integer('role_id')->unsigned();
             
@@ -34,7 +34,6 @@ class RoleHasTurnoTable extends Migration
         
     
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -42,7 +41,7 @@ class RoleHasTurnoTable extends Migration
      */
     public function down()
     {
-        Schema::drop('turno_roles');
+        \Illuminate\Support\Facades\Schema::drop('turno_roles');
         
     }
-}
+};

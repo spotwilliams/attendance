@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPermisosDashboard extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,7 +30,6 @@ class AddPermisosDashboard extends Migration
             $role->syncPermissions([$permiso]);
         }
     }
-    
     /**
      * @throws Exception
      */
@@ -50,4 +49,4 @@ class AddPermisosDashboard extends Migration
         
        
     }
-}
+};

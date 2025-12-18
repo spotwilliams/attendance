@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPermisosFacturacion extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,7 +33,6 @@ class AddPermisosFacturacion extends Migration
             $role->syncPermissions([$permiso]);
         }
     }
-    
     /**
      * @throws Exception
      */
@@ -53,4 +52,4 @@ class AddPermisosFacturacion extends Migration
         
         
     }
-}
+};

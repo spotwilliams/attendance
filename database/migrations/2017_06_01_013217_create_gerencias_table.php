@@ -3,16 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateGerenciasTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('gerencias', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('gerencias', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->integer('id_padre')->nullable()->index('subgerencia_es_de_gerencia_idx');
@@ -20,16 +20,13 @@ class CreateGerenciasTable extends Migration {
 			$table->timestamps();
 		});
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('gerencias');
+		\Illuminate\Support\Facades\Schema::drop('gerencias');
 	}
-
-}
+};

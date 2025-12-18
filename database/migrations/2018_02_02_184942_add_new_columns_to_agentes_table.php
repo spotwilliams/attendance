@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class AddNewColumnsToAgentesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,7 +13,7 @@ class AddNewColumnsToAgentesTable extends Migration
      */
     public function up()
     {
-        Schema::table('agentes', function (Blueprint $table) {
+        Schema::table('agentes', function (Blueprint $table): void {
             $table->string('avatar', 450)->default('default.jpg');
             $table->text('observacion', 950)->nullable();
             $table->string('profesion', 450)->nullable();
@@ -27,7 +27,6 @@ class AddNewColumnsToAgentesTable extends Migration
         \Cat\Models\Agente::whereNull('avatar')
             ->update(['avatar' => 'default.jpg']);
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -37,4 +36,4 @@ class AddNewColumnsToAgentesTable extends Migration
     {
         //
     }
-}
+};

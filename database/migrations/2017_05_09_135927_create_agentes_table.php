@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateAgentesTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateAgentesTable extends Migration
      */
     public function up()
     {
-        Schema::create('agentes', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('agentes', function (Blueprint $table): void {
             // Obligatorios
             $table->integer('id', true);
             $table->string('nombre', 60)->index('nombre_index');
@@ -32,8 +31,6 @@ class CreateAgentesTable extends Migration
             $table->softDeletes();
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -41,7 +38,6 @@ class CreateAgentesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('agentes');
+        \Illuminate\Support\Facades\Schema::drop('agentes');
     }
-    
-}
+};

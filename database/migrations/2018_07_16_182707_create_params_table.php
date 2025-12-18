@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateParamsTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateParamsTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\Schema::create('params', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('params', function (Blueprint $table): void {
             $table->increments('id');
             $table->string('param', 240);
             $table->string('descripcion', 240);
@@ -26,7 +26,6 @@ class CreateParamsTable extends Migration
             'valor'       => '20',
         ]);
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -34,6 +33,6 @@ class CreateParamsTable extends Migration
      */
     public function down()
     {
-        Schema::drop('params');
+        \Illuminate\Support\Facades\Schema::drop('params');
     }
-}
+};

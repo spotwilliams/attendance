@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RemoveAmPmFromHorario extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -28,7 +28,6 @@ class RemoveAmPmFromHorario extends Migration
             $horario->save();
         }
     }
-
     /**
      * Reverse the migrations.
      *
@@ -38,4 +37,4 @@ class RemoveAmPmFromHorario extends Migration
     {
         //
     }
-}
+};

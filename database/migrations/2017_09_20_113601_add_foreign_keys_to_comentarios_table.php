@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddForeignKeysToComentariosTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddForeignKeysToComentariosTable extends Migration
      */
     public function up()
     {
-        Schema::table('comentarios', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('comentarios', function (Blueprint $table): void {
             $table->foreign('id_user', 'comentario_es_de_user')
                 ->references('id')
                 ->on('users')
@@ -26,7 +26,6 @@ class AddForeignKeysToComentariosTable extends Migration
                 ->onDelete('NO ACTION');
         });
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -34,10 +33,10 @@ class AddForeignKeysToComentariosTable extends Migration
      */
     public function down()
     {
-        Schema::table('comentarios', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('comentarios', function (Blueprint $table): void {
             $table->dropForeign('comentario_es_de_user');
             $table->dropForeign('comentario_es_para_conpceto');
         });
         
     }
-}
+};

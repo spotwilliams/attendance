@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTiposPresentismosTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateTiposPresentismosTable extends Migration
      */
     public function up()
     {
-        Schema::create('tipos_presentismos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('tipos_presentismos', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->string('codigo', 50)->index('tipo_index');
             $table->string('descripcion', 100);
@@ -25,8 +24,6 @@ class CreateTiposPresentismosTable extends Migration
             $table->timestamps();
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -34,7 +31,6 @@ class CreateTiposPresentismosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('tipos_presentismos');
+        \Illuminate\Support\Facades\Schema::drop('tipos_presentismos');
     }
-    
-}
+};

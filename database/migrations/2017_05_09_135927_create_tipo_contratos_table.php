@@ -3,16 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateTipoContratosTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('tipo_contratos', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('tipo_contratos', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->string('codigo', 45)->index('codigo_idx');
@@ -21,16 +21,13 @@ class CreateTipoContratosTable extends Migration {
             
         });
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('tipo_contratos');
+		\Illuminate\Support\Facades\Schema::drop('tipo_contratos');
 	}
-
-}
+};

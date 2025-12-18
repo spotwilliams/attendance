@@ -3,32 +3,29 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateAreasTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('areas', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('areas', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->string('nombre', 80)->index('nombre');
             $table->timestamps();
 		});
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('areas');
+		\Illuminate\Support\Facades\Schema::drop('areas');
 	}
-
-}
+};

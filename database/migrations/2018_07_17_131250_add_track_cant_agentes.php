@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddTrackCantAgentes extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,6 @@ class AddTrackCantAgentes extends Migration
             \Cat\Modules\Agentes\Repositories\AgenteRepository::storeCountActivos();
         }
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -27,4 +26,4 @@ class AddTrackCantAgentes extends Migration
     {
         //
     }
-}
+};

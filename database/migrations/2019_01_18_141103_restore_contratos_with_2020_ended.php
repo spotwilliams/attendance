@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class RestoreContratosWith2020Ended extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -17,7 +17,6 @@ class RestoreContratosWith2020Ended extends Migration
                 'fecha_fin' => '2019-12-31'
             ]);
     }
-
     /**
      * Reverse the migrations.
      *
@@ -27,4 +26,4 @@ class RestoreContratosWith2020Ended extends Migration
     {
         //
     }
-}
+};

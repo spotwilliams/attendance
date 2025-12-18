@@ -3,16 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateCargosTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('cargos', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('cargos', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->string('nombre', 80);
@@ -20,16 +20,13 @@ class CreateCargosTable extends Migration {
             
         });
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('cargos');
+		\Illuminate\Support\Facades\Schema::drop('cargos');
 	}
-
-}
+};
