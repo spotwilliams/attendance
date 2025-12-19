@@ -2,12 +2,14 @@
 
 namespace Cat;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Cat\Modules\Security\Panel\Traits\CrudTrait;
 use Spatie\Permission\Traits\HasRoles;
 
 class User extends Authenticatable
 {
+    use HasFactory;
     use CrudTrait;
     use HasRoles;
     /**

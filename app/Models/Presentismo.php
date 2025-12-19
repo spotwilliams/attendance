@@ -3,11 +3,13 @@
 namespace Cat\Models;
 
 use Cat\User;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Presentismo extends Model
 {
+    use HasFactory;
     
     public $table = 'presentismos';
     

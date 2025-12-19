@@ -109,7 +109,7 @@ class CrudController extends AppBaseController
             
             Flash::success('Licencia guardada correctamente.');
         } catch (\Exception $e) {
-            
+            report($e);
             Flash::error('No se pudo guardar el tipo de licencia.');
         }
         

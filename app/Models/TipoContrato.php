@@ -2,12 +2,14 @@
 
 namespace Cat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Support\Collection;
 
 
 class TipoContrato extends Model
 {
+    use HasFactory;
     
     public $table = 'tipo_contratos';
     

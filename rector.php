@@ -10,7 +10,7 @@ return RectorConfig::configure()
     ->withPaths([
         __DIR__ . '/app',
         __DIR__ . '/database/migrations',
-        __DIR__ . '/database/seeds',
+        __DIR__ . '/database/seeders',
         __DIR__ . '/config',
     ])
     ->withSkip([
@@ -35,8 +35,11 @@ return RectorConfig::configure()
 //        LaravelSetList::LARAVEL_58,  // 5.7 -> 5.8
 //        LaravelSetList::LARAVEL_60,  // 5.8 -> 6.0
 
-        // Laravel 6.0 -> 7.0 upgrade
-        LaravelSetList::LARAVEL_70,
+        // Laravel 6.0 -> 7.0 upgrade (completed)
+//        LaravelSetList::LARAVEL_70,
+
+        // Laravel 7.0 -> 8.0 upgrade
+        LaravelSetList::LARAVEL_80,
 
         // Laravel code quality improvements
         LaravelSetList::LARAVEL_CODE_QUALITY,

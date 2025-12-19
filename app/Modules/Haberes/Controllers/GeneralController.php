@@ -60,8 +60,9 @@ class GeneralController extends AppBaseController
             return redirect(route($this->indexRoute));
         } catch (PeriodoAbierto $e) {
             Flash::error($e->getMessage());
-            
-            return to_route($this->indexRoute);
+
+
+            return redirect()->route($this->indexRoute);
         }
     }
 }

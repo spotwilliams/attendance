@@ -4,6 +4,7 @@ namespace Cat\Models;
 
 use Cat\Modules\Presentismo\Exceptions\Validacion\BaseTurnoSinPeriodo;
 use Cat\Modules\Presentismo\Exceptions\Validacion\PeriodoAbierto;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 
@@ -15,6 +16,7 @@ use Illuminate\Database\Eloquent\ModelNotFoundException;
  */
 class Periodo extends Model
 {
+    use HasFactory;
     
     public $table = 'periodos';
     
