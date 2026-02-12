@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateEstadoPeriodoTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateEstadoPeriodoTable extends Migration
      */
     public function up()
     {
-        Schema::create('estado_periodos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('estado_periodos', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->integer('id_base')->index('estado_periodo_es_de_base_idx');
             $table->integer('id_periodo')->index('estado_es_de_periodo_idx');
@@ -24,8 +23,6 @@ class CreateEstadoPeriodoTable extends Migration
             $table->unique(['id_base', 'id_periodo', 'id_turno']);
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -33,7 +30,6 @@ class CreateEstadoPeriodoTable extends Migration
      */
     public function down()
     {
-        Schema::drop('estado_periodos');
+        \Illuminate\Support\Facades\Schema::drop('estado_periodos');
     }
-    
-}
+};

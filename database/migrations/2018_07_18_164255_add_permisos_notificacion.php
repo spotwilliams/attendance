@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPermisosNotificacion extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,7 +30,6 @@ class AddPermisosNotificacion extends Migration
             $role->syncPermissions([$permiso]);
         }
     }
-    
     /**
      * @throws Exception
      */
@@ -51,4 +50,4 @@ class AddPermisosNotificacion extends Migration
         
         
     }
-}
+};

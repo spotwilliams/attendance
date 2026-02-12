@@ -3,16 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateFuncionesTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('funciones', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('funciones', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->integer('id_padre')->nullable()->index('funcion_especifica_es_de_funcion_idx');
@@ -20,16 +20,13 @@ class CreateFuncionesTable extends Migration {
             $table->timestamps();
         });
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('funciones');
+		\Illuminate\Support\Facades\Schema::drop('funciones');
 	}
-
-}
+};

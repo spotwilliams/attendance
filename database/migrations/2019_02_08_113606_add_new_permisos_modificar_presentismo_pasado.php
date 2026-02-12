@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNewPermisosModificarPresentismoPasado extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -33,17 +33,16 @@ class AddNewPermisosModificarPresentismoPasado extends Migration
             $rolData
         );
         // Only sync if pivot table exists
-        if (\Schema::hasTable('role_has_permissions')) {
+        if (\Illuminate\Support\Facades\Schema::hasTable('role_has_permissions')) {
             $rol->syncPermissions($permiso);
         }
 
         $rolFull = \Cat\Modules\Security\Models\Role::where('name', '=', 'Permisos full')->first();
         // Only sync if role exists and pivot table exists
-        if ($rolFull !== null && \Schema::hasTable('role_has_permissions')) {
+        if ($rolFull !== null && \Illuminate\Support\Facades\Schema::hasTable('role_has_permissions')) {
             $rolFull->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
         }
     }
-
     /**
      * Reverse the migrations.
      *
@@ -65,4 +64,4 @@ class AddNewPermisosModificarPresentismoPasado extends Migration
 
         $rol->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
     }
-}
+};

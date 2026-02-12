@@ -4,7 +4,7 @@ use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Support\Facades\Schema;
 
-class AddSoftDeletesBasesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -13,12 +13,11 @@ class AddSoftDeletesBasesTable extends Migration
      */
     public function up()
     {
-        Schema::table('bases', function(Blueprint $table) {
+        Schema::table('bases', function(Blueprint $table): void {
             $table->softDeletes();
         });
 
     }
-
     /**
      * Reverse the migrations.
      *
@@ -28,4 +27,4 @@ class AddSoftDeletesBasesTable extends Migration
     {
         //
     }
-}
+};

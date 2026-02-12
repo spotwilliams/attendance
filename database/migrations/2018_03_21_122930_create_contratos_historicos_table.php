@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateContratosHistoricosTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateContratosHistoricosTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\Schema::create('contratos_historicos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('contratos_historicos', function (Blueprint $table): void {
             
             $table->integer('id', true);
             $table->integer('id_tipo_contrato')->index('contrato_historico_es_de_tipo_idx');
@@ -35,7 +35,7 @@ class CreateContratosHistoricosTable extends Migration
             
             
         });
-        \Illuminate\Support\Facades\Schema::table('contratos_historicos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('contratos_historicos', function (Blueprint $table): void {
             
             $table->foreign('id_agente', 'contrato_historico_es_de_agente')
                 ->references('id')
@@ -80,7 +80,6 @@ class CreateContratosHistoricosTable extends Migration
 ');
     
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -88,7 +87,7 @@ class CreateContratosHistoricosTable extends Migration
      */
     public function down()
     {
-        \Illuminate\Support\Facades\Schema::table('contratos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('contratos', function (Blueprint $table): void {
             $table->dropForeign('contrato_historico_es_de_agente');
             $table->dropForeign('contrato_historico_es_de_tipo');
             $table->dropForeign('contrato_historico_esta_en_estado');
@@ -98,4 +97,4 @@ class CreateContratosHistoricosTable extends Migration
         \Illuminate\Support\Facades\Schema::drop('contratos_historicos');
         
     }
-}
+};

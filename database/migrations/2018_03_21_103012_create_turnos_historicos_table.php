@@ -3,11 +3,11 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateTurnosHistoricosTable extends Migration
+return new class extends Migration
 {
     public function up()
     {
-        \Illuminate\Support\Facades\Schema::create('turnos_historicos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('turnos_historicos', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->integer('id_operativo')->index('turno_historico_pertenece_operativo_idx');
             $table->integer('id_turno')->index('turno_historico_tiene_turno_idx');
@@ -38,8 +38,6 @@ class CreateTurnosHistoricosTable extends Migration
                                                       FROM operativos;
                                                 ');
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -49,4 +47,4 @@ class CreateTurnosHistoricosTable extends Migration
     {
         \Illuminate\Support\Facades\Schema::drop('turnos_historicos');
     }
-}
+};

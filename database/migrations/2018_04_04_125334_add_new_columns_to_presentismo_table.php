@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNewColumnsToPresentismoTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddNewColumnsToPresentismoTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\Schema::table('presentismos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('presentismos', function (Blueprint $table): void {
             
             $table->integer('id_tipo_contrato')->index('presentismo_tiene_tipo_contrato_idx')->nullable();
             $table->integer('id_estado_contrato')->index('presentismo_tiene_estado_contrato_idx')->nullable();
@@ -38,7 +38,6 @@ class AddNewColumnsToPresentismoTable extends Migration
                 ->onDelete('NO ACTION');
         });
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -48,4 +47,4 @@ class AddNewColumnsToPresentismoTable extends Migration
     {
         //
     }
-}
+};

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddPermisoReporteFinanciero extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -35,7 +35,6 @@ class AddPermisoReporteFinanciero extends Migration
             $role->syncPermissions(\Cat\Modules\Security\Models\Permission::all());
         }
     }
-    
     /**
      * @throws Exception
      */
@@ -52,4 +51,4 @@ class AddPermisoReporteFinanciero extends Migration
         
         $permiso->delete();
     }
-}
+};

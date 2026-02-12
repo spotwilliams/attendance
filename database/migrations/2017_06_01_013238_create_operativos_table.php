@@ -3,16 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateOperativosTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('operativos', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('operativos', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->integer('id_agente')->unique('operativo_es_de_agente_idx');
@@ -29,16 +29,13 @@ class CreateOperativosTable extends Migration {
             
         });
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('operativos');
+		\Illuminate\Support\Facades\Schema::drop('operativos');
 	}
-
-}
+};

@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class AddNewColumnsToContratosTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class AddNewColumnsToContratosTable extends Migration
      */
     public function up()
     {
-        Schema::table('contratos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('contratos', function (Blueprint $table): void {
             $table->date('fecha_estado_desde')->nullable();
             $table->date('fecha_estado_hasta')->nullable();
             $table->renameColumn('comentario_baja', 'comentario');
@@ -21,7 +21,6 @@ class AddNewColumnsToContratosTable extends Migration
     
         });
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -31,4 +30,4 @@ class AddNewColumnsToContratosTable extends Migration
     {
         //
     }
-}
+};

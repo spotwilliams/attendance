@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateContratosTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateContratosTable extends Migration
      */
     public function up()
     {
-        Schema::create('contratos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('contratos', function (Blueprint $table): void {
             $table->integer('id', true);
             // Obligatorios
             $table->date('fecha_ingreso')->default('1900-01-01');
@@ -37,8 +36,6 @@ class CreateContratosTable extends Migration
             
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -46,7 +43,6 @@ class CreateContratosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('contratos');
+        \Illuminate\Support\Facades\Schema::drop('contratos');
     }
-    
-}
+};

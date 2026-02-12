@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateNotificacionesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateNotificacionesTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\Schema::create('notificaciones', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('notificaciones', function (Blueprint $table): void {
         
             $table->integer('id', true);
             $table->integer('id_agente')->index('notificacion_tiene_agente_idx');
@@ -22,7 +22,7 @@ class CreateNotificacionesTable extends Migration
         
         });
     
-        \Illuminate\Support\Facades\Schema::table('notificaciones', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('notificaciones', function (Blueprint $table): void {
         
             $table->foreign('id_agente', 'notificacion_tiene_agente')
                 ->references('id')
@@ -38,7 +38,6 @@ class CreateNotificacionesTable extends Migration
         
         });
     }
-
     /**
      * Reverse the migrations.
      *
@@ -48,4 +47,4 @@ class CreateNotificacionesTable extends Migration
     {
         //
     }
-}
+};

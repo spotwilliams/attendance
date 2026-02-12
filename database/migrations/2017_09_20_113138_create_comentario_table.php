@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateComentarioTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateComentarioTable extends Migration
      */
     public function up()
     {
-        Schema::create('comentarios', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('comentarios', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->string('comentario', 600)->nullable();
             $table->integer('id_user')->unsigned()->index('comentario_es_de_user_idx')->nullable();
@@ -21,7 +21,6 @@ class CreateComentarioTable extends Migration
         });
         
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -29,6 +28,6 @@ class CreateComentarioTable extends Migration
      */
     public function down()
     {
-        Schema::drop('comentarios');
+        \Illuminate\Support\Facades\Schema::drop('comentarios');
     }
-}
+};

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreatePermissionTables extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -107,4 +107,4 @@ class CreatePermissionTables extends Migration
         \Illuminate\Support\Facades\Schema::drop($config['permissions']);
         \Illuminate\Support\Facades\Schema::drop('base_roles');
     }
-};
+};;

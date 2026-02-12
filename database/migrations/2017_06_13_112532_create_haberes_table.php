@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateHaberesTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateHaberesTable extends Migration
      */
     public function up()
     {
-        Schema::create('haberes', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('haberes', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->integer('id_agente')->index('pertenece_agente_idx');
             $table->integer('id_periodo')->index('pertenece_periodo_idx');
@@ -25,8 +24,6 @@ class CreateHaberesTable extends Migration
             $table->timestamps();
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -34,7 +31,6 @@ class CreateHaberesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('haberes');
+        \Illuminate\Support\Facades\Schema::drop('haberes');
     }
-    
-}
+};

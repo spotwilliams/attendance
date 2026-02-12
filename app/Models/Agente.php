@@ -5,6 +5,7 @@ namespace Cat\Models;
 use Cat\Exceptions\AgenteSinTurno;
 use Cat\Models\Traits\AgenteUpperCase;
 use Cat\Modules\Presentismo\Exceptions\Validacion\SinTopeONoEstablecido;
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\Eloquent\SoftDeletes;
@@ -16,6 +17,7 @@ use Illuminate\Database\Eloquent\SoftDeletes;
  */
 class Agente extends Model
 {
+    use HasFactory;
     use SoftDeletes, AgenteUpperCase;
     
     public $table = 'agentes';

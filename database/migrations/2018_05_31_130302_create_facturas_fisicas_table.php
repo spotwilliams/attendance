@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class CreateFacturasFisicasTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -12,7 +12,7 @@ class CreateFacturasFisicasTable extends Migration
      */
     public function up()
     {
-        \Illuminate\Support\Facades\Schema::create('facturas_fisicas', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('facturas_fisicas', function (Blueprint $table): void {
             
             $table->integer('id', true);
             $table->integer('id_agente')->index('factura_fisica_pertenece_agente_idx');
@@ -21,7 +21,7 @@ class CreateFacturasFisicasTable extends Migration
             $table->timestamps();
             
         });
-        \Illuminate\Support\Facades\Schema::table('facturas_fisicas', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::table('facturas_fisicas', function (Blueprint $table): void {
             
             $table->foreign('id_agente', 'factura_fisica_pertenece_agente')
                 ->references('id')
@@ -38,7 +38,6 @@ class CreateFacturasFisicasTable extends Migration
         });
         
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -48,4 +47,4 @@ class CreateFacturasFisicasTable extends Migration
     {
         //
     }
-}
+};

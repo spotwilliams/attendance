@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateDiasPermitidosTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateDiasPermitidosTable extends Migration
      */
     public function up()
     {
-        Schema::create('dias_permitidos', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('dias_permitidos', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->integer('cant_semanal');
             $table->integer('cant_fin_semana');
@@ -29,8 +28,6 @@ class CreateDiasPermitidosTable extends Migration
             $table->timestamps();
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -38,7 +35,6 @@ class CreateDiasPermitidosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('dias_permitidos');
+        \Illuminate\Support\Facades\Schema::drop('dias_permitidos');
     }
-    
-}
+};

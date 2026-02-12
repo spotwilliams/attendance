@@ -3,7 +3,7 @@
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Database\Migrations\Migration;
 
-class DeleteDuplicateAgente42134914 extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -30,7 +30,6 @@ class DeleteDuplicateAgente42134914 extends Migration
         
         }
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -40,4 +39,4 @@ class DeleteDuplicateAgente42134914 extends Migration
     {
         //
     }
-}
+};

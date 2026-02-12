@@ -3,9 +3,8 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateEstudiosTable extends Migration
+return new class extends Migration
 {
-    
     /**
      * Run the migrations.
      *
@@ -13,7 +12,7 @@ class CreateEstudiosTable extends Migration
      */
     public function up()
     {
-        Schema::create('estudios', function (Blueprint $table) {
+        \Illuminate\Support\Facades\Schema::create('estudios', function (Blueprint $table): void {
             $table->integer('id', true);
             $table->integer('id_agente')->index('estudio_es_de_agente_idx');
             $table->string('institucion', 150);
@@ -26,8 +25,6 @@ class CreateEstudiosTable extends Migration
             
         });
     }
-    
-    
     /**
      * Reverse the migrations.
      *
@@ -35,7 +32,6 @@ class CreateEstudiosTable extends Migration
      */
     public function down()
     {
-        Schema::drop('estudios');
+        \Illuminate\Support\Facades\Schema::drop('estudios');
     }
-    
-}
+};

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class RoleHasBasesTable extends Migration
+return new class extends Migration
 {
     /**
      * Run the migrations.
@@ -14,7 +14,7 @@ class RoleHasBasesTable extends Migration
     {
         $config = config('laravel-permission.table_names');
         
-        Schema::create('base_roles', function (Blueprint $table) use ($config) {
+        \Illuminate\Support\Facades\Schema::create('base_roles', function (Blueprint $table) use ($config): void {
             $table->integer('base_id');
             $table->integer('role_id')->unsigned();
             
@@ -34,7 +34,6 @@ class RoleHasBasesTable extends Migration
         
     
     }
-    
     /**
      * Reverse the migrations.
      *
@@ -42,7 +41,7 @@ class RoleHasBasesTable extends Migration
      */
     public function down()
     {
-        Schema::drop('base_roles');
+        \Illuminate\Support\Facades\Schema::drop('base_roles');
         
     }
-}
+};

@@ -2,11 +2,13 @@
 
 namespace Cat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
 class TipoPresentismo extends Model
 {
+    use HasFactory;
     
     protected $table = 'tipos_presentismos';
     

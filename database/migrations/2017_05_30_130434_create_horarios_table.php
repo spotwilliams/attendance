@@ -3,16 +3,16 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 
-class CreateHorariosTable extends Migration {
-
-	/**
-	 * Run the migrations.
-	 *
-	 * @return void
-	 */
-	public function up()
+return new class extends Migration
+{
+    /**
+     * Run the migrations.
+     *
+     * @return void
+     */
+    public function up()
 	{
-		Schema::create('horarios', function(Blueprint $table)
+		\Illuminate\Support\Facades\Schema::create('horarios', function(Blueprint $table): void
 		{
 			$table->integer('id', true);
 			$table->string('hora_entrada', 15);
@@ -23,16 +23,13 @@ class CreateHorariosTable extends Migration {
             
         });
 	}
-
-
-	/**
-	 * Reverse the migrations.
-	 *
-	 * @return void
-	 */
-	public function down()
+    /**
+     * Reverse the migrations.
+     *
+     * @return void
+     */
+    public function down()
 	{
-		Schema::drop('horarios');
+		\Illuminate\Support\Facades\Schema::drop('horarios');
 	}
-
-}
+};
