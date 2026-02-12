@@ -17,6 +17,11 @@ class ModuleSmokeTest extends TestCase
 
     protected $user;
 
+    protected function shouldSeed()
+    {
+        return true;
+    }
+
     protected function setUp(): void
     {
         parent::setUp();

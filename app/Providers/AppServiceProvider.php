@@ -8,6 +8,7 @@ use Cat\Rules\FechaContratoFuturo;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\ServiceProvider;
 use Cat\Rules\Cuit;
+use Illuminate\Pagination\Paginator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -22,6 +23,7 @@ class AppServiceProvider extends ServiceProvider
         Validator::extend('cuit_unico', CuitUnico::class . '@validate');
         Validator::extend('fecha_contrato_futuro', FechaContratoFuturo::class . '@validate');
         Validator::extend('fecha_contrato', FechaContrato::class . '@validate');
+        Paginator::useBootstrap();
     }
 
     /**

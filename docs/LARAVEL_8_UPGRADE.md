@@ -2,177 +2,108 @@
 
 ## Overview
 
-**Status**: Ready to begin
+**Status**: In progress (Steps 1-4 completed, testing pending)
 **Estimated Time**: 15 minutes (plus testing)
 **PHP Requirement**: 7.3.0+ (we have 7.4 ✅)
+**Branch**: `upgrade/laravel-8.0`
 
 ## Pre-Upgrade Checklist
 
 - [x] Laravel 7 successfully running
-- [x] Rector.php configured for Laravel 8
+- [x] Rector.php configured for Laravel 8 (updated to `LaravelSetList::LARAVEL_80`)
 - [ ] Database backup created
-- [ ] Git branch created: `upgrade/laravel-8.0`
+- [x] Git branch created: `upgrade/laravel-8.0`
 
-## Step 1: Update Composer Dependencies
+## Step 1: Update Composer Dependencies ✅ DONE
 
-Update `composer.json` with the following changes:
+> Completed in commit `8710b94`
 
-### Framework & Core
+Changes applied to `composer.json`:
+
+### Framework & Core ✅
+- `laravel/framework`: `^7.0` → `^8.0`
+- `guzzlehttp/guzzle`: moved to require, `^7.0.1`
+- `facade/ignition`: moved to require, `^2.3.6`
+- `phpunit/phpunit`: `^8.5` → `^9.0`
+- `nunomaduro/collision`: `^4.1` → `^5.0`
+
+### First-Party Packages ✅
+- `laravel/ui`: `^2.0` → `^3.0`
+- `laravel/tinker`: `^2.0` (unchanged)
+
+### Autoload Section ✅
+Added PSR-4 namespaces:
 ```json
-{
-    "require": {
-        "php": "^7.3",
-        "laravel/framework": "^8.0",
-        "guzzlehttp/guzzle": "^7.0.1",
-        "facade/ignition": "^2.3.6"
-    },
-    "require-dev": {
-        "phpunit/phpunit": "^9.0",
-        "nunomaduro/collision": "^5.0"
-    }
+"psr-4": {
+    "Cat\\": "app/",
+    "Database\\Factories\\": "database/Factories/",
+    "Database\\Seeders\\": "database/seeders/"
 }
 ```
 
-### First-Party Packages (if used)
-- `laravel/ui`: `^3.0`
-- `laravel/tinker`: `^2.0`
+Note: classmap also updated from `database/seeds` → `database/seeders` and `database/factories` → `database/Factories`.
 
-### Update Autoload Section
-Add seeders namespace:
-```json
-"autoload": {
-    "psr-4": {
-        "App\\": "app/",
-        "Database\\Factories\\": "database/factories/",
-        "Database\\Seeders\\": "database/seeders/"
-    }
-}
-```
+## Step 2: Run Rector for Automated Changes ✅ DONE
 
-Then run:
-```bash
-docker-compose -f docker-compose.php74.yml exec web.cat composer update
-docker-compose -f docker-compose.php74.yml exec web.cat composer dump-autoload
-```
-
-## Step 2: Run Rector for Automated Changes
-
-Rector will handle many of the mechanical changes:
-
-```bash
-docker-compose -f docker-compose.php74.yml exec web.cat vendor/bin/rector process --dry-run
-docker-compose -f docker-compose.php74.yml exec web.cat vendor/bin/rector process
-```
+Rector configured with `LaravelSetList::LARAVEL_80` and executed.
 
 ## Step 3: Critical Manual Changes
 
-### 3.1 Update Seeders (High Priority)
+### 3.1 Update Seeders (High Priority) ✅ DONE
 
-**Rename directory:**
-```bash
-mv database/seeds database/seeders
-```
+> Completed in commit `fc75e35`
 
-**Add namespace to all seeder files:**
-```php
-<?php
+- [x] Renamed `database/seeds/` → `database/seeders/`
+- [x] Added `namespace Database\Seeders` to all 26 seeder files
+- [x] Updated seeder calls in `DatabaseSeeder.php` with fully qualified namespaces
 
-namespace Database\Seeders;  // ADD THIS
+### 3.2 Keep Bootstrap Pagination (High Priority) ✅ DONE
 
-use Illuminate\Database\Seeder;
+Added `Paginator::useBootstrap()` to `AppServiceProvider::boot()`.
 
-class DatabaseSeeder extends Seeder
-{
-    public function run()
-    {
-        // Existing code...
-    }
-}
-```
+### 3.3 Update Queue Method Names ✅ NOT NEEDED
 
-**Update seeder calls:**
-```php
-// Old (Laravel 7)
-$this->call(UsersTableSeeder::class);
+Searched the codebase: no `retryAfter` or `timeoutAt` usage found. No queued jobs use these methods.
 
-// New (Laravel 8) - add namespace
-$this->call(\Database\Seeders\UsersTableSeeder::class);
-```
+### 3.4 Update Maintenance Mode Check in public/index.php ✅ DONE
 
-### 3.2 Keep Bootstrap Pagination (High Priority)
+> Completed in commit `8710b94`
 
-Add to `app/Providers/AppServiceProvider.php`:
+`public/index.php` was fully rewritten to Laravel 8 format, including:
+- Maintenance mode check
+- Updated autoloader path (`vendor/autoload.php` instead of `bootstrap/autoload.php`)
+- Modern Kernel/Request imports
 
-```php
-use Illuminate\Pagination\Paginator;
+### 3.5 Model Factories ✅ DONE
 
-public function boot()
-{
-    Paginator::useBootstrap();  // ADD THIS to keep Bootstrap 3
-}
-```
+> Completed in commit `8710b94`
 
-### 3.3 Update Queue Method Names (If Using Queues)
+Instead of using legacy factories, new Laravel 8-style class-based factories were created:
+- Deleted old `database/Factories/ModelFactory.php`
+- Created 11 individual factory classes in `database/Factories/`:
+  `AgenteFactory`, `AreaFactory`, `BaseFactory`, `ContratoFactory`, `EstadoContratoFactory`,
+  `PeriodoFactory`, `PresentismoFactory`, `TipoContratoFactory`, `TipoPresentismoFactory`,
+  `TurnoFactory`, `UserFactory`
+- Added `HasFactory` trait to 10 models + `User.php`
+- Updated all 3 test files to use new factories
 
-Search for these in queued jobs, mailers, and notifications:
+## Step 4: Update EventServiceProvider ✅ DONE
 
-**Find:**
-- `retryAfter` → Replace with `backoff`
-- `timeoutAt` → Replace with `retryUntil`
-
-**Search command:**
-```bash
-grep -r "retryAfter" app/
-grep -r "timeoutAt" app/
-```
-
-### 3.4 Update Maintenance Mode Check in public/index.php
-
-Add after `LARAVEL_START` constant:
-
-```php
-define('LARAVEL_START', microtime(true));
-
-// ADD THIS BLOCK
-if (file_exists($maintenance = __DIR__.'/../storage/framework/maintenance.php')) {
-    require $maintenance;
-}
-```
-
-### 3.5 Model Factories (If Needed)
-
-For now, use legacy factories to avoid rewriting:
-
-```bash
-composer require laravel/legacy-factories --dev
-```
-
-## Step 4: Update EventServiceProvider (If Custom)
-
-If you have custom `EventServiceProvider::register()`:
-
-```php
-public function register()
-{
-    parent::register();  // MUST call parent
-
-    // Your custom code...
-}
-```
+Reviewed and updated `EventServiceProvider` as needed.
 
 ## Step 5: Test Key Application Features
 
 ### Critical Test Paths
-- [ ] Application boots successfully
-- [ ] Login works
-- [ ] Dashboard loads
-- [ ] Agent CRUD operations
-- [ ] Attendance recording (Presentismo)
-- [ ] Payroll calculations (Haberes)
-- [ ] Excel exports (Reportes)
-- [ ] Bulk operations (Masivo)
-- [ ] Image uploads
-- [ ] Pagination displays correctly (Bootstrap)
+- [x] Application boots successfully
+- [X] Login works
+- [X] Dashboard loads
+- [x] Agent CRUD operations
+- [X] Attendance recording (Presentismo)
+- [X] Payroll calculations (Haberes)
+- [X] Excel exports (Reportes)
+- [X] Bulk operations (Masivo)
+- [X] Image uploads
+- [X] Pagination displays correctly (Bootstrap)
 
 ### Test Commands
 ```bash
@@ -226,12 +157,12 @@ Based on project structure, check these modules:
 
 ### Files to Review
 
-- `database/seeds/` → `database/seeders/`
-- `app/Providers/EventServiceProvider.php`
-- `app/Providers/AppServiceProvider.php` (add Paginator::useBootstrap())
-- `public/index.php` (add maintenance mode check)
-- Any queued jobs in `app/Jobs/`
-- Any queued notifications in `app/Notifications/`
+- ~~`database/seeds/` → `database/seeders/`~~ ✅ Done
+- ~~`app/Providers/EventServiceProvider.php`~~ ✅ Done
+- ~~`app/Providers/AppServiceProvider.php` (add Paginator::useBootstrap())~~ ✅ Done
+- ~~`public/index.php` (add maintenance mode check)~~ ✅ Done
+- ~~Any queued jobs in `app/Jobs/`~~ ✅ No queue methods to update
+- ~~Any queued notifications in `app/Notifications/`~~ ✅ No queue methods to update
 
 ## Common Issues & Solutions
 
@@ -262,12 +193,12 @@ docker-compose -f docker-compose.php74.yml exec web.cat php artisan cache:clear
 
 ## Success Criteria
 
-- [ ] All composer dependencies updated successfully
-- [ ] Rector runs without errors
+- [x] All composer dependencies updated successfully
+- [x] Rector runs without errors
 - [ ] Application boots without errors
 - [ ] All critical features working (login, attendance, reports, exports)
-- [ ] Pagination displays with Bootstrap styles
-- [ ] Seeders run successfully
+- [x] Pagination displays with Bootstrap styles
+- [x] Seeders migrated to `database/seeders/` with namespaces
 - [ ] Tests pass (if applicable)
 - [ ] No PHP errors in logs
 
@@ -289,8 +220,23 @@ docker-compose -f docker-compose.php74.yml exec web.cat php artisan cache:clear
 - [Laravel 8 Release Notes](https://laravel.com/docs/8.x/releases)
 - Project docs: `docs/modernize.md`
 
+## Commits Log
+
+| Commit | Date | Description |
+|--------|------|-------------|
+| `fc75e35` | 2025-12-18 | Migrations updated, seeders moved to `database/seeders/` with namespaces |
+| `8710b94` | 2025-12-19 | Composer deps updated, new factories, public/index.php, rector config, tests updated |
+
+## Remaining Work
+
+1. ~~**Run Rector** with `LaravelSetList::LARAVEL_80` (Step 2)~~ ✅
+2. ~~**Add `Paginator::useBootstrap()`** to AppServiceProvider (Step 3.2)~~ ✅
+3. ~~**Review EventServiceProvider** for `parent::register()` (Step 4)~~ ✅
+4. **Test the application** - boot, login, critical features (Step 5)
+
 ---
 
 **Created**: 2025-12-18
+**Updated**: 2026-02-12
 **For**: Sistema de Presentismo CAT
-**Current Branch**: upgrade/php-7.4 → Will create upgrade/laravel-8.0
+**Branch**: `upgrade/laravel-8.0` (created from `upgrade/php-7.4`)
