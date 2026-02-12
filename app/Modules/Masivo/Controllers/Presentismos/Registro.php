@@ -122,11 +122,7 @@ class Registro extends AppBaseController
         
         try {
             
-            $route = Storage::disk('masivo')
-                ->getDriver()
-                ->getAdapter()
-                ->getPathPrefix();
-            $route .= 'presentismos/' . $fileName;
+            $route = Storage::disk('masivo')->path('presentismos/' . $fileName);
             
             return response()->download($route);
         } catch (FileNotFoundException $e) {

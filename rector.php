@@ -38,8 +38,11 @@ return RectorConfig::configure()
         // Laravel 6.0 -> 7.0 upgrade (completed)
 //        LaravelSetList::LARAVEL_70,
 
-        // Laravel 7.0 -> 8.0 upgrade
-        LaravelSetList::LARAVEL_80,
+        // Laravel 7.0 -> 8.0 upgrade (completed)
+//        LaravelSetList::LARAVEL_80,
+
+        // Laravel 8.0 -> 9.0 upgrade
+        LaravelSetList::LARAVEL_90,
 
         // Laravel code quality improvements
         LaravelSetList::LARAVEL_CODE_QUALITY,

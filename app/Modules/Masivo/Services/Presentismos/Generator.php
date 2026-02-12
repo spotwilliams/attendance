@@ -7,7 +7,6 @@ use Cat\Models\Turno;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use League\Flysystem\FileExistsException;
 use Maatwebsite\Excel\Collections\RowCollection;
 use Maatwebsite\Excel\Collections\SheetCollection;
 use Maatwebsite\Excel\Facades\Excel;
@@ -51,7 +50,7 @@ class Generator
         $this->copyDestination  = 'presentismos/';
         $this->storageKey       = 'masivo';
         $this->templateFileName = 'presentismos_masivo_template.xls';
-        $this->storageFolder    = Storage::disk($this->storageKey)->getDriver()->getAdapter()->getPathPrefix();
+        $this->storageFolder    = Storage::disk($this->storageKey)->path('');
         $this->sheetName        = 'presentismos_masivo';
     }
     
@@ -118,28 +117,17 @@ class Generator
     
     private function generateTemplateCopy()
     {
-        try {
-            Storage::disk($this->storageKey)
-                ->copy($this->templateFolder . $this->templateFileName, $this->newFileName);
-        } catch (FileExistsException $e) {
-            Storage::disk($this->storageKey)->delete($this->newFileName);
-            $this->generateTemplateCopy();
-            
-        }
-        
+        Storage::disk($this->storageKey)->delete($this->newFileName);
+        Storage::disk($this->storageKey)
+            ->copy($this->templateFolder . $this->templateFileName, $this->newFileName);
     }
-    
+
     private function moveTemplateCopy()
     {
-        try {
-            Storage::disk($this->storageKey)
-                ->move($this->newFileName, $this->copyDestination . $this->newFileName);
-        } catch (FileExistsException $e) {
-            Storage::disk($this->storageKey)
-                ->delete($this->copyDestination . $this->newFileName);
-            $this->moveTemplateCopy();
-            
-        }
+        Storage::disk($this->storageKey)
+            ->delete($this->copyDestination . $this->newFileName);
+        Storage::disk($this->storageKey)
+            ->move($this->newFileName, $this->copyDestination . $this->newFileName);
     }
     
     private function generateName()

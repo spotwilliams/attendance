@@ -41,7 +41,7 @@ abstract class Common extends Service
         $moment              = new \DateTime('now');
         $this->newName       = $moment->format('Y-m-d') . $moment->getTimestamp() . '.xlsx';
         $this->storageKey    = $storageKey;
-        $this->storageFolder = Storage::disk($this->storageKey)->getDriver()->getAdapter()->getPathPrefix();
+        $this->storageFolder = Storage::disk($this->storageKey)->path('');
     }
     
     protected function moveFile()

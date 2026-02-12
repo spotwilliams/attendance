@@ -86,10 +86,7 @@ class Registro extends AppBaseController
         $this->authorize('downloadTemplate', $this);
         
         return response()
-            ->download(Storage::disk('masivos_template')
-                    ->getDriver()
-                    ->getAdapter()
-                    ->getPathPrefix() . 'agentes_masivo_template.xls');
+            ->download(Storage::disk('masivos_template')->path('agentes_masivo_template.xls'));
     }
     
 }
