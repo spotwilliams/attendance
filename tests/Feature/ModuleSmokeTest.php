@@ -2,10 +2,12 @@
 
 namespace Tests\Feature;
 
+use Cat\Models\EstadoContrato;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Tests\TestCase;
 use Cat\User;
 use Cat\Models\Base;
+use Cat\Models\TipoPresentismo;
 
 /**
  * Smoke tests for all application modules.
@@ -16,11 +18,6 @@ class ModuleSmokeTest extends TestCase
     use RefreshDatabase;
 
     protected $user;
-
-    protected function shouldSeed()
-    {
-        return true;
-    }
 
     protected function setUp(): void
     {
@@ -34,6 +31,8 @@ class ModuleSmokeTest extends TestCase
 
     public function test_home_dashboard_loads()
     {
+        TipoPresentismo::factory()->presente()->create();
+        EstadoContrato::factory()->create(['estado' => EstadoContrato::ESTADO_ACTIVO]);
         $response = $this->actingAs($this->user)->get('/home');
 
         $this->assertContains(
