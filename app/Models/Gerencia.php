@@ -2,11 +2,13 @@
 
 namespace Cat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 class Gerencia extends Model
 {
-    
+    use HasFactory;
+
     public $table = 'gerencias';
     
     const CREATED_AT = 'created_at';

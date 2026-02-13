@@ -2,14 +2,15 @@
 
 namespace Cat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
 class TurnoHistorico extends Model
 {
-    
+    use HasFactory;
+
     public $table = 'turnos_historicos';
-    
     
     public $timestamps = false;
     

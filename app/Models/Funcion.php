@@ -2,12 +2,14 @@
 
 namespace Cat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 
 class Funcion extends Model
 {
-    
+    use HasFactory;
+
     public $table = 'funciones';
     
     const CREATED_AT = 'created_at';

@@ -39,12 +39,12 @@ use Cat\Modules\Agentes\Controllers\Registro\RegistroController as AgentesGenera
 use Cat\Policies\Agentes\GeneralPolicy;
 
 // Masivos - Agente
-use Cat\Masivo\Controllers\Agentes\Registro as AgenteMasivo;
+use Cat\Modules\Masivo\Controllers\Agentes\Registro as AgenteMasivo;
 use Cat\Policies\Masivo\AgentesPolicy as AgenteMasivoPolicy;
 
 // Masivos - presentismo
-use Cat\Masivo\Controllers\Presentismos\Registro as PresentismoMasivo;
-use Cat\Policies\Agentes\PresentismosPolicy as PresentismoMasivoPolicy;
+use Cat\Modules\Masivo\Controllers\Presentismos\Registro as PresentismoMasivo;
+use Cat\Policies\Masivo\PresentismosPolicy as PresentismoMasivoPolicy;
 
 // Registro Presentismo
 use Cat\Modules\Presentismo\Controllers\GeneralController as PresentismoGeneral;

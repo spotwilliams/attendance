@@ -10,6 +10,7 @@ use Database\Seeders\Presentismos\PeriodosSeeder;
 use Database\Seeders\Presentismos\TiposPresentismoSeeder;
 use Database\Seeders\Agentes\AgentesSeeder;
 use Database\Seeders\Agentes\AreasSeeder;
+use Database\Seeders\Agentes\Horarios;
 use Database\Seeders\Agentes\BasesSeeder;
 use Database\Seeders\Agentes\EstadosContratoSeeder;
 use Database\Seeders\Agentes\Funciones;
@@ -65,6 +66,7 @@ class DatabaseSeeder extends Seeder
         $this->call(CargosSeeder::class);
         $this->call(PeriodosSeeder::class);
         $this->call(DiasPermitidoSeeder::class);
+        $this->call(Horarios::class);
     }
     
     

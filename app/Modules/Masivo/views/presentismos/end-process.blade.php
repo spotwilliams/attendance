@@ -23,18 +23,18 @@
                             <button class="btn btn-default col-sm-offset-2">Atr&aacute;s</button>
                             {!! Form::close() !!}
                         </div>
-                        <div class="col-md-4 col-sm-offset-2">
-                            {!! Form::open(['route' => 'presentismosMasivoDownload', 'method' => 'POST']) !!}
-
-                            {!! Form::hidden('file', session('presentismos_new_file')) !!}
-
-                            {!! Form::submit('Descargar archivo de errores', ['class' => 'btn btn-primary']) !!}
-                            {!! Form::close() !!}
-                        </div>
+                        @if(count($messages) > 0)
+                            <div class="col-md-4 col-sm-offset-2">
+                                <div class="alert alert-warning">
+                                    @foreach($messages as $message)
+                                        {{$message}}
+                                    @endforeach
+                                </div>
+                            </div>
+                        @endif
                     </div>
                 </div>
             </div>
         </div>
     </div>
 @endsection
-

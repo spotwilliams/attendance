@@ -1,6 +1,6 @@
 <?php
 
-namespace Cat\Policies\Agentes;
+namespace Cat\Policies\Masivo;
 
 use Cat\Policies\SecurityPolicy;
 use Cat\User;

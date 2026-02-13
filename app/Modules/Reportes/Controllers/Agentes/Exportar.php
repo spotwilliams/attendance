@@ -6,19 +6,11 @@ namespace Cat\Modules\Reportes\Controllers\Agentes;
 use Cat\Modules\Reportes\Services\Formatters\Agente;
 use Cat\Modules\Reportes\Services\Reporte;
 use Illuminate\Http\Request;
-use Illuminate\Support\Collection;
-use Illuminate\Support\Facades\Response;
 use Laracasts\Flash\Flash;
 
 class Exportar extends General
 {
     
-    /**
-     * Display a listing of the Presentismo.
-     *
-     * @param Request $request
-     * @return Response
-     */
     public function export(Request $request)
     {
         $this->authorize('export', $this);
@@ -28,7 +20,7 @@ class Exportar extends General
         $formatter = new Agente();
         $service = new Reporte($this->query, $formatter);
         try {
-            $service->execute();
+            return $service->execute();
         } catch (\Exception $e) {
             Flash::error($e->getMessage());
             return redirect(route('reportesAgentesGeneralIndex'));
