@@ -2,6 +2,7 @@
 
 namespace Cat\Models;
 
+use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
 /**
@@ -13,7 +14,8 @@ use Illuminate\Database\Eloquent\Model;
  */
 class Horario extends Model
 {
-    
+    use HasFactory;
+
     public $table = 'horarios';
     
     const CREATED_AT = 'created_at';
