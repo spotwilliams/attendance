@@ -7,114 +7,79 @@ use Cat\Models\Turno;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Illuminate\Support\Collection;
 use Illuminate\Support\Facades\Storage;
-use Maatwebsite\Excel\Collections\RowCollection;
-use Maatwebsite\Excel\Collections\SheetCollection;
+use Maatwebsite\Excel\Concerns\FromCollection;
 use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Readers\LaravelExcelReader;
 
 class Generator
 {
     /** @var  Turno */
     protected $turno;
-    
+
     /** @var  Base */
     protected $base;
-    
+
     /** @var string */
     protected $newFileName;
-    
+
     /** @var  string */
     protected $storageFolder;
-    
+
     /** @var string */
     protected $storageKey;
-    
+
     /** @var string */
     protected $templateFileName;
-    
+
     /** @var string */
     protected $templateFolder;
-    
+
     /** @var string */
     protected $copyDestination;
-    
+
     /** @var string */
     protected $sheetName;
-    
+
     public function __construct(Base $base, Turno $turno)
     {
-        $this->base             = $base;
-        $this->turno            = $turno;
-        $this->newFileName      = $this->generateName();
-        $this->templateFolder   = '/templates/';
-        $this->copyDestination  = 'presentismos/';
-        $this->storageKey       = 'masivo';
+        $this->base = $base;
+        $this->turno = $turno;
+        $this->newFileName = $this->generateName();
+        $this->templateFolder = '/templates/';
+        $this->copyDestination = 'presentismos/';
+        $this->storageKey = 'masivo';
         $this->templateFileName = 'presentismos_masivo_template.xls';
-        $this->storageFolder    = Storage::disk($this->storageKey)->path('');
-        $this->sheetName        = 'presentismos_masivo';
+        $this->storageFolder = Storage::disk($this->storageKey)->path('');
+        $this->sheetName = 'presentismos_masivo';
     }
-    
-    
+
+
     public function execute()
     {
         $this->generateTemplateCopy();
         $this->moveTemplateCopy();
-        $excel = Excel::load($this->getFullNewFileName(), function ($reader): void {
-            /** @var LaravelExcelReader $reader */
-            
-            /** @var RowCollection $sheet */
-            $reader->sheet($this->sheetName, function ($sheet): void {
-                /** @var Collection $operativos */
-                
-                $operativos = AgenteRepository::getAgentesByBaseByTurno($this->base, $this->turno);
-                
-                /**
-                 * Encabezados
-                 */
-                $date = new \DateTime();
-                $sheet->setCellValue('A1', 'Nombre');
-                $sheet->setCellValue('B1', 'Apellido');
-                $sheet->setCellValue('C1', 'CUIT');
-                $sheet->setCellValue('D1', $date->format('Y-m-d'));
-                $date->modify('-1day');
-                $sheet->setCellValue('E1', $date->format('Y-m-d'));
-                $date->modify('-1day');
-                $sheet->setCellValue('F1', $date->format('Y-m-d'));
-                $date->modify('-1day');
-                $sheet->setCellValue('G1', $date->format('Y-m-d'));
-                $date->modify('-1day');
-                $sheet->setCellValue('H1', $date->format('Y-m-d'));
-                /**
-                 * Valores
-                 */
-                
-                /** @var int $row */
-                $row = 2;
-                
-                foreach ($operativos as $operativo) {
-                    $sheet->setCellValue("A$row", $operativo->agente->nombre);
-                    $sheet->setCellValue("B$row", $operativo->agente->apellido);
-                    $sheet->setCellValue("C$row", $operativo->agente->cuit);
-                    
-                    $row++;
-                }
-            });
-            
-            
-        })->store('xls', $this->storageFolder . $this->copyDestination);
-        
+
+        $data = new class($this->getDataForTemplate()) implements FromCollection {
+            public function __construct(private Collection $collection)
+            {
+            }
+
+            public function collection(): Collection
+            { return $this->collection; }
+        };
+
+        Excel::store($data, $this->getFullNewFileName());
     }
-    
+
     public function getFullNewFileName()
     {
         return $this->storageFolder . $this->copyDestination . $this->newFileName;
     }
-    
+
     public function getFileName()
     {
         return $this->newFileName;
     }
-    
+
     private function generateTemplateCopy()
     {
         Storage::disk($this->storageKey)->delete($this->newFileName);
@@ -129,22 +94,39 @@ class Generator
         Storage::disk($this->storageKey)
             ->move($this->newFileName, $this->copyDestination . $this->newFileName);
     }
-    
+
     private function generateName()
     {
         return 'template_base_' . str_replace(' ', '', $this->base->nombre) . '_turno_' . $this->turno->codigo . '.xls';
     }
-    
-    
-    private function getSheet(LaravelExcelReader $reader, $title)
+
+    private function getDataForTemplate(): Collection
     {
-        /** @var SheetCollection $sheets */
-        $sheets = $reader->all();
-        foreach ($sheets as $sheet) {
-            if ($sheet->getTitle() === $title) {
-                return $sheet;
-            }
+        $date = new \DateTime();
+        $header = [
+            'Nombre',
+            'Apellido',
+            'CUIT',
+            $date->format('Y-m-d'),
+            $date->modify('-1 day')->format('Y-m-d'),
+            $date->modify('-1 day')->format('Y-m-d'),
+            $date->modify('-1 day')->format('Y-m-d'),
+            $date->modify('-1 day')->format('Y-m-d'),
+        ];
+
+        $operativos = AgenteRepository::getAgentesByBaseByTurno($this->base, $this->turno);
+
+        $data = collect();
+        $data->push($header);
+
+        foreach ($operativos as $operativo) {
+            $data->push([
+                $operativo->agente->nombre,
+                $operativo->agente->apellido,
+                $operativo->agente->cuit,
+            ]);
         }
-        throw new \Exception('No existe la hoja solicitada');
+        return $data;
     }
+
 }
