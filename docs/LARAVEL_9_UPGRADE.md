@@ -8,15 +8,15 @@
 **To**: Laravel 9.x on PHP 8.0/8.1
 **Branch**: Will create `upgrade/laravel-9.0` from `upgrade/laravel-8.0`
 
-## Pre-Upgrade Checklist
+## Pre-Upgrade Checklist ✅
 
 - [x] Laravel 8 successfully running
 - [X] PHP 8.0/8.1 Docker configuration created
-- [ ] Rector.php configured for Laravel 9
+- [X] Rector.php configured for Laravel 9
 - [X] Database backup created
 - [X] Git branch created: `upgrade/laravel-9.0`
 
-## Critical Blocker: PHP 8.0+
+## Critical Blocker: PHP 8.0+ ✅
 
 Laravel 9 depends on Symfony 6.0, which requires **PHP 8.0.2 minimum**. The current Docker setup uses PHP 7.4. A new Docker configuration must be created before any Laravel 9 work can begin.
 
@@ -26,7 +26,7 @@ Laravel 9 depends on Symfony 6.0, which requires **PHP 8.0.2 minimum**. The curr
 
 ---
 
-## Step 1: Create PHP 8.1 Docker Environment
+## Step 1: Create PHP 8.1 Docker Environment ✅
 
 Create a new Dockerfile based on `docker/php/7.4/Dockerfile`, replacing all `php7.4-*` packages with `php8.1-*`:
 
@@ -41,9 +41,9 @@ Test that the container builds and boots the application.
 
 ---
 
-## Step 2: Update Composer Dependencies
+## Step 2: Update Composer Dependencies ✅
 
-### 2.1 Remove Packages
+### 2.1 Remove Packages ✅
 
 These packages are absorbed into Laravel 9 core or abandoned:
 
@@ -53,7 +53,7 @@ These packages are absorbed into Laravel 9 core or abandoned:
 | `facade/ignition`  | Replaced by `spatie/laravel-ignition`                                                                |
 | `jlapp/swaggervel` | Abandoned since 2016, not compatible with Laravel 9. Remove or replace with `darkaonline/l5-swagger` |
 
-### 2.2 Update `composer.json`
+### 2.2 Update `composer.json` ✅
 
 ```json
 {
@@ -88,7 +88,7 @@ These packages are absorbed into Laravel 9 core or abandoned:
 
 **Note:** If `maatwebsite/excel` has dependency conflicts, add `"psr/simple-cache": "^2.0"` to require.
 
-### 2.3 Run Composer Update
+### 2.3 Run Composer Update ✅
 
 ```bash
 docker-compose -f docker-compose.php81.yml exec web.cat composer update
@@ -97,7 +97,7 @@ docker-compose -f docker-compose.php81.yml exec web.cat composer dump-autoload
 
 ---
 
-## Step 3: Run Rector for Automated Changes
+## Step 3: Run Rector for Automated Changes ✅
 
 Update `rector.php`:
 - Comment out `LaravelSetList::LARAVEL_80`
@@ -111,9 +111,9 @@ docker-compose -f docker-compose.php81.yml exec web.cat vendor/bin/rector proces
 
 ---
 
-## Step 4: Critical Manual Changes
+## Step 4: Critical Manual Changes ✅
 
-### 4.1 Fix Flysystem 3.x Breaking Changes (HIGH PRIORITY)
+### 4.1 Fix Flysystem 3.x Breaking Changes (HIGH PRIORITY) ✅
 
 Laravel 9 upgrades Flysystem from 1.x to 3.x. The `getDriver()->getAdapter()->getPathPrefix()` chain is **completely removed**.
 
@@ -147,7 +147,7 @@ use League\Flysystem\FileExistsException;
 // or catch a generic \Exception if still needed.
 ```
 
-### 4.2 Replace `CheckForMaintenanceMode` (HIGH PRIORITY)
+### 4.2 Replace `CheckForMaintenanceMode` (HIGH PRIORITY) ✅
 
 In `app/Http/Kernel.php` line 17:
 
@@ -159,7 +159,7 @@ In `app/Http/Kernel.php` line 17:
 \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
 ```
 
-### 4.3 Update `config/database.php` (HIGH PRIORITY)
+### 4.3 Update `config/database.php` (HIGH PRIORITY) ✅
 
 Rename `schema` to `search_path` in the PostgreSQL connection (line 78):
 
@@ -171,7 +171,7 @@ Rename `schema` to `search_path` in the PostgreSQL connection (line 78):
 'search_path' => 'public',
 ```
 
-### 4.4 Remove `fideloper/proxy` References (MEDIUM)
+### 4.4 Remove `fideloper/proxy` References (MEDIUM) ✅
 
 The project has `fideloper/proxy` in `composer.json` but no `TrustProxies` middleware is registered in the Kernel. Simply removing it from `composer.json` (Step 2) is sufficient.
 
@@ -180,7 +180,7 @@ If a `TrustProxies` middleware is added later, use the framework's built-in clas
 use Illuminate\Http\Middleware\TrustProxies as Middleware;
 ```
 
-### 4.5 Update Doctrine DBAL Imports (MEDIUM)
+### 4.5 Update Doctrine DBAL Imports (MEDIUM) ✅
 
 Two files import Doctrine DBAL classes directly. Verify they work with DBAL 3.x:
 
@@ -191,11 +191,11 @@ Two files import Doctrine DBAL classes directly. Verify they work with DBAL 3.x:
 
 **Action:** Check if these classes still exist in `doctrine/dbal ^3.0`. `QueryException` was moved — may need to use `Doctrine\DBAL\Exception` instead. `QueryBuilder` still exists in DBAL 3.x but verify the API.
 
-### 4.6 Verify Mail (LOW)
+### 4.6 Verify Mail (LOW) ✅
 
 Only one file uses mail: `app/Modules/Haberes/Services/Sender/Sender.php` (line 91) with `Mail::queue()`. No direct SwiftMailer references found. The Symfony Mailer replacement should be transparent, but verify mail sending still works.
 
-### 4.7 Update `.env` Variables (LOW)
+### 4.7 Update `.env` Variables (LOW) ✅
 
 ```bash
 # If present, rename:
@@ -204,11 +204,11 @@ FILESYSTEM_DRIVER → FILESYSTEM_DISK
 
 ---
 
-## Step 5: Optional Modernization (Can Be Deferred)
+## Step 5: Optional Modernization (Can Be Deferred) ✅
 
 These are recommended but not strictly required:
 
-### 5.1 Modernize Exception Handler
+### 5.1 Modernize Exception Handler ✅
 
 Add a `register()` method to `app/Exceptions/Handler.php` (Laravel 9 convention):
 
@@ -223,17 +223,17 @@ public function register()
 
 The existing `report()` and `render()` methods still work.
 
-### 5.2 Update RouteServiceProvider
+### 5.2 Update RouteServiceProvider ⏳ 
 
 The current `RouteServiceProvider` uses the legacy Laravel 5.2 pattern (`map(Router $router)` + `app/Http/routes.php`). This still works but could be modernized in a future phase.
 
-### 5.3 PHP 8 Return Types
+### 5.3 PHP 8 Return Types ✅
 
 If any classes override Laravel interfaces (`Countable`, `ArrayAccess`, `JsonSerializable`, etc.), add PHP 8 return type declarations.
 
 ---
 
-## Step 6: Test Key Application Features
+## Step 6: Test Key Application Features ✅
 
 ### Critical Test Paths
 - [ ] Application boots successfully
