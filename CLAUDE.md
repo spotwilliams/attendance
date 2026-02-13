@@ -4,7 +4,7 @@
 
 **Sistema de Presentismo CAT** is an attendance and payroll management system for traffic agents in Argentina. Built with PHP/Laravel, it handles daily attendance tracking, contract management, payroll calculations, and comprehensive reporting.
 
-**Current Status**: On branch `upgrade/php-7.4` - Phase 1 of modernization from PHP 5.6 → 8.3, Laravel 5.2 → 12
+**Current Status**: Phase 1 of modernization from PHP 5.6 → 8.3, Laravel 5.2 → 12 (working on upgrade branches)
 
 ## Tech Stack
 
@@ -81,6 +81,28 @@ attendance/
 **Configuration:**
 - `TipoPresentismo`, `TipoContrato`, `EstadoContrato`, `EstadoPeriodo`
 - `Base`, `Turno`, `Horario`, `Area`, `Gerencia`, `Funcion`, `Cargo`
+
+## Branching Strategy
+
+**Main Branches:**
+- `develop` - Active development branch (target for all feature/upgrade merges)
+- `main` - Production releases (deployment process TBD)
+
+**Modernization Branches:**
+- `upgrade/php-7.4` - Phase 1: PHP 5.6 → 7.4
+- `upgrade/laravel-9.0` - Phase 2: Laravel 5.2 → 9.0
+- `upgrade/*` - Additional phases as needed
+
+**Workflow:**
+1. Work on feature/upgrade branch (e.g., `upgrade/php-7.4`)
+2. When phase complete → merge to `develop`
+3. Test in `develop`
+4. Eventually release `develop` → `main` (process TBD)
+
+**CI/CD Triggers:**
+- Runs on pushes to: `develop`, `main`
+- Runs on PRs to: `develop`, `main`
+- Upgrade branches tested via PRs before merging
 
 ## Docker Commands (PHP 7.4)
 
@@ -215,18 +237,35 @@ npm run prod
 - [ ] Image uploads
 
 ### Git Workflow
+
+**Working on Modernization:**
 ```bash
-# Current branch
-git status                    # Clean
+# Create/switch to upgrade branch
+git checkout -b upgrade/php-7.4
 
 # Making changes
 git add .
 git commit -m "Descriptive message"
 git push origin upgrade/php-7.4
 
+# When phase complete - merge to develop
+git checkout develop
+git pull origin develop
+git merge upgrade/php-7.4
+git push origin develop
+
 # Tagging milestones
-git tag php-7.4-upgrade
-git push origin php-7.4-upgrade
+git tag php-7.4-complete
+git push origin php-7.4-complete
+```
+
+**Merging to Production:**
+```bash
+# When ready for release (process TBD)
+git checkout main
+git merge develop
+git tag v1.0.0
+git push origin main --tags
 ```
 
 ## Database Backup
@@ -317,20 +356,23 @@ docker-compose -f docker-compose.php74.yml exec web.cat php -d memory_limit=-1 /
 
 ## Quick Reference
 
-**Main branch**: `upgrade/php-7.4`
+**Main Branches**: `develop` (active), `main` (releases)
+**Current Work**: Modernization on `upgrade/*` branches
 **Database**: PostgreSQL 13 (sistema_presentismo)
-**PHP Version**: 7.4 (upgrading from 5.6)
-**Laravel Version**: 5.2 (legacy)
-**Container name**: `web.cat`
-**DB container**: `db.cat`
+**Current PHP**: 8.1 (CI/CD), 7.4 (legacy docker)
+**Laravel Version**: 5.2 (legacy, upgrading to 12)
+**Container name**: `attendance.web` (php81), `web.cat` (php74)
+**DB container**: `attendance.db` (php81), `db.cat` (php74)
 **Web ports**: 80, 443
 
 ## When Starting Work
 
 1. Check current branch: `git status`
-2. Pull latest: `git pull origin upgrade/php-7.4`
-3. Start Docker: `docker-compose -f docker-compose.php74.yml up -d`
-4. Check logs: `docker-compose -f docker-compose.php74.yml logs -f web.cat`
+2. Pull latest from develop: `git pull origin develop`
+3. Start Docker (choose version):
+   - PHP 8.1: `docker-compose -f docker-compose.php81.yml up -d`
+   - PHP 7.4: `docker-compose -f docker-compose.php74.yml up -d`
+4. Check logs: `docker-compose -f docker-compose.php81.yml logs -f attendance.web`
 5. Access app: http://localhost
 
 ## Before Committing
@@ -343,6 +385,7 @@ docker-compose -f docker-compose.php74.yml exec web.cat php -d memory_limit=-1 /
 
 ---
 
-**Last Updated**: 2025-12-09
-**Current Focus**: PHP 7.4 upgrade testing and validation
-**Next Milestone**: Complete Phase 1, tag php-7.4-upgrade
+**Last Updated**: 2026-02-13
+**Current Focus**: CI/CD setup complete (PHP 8.1), modernization in progress
+**Next Milestone**: Complete current upgrade phase, merge to develop
+**Branching**: develop (main) → main (releases), work on upgrade/* branches
