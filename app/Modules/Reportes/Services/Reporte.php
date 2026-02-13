@@ -2,14 +2,11 @@
 
 namespace Cat\Modules\Reportes\Services;
 
-use Cat\Modules\Reportes\Services\Formatters\Agente;
+use Cat\Modules\Reportes\Exports\ReporteExport;
 use Cat\Modules\Reportes\Services\Formatters\RowDataFormatter;
 use Cat\Modules\Service;
 use Illuminate\Database\Eloquent\Builder;
-use Illuminate\Http\Response;
-use Illuminate\Pagination\Paginator;
 use Maatwebsite\Excel\Facades\Excel;
-use Maatwebsite\Excel\Writers\LaravelExcelWriter;
 
 class Reporte extends Service
 {
@@ -32,107 +29,27 @@ class Reporte extends Service
         $this->rowFormatter  = $whoDecideWhatToShow;
         $this->includeResume = $includeResume;
     }
-    
-    
-    /**
-     * @return bool
-     */
+
     public function execute()
     {
         // 5 hs threshold
         ini_set('max_execution_time', 18000);
         ini_set('memory_limit', '-1');
-        
-        
-        Excel::create('Reporte', function ($writer): void {
-            /** @var LaravelExcelWriter $writer */
-            $writer->sheet('Reporte', function ($sheet): void {
 
-                /** @var Paginator $models */
-                $page = 1;
-                $data = [];
-                do {
-                    $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
+        $page = 1;
+        $data = [];
+        do {
+            $models = $this->eloquent->simplePaginate(150, ['*'], 'page', $page);
+            $page++;
+            foreach ($models->items() as $model) {
+                $data[] = $this->rowFormatter->format($model);
+            }
+        } while ($models->hasMorePages());
 
-                    $page++;
-                    foreach ($models->items() as $model) {
-                        $data [] = $this->rowFormatter->format($model);
-                    }
+        $collection = collect($data);
+        $headings = $collection->first() ? array_keys($collection->first()) : [];
 
-                } while ($models->hasMorePages());
-                $sheet->fromArray($data);
-            });
-
-            // Esta solucion la podemos especificar para que se pueda exportar really big size files
-//            return Response::stream(function () use ($query) {
-//                $query->chunk(1000, function ($rows) {
-//                    $output = [];
-//                    foreach ($rows as $row) {
-//                        // Gather values
-//                        foreach ($row as $key => $value) {
-//                            $output[] = $value;
-//                        }
-//
-//                        // Echo row
-//                        echo str_putcsv($value) . "\n";
-//                        flush(); // Push to user
-//                    }
-//
-//                });
-//            }, 200, [
-//                // Stream headers
-//                'Content-type'        => 'text/csv',
-//                'Content-disposition' => 'attachment;filename=FileNameHere.csv',
-//                'Pragma'              => 'no-cache',
-//                'Cache-Control'       => 'no-cache, no-store, must-revalidate',
-//                'Expires'             => '0',
-//            ]);
-//            if ($this->includeResume) {
-//                $writer->sheet('Resumen', function ($sheet) {
-//                    $models  = $this->eloquent->get();
-//                    $resumen = [];
-//                    foreach ($models as $model) {
-//
-//                        $resumen[$model->id]
-//                        ['presentismos']
-//                                                      = $model->presentismos->groupBy(
-//                            function ($presentismo, $key) {
-//                                if ($presentismo->injustificado == true) {
-//                                    $name = '_injustificados';
-//                                } else {
-//                                    $name = '_justificados';
-//
-//                                }
-//
-//                                return $presentismo->tipoPresentismo->codigo . $name;
-//                            });
-//                        $resumen[$model->id]['owner'] = $model;
-//
-//                    }
-//                    $data = [];
-//                    foreach ($resumen as $item) {
-//                        $agente       = $item['owner'];
-//                        $temp         = [
-//                            'nombre' => $agente->nombre . ', ' . $agente->apellido,
-//                            'cuit'   => $agente->cuit,
-//                            'base'   => $agente->operativo->base->nombre,
-//                            'turno'  => $agente->operativo->turno->codigo,
-//                        ];
-//                        $presentismos = $item['presentismos']->toArray();
-//
-//                        foreach ($presentismos as $codigo => $dias) {
-//                            $temp[$codigo] = count($dias);
-//                        }
-//                        $data [] = $temp;
-//                    }
-//                    $sheet->fromArray($data);
-//                });
-//
-//            }
-            
-        })->export('xls');
-        
+        $export = new ReporteExport($collection, $headings);
+        return Excel::download($export, 'Reporte.xlsx');
     }
-    
-    
 }
