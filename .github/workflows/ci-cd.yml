@@ -3,7 +3,7 @@ run-name: Linting, testing and deploying Laravel app
 
 on:
   push:
-    branches: [ "upgrade/php-7.4", "workflows", "develop", "main" ]
+    branches: [ "workflows", "develop", "main" ]
   pull_request:
     branches: [ "develop", "main" ]
 
@@ -13,25 +13,56 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
-      - run: composer install --no-interaction --no-progress
-      - run: echo "Lint check passed - Laravel 5.2 uses legacy code style"
-      # Note: Laravel Pint not available in Laravel 5.2, can add PHP-CS-Fixer if needed
+          php-version: '8.1'
+          extensions: mbstring, xml, bcmath, zip, pdo_pgsql
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run linting
+        run: echo "Lint check passed - Laravel 5.2 uses legacy code style"
+        # Note: Laravel Pint not available in Laravel 5.2, can add PHP-CS-Fixer if needed
 
   security:
     name: Security checks
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
-      - run: composer install --no-interaction --no-progress
-      - run: echo "Security check placeholder - add security scanner if available in composer.json"
-      # Note: PHPStan may not be installed, add to composer.json if needed
-      # - run: vendor/bin/phpstan analyse --level=max app/
+          php-version: '8.1'
+          extensions: mbstring, xml, bcmath, zip, pdo_pgsql
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Run Composer audit
+        run: composer audit --format=json || true
+        # Note: Returns non-zero exit if vulnerabilities found, || true allows workflow to continue
 
   tests:
     name: Run tests
@@ -51,23 +82,50 @@ jobs:
           --health-timeout=5s
           --health-retries=3
     env:
+      APP_ENV: testing
+      APP_DEBUG: true
       DB_CONNECTION: pgsql
       DB_HOST: 127.0.0.1
       DB_PORT: 5432
       DB_DATABASE: sistema_presentismo
       DB_USERNAME: sail
       DB_PASSWORD: password
+      CACHE_DRIVER: array
+      SESSION_DRIVER: array
+      QUEUE_CONNECTION: sync
     steps:
       - uses: actions/checkout@v4
-      - uses: shivammathur/setup-php@v2
+
+      - name: Setup PHP
+        uses: shivammathur/setup-php@v2
         with:
-          php-version: '7.4'
+          php-version: '8.1'
           extensions: mbstring, xml, bcmath, zip, pdo_pgsql
-      - run: composer install --no-interaction --no-progress
-      - run: '[ -f .env ] || cp .env.example .env'
-      - run: php artisan key:generate
-      - run: php artisan migrate --force
-      - run: vendor/bin/phpunit
+          coverage: none
+
+      - name: Cache Composer dependencies
+        uses: actions/cache@v3
+        with:
+          path: vendor
+          key: ${{ runner.os }}-composer-${{ hashFiles('**/composer.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-composer-
+
+      - name: Install dependencies
+        run: composer install --no-interaction --no-progress --prefer-dist
+
+      - name: Prepare Laravel Application
+        run: |
+          [ -f .env ] || cp .env.example .env
+          php artisan key:generate
+          php artisan config:clear
+          php artisan cache:clear
+
+      - name: Run database migrations
+        run: php artisan migrate --force
+
+      - name: Run tests
+        run: vendor/bin/phpunit
 
   deploy:
     needs: [lint, security, tests]
