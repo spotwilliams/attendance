@@ -3,7 +3,7 @@ run-name: Linting, testing and deploying Laravel app
 
 on:
   push:
-    branches: [ "workflows", "develop", "main" ]
+    branches: [ "develop", "main" ]
   pull_request:
     branches: [ "develop", "main" ]
 
