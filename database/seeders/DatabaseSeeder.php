@@ -10,12 +10,12 @@ use Database\Seeders\Presentismos\PeriodosSeeder;
 use Database\Seeders\Presentismos\TiposPresentismoSeeder;
 use Database\Seeders\Agentes\AgentesSeeder;
 use Database\Seeders\Agentes\AreasSeeder;
-use Database\Seeders\Agentes\Horarios;
+use Database\Seeders\Agentes\HorarioSeeder;
 use Database\Seeders\Agentes\BasesSeeder;
 use Database\Seeders\Agentes\EstadosContratoSeeder;
 use Database\Seeders\Agentes\Funciones;
 use Database\Seeders\Agentes\TiposContratoSeeder;
-use Database\Seeders\Agentes\Turnos;
+use Database\Seeders\Agentes\TurnoSeeder;
 use Illuminate\Database\Seeder;
 use Database\Seeders\Security\UsersTableSeeder;
 use Database\Seeders\Security\PermissionSeeder;
@@ -23,7 +23,6 @@ use Database\Seeders\Security\RolSeeder;
 
 class DatabaseSeeder extends Seeder
 {
-    const SIZE_AGENTE = 500;
     const SIZE_AREAS  = 10;
     
     /**
@@ -35,7 +34,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->parametros();
         $this->seguridad();
-        //$this->agentes();
+        $this->agentes();
     }
     
     private function agentes()
@@ -61,12 +60,12 @@ class DatabaseSeeder extends Seeder
         $this->call(TiposPresentismoSeeder::class);
         $this->call(TiposContratoSeeder::class);
         $this->call(Funciones::class);
-        $this->call(Turnos::class);
+        $this->call(TurnoSeeder::class);
         $this->call(GerenciasSeeder::class);
         $this->call(CargosSeeder::class);
         $this->call(PeriodosSeeder::class);
         $this->call(DiasPermitidoSeeder::class);
-        $this->call(Horarios::class);
+        $this->call(HorarioSeeder::class);
     }
     
     

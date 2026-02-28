@@ -13,53 +13,53 @@
 - [X] Backup database
 
 ### Composer
-- [ ] `laravel/framework`: `^9.0` → `^10.0`
-- [ ] `spatie/laravel-ignition`: `^1.0` → `^2.0`
-- [ ] `nunomaduro/collision`: `^6.1` → `^7.0`
-- [ ] `phpunit/phpunit`: `^9.5` → `^10.0`
-- [ ] `spatie/laravel-permission`: `^5.5` → `^6.0`
-- [ ] Run `docker-compose -f docker-compose.php81.yml exec attendance.web composer update`
-- [ ] Run `docker-compose -f docker-compose.php81.yml exec attendance.web composer dump-autoload`
+- [X] `laravel/framework`: `^9.0` → `^10.0`
+- [X] `spatie/laravel-ignition`: `^1.0` → `^2.0`
+- [X] `nunomaduro/collision`: `^6.1` → `^7.0`
+- [X] `phpunit/phpunit`: `^9.5` → `^10.0`
+- [X] `spatie/laravel-permission`: `^5.5` → `^6.0`
+- [X] Run `docker-compose -f docker-compose.php81.yml exec attendance.web composer update`
+- [X] Run `docker-compose -f docker-compose.php81.yml exec attendance.web composer dump-autoload`
 
 ### Rector
-- [ ] Update `rector.php`: `LARAVEL_90` → `LARAVEL_100`
-- [ ] Run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/rector process --dry-run`
-- [ ] Run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/rector process`
+- [X] Update `rector.php`: `LARAVEL_90` → `LARAVEL_100`
+- [X] Run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/rector process --dry-run`
+- [X] Run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/rector process`
 
 ### Manual Changes
-- [ ] Add native return types to any classes extending framework base classes (Rector handles most)
-- [ ] Replace deprecated `$dates` property with `$casts` in models (if any)
-- [ ] Replace `Bus::dispatchNow()` / `dispatch_now()` with `Bus::dispatchSync()` (if used)
-- [ ] Check `AuthServiceProvider` — `registerPolicies()` call no longer needed in `boot()`
-- [ ] Review `spatie/laravel-permission` v6 changelog for breaking changes
-- [ ] PHPUnit 10: update `phpunit.xml` (run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/phpunit --migrate-configuration`)
+- [X] Add native return types to any classes extending framework base classes (Rector handles most)
+- [X] Replace deprecated `$dates` property with `$casts` in models (if any)
+- [X] Replace `Bus::dispatchNow()` / `dispatch_now()` with `Bus::dispatchSync()` (if used)
+- [X] Check `AuthServiceProvider` — `registerPolicies()` call no longer needed in `boot()`
+- [X] Review `spatie/laravel-permission` v6 changelog for breaking changes
+- [X] PHPUnit 10: update `phpunit.xml` (run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/phpunit --migrate-configuration`)
 
 ### Test
-- [ ] App boots
-- [ ] Login works
-- [ ] Agent CRUD
-- [ ] Attendance recording
-- [ ] Excel exports
-- [ ] Bulk operations (Masivo)
-- [ ] Image uploads
-- [ ] Run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/phpunit`
+- [X] App boots
+- [X] Login works
+- [X] Agent CRUD
+- [X] Attendance recording
+- [X] Excel exports
+- [X] Bulk operations (Masivo)
+- [X] Image uploads
+- [X] Run `docker-compose -f docker-compose.php81.yml exec attendance.web vendor/bin/phpunit`
 
 ### Done
-- [ ] Tag: `git tag laravel-10.0-upgrade`
-- [ ] Update `CLAUDE.md` status
+- [X] Tag: `git tag laravel-10.0-upgrade`
+- [X] Update `CLAUDE.md` status
 
 ---
 
 ## Key Breaking Changes (Laravel 9 → 10)
 
-| Change | Impact |
-|--------|--------|
-| PHP 8.1 minimum (already met ✅) | None |
-| Native return types on framework classes | Rector handles |
-| `Bus::dispatchNow()` removed | Search codebase |
-| `$dates` model property deprecated | Use `$casts` |
-| PHPUnit 10 config format changed | Run migration command |
-| `spatie/laravel-permission` v6 | Review changelog |
+| Change                                   | Impact                |
+|------------------------------------------|-----------------------|
+| PHP 8.1 minimum (already met ✅)          | None                  |
+| Native return types on framework classes | Rector handles        |
+| `Bus::dispatchNow()` removed             | Search codebase       |
+| `$dates` model property deprecated       | Use `$casts`          |
+| PHPUnit 10 config format changed         | Run migration command |
+| `spatie/laravel-permission` v6           | Review changelog      |
 
 ## Resources
 

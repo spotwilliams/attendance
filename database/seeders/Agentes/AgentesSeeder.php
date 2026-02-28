@@ -10,44 +10,30 @@ use Cat\Modules\Agentes\Services\Registro\Store\Laborales;
 use Cat\Modules\Agentes\Services\Registro\Store\Operativos;
 use Cat\Modules\Agentes\Services\Registro\Store\Personales;
 use Faker\Provider\es_AR\PhoneNumber;
-use Faker\Provider\Internet;
 use Illuminate\Database\Seeder;
 
 class AgentesSeeder extends Seeder
 {
-    /**
-     * Run the database seeds.
-     *
-     * @return void
-     */
+    const POPULATION_SIZE = 500;
+
     public function run()
     {
-        $faker = new \Faker\Generator();
-        
-        $person = new \Faker\Provider\en_US\Person($faker);
-        $faker->addProvider($person);
-        
-        $cuit = new \Faker\Provider\Barcode($faker);
-        $faker->addProvider($cuit);
-        
-        $email = new Internet($faker);
-        $faker->addProvider($email);
-        
+        $faker = \Faker\Factory::create();
         $faker->addProvider(new PhoneNumber($faker));
         $tiposContratos = TipoContrato::all()->count();
         $base           = Base::all()->count();
         $turno          = Turno::all()->count();
-        for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
+        for ($i = 1; $i < self::POPULATION_SIZE; $i++) {
             $agente = [
                 'nombre'           => $faker->name(),
                 'apellido'         => $faker->lastName(),
-                'dni'              => (10000 + $i),
-                'fecha_nacimiento' => date('Y-m-d'),
-                'cuit'             => (10000 + $i),
-                'estado_civil'     => 'CASADO',
-                'sexo'             => 'H',
+                'dni'              => $faker->unique()->numerify('########'),
+                'fecha_nacimiento' => $faker->date('Y-m-d', '-20 years'),
+                'cuit'             => '20' . $faker->unique()->numerify('########') . '0',
+                'estado_civil'     => $faker->randomElement(['SOLTERO', 'CASADO', 'DIVORCIADO', 'VIUDO']),
+                'sexo'             => $faker->randomElement(['H', 'M']),
                 'email'            => $faker->email(),
-                'telefono'         => $faker->phoneNumber(false),
+                'telefono_particular' => $faker->numerify('##########'),
             ];
             $age    = new Agente($agente);
             (new Personales($age))->execute();
@@ -56,9 +42,10 @@ class AgentesSeeder extends Seeder
                 'id_sial'                => rand(1, 100),
                 'ficha'                  => rand(1, 100),
                 'monto'                  => rand(10000, 90000),
-                'fecha_ingreso'          => date('Y-m-d'),
-                'fecha_ingreso_gobierno' => date('Y-m-d'),
-                'tipo_inscripcion'       => 'Regimen general',
+                'fecha_ingreso'          => $faker->date('Y-m-d', '-2 years'),
+                'fecha_ingreso_gobierno' => $faker->date('Y-m-d', '-3 years'),
+                'fecha_fin'              => $faker->date('Y-m-d', '+1 year'),
+                'tipo_inscripcion'       => $faker->randomElement(['Regimen general', 'Monotributo']),
                 'id_estado_contrato'     => 1,
                 'id_tipo_contrato'       => rand(1, $tiposContratos - 1),
             ];

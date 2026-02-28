@@ -13,57 +13,21 @@ class AreasSeeder extends Seeder
      */
     public function run()
     {
-        
         $areas = [
-            'Dirección',
-            'Actas',
-//            'Adm. Evaluación y desarrollo del Personal',
-            'Alcoholemia',
-            'Autos Abandonados',
-            'Cajas y Convenios',
-            'CEF',
-            'Choferes',
-            'Combis',
-            'Compras',
-            'Compras y Presupuesto',
-            'Comunicaciones',
-//            'Contratos y Facturación',
-            'DCER',
-            'Desarrollo Humano',
-            'Educación Vial',
-            'Estadistica',
-            'Gruas',
-            'Incorporación y Formación de Ag. De Tránsito',
-            'Legales',
-            'Mantenimiento',
-//            'Medicina Laboral y ART',
-            'Mesa de Entrada',
-            'Mesa de Entrada Seguridad Vial',
-            'Observatorio Vial',
-            'Operadores',
-            'Operativa',
-            'Pañol',
-            'Patrimonio',
-            'Monitoreo',
-            'Planeamiento',
-            'Playa de Acarreo',
-//            'Presentismo y Legajos del Personal',
-            'Recursos Materiales',
-            'Rel. Institucionales',
-            'Sistemas',
-            'Taller',
-            'Uniformes',
-            'Upe',
-            'Personal'
+            'Recursos Humanos', 'Contabilidad', 'Finanzas', 'Logística',
+            'Sistemas', 'Legales', 'Compras', 'Mantenimiento',
+            'Comunicaciones', 'Estadística', 'Operaciones', 'Capacitación',
+            'Mesa de Entrada', 'Patrimonio', 'Planeamiento', 'Monitoreo',
+            'Educación', 'Seguridad', 'Administración', 'Archivo',
+            'Auditoría', 'Calidad', 'Transporte', 'Almacén',
+            'Relaciones Institucionales', 'Desarrollo', 'Coordinación',
+            'Infraestructura', 'Presupuesto', 'Atención al Público',
+            'Control Interno', 'Despacho', 'Gestión Documental',
+            'Tecnología', 'Medio Ambiente', 'Suministros', 'Dirección',
         ];
-        
+
         foreach ($areas as $a) {
-            Area::create(
-                [
-                    'nombre' => $a,
-                ]
-            );
+            Area::create(['nombre' => $a]);
         }
-        
     }
 }

@@ -19,12 +19,12 @@ class DomicilioSeeder extends Seeder
             
             // Domicilio
             $domicilio = [
-                'calle'        => 'calle',
+                'calle'        => $faker->streetName(),
                 'numero'       => $faker->numberBetween(1, 100),
                 'departamento' => $faker->numberBetween(1, 15),
                 'piso'         => $faker->numberBetween(1, 4),
-                'barrio'       => 'city',
-                'provincia'    => 'state',
+                'barrio'       => $faker->city(),
+                'provincia'    => $faker->state(),
                 'id_agente'    => $i,
                 'constituido'  => rand(0, 1),
             ];

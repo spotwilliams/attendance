@@ -4,7 +4,7 @@ namespace Database\Seeders\Agentes;
 use Cat\Models\Horario;
 use Illuminate\Database\Seeder;
 
-class Horarios extends Seeder
+class HorarioSeeder extends Seeder
 {
     /**
      * Run the database seeds.

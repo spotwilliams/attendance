@@ -1,7 +1,6 @@
 <?php
 namespace Database\Seeders\Agentes;
 
-use Cat\Models\Area;
 use Cat\Models\Cargo;
 use Illuminate\Database\Seeder;
 
@@ -14,27 +13,12 @@ class CargosSeeder extends Seeder
      */
     public function run()
     {
-        
-        $cargos = [
-            
-            'Gerente',
-            'Subgerente',
-            'Supervisor',
-            'Coordinador',
-            'Coordinador Gral.',
-            'Jefe de Departamento',
-            'Jefe de Base',
-            'Jefe de gr&uacute;s Brd',
-            'Coordinador',
-        ];
-        
-        foreach ($cargos as $c) {
-            Cargo::create(
-                [
-                    'nombre' => $c,
-                ]
-            );
+        $faker = \Faker\Factory::create();
+
+        for ($i = 0; $i < 9; $i++) {
+            Cargo::create([
+                'nombre' => substr($faker->unique()->jobTitle(), 0, 80),
+            ]);
         }
-        
     }
 }

@@ -13,19 +13,16 @@ class EstudiosSeeder extends Seeder
      */
     public function run()
     {
-        $faker = new \Faker\Generator();
-        $faker->addProvider(new \Faker\Provider\en_US\Address($faker));
-        for ($i = 1; $i < \DatabaseSeeder::SIZE_AGENTE; $i++) {
-            
-            // Domicilio
-            $domicilio = [
+        $faker = \Faker\Factory::create();
+        for ($i = 1; $i < AgentesSeeder::POPULATION_SIZE; $i++) {
+            $estudio = [
                 'id_agente'   => $i,
-                'institucion' => 'lalsksd',
-                'carrera'     => 'lalsksd',
-                'nivel'       => 'SECUNDARIO',
-                'estado'      => 'COMPLETO',
+                'institucion' => substr($faker->company(), 0, 45),
+                'carrera'     => substr($faker->words(2, true), 0, 45),
+                'nivel'       => $faker->randomElement(['PRIMARIO', 'SECUNDARIO', 'TERCIARIO', 'UNIVERSITARIO']),
+                'estado'      => $faker->randomElement(['COMPLETO', 'EN CURSO', 'INCOMPLETO']),
             ];
-            \Cat\Models\Estudio::create($domicilio);
+            \Cat\Models\Estudio::create($estudio);
         }
     }
 }
