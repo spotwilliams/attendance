@@ -12,10 +12,10 @@ class Estudio extends Model
     use SoftDeletes, EstudioUpperCase;
     
     public $table = 'estudios';
+    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    protected $dates = ['deleted_at'];
     protected $fillable
                      = [
             'carrera',

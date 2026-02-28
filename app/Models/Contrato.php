@@ -33,7 +33,6 @@ class Contrato extends Model
             'fecha_estado_desde',
             'fecha_estado_hasta',
         ];
-    protected $dates = ['deleted_at'];
     
     public static $rules
         = [
@@ -42,6 +41,7 @@ class Contrato extends Model
             'id_tipo_contrato'   => 'not_in:-1',
             'id_estado_contrato' => 'not_in:-1',
         ];
+    protected $casts = ['deleted_at' => 'datetime'];
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo

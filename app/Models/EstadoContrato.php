@@ -22,10 +22,10 @@ class EstadoContrato extends Model
     public $table = 'estado_contratos';
     
     public $notFoundMessage = 'El estado de contrato especificado es incorrecto.';
+    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
-    protected $dates = ['deleted_at'];
     
     /**
      * Validation rules

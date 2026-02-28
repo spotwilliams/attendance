@@ -13,29 +13,10 @@ class BasesSeeder extends Seeder
      */
     public function run()
     {
-        $bases = [
-            'Playa Aeroparque',
-            'Araoz de la Madrid',
-            'BRD Sarmiento',
-            'BRD Tacuarí',
-            'Chacabuco',
-            'Cochabamba',
-            'Cucc',
-            'Dakota',
-            'Las Heras',
-            'Obelisco',
-            'Puerto Madero',
-            'Parque Vial',
-            'Piedras',
-            'Río Cuarto',
-            'Terminal Obelisco',
-            'Playa California',
-            'Balcarce',
-            'Playa de acarreo',
-        ];
-        
-        foreach ($bases as $b) {
-            Base::create(['nombre' => $b]);
+        $faker = \Faker\Factory::create();
+
+        for ($i = 0; $i < 18; $i++) {
+            Base::create(['nombre' => $faker->unique()->city()]);
         }
         
     }

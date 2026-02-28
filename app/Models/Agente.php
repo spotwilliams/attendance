@@ -21,6 +21,7 @@ class Agente extends Model
     use SoftDeletes, AgenteUpperCase;
     
     public $table = 'agentes';
+    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -51,13 +52,6 @@ class Agente extends Model
             'telefono_casa',
             'telefono_ht',
         ];
-    
-    /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $dates = ['deleted_at'];
     /**
      * Validation rules
      *

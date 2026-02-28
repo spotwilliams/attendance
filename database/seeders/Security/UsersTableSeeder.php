@@ -15,11 +15,13 @@ class UsersTableSeeder extends Seeder
      */
     public function run()
     {
+        $faker = \Faker\Factory::create();
+
         $user = User::create([
-            'name'           => 'developer',
-            'cuit'           => '1234567',
-            'email'          => 'admin@remain-it.com',
-            'password'       => bcrypt('remain14159'),
+            'name'           => $faker->name(),
+            'cuit'           => '20' . $faker->unique()->numerify('########') . '0',
+            'email'          => $faker->unique()->safeEmail(),
+            'password'       => bcrypt('password'),
             'remember_token' => \Illuminate\Support\Str::random(10),
         ]);
         

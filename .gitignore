@@ -21,3 +21,4 @@ _ide_helper.php
 
 composer.lock
 phpunit.xml.bak
+.phpunit.cache/

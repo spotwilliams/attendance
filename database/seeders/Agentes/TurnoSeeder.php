@@ -4,7 +4,7 @@ namespace Database\Seeders\Agentes;
 use Cat\Models\Turno;
 use Illuminate\Database\Seeder;
 
-class Turnos extends Seeder
+class TurnoSeeder extends Seeder
 {
     /**
      * Run the database seeds.
