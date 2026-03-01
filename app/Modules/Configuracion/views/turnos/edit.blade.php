@@ -11,11 +11,11 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::model($turnoModel, ['route' => ['configuracion.turno.update', $turnoModel->id], 'method' => 'patch']) !!}
+                    <form action="{{ route('configuracion.turno.update', $turnoModel->id) }}" method="POST">@csrf @method('PATCH')
 
                     @include('Configuracion::turnos.fields')
 
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

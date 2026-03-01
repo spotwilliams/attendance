@@ -31,28 +31,6 @@ class ContratoHistorico extends Model
         ];
     
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
-        = [
-            'id'                     => 'integer',
-            'id_tipo_contrato'       => 'integer',
-            'id_estado_contrato'     => 'integer',
-            'id_agente'              => 'integer',
-            'fecha_ingreso'          => 'date',
-            'fecha_ingreso_gobierno' => 'date',
-            'fecha_fin'              => 'date',
-            'fecha_estado_desde'     => 'date',
-            'fecha_estado_hasta'     => 'date',
-            'id_sial'                => 'string',
-            'ficha'                  => 'string',
-            'tipo_inscripcion'       => 'string',
-            'comentario'             => 'string',
-        ];
-    
-    /**
      * Validation rules
      *
      * @var array
@@ -84,5 +62,28 @@ class ContratoHistorico extends Model
     public function agente()
     {
         return $this->belongsTo(Agente::class, 'id_agente');
+    }
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @return array
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'                     => 'integer',
+            'id_tipo_contrato'       => 'integer',
+            'id_estado_contrato'     => 'integer',
+            'id_agente'              => 'integer',
+            'fecha_ingreso'          => 'date',
+            'fecha_ingreso_gobierno' => 'date',
+            'fecha_fin'              => 'date',
+            'fecha_estado_desde'     => 'date',
+            'fecha_estado_hasta'     => 'date',
+            'id_sial'                => 'string',
+            'ficha'                  => 'string',
+            'tipo_inscripcion'       => 'string',
+            'comentario'             => 'string',
+        ];
     }
 }

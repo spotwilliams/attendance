@@ -7,7 +7,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
 
-                {!! Form::open(array('url' => $crud->route.'/'.$entry->getKey(), 'method' => 'put')) !!}
+                <form action="{{ url($crud->route.'/'.$entry->getKey()) }}" method="POST">@csrf @method('PUT')
                 <div class="box box-warning">
                     <div class="box-header with-border">
                         <h3 class="box-title">Editar</h3>
@@ -28,7 +28,7 @@
                                     class="ladda-label">Cancelar</span></a>
                     </div><!-- /.box-footer-->
                 </div><!-- /.box -->
-                {!! Form::close() !!}
+                </form>
             </div>
         </div>
     </div>

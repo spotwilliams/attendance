@@ -10,11 +10,11 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'configuracion.area.store']) !!}
+                    <form action="{{ route('configuracion.area.store') }}" method="POST">@csrf
 
                     @include('Configuracion::areas.fields')
 
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

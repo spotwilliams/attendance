@@ -15,11 +15,11 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::model($baseModel, ['route' => ['configuracion.base.update', $baseModel->id], 'method' => 'patch']) !!}
+                    <form action="{{ route('configuracion.base.update', $baseModel->id) }}" method="POST">@csrf @method('PATCH')
 
                     @include('Configuracion::bases.fields')
 
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

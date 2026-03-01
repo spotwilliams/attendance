@@ -1,5 +1,5 @@
 <td>
-    {{ Form::open(['route' => 'presentismoPorAgenteRegistro', 'method' => 'POST'])}}
+    <form action="{{ route('presentismoPorAgenteRegistro') }}" method="POST">@csrf
 
     <a href="{{route('agentesEditPersonales', ['id' => $agente->id])}}"
        class="btn btn-primary"
@@ -25,5 +25,5 @@
     <input type="hidden" name="desde" value="{{$desdePre}}" >
     <input type="hidden" name="hasta" value="{{$hastaPre}}" >
     <input type="hidden" name="agente" value="{{$agente->id}}">
-    {{ Form::close() }}
+    </form>
 </td>

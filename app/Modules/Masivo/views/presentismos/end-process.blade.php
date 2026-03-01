@@ -16,12 +16,12 @@
                         guardar.</p>
                     <div class="row">
                         <div class="col-md-2">
-                            {!! Form::open(['route' => 'presentismosMasivoSelectFile', 'method' => 'POST']) !!}
+                            <form action="{{ route('presentismosMasivoSelectFile') }}" method="POST">@csrf
 
                             <input type="hidden" name="turno" value="{{$turno->id}}">
                             <input type="hidden" name="base" value="{{$base->id}}">
                             <button class="btn btn-default col-sm-offset-2">Atr&aacute;s</button>
-                            {!! Form::close() !!}
+                            </form>
                         </div>
                         @if(count($messages) > 0)
                             <div class="col-md-4 col-sm-offset-2">

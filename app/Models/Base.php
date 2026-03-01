@@ -25,17 +25,6 @@ class Base extends Model
         ];
     
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
-        = [
-            'id'     => 'integer',
-            'nombre' => 'string',
-        ];
-    
-    /**
      * Validation rules
      *
      * @var array
@@ -69,6 +58,18 @@ class Base extends Model
     public function roles()
     {
         return $this->belongsToMany(Role::class, 'base_roles', 'base_id', 'role_id');
+    }
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @return array
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'     => 'integer',
+            'nombre' => 'string',
+        ];
     }
     
 }

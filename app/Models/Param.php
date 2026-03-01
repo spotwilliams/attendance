@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 class Param extends Model
 {
     public $table = 'params';
-    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT   = 'created_at';
     const UPDATED_AT   = 'updated_at';
@@ -26,5 +25,9 @@ class Param extends Model
     {
         return Param::where('param', '=', self::FECHA_CIERRE)
             ->first();
+    }
+    protected function casts(): array
+    {
+        return ['deleted_at' => 'datetime'];
     }
 }

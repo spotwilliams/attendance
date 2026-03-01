@@ -22,7 +22,6 @@ class EstadoContrato extends Model
     public $table = 'estado_contratos';
     
     public $notFoundMessage = 'El estado de contrato especificado es incorrecto.';
-    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -118,5 +117,9 @@ class EstadoContrato extends Model
     public static function comision()
     {
         return self::where('estado', '=', self::ESTADO_COMISION)->first();
+    }
+    protected function casts(): array
+    {
+        return ['deleted_at' => 'datetime'];
     }
 }

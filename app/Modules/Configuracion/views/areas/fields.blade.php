@@ -1,7 +1,7 @@
 <!-- Nombre Field -->
 <div class="form-group col-sm-6 @if($errors->has('nombre')) has-error @endif ">
-    {!! Form::label('nombre', 'Nombre:') !!}
-    {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+    <label for="nombre">Nombre:</label>
+    <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" class="form-control">
     @if($errors->has('nombre'))
         <span class="help-block">{{$errors->first('nombre')}}</span>
     @endif
@@ -9,6 +9,6 @@
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+    <button type="submit" class="btn btn-primary">Guardar</button>
     <a href="{!! route('configuracion.area.index') !!}" class="btn btn-default">Cancelar</a>
 </div>

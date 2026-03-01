@@ -34,13 +34,13 @@
             </div>
         </td>
         <td>
-            {{ Form::open(['route' => 'presentismoPorAgenteRegistro', 'method' => 'POST'])}}
+            <form action="{{ route('presentismoPorAgenteRegistro') }}" method="POST">@csrf
             {{--<input type="text" class="form-control">--}}
             <input type="hidden" name="desde" class="desde">
             <input type="hidden" name="hasta" class="hasta">
             <input type="hidden" name="agente" value="{{$agente->id}}">
-            {{ Form::submit('Ir a presentismo', ['class' => 'btn btn-primary']) }}
-            {{ Form::close() }}
+            <button type="submit" class="btn btn-primary">Ir a presentismo</button>
+            </form>
         </td>
     </tr>
 @endforeach

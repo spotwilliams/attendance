@@ -12,10 +12,10 @@
                 @include('flash::message')
 
                 <div class="row">
-                {!! Form::open(['route' => 'configuracion.fecha.cierre.update']) !!}
+                <form action="{{ route('configuracion.fecha.cierre.update') }}" method="POST">@csrf
                 <!-- Nombre Field -->
                     <div class="form-group col-sm-6 @if($errors->has('dia')) has-error @endif ">
-                        {!! Form::label('dia', 'Seleccione el d&iacute;a a mostrar:') !!}
+                        <label for="dia">Seleccione el d&iacute;a a mostrar:</label>
                         <select class="form-control" name="dia">
                             @for($i = 1; $i< 31; $i++)
                                 <option value="{{$i}}" @if($i == $fecha->valor) selected @endif>{{$i}}</option>
@@ -28,11 +28,11 @@
 
                     <!-- Submit Field -->
                     <div class="form-group col-sm-12">
-                        {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+                        <button type="submit" class="btn btn-primary">Guardar</button>
                         <a href="/" class="btn btn-default">Cancelar</a>
                     </div>
 
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

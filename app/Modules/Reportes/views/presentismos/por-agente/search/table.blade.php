@@ -20,12 +20,12 @@
             </td>
             <td>
                 @if($agente->contrato)
-                    {{ Form::open(['route' => 'reportesPresentismoIndividualReportePresentismos', 'method' => 'POST'])}}
+                    <form action="{{ route('reportesPresentismoIndividualReportePresentismos') }}" method="POST">@csrf
                     <input type="hidden" name="agente" value="{{$agente->id}}">
 {{--                    {!! \Cat\Helpers\HtmlCustoms::getSelectByTipoContrato($agente->contrato->tipoContrato, true, 'selectpicker', '200px') !!}--}}
-                    {{ Form::submit('Ver licencias', ['class' => 'btn btn-primary']) }}
+                    <button type="submit" class="btn btn-primary">Ver licencias</button>
 
-                    {{ Form::close() }}
+                    </form>
                 @else
                     <p class="help-block">El agente no tiene datos laborales u operativos para poder trabajar</p>
                 @endif

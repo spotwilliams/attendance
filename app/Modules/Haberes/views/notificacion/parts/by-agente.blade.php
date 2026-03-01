@@ -1,19 +1,19 @@
-{{ Form::open(['route' => 'notificacionSearchByAgente', 'method' => 'POST'])}}
+<form action="{{ route('notificacionSearchByAgente') }}" method="POST">@csrf
 
 <input type="hidden" name="periodo" value="{{$periodo->id}}">
 <div class="col-md-4 form-group">
-    {{ Form::text('apellido', Request::input('apellido'), ['id' => 'apellido', 'placeholder' => 'Apellido', 'class' => 'col-md-3 form-control']) }}
+    <input type="text" name="apellido" id="apellido" value="{{ old('apellido', Request::input('apellido')) }}" placeholder="Apellido" class="col-md-3 form-control">
 </div>
 <div class="col-md-4 form-group">
-    {{ Form::text('nombre', Request::input('nombre'), ['id' => 'nombre', 'placeholder' => 'Nombre', 'class' => 'col-md-3 form-control']) }}
+    <input type="text" name="nombre" id="nombre" value="{{ old('nombre', Request::input('nombre')) }}" placeholder="Nombre" class="col-md-3 form-control">
 </div>
 <div class="col-md-4 form-group">
-    {{ Form::text('cuit', Request::input('cuit'), ['id' => 'cuit', 'placeholder' => 'CUIT', 'class' => 'form-control']) }}
+    <input type="text" name="cuit" id="cuit" value="{{ old('cuit', Request::input('cuit')) }}" placeholder="CUIT" class="form-control">
 </div>
 <div class="col-md-12 form-group">
-    {{ Form::submit('Buscar', ['class' => 'btn btn-info btn-flat pull-right']) }}
+    <button type="submit" class="btn btn-info btn-flat pull-right">Buscar</button>
 </div>
-{{ Form::close() }}
+</form>
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {

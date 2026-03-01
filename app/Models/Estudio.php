@@ -12,7 +12,6 @@ class Estudio extends Model
     use SoftDeletes, EstudioUpperCase;
     
     public $table = 'estudios';
-    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -46,5 +45,9 @@ class Estudio extends Model
     public function printMe()
     {
         return "Carrera: $this->carrera - Instituci&oacute;n: $this->institucion - Nivel: $this->nivel - Estado: $this->estado";
+    }
+    protected function casts(): array
+    {
+        return ['deleted_at' => 'datetime'];
     }
 }

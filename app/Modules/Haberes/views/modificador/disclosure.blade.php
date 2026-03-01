@@ -72,7 +72,7 @@
             </div>
 
             <div class="box-footer">
-                {!! Form::open(['route' => 'modificacionMasivaContratosUpdate', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+                <form action="{{ route('modificacionMasivaContratosUpdate') }}" method="POST" class="form-horizontal">@csrf
                 <input type="hidden" value="{{$monto}}" name="monto">
                 <input type="hidden" value="{{$fecha->format('Y-m-d')}}" name="fecha_contrato">
                 @foreach($gerencias as $gerencia)

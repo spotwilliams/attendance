@@ -29,25 +29,6 @@ class Domicilio extends Model
         ];
     
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
-        = [
-            'id'            => 'integer',
-            'codigo_postal' => 'integer',
-            'calle'         => 'string',
-            'numero'        => 'string',
-            'deptartamento' => 'string',
-            'piso'          => 'string',
-            'barrio'        => 'string',
-            'provincia'     => 'string',
-            'libre'         => 'string',
-            'deleted_at' => 'datetime',
-        ];
-    
-    /**
      * Validation rules
      *
      * @var array
@@ -68,5 +49,25 @@ class Domicilio extends Model
     public function printMe()
     {
         return "Calle: $this->calle - Nro: $this->numero - Departamento: $this->departamento - Piso: $this->piso - Barrio: $this->barrio - Provincia: $this->provincia - Constituido: " . (($this->constituido == true) ? 'SI' : 'NO') . " - Otro dato: $this->libre";
+    }
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @return array
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'            => 'integer',
+            'codigo_postal' => 'integer',
+            'calle'         => 'string',
+            'numero'        => 'string',
+            'deptartamento' => 'string',
+            'piso'          => 'string',
+            'barrio'        => 'string',
+            'provincia'     => 'string',
+            'libre'         => 'string',
+            'deleted_at' => 'datetime',
+        ];
     }
 }

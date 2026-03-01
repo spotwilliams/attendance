@@ -9,11 +9,11 @@
                 </h3>
             </div>
             <div class="box-body">
-                    {!! Form::model($tipo, ['route' => ['configuracion.licencia.update', $tipo->id], 'method' => 'patch']) !!}
+                    <form action="{{ route('configuracion.licencia.update', $tipo->id) }}" method="POST">@csrf @method('PATCH')
 
                     @include('Configuracion::tipo_presentismo.fields', ['aplicaDisabled' => true])
 
-                    {!! Form::close() !!}
+                    </form>
             </div>
         </div>
     </div>

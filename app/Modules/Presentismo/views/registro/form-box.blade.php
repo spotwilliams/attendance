@@ -14,7 +14,7 @@
             <button type="button" class="btn btn-box-tool" data-widget="remove"><i class="fa fa-times"></i></button>
         </div>
     </div>
-    {!! Form::open(['route' => 'presentismoPrepareListaAgentes', 'class'=>'form-horizontal', 'method' => 'POST', 'name' => 'presentismo-param-form']) !!}
+    <form action="{{ route('presentismoPrepareListaAgentes') }}" method="POST" class="form-horizontal" name="presentismo-param-form">@csrf
 
     <div class="box-body">
         <div class="col-md-offset-2 col-md-8">
@@ -44,9 +44,9 @@
         </div>
     </div>
     <div class="box-footer">
-        {!! Form::submit('Siguiente', ['class' => 'btn btn-primary pull-right']) !!}
+        <button type="submit" class="btn btn-primary pull-right">Siguiente</button>
     </div>
-    {!! Form::close() !!}
+    </form>
 </div>
 
 
@@ -116,4 +116,5 @@
         })
     </script>
 @append
+
 

@@ -16,9 +16,9 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'configuracion.base.store']) !!}
+                    <form action="{{ route('configuracion.base.store') }}" method="POST">@csrf
                     @include('Configuracion::bases.fields')
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

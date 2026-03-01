@@ -50,22 +50,22 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
 <div class="row">
     <div class="col-md-6">
         <div class="form-group @if($errors->has('codigo')) has-error @endif ">
-            {!! Form::label('codigo', 'C&oacute;digo:') !!}
-            {!! Form::text('codigo', null, ['class' => 'form-control']) !!}
+            <label for="codigo">C&oacute;digo:</label>
+            <input type="text" name="codigo" id="codigo" value="{{ old('codigo') }}" class="form-control">
             @if($errors->has('codigo'))
                 <span class="help-block">{{$errors->first('codigo')}}</span>
             @endif
         </div>
         <div class="form-group @if($errors->has('descripcion')) has-error @endif ">
-            {!! Form::label('descripcion', 'Nombre:') !!}
-            {!! Form::text('descripcion', null, ['class' => 'form-control']) !!}
+            <label for="descripcion">Nombre:</label>
+            <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion') }}" class="form-control">
             @if($errors->has('descripcion'))
                 <span class="help-block">{{$errors->first('descripcion')}}</span>
             @endif
         </div>
         <div class="form-group @if($errors->has('color')) has-error @endif ">
 
-            {!! Form::label('color', 'Color:') !!}
+            <label for="color">Color:</label>
             <div class="checkbox checkbox-info checkbox-circle">
                 <input type="checkbox" class="selectable" id="colores_por_defecto">
                 <label for="colores_por_defecto">
@@ -73,7 +73,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                 </label>
             </div>
             <div class="input-group colorpicker-component color-p">
-                {!! Form::text('color', null, ['class' => 'form-control']) !!}
+                <input type="text" name="color" id="color" value="{{ old('color') }}" class="form-control">
                 <span class="input-group-addon"><i></i></span>
 
             </div>
@@ -83,9 +83,9 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
         </div>
         <div class="form-group @if($errors->has('color_letra')) has-error @endif ">
 
-            {!! Form::label('color_letra', 'Color de letra:') !!}
+            <label for="color_letra">Color de letra:</label>
             <div class="input-group colorpicker-component color-p">
-                {!! Form::text('color_letra', null, ['class' => 'form-control']) !!}
+                <input type="text" name="color_letra" id="color_letra" value="{{ old('color_letra') }}" class="form-control">
                 <span class="input-group-addon"><i></i></span>
             </div>
             @if($errors->has('color_letra'))
@@ -101,12 +101,16 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
         ?>
         <div class="form-group @if($errors->has('aplica')) has-error @endif" {!! $attrs !!}>
 
-            {!! Form::label('aplica', 'Aplica a:') !!}
-            {!! Form::select('aplica', [
-            'TODOS' => 'Todos los tipos de contratos',
-            'SITUACION_REVISTA' => 'Contratos situaci&oacute;n de revista',
-            'LOCACION' => 'Contratos de locaci&oacute;n',
-            ], null, ['class' => 'form-control']) !!}
+            <label for="aplica">Aplica a:</label>
+            <select name="aplica" id="aplica" class="form-control">
+                @foreach([
+                'TODOS' => 'Todos los tipos de contratos',
+                'SITUACION_REVISTA' => 'Contratos situaci&oacute;n de revista',
+                'LOCACION' => 'Contratos de locaci&oacute;n',
+                ] as $val => $label)
+                    <option value="{{ $val }}" {{ old('aplica') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
             @if($errors->has('aplica'))
                 <span class="help-block">{{$errors->first('aplica')}}</span>
             @endif
@@ -119,10 +123,14 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                     title="Estado"
                     data-content="Indica en qu&eacute; estado se guardar&aacute; por defecto la licencia (como Justificada o Injustificada)"
             >Valor inicial: </label>
-            {!! Form::select('injustificado', [
-            '1' => 'Injustificado',
-            '0' => 'Justificado',
-            ], null, ['class' => 'form-control']) !!}
+            <select name="injustificado" id="injustificado" class="form-control">
+                @foreach([
+                '1' => 'Injustificado',
+                '0' => 'Justificado',
+                ] as $val => $label)
+                    <option value="{{ $val }}" {{ old('injustificado') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
             @if($errors->has('injustificado'))
                 <span class="help-block">{{$errors->first('es_fijo')}}</span>
             @endif
@@ -135,10 +143,14 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                     title="Justificabilidad"
                     data-content="En caso de 'No', implica que la licencia puede ser justificable o no, caso contrario no podr&aacute; cambiarse su estado (similar a Ausente, Presente, Feriados, etc.)"
             >Fijo: </label>
-            {!! Form::select('es_fijo', [
-            '0' => 'No',
-            '1' => 'Si',
-            ], null, ['class' => 'form-control']) !!}
+            <select name="es_fijo" id="es_fijo" class="form-control">
+                @foreach([
+                '0' => 'No',
+                '1' => 'Si',
+                ] as $val => $label)
+                    <option value="{{ $val }}" {{ old('es_fijo') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
             @if($errors->has('es_fijo'))
                 <span class="help-block">{{$errors->first('es_fijo')}}</span>
             @endif
@@ -153,11 +165,15 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
                     title="Justificabilidad"
                     data-content="En caso de 'No', implica que la licencia no tiene valores proporcionales a los meses de ingreso"
             >Tiene proporcional: </label>
-            {!! Form::select('tiene_proporcional', [
-            '-1' => 'N/A',
-            '0' => 'No',
-            '1' => 'Si',
-            ], null, ['class' => 'form-control']) !!}
+            <select name="tiene_proporcional" id="tiene_proporcional" class="form-control">
+                @foreach([
+                '-1' => 'N/A',
+                '0' => 'No',
+                '1' => 'Si',
+                ] as $val => $label)
+                    <option value="{{ $val }}" {{ old('tiene_proporcional') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                @endforeach
+            </select>
             @if($errors->has('tiene_proporcional'))
                 <span class="help-block">{{$errors->first('tiene_proporcional')}}</span>
             @endif
@@ -167,7 +183,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
     <div class="col-md-6">
         <div class="form-group @if($errors->has('tiene_tope')) has-error @endif ">
 
-            {!! Form::label('tiene_tope', 'Tiene tope:') !!}
+            <label for="tiene_tope">Tiene tope:</label>
             <select name="tiene_tope" class="form-control">
                 <option value="1"
                         @if(old('tiene_tope')) selected @endif
@@ -186,16 +202,16 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
         </div>
 
         <div class="form-group @if($errors->has('cant_semanal')) has-error @endif col-md-6">
-            {!! Form::label('cant_semanal', 'D&iacute;as para turno semanal:') !!}
-            {!! Form::text('cant_semanal', $meses['JULY']['cant_semanal'], ['class' => 'form-control']) !!}
+            <label for="cant_semanal">D&iacute;as para turno semanal:</label>
+            <input type="text" name="cant_semanal" id="cant_semanal" value="{{ old('cant_semanal', $meses['JULY']['cant_semanal']) }}" class="form-control">
             @if($errors->has('cant_semanal'))
                 <span class="help-block">{{$errors->first('cant_semanal')}}</span>
             @endif
         </div>
 
         <div class="form-group @if($errors->has('cant_fin_semana')) has-error @endif col-md-6">
-            {!! Form::label('cant_fin_semana', 'D&iacute;as para fin de semana:') !!}
-            {!! Form::text('cant_fin_semana', $meses['JULY']['cant_fin_semana'], ['class' => 'form-control']) !!}
+            <label for="cant_fin_semana">D&iacute;as para fin de semana:</label>
+            <input type="text" name="cant_fin_semana" id="cant_fin_semana" value="{{ old('cant_fin_semana', $meses['JULY']['cant_fin_semana']) }}" class="form-control">
             @if($errors->has('cant_fin_semana'))
                 <span class="help-block">{{$errors->first('cant_fin_semana')}}</span>
             @endif
@@ -242,7 +258,7 @@ $meses = $meses->keyBy('mes_ingreso')->toArray();
         </table>
     </div>
     <div class="form-group col-sm-10 pull-right">
-        {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+        <button type="submit" class="btn btn-primary">Guardar</button>
         <a href="{!! route('configuracion.licencia.index') !!}" class="btn btn-default">Cancelar</a>
     </div>
 </div>

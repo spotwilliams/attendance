@@ -20,14 +20,14 @@
                         @include('Configuracion::areas.show_fields')
                     </div>
                     <div class="col-md-8">
-                        {!! Form::open(['route' => ['configuracion.area.destroy', $area->id],'method' => 'delete']) !!}
+                        <form action="{{ route('configuracion.area.destroy', $area->id) }}" method="POST">@csrf @method('DELETE')
 
                         <button type="submit" class="btn btn-danger" @if(!$area->operativos->isEmpty()) disabled @endif>
                             <i class="fa fa-trash"></i> Eliminar
                         </button>
                         <a class="btn btn-default" href="{{route('configuracion.area.index')}}">Volver</a>
                         <p class="help-block">S&oacute;lo las &aacute;reas sin agentes asignados pueden ser eliminadas</p>
-                        {!! Form::close() !!}
+                        </form>
                     </div>
                     <div class="col-md-12">
                         <hr>

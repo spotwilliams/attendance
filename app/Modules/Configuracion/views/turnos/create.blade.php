@@ -14,11 +14,11 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::open(['route' => 'configuracion.turno.store']) !!}
+                    <form action="{{ route('configuracion.turno.store') }}" method="POST">@csrf
 
                     @include('Configuracion::turnos.fields')
 
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

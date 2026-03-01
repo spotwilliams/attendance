@@ -6,7 +6,7 @@
         <div class="row">
             <div class="col-md-8 col-md-offset-2">
                 <!-- Default box -->
-                {!! Form::open(array('url' => $crud->route, 'method' => 'post')) !!}
+                <form action="{{ route($crud->route) }}" method="POST">@csrf
                 <div class="box box-warning">
 
                     <div class="box-header with-border">
@@ -26,7 +26,7 @@
                     </div><!-- /.box-footer-->
 
                 </div><!-- /.box -->
-                {!! Form::close() !!}
+                </form>
             </div>
         </div>
     </div>

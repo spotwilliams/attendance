@@ -4,7 +4,7 @@ $gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 
 ?>
 
-{!! Form::open(['route' => 'modificacionMasivaContratosDisclosure', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+<form action="{{ route('modificacionMasivaContratosDisclosure') }}" method="POST" class="form-horizontal">@csrf
 
 
 <div class="form-group @if($errors->has('gerencias')) has-error @endif">
@@ -32,7 +32,7 @@ $gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 <div class="form-group @if($errors->has('fecha_contrato')) has-error @endif">
     <label class="col-sm-4 control-label">Fecha de ingreso modalidad actual *</label>
     <div class="col-sm-6">
-        {!! Form::hidden('fecha_contrato', null, ['class' => 'form-control']) !!}
+        <input type="hidden" name="fecha_contrato" id="fecha_contrato" value="{{ old('fecha_contrato') }}">
         <input type="text" name="fecha_contrato_show" class="form-control">
         @if($errors->has('fecha_contrato'))
             <span class="help-block">{{$errors->first('fecha_contrato')}}</span>
@@ -42,7 +42,7 @@ $gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 <div class="form-group @if($errors->has('monto')) has-error @endif">
     <label class="col-sm-4 control-label">Monto</label>
     <div class="col-sm-6">
-        {!! Form::text('monto', null, ['class' => 'form-control', 'placeholder' => '$ 0']) !!}
+        <input type="text" name="monto" id="monto" value="{{ old('monto') }}" class="form-control" placeholder="$ 0">
         @if($errors->has('monto'))
             <span class="help-block">{{$errors->first('monto')}}</span>
         @endif
@@ -51,11 +51,11 @@ $gerenciasOld = old('gerencias') === null ? [] : old('gerencias');
 <div class="form-group">
     <label class="col-sm-4 control-label"></label>
     <div class="col-sm-6">
-        {!! Form::submit('Siguiente', ['class' => 'btn btn-primary pull-right']) !!}
+        <button type="submit" class="btn btn-primary pull-right">Siguiente</button>
     </div>
 </div>
 
-{!! Form::close() !!}
+</form>
 
 @section('scripts')
     <script type="text/javascript">

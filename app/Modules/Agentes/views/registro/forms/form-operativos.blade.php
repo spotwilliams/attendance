@@ -1,4 +1,4 @@
-{!! Form::hidden('id', null, ['class' => 'form-control']) !!}
+<input type="hidden" name="id" id="id" value="{{ old('id') }}">
 <div class="form-group">
     <div class="progress-group col-sm-8 col-sm-offset-2">
         <div class="progress-group">
@@ -34,7 +34,11 @@ foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $
 <div class="form-group">
     <label class="col-sm-2 control-label">Gerencia/Subgerencia</label>
     <div class="col-sm-8">
-        {!! Form::select('id_gerencia',  $gerencias, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        <select name="id_gerencia" id="id_gerencia" class="form-control" data-live-search="true">
+            @foreach($gerencias as $val => $label)
+                <option value="{{ $val }}" {{ old('id_gerencia') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 
@@ -52,7 +56,11 @@ foreach (\Cat\Models\Area::orderBy('nombre', 'ASC')->get() as $a) {
 <div class="form-group">
     <label class="col-sm-2 control-label">&Aacute;rea</label>
     <div class="col-sm-8">
-        {!! Form::select('id_area',  $areas, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        <select name="id_area" id="id_area" class="form-control" data-live-search="true">
+            @foreach($areas as $val => $label)
+                <option value="{{ $val }}" {{ old('id_area') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
 
     </div>
 </div>
@@ -70,7 +78,11 @@ foreach (\Cat\Models\Cargo::all() as $c) {
 <div class="form-group">
     <label class="col-sm-2 control-label">Cargo</label>
     <div class="col-sm-8">
-        {!! Form::select('id_cargo',  $cargos, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        <select name="id_cargo" id="id_cargo" class="form-control" data-live-search="true">
+            @foreach($cargos as $val => $label)
+                <option value="{{ $val }}" {{ old('id_cargo') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 
@@ -85,7 +97,11 @@ foreach (\Cat\Models\Funcion::all() as $funcion) {
 <div class="form-group @if($errors->has('id_funcion')) has-error @endif">
     <label class="col-sm-2 control-label">Funci&oacute;n*</label>
     <div class="col-sm-8">
-        {!! Form::select('id_funcion',  $funciones, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        <select name="id_funcion" id="id_funcion" class="form-control" data-live-search="true">
+            @foreach($funciones as $val => $label)
+                <option value="{{ $val }}" {{ old('id_funcion') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
 
         @if($errors->has('id_funcion'))
             <span class="help-block">{{$errors->first('id_funcion')}}</span>
@@ -131,8 +147,8 @@ $funcion = (isset($operativo) ? $operativo->funcion_especifica : 'Operador');
 </div>
 <div class="form-group funcion-especifica-show @if(in_array($funcion, $funcionEspecifica)) hidden @endif ">
     <div class="col-md-offset-2 col-sm-8">
-        {!! Form::hidden('funcion_especifica') !!}
-        {!! Form::text('funcion_especifica_show', null, ['class' => 'form-control']) !!}
+        <input type="hidden" name="funcion_especifica" id="funcion_especifica" value="{{ old('funcion_especifica') }}">
+        <input type="text" name="funcion_especifica_show" id="funcion_especifica_show" value="{{ old('funcion_especifica_show') }}" class="form-control">
         <p class="help-block">Agregue una funci&oacute;n espec&iacute;fica que no est&eacute; listada</p>
     </div>
 </div>
@@ -149,7 +165,11 @@ foreach (\Cat\Models\Base::orderBy('nombre', 'ASC')->get() as $b) {
 <div class="form-group @if($errors->has('id_base')) has-error @endif">
     <label class="col-sm-2 control-label">Base*</label>
     <div class="col-sm-8">
-        {!! Form::select('id_base',  $bases, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        <select name="id_base" id="id_base" class="form-control" data-live-search="true">
+            @foreach($bases as $val => $label)
+                <option value="{{ $val }}" {{ old('id_base') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
 
         @if($errors->has('id_base'))
             <span class="help-block">{{$errors->first('id_base')}}</span>
@@ -168,7 +188,11 @@ foreach (\Cat\Models\Turno::orderBy('codigo', 'ASC')->get() as $t) {
 <div class="form-group @if($errors->has('id_turno')) has-error @endif">
     <label class="col-sm-2 control-label">Turno*</label>
     <div class="col-sm-8">
-        {!! Form::select('id_turno',  $turnos, null, ['class' => 'form-control', 'data-live-search'=>'true']) !!}
+        <select name="id_turno" id="id_turno" class="form-control" data-live-search="true">
+            @foreach($turnos as $val => $label)
+                <option value="{{ $val }}" {{ old('id_turno') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
         @if($errors->has('id_turno'))
             <span class="help-block">{{$errors->first('id_turno')}}</span>
         @endif
@@ -190,7 +214,7 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                {!! Form::text('hora_entrada', $horaEntrada, ['class' => 'form-control horario', ]) !!}
+                <input type="text" name="hora_entrada" id="hora_entrada" value="{{ old('hora_entrada', $horaEntrada) }}" class="form-control horario">
                 @if($errors->has('hora_entrada'))
                     <span class="help-block">{{$errors->first('hora_entrada')}}</span>
                 @endif
@@ -201,7 +225,7 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
                 <div class="input-group-addon">
                     <i class="fa fa-clock-o"></i>
                 </div>
-                {!! Form::text('hora_salida', $horaSalida, ['class' => 'form-control horario', 'placeholder' => '00:00']) !!}
+                <input type="text" name="hora_salida" id="hora_salida" value="{{ old('hora_salida', $horaSalida) }}" class="form-control horario" placeholder="00:00">
 
                 @if($errors->has('hora_salida'))
                     <span class="help-block">{{$errors->first('hora_salida')}}</span>
@@ -212,7 +236,11 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
             <div class="form-group">
                 <label class="col-md-4">Rotativo</label>
                 <div class="col-md-6">
-                    {!! Form::select('rotativo',  [0 => 'No', 1 => 'Si'], null, ['class' => 'form-control hora-especial', ]) !!}
+                    <select name="rotativo" id="rotativo" class="form-control hora-especial">
+                        @foreach([0 => 'No', 1 => 'Si'] as $val => $label)
+                            <option value="{{ $val }}" {{ old('rotativo') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
             </div>
@@ -221,7 +249,11 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
             <div class="form-group">
                 <label class="col-md-4">Eximido</label>
                 <div class="col-md-6">
-                    {!! Form::select('eximido',  [0 => 'No', 1 => 'Si'], null, ['class' => 'form-control hora-especial', ]) !!}
+                    <select name="eximido" id="eximido" class="form-control hora-especial">
+                        @foreach([0 => 'No', 1 => 'Si'] as $val => $label)
+                            <option value="{{ $val }}" {{ old('eximido') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                        @endforeach
+                    </select>
                 </div>
 
             </div>
@@ -233,7 +265,7 @@ $horaSalida = isset($horario) ? $horario->hora_salida : '00:00';
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-smnull0">
-        {!! Form::submit('Finalizar', ['class' => 'btn btn-primary']) !!}
+        <button type="submit" class="btn btn-primary">Finalizar</button>
         <a href="{{route('agentesEditLaborales', ['id' => $agente])}}" class="btn btn-default col-sm-offset-8">Atr&aacute;s</a>
     </div>
 </div>

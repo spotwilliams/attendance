@@ -23,20 +23,6 @@ class TurnoHistorico extends Model
         ];
     
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
-        = [
-            'id'           => 'integer',
-            'id_operativo' => 'integer',
-            'id_turno'     => 'integer',
-            'fecha_inicio' => 'date',
-            'fecha_fin'    => 'date',
-        ];
-    
-    /**
      * Validation rules
      *
      * @var array
@@ -68,5 +54,20 @@ class TurnoHistorico extends Model
     public function turnosHistoricos()
     {
         return $this->hasMany(TurnoHistorico::class, 'id_turno_historico');
+    }
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @return array
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'           => 'integer',
+            'id_operativo' => 'integer',
+            'id_turno'     => 'integer',
+            'fecha_inicio' => 'date',
+            'fecha_fin'    => 'date',
+        ];
     }
 }

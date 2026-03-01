@@ -1,11 +1,6 @@
 @extends('layouts.app')
 
 @section('content')
-    <section class="content-header">
-        <h1>
-            Datos del agente
-        </h1>
-    </section>
     <div class="content">
         <div class="box box-warning">
 
@@ -61,25 +56,25 @@
 
                         @if($tab === 'personales')
                             <div class="tab-pane  active" id="personales">
-                                {!! Form::model($agente, ['route' => ['agentesUpdatePersonales'], 'method' => 'post', 'class' => 'form-horizontal', 'files' => true]) !!}
+                                <form action="{{ route('agentesUpdatePersonales') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">@csrf
                                 @include('Agentes::registro.forms.form-personales')
-                                {!! Form::close() !!}
+                                </form>
                             </div>
                         @endif
                         {{-- LABORALES --}}
                         @if($tab === 'laborales')
                             <div class="tab-pane active" id="laborales">
-                                {!! Form::model($contrato, ['route' => ['agentesUpdateLaborales'], 'method' => 'post', 'class' => 'form-horizontal']) !!}
+                                <form action="{{ route('agentesUpdateLaborales') }}" method="POST" class="form-horizontal">@csrf
                                 @include('Agentes::registro.forms.form-laborales')
-                                {!! Form::close() !!}
+                                </form>
                             </div>
                         @endif
                         {{-- OPERATIVOS --}}
                         @if($tab === 'operativos')
                             <div class="tab-pane active" id="operativos">
-                                {!! Form::model($operativo, ['route' => ['agentesUpdateOperativos'], 'method' => 'post', 'class' => 'form-horizontal']) !!}
+                                <form action="{{ route('agentesUpdateOperativos') }}" method="POST" class="form-horizontal">@csrf
                                 @include('Agentes::registro.forms.form-operativos')
-                                {!! Form::close() !!}
+                                </form>
                             </div>
                         @endif
                     </div>
@@ -89,4 +84,5 @@
         </div>
     </div>
 @endsection
+
 

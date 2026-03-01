@@ -1,7 +1,7 @@
 <?php
 $classMultiSelectContainer = 'col-md-6';
 ?>
-{!! Form::open(['route' => 'reportesHaberesAgentesSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+<form action="{{ route('reportesHaberesAgentesSearch') }}" method="POST" class="form-horizontal">@csrf
 
 <div class="box-body">
     <div class="row">
@@ -24,10 +24,10 @@ $classMultiSelectContainer = 'col-md-6';
 
 </div>
 <div class="box-footer">
-    {!! Form::submit('Buscar', ['class' => 'btn btn-primary pull-right']) !!}
+    <button type="submit" class="btn btn-primary pull-right">Buscar</button>
 
 </div>
-{!! Form::close() !!}
+</form>
 @if(isset($exportar))
     {!! $exportar !!}
 @endif

@@ -65,25 +65,25 @@
 
                         @if($tab === 'personales')
                             <div class="tab-pane  active" id="personales">
-                                {!! Form::open(['route' => 'agentesStorePersonales', 'method' => 'POST', 'class' => 'form-horizontal', 'files' => true]) !!}
+                                <form action="{{ route('agentesStorePersonales') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">@csrf
                                     @include('Agentes::registro.forms.form-personales')
-                                {!! Form::close() !!}
+                                </form>
                             </div>
                         @endif
                         {{-- LABORALES --}}
                         @if($tab === 'laborales')
                             <div class="tab-pane active" id="laborales">
-                                {!! Form::open(['route' => 'agentesStoreLaborales', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                                <form action="{{ route('agentesStoreLaborales') }}" method="POST" class="form-horizontal">@csrf
                                     @include('Agentes::registro.forms.form-laborales')
-                                {!! Form::close() !!}
+                                </form>
                             </div>
                         @endif
                         {{-- OPERATIVOS --}}
                         @if($tab === 'operativos')
                             <div class="tab-pane active" id="operativos">
-                                {!! Form::open(['route' => 'agentesStoreOperativos', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
+                                <form action="{{ route('agentesStoreOperativos') }}" method="POST" class="form-horizontal">@csrf
                                     @include('Agentes::registro.forms.form-operativos')
-                                {!! Form::close() !!}
+                                </form>
                             </div>
                         @endif
                     </div>

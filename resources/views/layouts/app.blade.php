@@ -5,27 +5,27 @@
     <title>CAT - Presentismo</title>
     <meta content='width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no' name='viewport'>
 
-{!! Html::style('plugins/pace/css/pace.css') !!}
-{!! Html::style('plugins/bootstrap/css/bootstrap.min.css') !!}
-{!! Html::style('plugins/font-awesome/css/font-awesome.min.css') !!}
-{!! Html::style('plugins/select2/css/select2.min.css') !!}
-{!! Html::style('plugins/adminLTE/css/AdminLTE.min.css') !!}
-{!! Html::style('plugins/adminLTE/css/skins/_all-skins.min.css') !!}
-{!! Html::style('plugins/datatables/css/jquery.dataTables.min.css') !!}
-{!! Html::style('plugins/datatables/css/fixedHeader.bootstrap.min.css') !!}
-{!! Html::style('plugins/datatables/css/responsive.dataTables.min.css') !!}
-{!! Html::style('plugins/bootstrap-select/css/bootstrap-select.min.css') !!}
-{!! Html::style('plugins/jquerytimepicker/css/jquery.timepicker.css') !!}
-{!! Html::style('plugins/daterangepicker/css/daterangepicker.css') !!}
-{!! Html::style('plugins/awesome-bootstrap-checkbox/css/awesome-bootstrap-checkbox.css') !!}
-{!! Html::style('plugins/colorpicker/css/bootstrap-colorpicker.min.css') !!}
-{!! Html::style('plugins/datatables-buttons-1.3.1/css/buttons.dataTables.css') !!}
-{!! Html::style('plugins/inputmask/css/inputmask.css') !!}
-{!! Html::style('plugins/fullcalendar/css/fullcalendar.min.css') !!}
-{!! Html::style('plugins/sliptree-bootstrap-tokenfield/css/bootstrap-tokenfield.min.css') !!}
-{!! Html::style('plugins/sliptree-bootstrap-tokenfield/css/tokenfield-typeahead.min.css') !!}
+<link rel="stylesheet" href="{{ asset('plugins/pace/css/pace.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/bootstrap/css/bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/font-awesome/css/font-awesome.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/select2/css/select2.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/adminLTE/css/AdminLTE.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/adminLTE/css/skins/_all-skins.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables/css/jquery.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables/css/fixedHeader.bootstrap.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables/css/responsive.dataTables.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/bootstrap-select/css/bootstrap-select.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/jquerytimepicker/css/jquery.timepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/daterangepicker/css/daterangepicker.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/awesome-bootstrap-checkbox/css/awesome-bootstrap-checkbox.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/colorpicker/css/bootstrap-colorpicker.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/datatables-buttons-1.3.1/css/buttons.dataTables.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/inputmask/css/inputmask.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/fullcalendar/css/fullcalendar.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/sliptree-bootstrap-tokenfield/css/bootstrap-tokenfield.min.css') }}">
+<link rel="stylesheet" href="{{ asset('plugins/sliptree-bootstrap-tokenfield/css/tokenfield-typeahead.min.css') }}">
 
-{!! Html::style('css/style.css') !!}
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
 <!-- Ionicons -->
     @yield('css')
 </head>
@@ -186,48 +186,48 @@
     </div>
 @endif
 
-{!! Html::script('plugins/jquery/js/jquery.min.js') !!}
+<script src="{{ asset('plugins/jquery/js/jquery.min.js') }}"></script>
 
-{!! Html::script('plugins/datatables/js/jquery.dataTables.min.js') !!}
-{!! Html::script('plugins/datatables/js/dataTables.fixedHeader.min.js') !!}
-{!! Html::script('plugins/datatables/js/dataTables.responsive.min.js') !!}
-{!! Html::script('plugins/datatables-empty-columns/js/dataTables.hideEmptyColumns.min.js') !!}
+<script src="{{ asset('plugins/datatables/js/jquery.dataTables.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/js/dataTables.fixedHeader.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables/js/dataTables.responsive.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables-empty-columns/js/dataTables.hideEmptyColumns.min.js') }}"></script>
 
-{!! Html::script('plugins/bootstrap-select/js/bootstrap-select.js') !!}
-{!! Html::script('plugins/bootstrap-select/js/i18n/defaults-es_ES.js') !!}
-{!! Html::script('plugins/slimScroll/js/jquery.slimscroll.min.js') !!}
-{!! Html::script('plugins/bootstrap/js/bootstrap.min.js') !!}
-{!! Html::script('plugins/select2/js/select2.min.js') !!}
-{!! Html::script('plugins/iCheck/js/icheck.min.js') !!}
+<script src="{{ asset('plugins/bootstrap-select/js/bootstrap-select.js') }}"></script>
+<script src="{{ asset('plugins/bootstrap-select/js/i18n/defaults-es_ES.js') }}"></script>
+<script src="{{ asset('plugins/slimScroll/js/jquery.slimscroll.min.js') }}"></script>
+<script src="{{ asset('plugins/bootstrap/js/bootstrap.min.js') }}"></script>
+<script src="{{ asset('plugins/select2/js/select2.min.js') }}"></script>
+<script src="{{ asset('plugins/iCheck/js/icheck.min.js') }}"></script>
 <!-- AdminLTE App -->
-{!! Html::script('plugins/adminLTE/js/app.min.js') !!}
+<script src="{{ asset('plugins/adminLTE/js/app.min.js') }}"></script>
 {{-- Notify --}}
-{!! Html::script('plugins/bootstrap-notify/js/notify.min.js') !!}
+<script src="{{ asset('plugins/bootstrap-notify/js/notify.min.js') }}"></script>
 
 {{-- Input file --}}
-{!! Html::script('plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js') !!}
+<script src="{{ asset('plugins/bootstrap-filestyle/js/bootstrap-filestyle.min.js') }}"></script>
 
-{!! Html::script('plugins/pace/js/pace.min.js') !!}
-{!! Html::script('plugins/moment/js/moment.js') !!}
-{!! Html::script('plugins/chart/js/Chart.js') !!}
+<script src="{{ asset('plugins/pace/js/pace.min.js') }}"></script>
+<script src="{{ asset('plugins/moment/js/moment.js') }}"></script>
+<script src="{{ asset('plugins/chart/js/Chart.js') }}"></script>
 
-{!! Html::script('plugins/daterangepicker/js/daterangepicker.js') !!}
+<script src="{{ asset('plugins/daterangepicker/js/daterangepicker.js') }}"></script>
 
-{!! Html::script('plugins/jquerytimepicker/js/jquery.timepicker.min.js') !!}
-{!! Html::script('plugins/datatables-buttons-1.3.1/js/dataTables.buttons.js') !!}
-{!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.colVis.js') !!}
-{!! Html::script('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') !!}
-{!! Html::script('plugins/colorpicker/js/bootstrap-colorpicker.min.js') !!}
-{!! Html::script('plugins/inputmask/js/jquery.inputmask.bundle.min.js') !!}
-{!! Html::script('plugins/fullcalendar/js/fullcalendar.min.js') !!}
+<script src="{{ asset('plugins/jquerytimepicker/js/jquery.timepicker.min.js') }}"></script>
+<script src="{{ asset('plugins/datatables-buttons-1.3.1/js/dataTables.buttons.js') }}"></script>
+<script src="{{ asset('plugins/datatables-buttons-1.3.1/js/buttons.colVis.js') }}"></script>
+<script src="{{ asset('plugins/datatables-buttons-1.3.1/js/buttons.html5.js') }}"></script>
+<script src="{{ asset('plugins/colorpicker/js/bootstrap-colorpicker.min.js') }}"></script>
+<script src="{{ asset('plugins/inputmask/js/jquery.inputmask.bundle.min.js') }}"></script>
+<script src="{{ asset('plugins/fullcalendar/js/fullcalendar.min.js') }}"></script>
 
-{!! Html::script('plugins/sliptree-bootstrap-tokenfield/js/bootstrap-tokenfield.min.js') !!}
+<script src="{{ asset('plugins/sliptree-bootstrap-tokenfield/js/bootstrap-tokenfield.min.js') }}"></script>
 
-{{--{!! Html::script('plugins/datatables-double-scroll/js/datatables-double-scroll.js') !!}--}}
+{{--<script src="{{ asset('plugins/datatables-double-scroll/js/datatables-double-scroll.js') }}"></script>--}}
 
 {{-- Helper Cat --}}
-{!! Html::script('js/helpers.js') !!}
-{!! Html::script('js/defaults.js') !!}
+<script src="{{ asset('js/helpers.js') }}"></script>
+<script src="{{ asset('js/defaults.js') }}"></script>
 
 
 <script type="text/javascript">
