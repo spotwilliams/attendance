@@ -8,6 +8,8 @@ $idEstadosContratosBaja = array_keys(
 $idTiposContratosLocacion = array_keys(
     TipoContrato::getEquivalentesLocacion()->keyBy('id')->toArray()
 );
+$_comision = EstadoContrato::comision();
+$_comisionId = $_comision ? $_comision->id : null;
 
 if (!isset($contrato)) {
     $contrato = new Contrato([
@@ -163,7 +165,7 @@ Lo referido a los estados de contrato
 
         --}}
         {{--<p class="help-block col-md-offset-2">Se asignar&aacute; presentismo 'Eximido' durante los d&iacute;as establecidos.</p>--}}
-        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('fecha_estado_desde')) has-error @endif">
+        <div class="form-group es-comision @if(!$_comisionId || $contrato->id_estado_contrato !== $_comisionId) hidden @endif @if($errors->has('fecha_estado_desde')) has-error @endif">
             <label class="col-sm-3 control-label">En comisi&oacute;n desde *</label>
             <div class="col-sm-8">
                 <input type="hidden" name="fecha_estado_desde" id="fecha_estado_desde" value="{{ old('fecha_estado_desde') }}">
@@ -173,7 +175,7 @@ Lo referido a los estados de contrato
                 @endif
             </div>
         </div>
-        <div class="form-group es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif @if($errors->has('fecha_estado_hasta')) has-error @endif">
+        <div class="form-group es-comision @if($contrato->id_estado_contrato !== $_comisionId) hidden @endif @if($errors->has('fecha_estado_hasta')) has-error @endif">
             <label class="col-sm-3 control-label">En comisi&oacute;n hasta *</label>
             <div class="col-sm-8">
                 <input type="hidden" name="fecha_estado_hasta" id="fecha_estado_hasta" value="{{ old('fecha_estado_hasta') }}">
@@ -184,12 +186,12 @@ Lo referido a los estados de contrato
             </div>
         </div>
         <div class="form-group
-                    @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja) and $contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif
+                    @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja) and $contrato->id_estado_contrato !== $_comisionId) hidden @endif
         @if($errors->has('comentario')) has-error @endif
                 ">
             <label class="col-sm-3 control-label es-baja @if(!in_array($contrato->id_estado_contrato, $idEstadosContratosBaja)) hidden @endif ">Comentario
                 de baja</label>
-            <label class="col-sm-3 control-label es-comision @if($contrato->id_estado_contrato !== \Cat\Models\EstadoContrato::comision()->id) hidden @endif">Comentario
+            <label class="col-sm-3 control-label es-comision @if($contrato->id_estado_contrato !== $_comisionId) hidden @endif">Comentario
                 de comisi&oacute;n * </label>
             <div class="col-sm-8">
                 <textarea name="comentario" id="comentario" class="form-control">{{ old('comentario') }}</textarea>
@@ -285,7 +287,7 @@ Lo referido a los estados de contrato
                 }
 
                 // En comision
-                if (continuarCon && ($(this).val() === '{{\Cat\Models\EstadoContrato::comision()->id}}')) {
+                if (continuarCon && ($(this).val() === '{{$_comisionId}}')) {
                     $('.es-comision')
                         .fadeIn(400)
                         .removeClass('hidden');

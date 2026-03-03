@@ -36,7 +36,15 @@ foreach (\Cat\Models\Gerencia::whereNull('id_padre')->get(['id', 'nombre']) as $
     <div class="col-sm-8">
         <select name="id_gerencia" id="id_gerencia" class="form-control" data-live-search="true">
             @foreach($gerencias as $val => $label)
-                <option value="{{ $val }}" {{ old('id_gerencia') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                @if(is_array($label))
+                    <optgroup label="{{ $val }}">
+                        @foreach($label as $subVal => $subLabel)
+                            <option value="{{ $subVal }}" {{ old('id_gerencia') == $subVal ? 'selected' : '' }}>{{ $subLabel }}</option>
+                        @endforeach
+                    </optgroup>
+                @else
+                    <option value="{{ $val }}" {{ old('id_gerencia') == $val ? 'selected' : '' }}>{{ $label }}</option>
+                @endif
             @endforeach
         </select>
     </div>

@@ -72,7 +72,8 @@ trait LaboralesSetup
         }
         
         // Para Bajas o comisiones
-        if (!$this->estado->esActivo() or ($this->estado->id === EstadoContrato::comision()->id)) {
+        $comision = EstadoContrato::comision();
+        if (!$this->estado->esActivo() or ($comision && $this->estado->id === $comision->id)) {
             $this->comentario         = $input['comentario'];
             $this->fecha_estado_desde = new \DateTime($input['fecha_estado_desde']);
             $this->fecha_estado_hasta = new \DateTime($input['fecha_estado_hasta']);

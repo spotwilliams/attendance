@@ -44,8 +44,8 @@ class Validation
         }
         /** @var TipoContrato $tipoContrato */
         $tipoContrato = TipoContrato::find($request->input('id_tipo_contrato'));
-        
-        if ($tipoContrato->isLocacion()) {
+
+        if ($tipoContrato && $tipoContrato->isLocacion()) {
             $rules['fecha_fin']        = 'date|required';
             $rules['tipo_inscripcion'] = 'not_in:-1';
         }
@@ -59,11 +59,11 @@ class Validation
         }
         /** @var EstadoContrato $estadoContrato */
         $estadoContrato = EstadoContrato::find($request->input('id_estado_contrato'));
-        if (!$estadoContrato->esActivo()) {
+        if ($estadoContrato && !$estadoContrato->esActivo()) {
             $rules['fecha_estado_desde'] = 'date|required';
             $rules['comentario'] = 'required';
         }
-        if ($estadoContrato->estado === EstadoContrato::ESTADO_COMISION) {
+        if ($estadoContrato && $estadoContrato->estado === EstadoContrato::ESTADO_COMISION) {
             $rules['fecha_estado_desde'] = 'date|required';
             $rules['fecha_estado_hasta'] = 'date|required';
             $rules['comentario']         = 'required';

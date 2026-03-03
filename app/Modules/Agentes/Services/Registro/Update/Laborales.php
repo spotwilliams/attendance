@@ -9,7 +9,6 @@ use Cat\Models\ContratoHistorico;
 use Cat\Modules\Agentes\Repositories\AgenteRepository;
 use Cat\Modules\Agentes\Services\Registro\Traits\LaboralesSetup;
 use Cat\Modules\Service;
-use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\DB;
 
 class Laborales extends Service
@@ -51,7 +50,7 @@ class Laborales extends Service
             return $this->agente;
             
             
-        } catch (QueryException $e) {
+        } catch (\Exception $e) {
             DB::rollBack();
             throw $e;
         }
@@ -122,7 +121,11 @@ class Laborales extends Service
     {
         $historicoActual = $this->agente->contratosHistoricos()
             ->orderBy('id', 'DESC')
-            ->firstOrFail();
+            ->first();
+
+        if (!$historicoActual) {
+            return;
+        }
         
         
         $fechaFin = (new \DateTime($contratoActual->fecha_ingreso));
@@ -139,7 +142,11 @@ class Laborales extends Service
     {
         $historicoActual = $this->agente->contratosHistoricos()
             ->orderBy('id', 'DESC')
-            ->firstOrFail();
+            ->first();
+
+        if (!$historicoActual) {
+            return;
+        }
         
         $fechaFin = (new \DateTime($contratoActual->fecha_estado_desde));
         $fechaFin->modify('-1day');

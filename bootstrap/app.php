@@ -16,7 +16,6 @@ return Application::configure(basePath: dirname(__DIR__))
         // Global middleware (previously $middleware in Http/Kernel.php)
         $middleware->use([
             \Illuminate\Foundation\Http\Middleware\PreventRequestsDuringMaintenance::class,
-            \Illuminate\Session\Middleware\StartSession::class,
             \Cat\Http\Middleware\InputTrim::class,
         ]);
 
@@ -24,6 +23,7 @@ return Application::configure(basePath: dirname(__DIR__))
         $middleware->web(replace: [
             \Cat\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
+            \Illuminate\Session\Middleware\StartSession::class,
             \Illuminate\View\Middleware\ShareErrorsFromSession::class,
             \Cat\Http\Middleware\VerifyCsrfToken::class,
         ]);
@@ -60,7 +60,7 @@ return Application::configure(basePath: dirname(__DIR__))
                 return response(view('errors.403'));
             }
             if ($e instanceof NotFoundHttpException) {
-                return response(view('errors.404'));
+                return response(view('errors.404'), 404);
             }
 
             if (! config('app.debug')) {

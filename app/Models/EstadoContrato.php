@@ -91,11 +91,14 @@ class EstadoContrato extends Model
     public static function getEstadosEquivalentesBajas()
     {
         $estadoBajaPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_BAJA)->first();
-        
+
+        if (!$estadoBajaPadre) {
+            return collect();
+        }
+
         return EstadoContrato::where('id', '=', $estadoBajaPadre->id)
             ->orWhere('id_padre', '=', $estadoBajaPadre->id)
             ->get();
-        
     }
     
     /**
@@ -104,11 +107,14 @@ class EstadoContrato extends Model
     public static function getEstadosEquivalentesActivos()
     {
         $estadoActivoPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first();
-        
+
+        if (!$estadoActivoPadre) {
+            return collect();
+        }
+
         return EstadoContrato::where('id', '=', $estadoActivoPadre->id)
             ->orWhere('id_padre', '=', $estadoActivoPadre->id)
             ->get();
-        
     }
     
     /**

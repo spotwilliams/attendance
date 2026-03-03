@@ -34,11 +34,7 @@ class LaboralesRequestUpdate extends LaboralesRequest
     
     public function validateResolved()
     {
-        parent::validate();
-        
-        $this->validateFechasIngreso();
-        
-        $this->validateFechasComision();
+        parent::validateResolved();
     }
     
 }
