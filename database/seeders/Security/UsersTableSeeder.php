@@ -20,7 +20,7 @@ class UsersTableSeeder extends Seeder
         $user = User::create([
             'name'           => $faker->name(),
             'cuit'           => '20' . $faker->unique()->numerify('########') . '0',
-            'email'          => $faker->unique()->safeEmail(),
+            'email'          => 'dev@company.com',
             'password'       => bcrypt('password'),
             'remember_token' => \Illuminate\Support\Str::random(10),
         ]);
