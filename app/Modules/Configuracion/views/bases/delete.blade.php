@@ -20,7 +20,7 @@
                         @include('Configuracion::bases.show_fields')
                     </div>
                     <div class="col-md-8">
-                        {!! Form::open(['route' => ['configuracion.base.destroy', $baseModel->id],'method' => 'delete']) !!}
+                        <form action="{{ route('configuracion.base.destroy', $baseModel->id) }}" method="POST">@csrf @method('DELETE')
 
                         <button type="submit" class="btn btn-danger" @if(!$baseModel->operativos->isEmpty()) disabled @endif>
                             <i class="fa fa-trash"></i> Eliminar
@@ -28,7 +28,7 @@
                         <a class="btn btn-default" href="{{route('configuracion.base.index')}}">Volver</a>
 
                         <p class="help-block">S&oacute;lo las bases sin agentes asignados pueden ser eliminadas</p>
-                        {!! Form::close() !!}
+                        </form>
                     </div>
                     <div class="col-md-12">
                         <hr>

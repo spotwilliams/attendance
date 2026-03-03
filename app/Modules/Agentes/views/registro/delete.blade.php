@@ -2,9 +2,9 @@
 
 @section('content')
     <?php
-    
+
     /** @var \Cat\Models\Agente $agente */
-    
+
     $base = $agente->base();
     ?>
     <section class="content-header">
@@ -62,10 +62,10 @@
                             <p class="help-block">
                                 Para continuar, click en el bot&oacute;n.
                             </p>
-                            {!! Form::open(['route' => 'agentesDestroy', 'method' => 'POST', 'class' => 'form-horizontal']) !!}
-                            {!! Form::hidden('agente', $agente->id) !!}
+                            <form action="{{ route('agentesDestroy') }}" method="POST" class="form-horizontal">@csrf
+                            <input type="hidden" name="agente" value="{{ $agente->id }}">
                             <a class="btn btn-app bg-red"><i class="fa fa-trash"></i>Eliminar datos de personal</a>
-                            {!! Form::close() !!}
+                            </form>
                         </div>
                     </div>
                 </div>

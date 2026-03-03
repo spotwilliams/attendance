@@ -34,7 +34,7 @@
         </div>
         <div class="box">
 
-            {{Form::open(['class' => 'form-horizontal'])}}
+            <form action="" method="POST" class="form-horizontal">@csrf
             <div class="box-header with-border">
                 <h3 class="box-title">
                     Se enviar&aacute; mail notificando a <span
@@ -100,7 +100,7 @@
                 </div>
 
             </div>
-            {{Form::close()}}
+            </form>
         </div>
     </div>
 @endsection
@@ -130,4 +130,5 @@
         })
     </script>
 @append
+
 

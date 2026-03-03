@@ -1,7 +1,7 @@
 <!-- Codigo Field -->
 <div class="form-group col-sm-6 @if($errors->has('codigo')) has-error @endif">
-    {!! Form::label('codigo', 'C&oacute;digo:') !!}
-    {!! Form::text('codigo', null, ['class' => 'form-control']) !!}
+    <label for="codigo">C&oacute;digo:</label>
+    <input type="text" name="codigo" id="codigo" value="{{ old('codigo') }}" class="form-control">
     @if($errors->has('codigo'))
         <span class="help-block">{{$errors->first('codigo')}}</span>
     @endif
@@ -9,8 +9,8 @@
 
 <!-- Descripcion Field -->
 <div class="form-group col-sm-6 @if($errors->has('descripcion')) has-error @endif">
-    {!! Form::label('descripcion', 'Descripci&oacute;n:') !!}
-    {!! Form::text('descripcion', null, ['class' => 'form-control']) !!}
+    <label for="descripcion">Descripci&oacute;n:</label>
+    <input type="text" name="descripcion" id="descripcion" value="{{ old('descripcion') }}" class="form-control">
     @if($errors->has('descripcion'))
         <span class="help-block">{{$errors->first('descripcion')}}</span>
     @endif
@@ -18,6 +18,6 @@
 
 <!-- Submit Field -->
 <div class="form-group col-sm-12">
-    {!! Form::submit('Guardar', ['class' => 'btn btn-primary']) !!}
+    <button type="submit" class="btn btn-primary">Guardar</button>
     <a href="{!! route('configuracion.turno.index') !!}" class="btn btn-default">Cancelar</a>
 </div>

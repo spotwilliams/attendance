@@ -9,11 +9,11 @@
                 </h3>
             </div>
             <div class="box-body">
-                    {!! Form::open(['route' => 'configuracion.licencia.store']) !!}
+                    <form action="{{ route('configuracion.licencia.store') }}" method="POST">@csrf
 
                     @include('Configuracion::tipo_presentismo.fields')
 
-                    {!! Form::close() !!}
+                    </form>
             </div>
         </div>
     </div>

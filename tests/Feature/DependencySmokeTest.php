@@ -73,34 +73,6 @@ class DependencySmokeTest extends TestCase
     }
 
     // ==========================================
-    // HTML/FORM HELPERS (LaravelCollective)
-    // ==========================================
-
-    public function test_html_collective_is_installed()
-    {
-        $this->assertTrue(
-            class_exists(\Collective\Html\HtmlServiceProvider::class),
-            'LaravelCollective HTML package should be installed'
-        );
-    }
-
-    public function test_form_facade_resolves()
-    {
-        $this->assertTrue(
-            class_exists(\Collective\Html\FormFacade::class),
-            'Form facade should exist'
-        );
-    }
-
-    public function test_html_facade_resolves()
-    {
-        $this->assertTrue(
-            class_exists(\Collective\Html\HtmlFacade::class),
-            'Html facade should exist'
-        );
-    }
-
-    // ==========================================
     // REPOSITORY PATTERN (Prettus)
     // ==========================================
 

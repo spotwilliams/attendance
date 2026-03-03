@@ -49,7 +49,7 @@
         </div>
 
         <div class="box">
-            {!! Form::open(['method' => 'POST', 'route' => 'haberesRegistrarFactura']) !!}
+            <form action="{{ route('haberesRegistrarFactura') }}" method="POST">@csrf
             <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
             <div class="box-header with-border">
@@ -74,7 +74,7 @@
                 </div>
 
             </div>
-            {!! Form::close() !!}
+            </form>
         </div>
     </div>
 @endsection
@@ -95,4 +95,5 @@
         })
     </script>
 @append
+
 

@@ -54,14 +54,15 @@ class RegistroController extends AppBaseController
         try {
             // Se verifica que el agente exista
             $agente = Agente::findOrFail($id);
-            
+
             return view('Agentes::registro.show')
                 ->with('agente', $agente);
+        } catch (ModelNotFoundException $e) {
+            abort(404);
         } catch (\Exception $e) {
             Flash::warning('Agente inexistente');
-            
+
             return redirect(route('agentesSearchIndex'));
-            
         }
         
     }

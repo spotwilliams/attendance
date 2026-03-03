@@ -18,7 +18,7 @@
             </div>
             {{--<div class="col-xs-12">--}}
             {{--Seleccione los datos para exportarlos a Excel!--}}
-            {!! Form::open(['route' => 'reportesPresentismoIndividualExport' ,'method' => 'POST']) !!}
+            <form action="{{ route('reportesPresentismoIndividualExport') }}" method="POST">@csrf
             <div class="form-group col-md-12">
                 <label for="exampleInputEmail1">Rango de fechas</label>
                 <input type="hidden" name="desde" class="desde">
@@ -47,7 +47,7 @@
                 {{--<button type="submit" class="btn btn-default pull-right">Exportar</button>--}}
                 {{--<a class="btn btn-success">Actualizar calendario</a>--}}
             </div>
-            {!! Form::close() !!}
+            </form>
             {{--</div>--}}
         </div>
     </div>

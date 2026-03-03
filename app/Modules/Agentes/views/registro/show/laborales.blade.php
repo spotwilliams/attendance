@@ -1,12 +1,17 @@
 <?php
 
 /** @var \Cat\Models\Agente $agente */
+$contrato = null;
+$tipoContrato = null;
+$estadoContrato = null;
 try {
     /** @var \Cat\Models\Contrato $contrato */
     $contrato = $agente->contratoActual;
-    /** @var \Cat\Models\TipoContrato $tipoContrato */
-    $tipoContrato   = $contrato->tipoContrato;
-    $estadoContrato = $contrato->estadoContrato;
+    if ($contrato) {
+        /** @var \Cat\Models\TipoContrato $tipoContrato */
+        $tipoContrato   = $contrato->tipoContrato;
+        $estadoContrato = $contrato->estadoContrato;
+    }
 } catch (\Illuminate\Database\Eloquent\ModelNotFoundException $e) {
 }
 
@@ -80,7 +85,7 @@ try {
                         <td>{{$contrato->comentario}}</td>
                     </tr>
                 @endif
-                @if($estadoContrato->id === \Cat\Models\EstadoContrato::comision()->id)
+                @if(\Cat\Models\EstadoContrato::comision() && $estadoContrato->id === \Cat\Models\EstadoContrato::comision()->id)
                     <tr>
                         <th>Desde:</th>
                         <td>{{(new DateTime($contrato->fecha_estado_desde))->format('d/m/Y')}}</td>

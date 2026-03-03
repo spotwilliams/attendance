@@ -22,7 +22,6 @@ class EstadoContrato extends Model
     public $table = 'estado_contratos';
     
     public $notFoundMessage = 'El estado de contrato especificado es incorrecto.';
-    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -92,11 +91,14 @@ class EstadoContrato extends Model
     public static function getEstadosEquivalentesBajas()
     {
         $estadoBajaPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_BAJA)->first();
-        
+
+        if (!$estadoBajaPadre) {
+            return collect();
+        }
+
         return EstadoContrato::where('id', '=', $estadoBajaPadre->id)
             ->orWhere('id_padre', '=', $estadoBajaPadre->id)
             ->get();
-        
     }
     
     /**
@@ -105,11 +107,14 @@ class EstadoContrato extends Model
     public static function getEstadosEquivalentesActivos()
     {
         $estadoActivoPadre = EstadoContrato::where('estado', '=', EstadoContrato::ESTADO_ACTIVO)->first();
-        
+
+        if (!$estadoActivoPadre) {
+            return collect();
+        }
+
         return EstadoContrato::where('id', '=', $estadoActivoPadre->id)
             ->orWhere('id_padre', '=', $estadoActivoPadre->id)
             ->get();
-        
     }
     
     /**
@@ -118,5 +123,9 @@ class EstadoContrato extends Model
     public static function comision()
     {
         return self::where('estado', '=', self::ESTADO_COMISION)->first();
+    }
+    protected function casts(): array
+    {
+        return ['deleted_at' => 'datetime'];
     }
 }

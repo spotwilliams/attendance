@@ -10,7 +10,7 @@
         </div>
         <div id="collapseOne" class="panel-collapse collapse in" role="tabpanel" aria-labelledby="headingOne">
             <div class="panel-body">
-                {{ Form::open(['route' => 'notificacionSearch', 'method' => 'POST', 'class' => 'form-horizontal'])}}
+                <form action="{{ route('notificacionSearch') }}" method="POST" class="form-horizontal">@csrf
                 <div class="form-group">
                     <label class="col-sm-3 control-label"></label>
 
@@ -23,7 +23,7 @@
                 </div>
 
 
-                {{ Form::close() }}
+                </form>
 
             </div>
         </div>

@@ -20,7 +20,7 @@
                         @include('Configuracion::turnos.show_fields')
                     </div>
                     <div class="col-md-8">
-                        {!! Form::open(['route' => ['configuracion.turno.destroy', $turnoModel->id],'method' => 'delete']) !!}
+                        <form action="{{ route('configuracion.turno.destroy', $turnoModel->id) }}" method="POST">@csrf @method('DELETE')
 
                         <button type="submit" class="btn btn-danger" @if(!$turnoModel->operativos->isEmpty()) disabled @endif>
                             <i class="fa fa-trash"></i> Eliminar
@@ -28,7 +28,7 @@
                         <a class="btn btn-default" href="{{route('configuracion.turno.index')}}">Volver</a>
 
                         <p class="help-block">S&oacute;lo los turnos sin agentes asignados pueden ser eliminados</p>
-                        {!! Form::close() !!}
+                        </form>
                     </div>
                     <div class="col-md-12">
                         <hr>

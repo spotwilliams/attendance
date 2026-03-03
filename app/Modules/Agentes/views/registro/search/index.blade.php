@@ -17,12 +17,12 @@
 
                 <div class="row">
                     <div class="col-md-10 col-xs-10">
-                        {{ Form::open(['route' => 'agentesSearchIndex', 'method' => 'GET'])}}
+                        <form action="{{ route('agentesSearchIndex') }}" method="GET">@csrf
                         <div class="col-md-4">
-                            {{ Form::text('apellido', Request::input('apellido'), ['id' => 'apellido', 'placeholder' => 'Apellido', 'class' => 'col-md-3 form-control']) }}
+                            <input type="text" name="apellido" id="apellido" value="{{ old('apellido', Request::input('apellido')) }}" placeholder="Apellido" class="col-md-3 form-control">
                         </div>
                         <div class="col-md-4">
-                            {{ Form::text('nombre', Request::input('nombre'), ['id' => 'nombre', 'placeholder' => 'Nombre', 'class' => 'col-md-3 form-control']) }}
+                            <input type="text" name="nombre" id="nombre" value="{{ old('nombre', Request::input('nombre')) }}" placeholder="Nombre" class="col-md-3 form-control">
                         </div>
                         <div class="col-md-4">
                             <div class="input-group">
@@ -36,11 +36,11 @@
                                 ?>
                                 <input type="text" name="cuit" value="{{$cuitsInputs}}" class="form-control">
                                 <span class="input-group-btn">
-                                {{ Form::submit('Buscar', ['class' => 'btn btn-info btn-flat']) }}
+                                <button type="submit" class="btn btn-info btn-flat">Buscar</button>
                             </span>
                             </div>
                         </div>
-                        {{ Form::close() }}
+                        </form>
 
                     </div>
                     <div class="col-md-2 col-xs-2">

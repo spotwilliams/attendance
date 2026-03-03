@@ -10,11 +10,11 @@
             </div>
             <div class="box-body">
                 <div class="row">
-                    {!! Form::model($area, ['route' => ['configuracion.area.update', $area->id], 'method' => 'patch']) !!}
+                    <form action="{{ route('configuracion.area.update', $area->id) }}" method="POST">@csrf @method('PATCH')
 
                     @include('Configuracion::areas.fields')
 
-                    {!! Form::close() !!}
+                    </form>
                 </div>
             </div>
         </div>

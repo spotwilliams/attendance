@@ -1,4 +1,4 @@
-{!! Form::open(['route' => 'notificacionSearchByFiltros', 'class'=>'form-horizontal', 'method' => 'POST', 'role' => 'form']) !!}
+<form action="{{ route('notificacionSearchByFiltros') }}" method="POST" class="form-horizontal" role="form">@csrf
 
 <input type="hidden" name="periodo" value="{{$periodo->id}}">
 
@@ -27,11 +27,11 @@
 {{--</div>--}}
 
 <div class="col-md-12">
-    {!! Form::submit('Buscar', ['class' => 'btn btn-info pull-right btn-flat']) !!}
+    <button type="submit" class="btn btn-info pull-right btn-flat">Buscar</button>
 
 </div>
 
-{!! Form::close() !!}
+</form>
 
 @section('scripts')
     <script type="text/javascript">

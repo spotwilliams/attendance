@@ -2,7 +2,6 @@
 
 namespace Cat\Modules\Agentes\Controllers\Registro;
 
-use Cat\Handlers\Error;
 use Cat\Helpers\Validation;
 use Cat\Http\Controllers\AppBaseController;
 use Cat\Http\Requests\LaboralesRequest;
@@ -82,7 +81,7 @@ class LaboralesController extends AppBaseController
             
             $validator = Validator::make(['operacion' => null], [['operation ', 'required']]);
             $validator->after(function ($validator) use ($e): void {
-                $validator->errors()->add('operacion', Error::getRespuestaAdecuada($e, 'agente'));
+                $validator->errors()->add('operacion', $e->getMessage());
             });
             
             return redirect(route('agentesCreateLaborales', ['id' => $agente->id]))

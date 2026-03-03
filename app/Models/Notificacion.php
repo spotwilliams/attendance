@@ -26,22 +26,6 @@ class Notificacion extends Model
         ];
     
     /**
-     * The attributes that should be casted to native types.
-     *
-     * @var array
-     */
-    protected $casts
-        = [
-            'id'            => 'integer',
-            'id_agente'     => 'integer',
-            'id_periodo'    => 'integer',
-            'tipo'          => 'string',
-            'fecha_factura' => 'string',
-            'fecha_pago'    => 'string',
-            'mensaje'       => 'string',
-        ];
-    
-    /**
      * Validation rules
      *
      * @var array
@@ -65,5 +49,22 @@ class Notificacion extends Model
     public function periodo()
     {
         return $this->belongsTo(Periodo::class);
+    }
+    /**
+     * The attributes that should be casted to native types.
+     *
+     * @return array
+     */
+    protected function casts(): array
+    {
+        return [
+            'id'            => 'integer',
+            'id_agente'     => 'integer',
+            'id_periodo'    => 'integer',
+            'tipo'          => 'string',
+            'fecha_factura' => 'string',
+            'fecha_pago'    => 'string',
+            'mensaje'       => 'string',
+        ];
     }
 }

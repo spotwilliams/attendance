@@ -14,7 +14,7 @@
                 <h3 class="box-title">Carga de personal masiva</h3>
 
             </div>
-            {!! Form::open(['route' => 'agentesMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
+            <form action="{{ route('agentesMasivoUpload') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">@csrf
             <div class="box-body">
             <div class="col-md-offset-2 col-md-8">
                 @include('common.bases.as-select-sin-btn' , ['routeName'=>'agentesIndex', 'label'=> 'Seleccione la base', 'baseSeleccionada' => -1])
@@ -22,7 +22,7 @@
                     <label for="archivo" class="col-sm-3 col-xs-3 control-label">Seleccione el archivo</label>
                     {{--<input type="file" id="archivo" name="archivo" class="col-sm-6">--}}
                     <div class="col-sm-9 col-xs-9">
-                        {!! Form::file('archivo', ['class'=>'filestyle' ,'data-buttonName'=>'btn-primary'])!!}
+                        <input type="file" name="archivo" id="archivo" class="filestyle" data-buttonName="btn-primary">
                         @if($errors->has('archivo'))
                             <span class="help-block col-sm-12">{{$errors->first('archivo')}}</span>
                         @endif
@@ -31,12 +31,12 @@
             </div>
             </div>
             <div class="box-footer">
-                {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
+                <button type="submit" class="btn btn-primary pull-right">Subir y procesar</button>
                 <p class="help-block pull-left">Ingrese un archivo xls(Excel) acorde al formato permitido.
                     <a class="btn btn-default btn-xs">Ver instrucciones</a>
                 </p>
             </div>
-            {!! Form::close() !!}
+            </form>
         </div>
         <div class="instrucciones hidden">
             @include('Masivo::agentes.advertisment')

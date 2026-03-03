@@ -19,7 +19,7 @@ $turnos = TurnosRepository::getAll();
                 <h3 class="box-title">Carga de presentismos masiva</h3>
             </div>
 
-            {!! Form::open(['route' => 'presentismosMasivoSelectFile', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
+            <form action="{{ route('presentismosMasivoSelectFile') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">@csrf
             <div class="box-body">
                 <div class="col-md-offset-2 col-md-8">
                     <div class="form-group">
@@ -54,9 +54,9 @@ $turnos = TurnosRepository::getAll();
                 {{--<p class="help-block pull-left">Ingrese un archivo CSV acorde al formato permitido.--}}
                 {{--<a class="btn btn-default btn-xs">Ver instrucciones</a>--}}
                 {{--</p>--}}
-                {!! Form::submit('Siguiente', ['class' => 'btn btn-primary pull-right']) !!}
+                <button type="submit" class="btn btn-primary pull-right">Siguiente</button>
             </div>
-            {!! Form::close() !!}
+            </form>
         </div>
 
     </div>

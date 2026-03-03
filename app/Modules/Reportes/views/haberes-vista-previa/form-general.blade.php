@@ -10,7 +10,7 @@ $fechaContrato = isset($fechaContrato) ? $fechaContrato : ['desde' => null, 'has
 $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta' => null];
 
 ?>
-{!! Form::open(['route' => 'reportesHaberesVistaPreviaSearch', 'class'=>'form-horizontal', 'method' => 'POST']) !!}
+<form action="{{ route('reportesHaberesVistaPreviaSearch') }}" method="POST" class="form-horizontal">@csrf
 <div class="box-body">
 
 
@@ -26,8 +26,8 @@ $fechaIngreso  = isset($fechaIngreso) ? $fechaIngreso : ['desde' => null, 'hasta
     </div>
 </div>
 <div class="box-footer">
-    {!! Form::submit('Buscar', ['class' => 'btn btn-primary pull-right']) !!}
-    {!! Form::close() !!}
+    <button type="submit" class="btn btn-primary pull-right">Buscar</button>
+    </form>
     {{--@if(isset($exportar))--}}
     {{--{!! $exportar !!}--}}
     {{--@endif--}}

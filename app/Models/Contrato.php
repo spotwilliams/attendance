@@ -41,7 +41,6 @@ class Contrato extends Model
             'id_tipo_contrato'   => 'not_in:-1',
             'id_estado_contrato' => 'not_in:-1',
         ];
-    protected $casts = ['deleted_at' => 'datetime'];
     
     /**
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -125,5 +124,9 @@ class Contrato extends Model
         } else {
             return \Illuminate\Support\Arr::first($meses);
         }
+    }
+    protected function casts(): array
+    {
+        return ['deleted_at' => 'datetime'];
     }
 }

@@ -42,11 +42,11 @@ $idModal = 'comentarios-modal'
         <div class="box box-warning">
             <div class="box-header with-border">
                 <div class="col-md-12 col-xs-12 text-center">
-                    {{ Form::open(['route' => 'presentismoPorAgenteRegistro', 'method' => 'POST', 'name' => 'presentismo-por-agente-param-form'])}}
+                    <form action="{{ route('presentismoPorAgenteRegistro') }}" method="POST" name="presentismo-por-agente-param-form">@csrf
                     <input type="hidden" name="desde" value="{{$desde->format('Y-m-d')}}" >
                     <input type="hidden" name="hasta" value="{{$hasta->format('Y-m-d')}}">
                     <input type="hidden" name="agente" value="{{$agentes->first()->id}}">
-                    {{ Form::close() }}
+                    </form>
 
                     <div class="fc-button-group">
                         <button type="button" class="btn btn-primary navegacion-btn retroceder-dias">

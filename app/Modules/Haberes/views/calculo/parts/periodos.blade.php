@@ -1,4 +1,4 @@
-{{ Form::open(['route' => 'haberesSearch', 'method' => 'POST', 'class' => 'form-horizontal'])}}
+<form action="{{ route('haberesSearch') }}" method="POST" class="form-horizontal">@csrf
 <div class="form-group">
     <label class="col-sm-3 control-label"></label>
 
@@ -11,7 +11,7 @@
 </div>
 
 
-{{ Form::close() }}
+</form>
 @section('scripts')
     <script type="text/javascript">
         $(document).ready(function () {

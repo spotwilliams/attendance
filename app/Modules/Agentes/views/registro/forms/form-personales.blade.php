@@ -1,4 +1,4 @@
-{!! Form::hidden('id', null, ['class' => 'form-control']) !!}
+<input type="hidden" name="id" id="id" value="{{ old('id') }}">
 
 <div class="form-group">
     <div class="progress-group col-sm-8 col-sm-offset-2">
@@ -15,9 +15,9 @@
     <div class="col-md-8">
 
         <div class="form-group @if($errors->has('nombre')) has-error @endif">
-            {!! Form::label('nombre', 'Nombre *', ['class' => 'col-sm-3 control-label']) !!}
+            <label for="nombre" class="col-sm-3 control-label">Nombre *</label>
             <div class="col-sm-9">
-                {!! Form::text('nombre', null, ['class' => 'form-control']) !!}
+                <input type="text" name="nombre" id="nombre" value="{{ old('nombre') }}" class="form-control">
                 @if($errors->has('nombre'))
                     <span class="help-block">{{$errors->first('nombre')}}</span>
                 @endif
@@ -26,9 +26,9 @@
 
 
         <div class="form-group @if($errors->has('apellido')) has-error @endif">
-            {!! Form::label('apellido', 'Apellido *', ['class' => 'col-sm-3 control-label']) !!}
+            <label for="apellido" class="col-sm-3 control-label">Apellido *</label>
             <div class="col-sm-9">
-                {!! Form::text('apellido', null, ['class' => 'form-control']) !!}
+                <input type="text" name="apellido" id="apellido" value="{{ old('apellido') }}" class="form-control">
                 @if($errors->has('apellido'))
                     <span class="help-block">{{$errors->first('apellido')}}</span>
                 @endif
@@ -36,9 +36,9 @@
         </div>
 
         <div class="form-group @if($errors->has('dni')) has-error @endif">
-            {!! Form::label('dni', 'DNI *', ['class' => 'col-sm-3 control-label']) !!}
+            <label for="dni" class="col-sm-3 control-label">DNI *</label>
             <div class="col-sm-9">
-                {!! Form::text('dni', null, ['class' => 'form-control']) !!}
+                <input type="text" name="dni" id="dni" value="{{ old('dni') }}" class="form-control">
                 @if($errors->has('dni'))
                     <span class="help-block">{{$errors->first('dni')}}</span>
                 @endif
@@ -47,9 +47,9 @@
 
 
         <div class="form-group @if($errors->has('fecha_nacimiento')) has-error @endif">
-            {!! Form::label('fecha_nacimiento', 'Fecha de nacimiento', ['class' => 'col-sm-3 control-label']) !!}
+            <label for="fecha_nacimiento" class="col-sm-3 control-label">Fecha de nacimiento</label>
             <div class="col-sm-9">
-                {!! Form::hidden('fecha_nacimiento', null, ['class' => 'form-control']) !!}
+                <input type="hidden" name="fecha_nacimiento" id="fecha_nacimiento" value="{{ old('fecha_nacimiento') }}">
                 <input type="text" name="fecha_nacimiento_show" class="form-control">
                 {{--        {!! Form::text('fecha_nacimiento', null, ['class' => 'form-control']) !!}--}}
                 @if($errors->has('fecha_nacimiento'))
@@ -67,13 +67,13 @@
              style="margin:0 auto;width:150px;"
         >
 
-        {!! Form::file('avatar', ['style'=> 'margin:0 auto;', 'class'=>'filestyle', 'data-input'=> 'false','accept'=> 'image/x-png,image/png,image/gif,image/jpeg' ,'data-buttonName'=>'btn-primary'])!!}
+        <input type="file" name="avatar" id="avatar" style="margin:0 auto;" class="filestyle" data-input="false" accept="image/x-png,image/png,image/gif,image/jpeg" data-buttonName="btn-primary">
     </div>
 </div>
 <div class="form-group @if($errors->has('cuit')) has-error @endif">
-    {!! Form::label('cuit', 'CUIT *', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="cuit" class="col-sm-2 control-label">CUIT *</label>
     <div class="col-sm-8">
-        {!! Form::text('cuit', null, ['class' => 'form-control']) !!}
+        <input type="text" name="cuit" id="cuit" value="{{ old('cuit') }}" class="form-control">
         @if($errors->has('cuit'))
             <span class="help-block">{{$errors->first('cuit')}}</span>
         @endif
@@ -81,18 +81,18 @@
 </div>
 
 <div class="form-group @if($errors->has('email')) has-error @endif">
-    {!! Form::label('email', 'Email *', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="email" class="col-sm-2 control-label">Email *</label>
     <div class="col-sm-8">
-        {!! Form::text('email', null, ['class' => 'form-control']) !!}
+        <input type="text" name="email" id="email" value="{{ old('email') }}" class="form-control">
         @if($errors->has('email'))
             <span class="help-block">{{$errors->first('email')}}</span>
         @endif
     </div>
 </div>
 <div class="form-group @if($errors->has('email_gobierno')) has-error @endif">
-    {!! Form::label('email_gobierno', 'Email gobierno', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="email_gobierno" class="col-sm-2 control-label">Email gobierno</label>
     <div class="col-sm-8">
-        {!! Form::text('email_gobierno', null, ['class' => 'form-control']) !!}
+        <input type="text" name="email_gobierno" id="email_gobierno" value="{{ old('email_gobierno') }}" class="form-control">
         @if($errors->has('email_gobierno'))
             <span class="help-block">{{$errors->first('email_gobierno')}}</span>
         @endif
@@ -100,9 +100,9 @@
 </div>
 
 <div class="form-group @if($errors->has('telefono_particular')) has-error @endif">
-    {!! Form::label('telefono_particular', 'Tel&eacute;fono particular *', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="telefono_particular" class="col-sm-2 control-label">Tel&eacute;fono particular *</label>
     <div class="col-sm-8">
-        {!! Form::text('telefono_particular', null, ['class' => 'form-control']) !!}
+        <input type="text" name="telefono_particular" id="telefono_particular" value="{{ old('telefono_particular') }}" class="form-control">
         @if($errors->has('telefono_particular'))
             <span class="help-block">{{$errors->first('telefono_particular')}}</span>
         @endif
@@ -110,9 +110,9 @@
 </div>
 
 <div class="form-group @if($errors->has('telefono_casa')) has-error @endif">
-    {!! Form::label('telefono_casa', 'Tel&eacute;fono de casa', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="telefono_casa" class="col-sm-2 control-label">Tel&eacute;fono de casa</label>
     <div class="col-sm-8">
-        {!! Form::text('telefono_casa', null, ['class' => 'form-control']) !!}
+        <input type="text" name="telefono_casa" id="telefono_casa" value="{{ old('telefono_casa') }}" class="form-control">
         @if($errors->has('telefono_casa'))
             <span class="help-block">{{$errors->first('telefono_casa')}}</span>
         @endif
@@ -120,9 +120,9 @@
 </div>
 
 <div class="form-group @if($errors->has('telefono_ht')) has-error @endif">
-    {!! Form::label('telefono_ht', 'Tel&eacute;fono HT', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="telefono_ht" class="col-sm-2 control-label">Tel&eacute;fono HT</label>
     <div class="col-sm-8">
-        {!! Form::text('telefono_ht', null, ['class' => 'form-control']) !!}
+        <input type="text" name="telefono_ht" id="telefono_ht" value="{{ old('telefono_ht') }}" class="form-control">
         @if($errors->has('telefono_ht'))
             <span class="help-block">{{$errors->first('telefono_ht')}}</span>
         @endif
@@ -131,35 +131,41 @@
 
 
 <div class="form-group">
-    {!! Form::label('estado_civil', 'Estado Civil', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="estado_civil" class="col-sm-2 control-label">Estado Civil</label>
     <div class="col-sm-8">
-        {!! Form::select('estado_civil',
-         [
-         'CASADO'=> 'Casado',
-         'SOLTERO' => 'Soltero',
-         'VIUDO' => 'Viudo',
-         'CONCUBINATO' => 'Concubinato',
-         'SEPARADO DE HECHO' => 'Separado de hecho',
-         'UNION CIVIL' => 'Uni&oacute;n civil',
-         'DIVORCIADO' => 'Divorciado'
-          ], null, ['class' => 'form-control']) !!}
+        <select name="estado_civil" id="estado_civil" class="form-control">
+            @foreach([
+             'CASADO'=> 'Casado',
+             'SOLTERO' => 'Soltero',
+             'VIUDO' => 'Viudo',
+             'CONCUBINATO' => 'Concubinato',
+             'SEPARADO DE HECHO' => 'Separado de hecho',
+             'UNION CIVIL' => 'Uni&oacute;n civil',
+             'DIVORCIADO' => 'Divorciado'
+              ] as $val => $label)
+                <option value="{{ $val }}" {{ old('estado_civil') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 
 <div class="form-group">
-    {!! Form::label('sexo', 'Sexo', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="sexo" class="col-sm-2 control-label">Sexo</label>
     <div class="col-sm-8">
-        {!! Form::select('sexo',
-         [
-         'F' => 'Mujer',
-         'M' => 'Hombre',
-          ], null, ['class' => 'form-control']) !!}
+        <select name="sexo" id="sexo" class="form-control">
+            @foreach([
+             'F' => 'Mujer',
+             'M' => 'Hombre',
+              ] as $val => $label)
+                <option value="{{ $val }}" {{ old('sexo') == $val ? 'selected' : '' }}>{{ $label }}</option>
+            @endforeach
+        </select>
     </div>
 </div>
 <div class="form-group @if($errors->has('profesion')) has-error @endif">
-    {!! Form::label('profesion', 'Profesi&oacute;n', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="profesion" class="col-sm-2 control-label">Profesi&oacute;n</label>
     <div class="col-sm-8">
-        {!! Form::text('profesion', null, ['class' => 'form-control']) !!}
+        <input type="text" name="profesion" id="profesion" value="{{ old('profesion') }}" class="form-control">
         @if($errors->has('profesion'))
             <span class="help-block">{{$errors->first('profesion')}}</span>
         @endif
@@ -182,7 +188,7 @@ $estudios = \Cat\Helpers\HtmlCustoms::getEstudiosArray($data);
 $control = 0;
 ?>
 <div class="form-group">
-    {!! Form::label('estudios', 'Estudios', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="estudios" class="col-sm-2 control-label">Estudios</label>
 
     <div class="panel panel-default col-sm-8">
         @foreach($estudios  as $est)
@@ -243,7 +249,7 @@ $control = 0;
 
 {{-- Domicilios --}}
 <div class="form-group">
-    {!! Form::label('domicilio', 'Domicilio *', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="domicilio" class="col-sm-2 control-label">Domicilio *</label>
     <?php
     $data = [];
     if (isset($agente)) {
@@ -345,9 +351,9 @@ $control = 0;
 </div>
 
 <div class="form-group @if($errors->has('observacion')) has-error @endif">
-    {!! Form::label('observacion', 'Observaci&oacute;n', ['class' => 'col-sm-2 control-label']) !!}
+    <label for="observacion" class="col-sm-2 control-label">Observaci&oacute;n</label>
     <div class="col-sm-8">
-        {!! Form::textarea('observacion', null, ['class' => 'form-control']) !!}
+        <textarea name="observacion" id="observacion" class="form-control">{{ old('observacion') }}</textarea>
         @if($errors->has('observacion'))
             <span class="help-block">{{$errors->first('observacion')}}</span>
         @endif
@@ -356,7 +362,7 @@ $control = 0;
 
 <div class="form-group">
     <div class="col-sm-offset-2 col-sm-10">
-        {!! Form::submit('Siguiente', ['class' => 'btn btn-primary']) !!}
+        <button type="submit" class="btn btn-primary">Siguiente</button>
         <a href="{{URL::previous()}}" class="btn btn-default col-sm-offset-8">Volver</a>
     </div>
 </div>

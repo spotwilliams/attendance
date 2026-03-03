@@ -12,16 +12,17 @@
             <div class="box-body">
                 @include('flash::message')
                 <p class="help-block">Por favor revise el archivo generado con las filas que no se pudieron guardar.</p>
-                {!! Form::open(['route' => 'agentesMasivoDownload', 'method' => 'POST']) !!}
+                <form action="{{ route('agentesMasivoDownload') }}" method="POST">@csrf
 
-                {!! Form::hidden('file', session('agentes_new_file')) !!}
+                <input type="hidden" name="file" value="{{ session('agentes_new_file') }}">
 
                 <a class="btn btn-default pull-left" href="{{URL::previous()}}"><i class="fa fa-arrow-left"></i>Volver</a>
-                {!! Form::submit('Descargar archivo de errores', ['class' => 'btn btn-primary pull-right']) !!}
+                <button type="submit" class="btn btn-primary pull-right">Descargar archivo de errores</button>
 
-                {!! Form::close() !!}
+                </form>
             </div>
         </div>
     </div>
 @endsection
+
 

@@ -21,7 +21,6 @@ class Agente extends Model
     use SoftDeletes, AgenteUpperCase;
     
     public $table = 'agentes';
-    protected $casts = ['deleted_at' => 'datetime'];
     
     const CREATED_AT = 'created_at';
     const UPDATED_AT = 'updated_at';
@@ -257,5 +256,9 @@ class Agente extends Model
     public function notificaciones()
     {
         return $this->hasMany(Notificacion::class, 'id_agente');
+    }
+    protected function casts(): array
+    {
+        return ['deleted_at' => 'datetime'];
     }
 }

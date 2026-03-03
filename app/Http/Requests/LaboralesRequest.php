@@ -39,16 +39,20 @@ class LaboralesRequest extends Request
     
     protected function validateFechasIngreso()
     {
+        if (empty($this->input('fecha_ingreso_gobierno')) || empty($this->input('fecha_ingreso'))) {
+            return true;
+        }
+
         $ingresoGobierno = \Illuminate\Support\Facades\Date::createFromFormat(
             'Y-m-d',
             (new \DateTime($this->input('fecha_ingreso_gobierno')))->format('Y-m-d')
         );
-        
+
         $fechaContrato = \Illuminate\Support\Facades\Date::createFromFormat(
             'Y-m-d',
             (new \DateTime($this->input('fecha_ingreso')))->format('Y-m-d')
         );
-        
+
         if ($ingresoGobierno->gt($fechaContrato)) {
             // No puede ingresar al gobierno despues del contrato
             /** @var  $validator */
@@ -70,7 +74,9 @@ class LaboralesRequest extends Request
     {
         /** @var  $validator */
         $validator = $this->getValidatorInstance();
-        if (EstadoContrato::comision()->id === EstadoContrato::find($this->input('id_estado_contrato'))->id) {
+        $comision = EstadoContrato::comision();
+        $estadoContrato = EstadoContrato::find($this->input('id_estado_contrato'));
+        if ($comision && $estadoContrato && $comision->id === $estadoContrato->id) {
             
             $desde = $fechaContrato = \Illuminate\Support\Facades\Date::createFromFormat(
                 'Y-m-d',

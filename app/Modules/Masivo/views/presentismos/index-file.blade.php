@@ -14,9 +14,9 @@
                 <h3 class="box-title">Carga de presentismos masiva</h3>
             </div>
 
-            {!! Form::open(['route' => 'presentismosMasivoUpload', 'class'=>'form-horizontal', 'method' => 'POST', 'files' => true]) !!}
-            {!! Form::hidden('base', $base->id) !!}
-            {!! Form::hidden('turno', $turno->id) !!}
+            <form action="{{ route('presentismosMasivoUpload') }}" method="POST" class="form-horizontal" enctype="multipart/form-data">@csrf
+            <input type="hidden" name="base" value="{{ $base->id }}">
+            <input type="hidden" name="turno" value="{{ $turno->id }}">
 
             <div class="box-body">
                 <div class="col-md-offset-2 col-md-8">
@@ -58,7 +58,7 @@
                     <div class="form-group @if($errors->has('archivo')) has-error @endif">
                         <label for="archivo" class="col-sm-3 col-xs-3 control-label">Archivo completo</label>
                         <div class="col-sm-9 col-xs-9">
-                            {!! Form::file('archivo', ['class'=>'filestyle' ,'data-buttonName'=>'btn-primary'])!!}
+                            <input type="file" name="archivo" id="archivo" class="filestyle" data-buttonName="btn-primary">
                             @if($errors->has('archivo'))
                                 <span class="help-block col-sm-12 col-xs-12">{{$errors->first('archivo')}}</span>
                             @endif
@@ -70,11 +70,11 @@
                 {{--<p class="help-block pull-left">Ingrese un archivo CSV acorde al formato permitido.--}}
                     {{--<a class="btn btn-default btn-xs">Ver instrucciones</a>--}}
                 {{--</p>--}}
-                {!! Form::submit('Subir y procesar', ['class' => 'btn btn-primary pull-right']) !!}
+                <button type="submit" class="btn btn-primary pull-right">Subir y procesar</button>
                 <a href="{{route('presentismosMasivoIndex')}}" class="btn btn-default col-sm-offset-2">Atr&aacute;s</a>
 
             </div>
-            {!! Form::close() !!}
+            </form>
         </div>
     </div>
 
