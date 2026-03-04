@@ -69,7 +69,7 @@ class PersonalesController extends AppBaseController
                 ->withInput();
             
         } catch (\Exception $e) {
-            \Log::error('PersonalesController::store failed: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
+            \Illuminate\Support\Facades\Log::error('PersonalesController::store failed: ' . $e->getMessage() . ' in ' . $e->getFile() . ':' . $e->getLine());
             Flash::error('No se pudo guadar los datos personales.');
 
             return redirect(route('agentesCreatePersonales'))

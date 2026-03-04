@@ -20,7 +20,7 @@ class FechaContrato
         $fecha = \Illuminate\Support\Facades\Date::createFromFormat('Y-m-d', (new \DateTime($fecha))->format('Y-m-d'));
         
         /** @var \DateInterval $diff */
-        $diff = $fecha->diffInDays($today, false);
+        $diff = (int) $fecha->diffInDays($today);
         
         if ($diff > config('cat.fecha_contrato_registro')) {
             return false;
