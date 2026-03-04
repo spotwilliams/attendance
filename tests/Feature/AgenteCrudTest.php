@@ -306,7 +306,6 @@ class AgenteCrudTest extends TestCase
 
         $response = $this->actingAs($this->user)
             ->json('post', '/agentes/store/laborales', $data);
-        $response->dump();
 
         $this->assertDatabaseHas('contratos', ['id_agente' => $agente->id]);
         $this->assertDatabaseHas('contratos_historicos', ['id_agente' => $agente->id]);

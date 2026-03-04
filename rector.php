@@ -47,8 +47,11 @@ return RectorConfig::configure()
         // Laravel 9.0 -> 10.0 upgrade (completed)
 //        LaravelSetList::LARAVEL_100,
 
-        // Laravel 10.0 -> 11.0 upgrade
-        LaravelSetList::LARAVEL_110,
+        // Laravel 10.0 -> 11.0 upgrade (completed)
+//        LaravelSetList::LARAVEL_110,
+
+        // Laravel 11.0 -> 12.0 upgrade
+        LaravelSetList::LARAVEL_120,
 
         // Laravel code quality improvements
         LaravelSetList::LARAVEL_CODE_QUALITY,
