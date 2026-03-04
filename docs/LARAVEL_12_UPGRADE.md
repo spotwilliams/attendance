@@ -37,35 +37,35 @@
 
 #### Carbon 3
 Laravel 12 bumps Carbon to v3. Review any direct Carbon usage:
-- [ ] `Carbon::parse()` / `Carbon::now()` — mostly compatible
-- [ ] Check `diffInXxx()` methods — some return types changed to floats
-- [ ] Check `isoFormat()` calls — locale handling changed
-- [ ] Check `CarbonInterval` usage in schedules or payroll calculations
-- [ ] Search codebase: `grep -r "Carbon" app/ --include="*.php" -l`
+- [X] `Carbon::parse()` / `Carbon::now()` — compatible ✅
+- [X] Check `diffInXxx()` methods — fixed `FechaContrato.php:23`: dropped `false` arg, cast to `(int)` ✅
+- [X] Check `isoFormat()` calls — no usage found ✅
+- [X] Check `CarbonInterval` usage in schedules or payroll calculations — no usage found ✅
+- [X] Search codebase: `grep -r "Carbon" app/ --include="*.php" -l`
 
 #### Database / Eloquent
-- [ ] `Model::getPdo()` / `Model::getReadPdo()` removed — replace with `DB::getRawPdo()` / `DB::getRawReadPdo()` (search codebase)
-- [ ] `castAndFillable` removal — verify no custom casts rely on this behaviour
-- [ ] Review any `Model::unguard()` / `Model::reguard()` usage — still supported but audit
+- [X] `Model::getPdo()` / `Model::getReadPdo()` removed — no usage found ✅
+- [X] `castAndFillable` removal — no usage found ✅
+- [X] Review any `Model::unguard()` / `Model::reguard()` usage — no usage found ✅
 
 #### Routing
-- [ ] Laravel 12 no longer includes `APP_URL` as a fallback for `url()` in console — check any artisan commands that generate URLs
-- [ ] Verify all named routes still resolve correctly
+- [X] Laravel 12 no longer includes `APP_URL` as a fallback for `url()` in console — no console URL generation found ✅
+- [ ] Verify all named routes still resolve correctly (manual smoke test)
 
 #### Validation
-- [ ] `Rule::unique()` and `Rule::exists()` — minor signature changes in L12; audit `LaboralesRequest`, `LaboralesRequestUpdate`, and other FormRequests
-- [ ] Check `Validator::make()` usage in controllers for deprecated rule formats
+- [X] `Rule::unique()` and `Rule::exists()` — no usage found, string-based rules only ✅
+- [X] Check `Validator::make()` usage in controllers — 3 usages found, all use standard string rules, no deprecated formats ✅
 
 #### Testing
-- [ ] `assertDatabaseHas()` / `assertDatabaseMissing()` — behaviour unchanged, but Carbon 3 date comparisons in factories need review
+- [X] `assertDatabaseHas()` / `assertDatabaseMissing()` — no Carbon date comparisons in factories found ✅
 - [ ] Run full test suite after upgrade
 
 ### PHP 8.3 Features / Deprecations
-- [ ] `json_validate()` — new built-in; consider replacing any manual JSON validation
-- [ ] `array_sum()` / `array_product()` — stricter on mixed types (throws on non-numeric); audit any dynamic array operations in payroll/report calculations
-- [ ] Typed class constants — optional modernization (e.g. `EstadoContrato`, `TipoContrato` constants)
-- [ ] Dynamic class constant fetch — already works in 8.2, now fully stable
-- [ ] Readonly properties in promoted constructor params — no breaking changes
+- [X] `json_validate()` — no manual JSON validation found, only standard json_decode/json_encode ✅
+- [X] `array_sum()` / `array_product()` — no usage found ✅
+- [ ] Typed class constants — optional modernization (`EstadoContrato`, `TipoContrato`, `TipoPresentismo`, `Contrato`, `Periodo`, `Param`) — deferred
+- [X] Dynamic class constant fetch — already works in 8.2, now fully stable ✅
+- [X] Readonly properties in promoted constructor params — no breaking changes ✅
 
 ### Test
 
@@ -85,7 +85,7 @@ docker-compose -f docker-compose.php83.yml exec attendance.web php artisan test 
 - [X] App boots (Laravel 12.53.0 / PHP 8.3.30 confirmed)
 - [X] PHPUnit suite passes (106/106 ✅)
 - [ ] Login works
-- [ ] Agent CRUD
+- [X] Agent CRUD
 - [ ] Attendance recording
 - [ ] Excel exports
 - [ ] Bulk operations (Masivo)
