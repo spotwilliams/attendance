@@ -2,7 +2,8 @@
 
 namespace Cat\Repositories;
 
-use Cat\Helpers\Cache;
+use Carbon\Carbon;
+use Illuminate\Support\Facades\Cache;
 use Cat\Models\Agente;
 use Cat\Models\ContratoHistorico;
 use Cat\Models\Periodo;
@@ -15,7 +16,7 @@ use Illuminate\Support\Collection;
 
 class TipoPresentismosRepository
 {
-    
+
     /**
      *
      * @param bool $cache True: se saca de cache
@@ -28,10 +29,10 @@ class TipoPresentismosRepository
         } else {
             $bases = TipoPresentismo::all();
         }
-        
+
         return $bases;
     }
-    
+
     /**
      *
      * @param bool $cache True: se saca de cache
@@ -41,47 +42,40 @@ class TipoPresentismosRepository
     {
         $tipoContratoEloquent = TipoPresentismo::where('aplica', '=', $tipoContrato->codigo)
             ->orWhere('aplica', '=', 'TODOS');
-        $key                  = $tipoContrato->codigo . '_tipos_presentismo';
+        $key = $tipoContrato->codigo . '_tipos_presentismo';
         if ($cache) {
             $bases = Cache::get($key, fn() => $tipoContratoEloquent->get());
         } else {
             $bases = $tipoContratoEloquent->get();
         }
-        
+
         return $bases;
     }
-    
-    public static function getByTipoContratoOnDate(Agente $agente, \DateTime $date = null, $cache = true)
+
+    public static function getByTipoContratoOnDate(Agente $agente, Carbon $date): Collection
     {
-        if ($date !== null) {
-            
-            try {
-                /** @var ContratoHistorico $contrato */
-                $contrato = $agente->contratoOnDate($date)
-                    ->with('tipoContrato')
-                    ->firstOrFail();
-                
-                $tipoContratoEloquent = TipoPresentismo::where('aplica', '=', $contrato->tipoContrato->codigo)
-                    ->orWhere('aplica', '=', 'TODOS');
-                
-                $key = $contrato->tipoContrato->codigo . '_tipos_presentismo';
-                if ($cache) {
-                    $tiposPresentismos = Cache::get($key, fn() => $tipoContratoEloquent->get());
-                } else {
-                    $tiposPresentismos = $tipoContratoEloquent->get();
-                }
-                
-                return $tiposPresentismos;
-            } catch (ModelNotFoundException $sinCotratoVigente) {
-                return new Collection();
-            }
-        } else {
-            // No se especifio una fecha....
+        $contractOfAgentBasedOnDate = $agente->contratoOnDate($date)->select('id_tipo_contrato');
+        $typeOfContractOfAgentBasedOnDate = TipoContrato::query()
+            ->select('tipo_contratos.codigo')
+            ->whereIn('id', $contractOfAgentBasedOnDate)
+            ->toBase()
+            ->first();
+
+        if ($typeOfContractOfAgentBasedOnDate === null) {
             return new Collection();
-            
         }
+
+        $attendanceTypes = TipoPresentismo::query()
+            ->where('aplica', $typeOfContractOfAgentBasedOnDate->codigo)
+            ->orWhere('aplica', '=', 'TODOS');
+
+        return Cache::remember(
+            key: "tipo_presentismos_{$typeOfContractOfAgentBasedOnDate->codigo}",
+            ttl: now()->addDay(),
+            callback: fn () => $attendanceTypes->get()
+        );
     }
-    
+
     /**
      * @param Agente $agente
      * @param Periodo $periodo
@@ -90,23 +84,23 @@ class TipoPresentismosRepository
      */
     public static function getFaltasInjustificadas(Agente $agente, Periodo $periodo, $excluirTardanza = true)
     {
-        
+
         /** @var Builder $faltas Cantidad de dias con faltas no justificadas */
         $faltas = Presentismo::where('id_agente', '=', $agente->id)
             ->where('id_periodo', '=', $periodo->id)
             ->where('injustificado', '=', true)
             ->with('tipoPresentismo');
-        
+
         if ($excluirTardanza) {
             /** @var TipoPresentismo $tipoTardanza codigo de los injustifados */
             $tipoTardanza = TipoPresentismo::tardanzas();
             $faltas->where('id_tipo_presentismo', '<>', $tipoTardanza->id);
         }
-        
+
         return $faltas->get();
-        
+
     }
-    
+
     /**
      * @param Agente $agente
      * @param Periodo $periodo
@@ -130,10 +124,10 @@ class TipoPresentismosRepository
         if (self::isWorkingOnWeekend($agente)) {
             $diasADescontar *= config('cat.presentismos.equivalencia.injustificado.fin_semana');
         }
-        
+
         return $diasADescontar;
     }
-    
+
     private static function isWorkingOnWeekend(Agente $agente)
     {
         return $agente
@@ -143,7 +137,7 @@ class TipoPresentismosRepository
             ->first()
             ->esFinDeSemana();
     }
-    
+
     public static function getTardanzasGroupedByNRows(Agente $agente, Periodo $periodo)
     {
         /** @var TipoPresentismo $tardanza codigo de los injustifados */
@@ -155,8 +149,8 @@ class TipoPresentismosRepository
             ->where('id_periodo', '=', $periodo->id)
             ->where('id_tipo_presentismo', '=', $tardanza->id)
             ->get();
-        
+
         return $tardanzas->chunk(config('cat.presentismos.equivalencia.injustificado.tardanza'));
-        
+
     }
 }

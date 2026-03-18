@@ -408,3 +408,63 @@ it('includes attendance records within date range', function () {
             )
         );
 });
+
+it('excludes attendance records outside the date range', function () {
+    $base = Base::factory()->create();
+    $activeState = EstadoContrato::factory()->activo()->create();
+    $presenteType = TipoPresentismo::factory()->presente()->create();
+    $ausenteType = TipoPresentismo::factory()->ausente()->create();
+
+    $agente = Agente::factory()->create();
+    Operativo::factory()->create([
+        'id_agente' => $agente->id,
+        'id_base' => $base->id,
+    ]);
+    $contrato = Contrato::factory()->create([
+        'id_agente' => $agente->id,
+        'id_estado_contrato' => $activeState->id,
+    ]);
+
+    $dateFrom = now()->subDays(3)->format('Y-m-d');
+    $dateTo = now()->format('Y-m-d');
+
+    // Record inside the range — should be included
+    Presentismo::factory()->create([
+        'id_agente' => $agente->id,
+        'id_tipo_presentismo' => $presenteType->id,
+        'id_tipo_contrato' => $contrato->tipoContrato->id,
+        'fecha' => now()->subDays(1)->format('Y-m-d'),
+    ]);
+
+    // Record before the range — should be excluded
+    Presentismo::factory()->create([
+        'id_agente' => $agente->id,
+        'id_tipo_presentismo' => $ausenteType->id,
+        'id_tipo_contrato' => $contrato->tipoContrato->id,
+        'fecha' => now()->subDays(10)->format('Y-m-d'),
+    ]);
+
+    // Record after the range — should be excluded
+    Presentismo::factory()->create([
+        'id_agente' => $agente->id,
+        'id_tipo_presentismo' => $ausenteType->id,
+        'id_tipo_contrato' => $contrato->tipoContrato->id,
+        'fecha' => now()->addDays(5)->format('Y-m-d'),
+    ]);
+
+    $this->actingAs($this->user)
+        ->get(route('attendance.index', [
+            'base_id' => $base->id,
+            'date_from' => $dateFrom,
+            'date_to' => $dateTo,
+        ]))
+        ->assertSuccessful()
+        ->assertInertia(fn (Assert $page) => $page
+            ->reloadOnly(['agents'],
+                fn (Assert $reload) => $reload
+                    ->has('agents.data', 1)
+                    ->has('agents.data.0.presentismos', 1)
+                    ->where('agents.data.0.presentismos.0.tipo_presentismo.codigo', 'P')
+            )
+        );
+});

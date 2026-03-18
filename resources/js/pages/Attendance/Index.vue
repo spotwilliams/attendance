@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { computed, ref } from 'vue';
+import { computed, ref, onMounted } from 'vue';
 import { Head, router } from '@inertiajs/vue3';
 import AppLayout from '@/layouts/AppLayout.vue';
 import FilterBar from './components/FilterBar.vue';
-import AgentList from './components/AgentList.vue';
+import AttendanceGrid from './components/AttendanceGrid.vue';
 import { useFilters } from '@/composables/useFilters';
-import type { Base, Shift, Area, Role, PaginatedAgents } from '@/types/attendance';
+import type { Base, Shift, Area, Role, PaginatedAgents, AttendanceRecord } from '@/types/attendance';
 
 const props = defineProps<{
     bases: Base[];
@@ -21,6 +21,13 @@ const loading = ref(false);
 const selectedBase = computed(() =>
     props.bases.find(b => b.id === filters.base_id) ?? null
 );
+
+// Auto-search if filters were restored from localStorage
+onMounted(() => {
+    if (filters.base_id && !props.agents) {
+        search();
+    }
+});
 
 function search(page = 1) {
     if (!filters.base_id) return;
@@ -49,6 +56,25 @@ function handleReset() {
         onFinish: () => { loading.value = false; },
     });
 }
+
+function onCellSaved(agentId: number, record: AttendanceRecord | null, fecha: string) {
+    if (!props.agents) return;
+
+    const agent = props.agents.data.find(a => a.id === agentId);
+    if (!agent) return;
+
+    // Update local state without re-fetching
+    const idx = agent.presentismos.findIndex(p => p.fecha === fecha);
+    if (record) {
+        if (idx >= 0) {
+            agent.presentismos[idx] = record;
+        } else {
+            agent.presentismos.push(record);
+        }
+    } else if (idx >= 0) {
+        agent.presentismos.splice(idx, 1);
+    }
+}
 </script>
 
 <template>
@@ -75,7 +101,7 @@ function handleReset() {
             />
 
             <!-- Results -->
-            <AgentList
+            <AttendanceGrid
                 v-if="agents && selectedBase"
                 :agents="agents"
                 :base="selectedBase"
@@ -83,6 +109,7 @@ function handleReset() {
                 :date-to="filters.date_to"
                 :loading="loading"
                 @paginate="search"
+                @saved="onCellSaved"
             />
 
             <!-- Initial empty state -->

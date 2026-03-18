@@ -14,6 +14,8 @@ use Cat\Modules\Presentismo\Controllers\GeneralController;
 use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Modules\Presentismo\Controllers\PorAgenteController;
 use Cat\Modules\Presentismo\Controllers\Registration\AttendanceController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceStoreController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceTypesController;
 use Cat\Modules\Presentismo\Controllers\Registro\ComentarioController;
 
 /*
@@ -26,6 +28,12 @@ Route::group(
     function (): void {
         Route::get('attendance', AttendanceController::class)
             ->name('attendance.index');
+
+        Route::post('attendance/store', AttendanceStoreController::class)
+            ->name('attendance.store');
+
+        Route::get('attendance/types/agent/{agent}/date/{date}', AttendanceTypesController::class)
+            ->name('attendance.types');
     }
 );
 

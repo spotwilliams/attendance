@@ -75,6 +75,18 @@ export interface PaginatedAgents {
     to: number | null;
 }
 
+export interface StoreResponse {
+    message: string;
+    code: number;
+    agente: number;
+    presentismo: AttendanceRecord | null;
+}
+
+export interface TypesResponse {
+    types: AttendanceType[];
+    has_contract: boolean;
+}
+
 export interface Filters {
     base_id: number | null;
     shifts: number[];

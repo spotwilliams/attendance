@@ -43,7 +43,11 @@ class AttendanceController extends Controller
         $query = $this->repository
             ->getEloquentAgentesBetweenDates($base, $dateFrom, $dateTo)
             ->with([
-                'presentismos.tipoPresentismo',
+                'presentismos' => function ($q) use ($dateFrom, $dateTo): void {
+                    $q->whereDate('fecha', '>=', $dateFrom->format('Y-m-d'))
+                        ->whereDate('fecha', '<=', $dateTo->format('Y-m-d'))
+                        ->with('tipoPresentismo');
+                },
                 'contrato.tipoContrato',
                 'operativo.turno',
                 'operativo.area',
