@@ -20,6 +20,9 @@ return Application::configure(basePath: dirname(__DIR__))
         ]);
 
         // Web group middleware (previously $middlewareGroups['web'] in Http/Kernel.php)
+        $middleware->web(append: [
+            \Cat\Http\Middleware\HandleInertiaRequests::class,
+        ]);
         $middleware->web(replace: [
             \Cat\Http\Middleware\EncryptCookies::class,
             \Illuminate\Cookie\Middleware\AddQueuedCookiesToResponse::class,
