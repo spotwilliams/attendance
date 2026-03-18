@@ -40,7 +40,7 @@ function getRecordForDate(agent: Agent, dateKey: string): AttendanceRecord | und
 }
 
 function hasContract(agent: Agent): boolean {
-    return agent.contrato !== null;
+    return agent.has_contract;
 }
 
 function formatDate(dateStr: string): string {
@@ -103,8 +103,8 @@ function formatDate(dateStr: string): string {
 
                         <!-- Contract type -->
                         <td class="px-2 py-2 text-xs text-gray-500">
-                            <span v-if="agent.contrato?.tipo_contrato" class="truncate block max-w-[90px]">
-                                {{ agent.contrato.tipo_contrato.descripcion }}
+                            <span v-if="agent.contract_type" class="truncate block max-w-[90px]">
+                                {{ agent.contract_type }}
                             </span>
                             <span v-else class="text-gray-300">—</span>
                         </td>

@@ -36,33 +36,14 @@ export interface AttendanceRecord {
     tipo_presentismo?: AttendanceType;
 }
 
-export interface ContractType {
-    id: number;
-    descripcion: string;
-}
-
-export interface Contract {
-    id: number;
-    id_tipo_contrato: number;
-    tipo_contrato?: ContractType;
-}
-
-export interface Assignment {
-    id: number;
-    turno?: Shift;
-    area?: Area;
-    funcion?: Role;
-}
-
 export interface Agent {
     id: number;
     nombre: string;
     apellido: string;
     cuit: string;
-    observacion: string | null;
+    contract_type: string | null;
+    has_contract: boolean;
     presentismos: AttendanceRecord[];
-    contrato: Contract | null;
-    operativo: Assignment | null;
 }
 
 export interface PaginatedAgents {

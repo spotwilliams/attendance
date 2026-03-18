@@ -3,21 +3,19 @@
 namespace Cat\Modules\Presentismo\Controllers\Registration;
 
 use Cat\Http\Controllers\Controller;
+use Cat\Models\Agente;
 use Cat\Models\Area;
 use Cat\Models\Base;
+use Cat\Models\EstadoContrato;
 use Cat\Models\Funcion;
 use Cat\Models\Turno;
-use Cat\Modules\Presentismo\Repositories\PresentismoRepository;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use Inertia\Inertia;
 use Inertia\Response;
 
 class AttendanceController extends Controller
 {
-    public function __construct(
-        private PresentismoRepository $repository,
-    ) {}
-
     public function __invoke(Request $request): Response
     {
         return Inertia::render('Attendance/Index', [
@@ -37,21 +35,24 @@ class AttendanceController extends Controller
 
         $base = Base::findOrFail($validated['base_id']);
         $formRequest = AttendanceAgentsRequest::createFrom($request);
-        $dateFrom = $formRequest->dateFrom();
-        $dateTo = $formRequest->dateTo();
+        $dateFrom = $formRequest->dateFrom()->format('Y-m-d');
+        $dateTo = $formRequest->dateTo()->format('Y-m-d');
 
-        $query = $this->repository
-            ->getEloquentAgentesBetweenDates($base, $dateFrom, $dateTo)
-            ->with([
-                'presentismos' => function ($q) use ($dateFrom, $dateTo): void {
-                    $q->whereDate('fecha', '>=', $dateFrom->format('Y-m-d'))
-                        ->whereDate('fecha', '<=', $dateTo->format('Y-m-d'))
-                        ->with('tipoPresentismo');
-                },
-                'contrato.tipoContrato',
-                'operativo.turno',
-                'operativo.area',
-                'operativo.funcion',
+        $activeStates = EstadoContrato::getEstadosEquivalentesActivos();
+
+        $query = Agente::query()
+            ->join('operativos', 'agentes.id', '=', 'operativos.id_agente')
+            ->join('contratos', 'agentes.id', '=', 'contratos.id_agente')
+            ->leftJoin('tipo_contratos', 'contratos.id_tipo_contrato', '=', 'tipo_contratos.id')
+            ->where('operativos.id_base', $base->id)
+            ->whereIn('contratos.id_estado_contrato', $activeStates->pluck('id'))
+            ->orderBy('agentes.apellido', 'asc')
+            ->select([
+                'agentes.id',
+                'agentes.nombre',
+                'agentes.apellido',
+                'agentes.cuit',
+                DB::raw("tipo_contratos.descripcion as contract_type"),
             ]);
 
         if ($request->filled('shifts')) {
@@ -66,6 +67,63 @@ class AttendanceController extends Controller
             $query->whereIn('operativos.id_funcion', $request->input('roles'));
         }
 
-        return $query->paginate(25)->toArray();
+        $paginated = $query->paginate(25);
+
+        // Load presentismos with tipo_presentismo via a single query using join
+        $agentIds = collect($paginated->items())->pluck('id');
+
+        $presentismos = [];
+        if ($agentIds->isNotEmpty()) {
+            $rows = DB::table('presentismos')
+                ->join('tipos_presentismos', 'presentismos.id_tipo_presentismo', '=', 'tipos_presentismos.id')
+                ->whereIn('presentismos.id_agente', $agentIds)
+                ->whereDate('presentismos.fecha', '>=', $dateFrom)
+                ->whereDate('presentismos.fecha', '<=', $dateTo)
+                ->select([
+                    'presentismos.id',
+                    'presentismos.id_agente',
+                    'presentismos.fecha',
+                    'presentismos.id_tipo_presentismo',
+                    'presentismos.injustificado',
+                    'tipos_presentismos.codigo as tipo_codigo',
+                    'tipos_presentismos.descripcion as tipo_descripcion',
+                    'tipos_presentismos.color as tipo_color',
+                    'tipos_presentismos.color_letra as tipo_color_letra',
+                ])
+                ->get();
+
+            foreach ($rows as $row) {
+                $presentismos[$row->id_agente][] = [
+                    'id' => $row->id,
+                    'id_agente' => $row->id_agente,
+                    'fecha' => $row->fecha,
+                    'id_tipo_presentismo' => $row->id_tipo_presentismo,
+                    'injustificado' => (bool) $row->injustificado,
+                    'tipo_presentismo' => [
+                        'id' => $row->id_tipo_presentismo,
+                        'codigo' => $row->tipo_codigo,
+                        'descripcion' => $row->tipo_descripcion,
+                        'color' => $row->tipo_color,
+                        'color_letra' => $row->tipo_color_letra,
+                    ],
+                ];
+            }
+        }
+
+        // Transform paginated result
+        $result = $paginated->toArray();
+        $result['data'] = collect($result['data'])->map(function ($agent) use ($presentismos) {
+            return [
+                'id' => $agent['id'],
+                'nombre' => $agent['nombre'],
+                'apellido' => $agent['apellido'],
+                'cuit' => $agent['cuit'],
+                'contract_type' => $agent['contract_type'],
+                'has_contract' => $agent['contract_type'] !== null,
+                'presentismos' => $presentismos[$agent['id']] ?? [],
+            ];
+        })->all();
+
+        return $result;
     }
 }

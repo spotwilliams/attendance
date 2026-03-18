@@ -2,7 +2,6 @@
 
 namespace Cat\Modules\Presentismo\Controllers\Registration;
 
-use Cat\Helpers\Calculation;
 use Illuminate\Foundation\Http\FormRequest;
 
 class AttendanceAgentsRequest extends FormRequest
@@ -22,11 +21,8 @@ class AttendanceAgentsRequest extends FormRequest
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
             'shifts' => 'nullable|array',
-//            'shifts.*' => 'exists:turnos,id',
             'areas' => 'nullable|array',
-//            'areas.*' => 'exists:areas,id',
             'roles' => 'nullable|array',
-//            'roles.*' => 'exists:funciones,id',
         ];
     }
 
@@ -37,14 +33,7 @@ class AttendanceAgentsRequest extends FormRequest
 
     public function dateTo(): \DateTime
     {
-        $dateFrom = $this->dateFrom();
-        $dateTo = new \DateTime($this->input('date_to'));
-
-        if ($dateFrom->diff($dateTo)->days > Calculation::MAX_DIFF_BETWEEN_DATES) {
-            return (clone $dateFrom)->modify('+' . Calculation::MAX_DIFF_BETWEEN_DATES . ' days');
-        }
-
-        return $dateTo;
+        return new \DateTime($this->input('date_to'));
     }
 
     /**
