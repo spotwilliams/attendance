@@ -100,9 +100,24 @@ function onCellSaved(agentId: number, record: AttendanceRecord | null, fecha: st
                 @reset="handleReset"
             />
 
+            <!-- Loading skeleton (initial load) -->
+            <div v-if="loading && !agents" class="bg-white rounded-xl border border-gray-200 overflow-hidden">
+                <div class="border-b border-gray-200 px-4 lg:px-5 py-3">
+                    <div class="h-5 w-40 bg-gray-200 rounded animate-pulse mb-2" />
+                    <div class="h-4 w-64 bg-gray-100 rounded animate-pulse" />
+                </div>
+                <div class="p-4 space-y-3">
+                    <div v-for="i in 8" :key="i" class="flex gap-2 items-center">
+                        <div class="w-[200px] h-8 bg-gray-100 rounded animate-pulse flex-shrink-0" />
+                        <div class="w-[100px] h-8 bg-gray-50 rounded animate-pulse flex-shrink-0" />
+                        <div v-for="j in 7" :key="j" class="w-[80px] h-8 bg-gray-100 rounded animate-pulse flex-shrink-0" />
+                    </div>
+                </div>
+            </div>
+
             <!-- Results -->
             <AttendanceGrid
-                v-if="agents && selectedBase"
+                v-else-if="agents && selectedBase"
                 :agents="agents"
                 :base="selectedBase"
                 :date-from="filters.date_from"

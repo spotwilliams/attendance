@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { ref, onMounted } from 'vue';
+import { ref, computed, onMounted, nextTick, watch } from 'vue';
+import { onKeyStroke } from '@vueuse/core';
 import Button from 'primevue/button';
 import type { AttendanceRecord, AttendanceType, TypesResponse, StoreResponse } from '@/types/attendance';
 
@@ -18,6 +19,54 @@ const hasContract = ref(true);
 const loadingTypes = ref(true);
 const saving = ref(false);
 const error = ref<string | null>(null);
+const search = ref('');
+const searchInput = ref<HTMLInputElement>();
+const highlightedIndex = ref(-1);
+
+const filteredTypes = computed(() => {
+    if (!search.value) return types.value;
+    const q = search.value.toLowerCase();
+    return types.value.filter(t =>
+        t.codigo.toLowerCase().includes(q) || t.descripcion.toLowerCase().includes(q)
+    );
+});
+
+// Reset highlight when filtered list changes
+watch(filteredTypes, () => {
+    highlightedIndex.value = filteredTypes.value.length > 0 ? 0 : -1;
+});
+
+onKeyStroke('ArrowDown', (e) => {
+    e.preventDefault();
+    const len = filteredTypes.value.length;
+    if (len === 0) return;
+    highlightedIndex.value = (highlightedIndex.value + 1) % len;
+    scrollToHighlighted();
+}, { target: searchInput })
+
+onKeyStroke('ArrowUp', (e) => {
+    e.preventDefault();
+    const len = filteredTypes.value.length;
+    if (len === 0) return;
+    highlightedIndex.value = (highlightedIndex.value - 1 + len) % len;
+    scrollToHighlighted();
+}, { target: searchInput })
+
+onKeyStroke('Enter', (e) => {
+    e.preventDefault();
+    const len = filteredTypes.value.length;
+    if (len === 0) return;
+    if (highlightedIndex.value >= 0 && highlightedIndex.value < len) {
+        selectType(filteredTypes.value[highlightedIndex.value].id);
+    }
+}, { target: searchInput })
+
+function scrollToHighlighted() {
+    nextTick(() => {
+        const el = document.getElementById(`type-option-${highlightedIndex.value}`);
+        el?.scrollIntoView({ block: 'nearest' });
+    });
+}
 
 onMounted(async () => {
     try {
@@ -31,6 +80,7 @@ onMounted(async () => {
         error.value = 'Error al cargar tipos';
     } finally {
         loadingTypes.value = false;
+        nextTick(() => searchInput.value?.focus());
     }
 });
 
@@ -106,24 +156,45 @@ async function clear() {
             Sin contrato en esta fecha
         </div>
 
-        <!-- Types list -->
-        <div v-else class="space-y-0.5 max-h-48 overflow-y-auto">
-            <button
-                v-for="type in types"
-                :key="type.id"
-                class="w-full flex items-center gap-2 px-2 py-1.5 rounded text-left text-xs transition-colors hover:bg-gray-100"
-                :class="{ 'ring-2 ring-orange-400 bg-orange-50': currentRecord?.id_tipo_presentismo === type.id }"
-                :disabled="saving"
-                @click="selectType(type.id)"
-            >
-                <span
-                    class="inline-flex items-center justify-center w-8 h-5 rounded text-[10px] font-bold flex-shrink-0"
-                    :style="{ backgroundColor: type.color, color: type.color_letra }"
+        <!-- Types with search -->
+        <template v-else>
+            <!-- Search input -->
+            <input
+                ref="searchInput"
+                v-model="search"
+                type="text"
+                placeholder="Buscar tipo..."
+                class="w-full px-2 py-1.5 text-xs border border-gray-200 rounded focus:outline-none focus:ring-1 focus:ring-orange-400 focus:border-orange-400"
+            />
+
+            <!-- Types list -->
+            <div class="space-y-0.5 max-h-48 overflow-y-auto">
+                <button
+                    v-for="(type, idx) in filteredTypes"
+                    :key="type.id"
+                    :id="`type-option-${idx}`"
+                    class="w-full flex items-center gap-2 px-2 py-1.5 rounded text-left text-xs transition-colors"
+                    :class="{
+                        'ring-2 ring-orange-400 bg-orange-50': currentRecord?.id_tipo_presentismo === type.id,
+                        'bg-gray-100': highlightedIndex === idx && currentRecord?.id_tipo_presentismo !== type.id,
+                    }"
+                    :disabled="saving"
+                    @click="selectType(type.id)"
                 >
-                    {{ type.codigo }}
-                </span>
-                <span class="text-gray-700 truncate">{{ type.descripcion }}</span>
-            </button>
-        </div>
+                    <span
+                        class="inline-flex items-center justify-center w-8 h-5 rounded text-[10px] font-bold flex-shrink-0"
+                        :style="{ backgroundColor: type.color, color: type.color_letra }"
+                    >
+                        {{ type.codigo }}
+                    </span>
+                    <span class="text-gray-700 truncate">{{ type.descripcion }}</span>
+                </button>
+
+                <!-- No results -->
+                <div v-if="filteredTypes.length === 0" class="text-xs text-gray-400 text-center py-2">
+                    Sin resultados para "{{ search }}"
+                </div>
+            </div>
+        </template>
     </div>
 </template>
