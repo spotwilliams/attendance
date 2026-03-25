@@ -109,9 +109,9 @@ const commentAgentName = ref('');
 const showCommentDialog = ref(false);
 
 function openCommentDialog(agent: Agent, dateKey: string) {
-  isEditing.value = true;
   const record = getRecordForDate(agent, dateKey);
   if (!record) return;
+  isEditing.value = true;
   commentRecord.value = record;
   commentAgentName.value = `${agent.apellido}, ${agent.nombre}`;
   showCommentDialog.value = true;
