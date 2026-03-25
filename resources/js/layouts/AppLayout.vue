@@ -71,7 +71,7 @@ function toggleMenu(label: string) {
                     <button
                         class="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100"
                         aria-label="Abrir menú de navegación"
-                        :aria-expanded="String(sidebarOpen)"
+                        :aria-expanded="sidebarOpen"
                         aria-controls="sidebar-nav"
                         @click="sidebarOpen = !sidebarOpen"
                     >
@@ -83,7 +83,7 @@ function toggleMenu(label: string) {
                     <button
                         class="hidden lg:flex p-2 rounded-md text-gray-500 hover:bg-gray-100"
                         aria-label="Colapsar navegación"
-                        :aria-expanded="String(!sidebarCollapsed)"
+                        :aria-expanded="!sidebarCollapsed"
                         aria-controls="sidebar-nav"
                         @click="sidebarCollapsed = !sidebarCollapsed"
                     >
