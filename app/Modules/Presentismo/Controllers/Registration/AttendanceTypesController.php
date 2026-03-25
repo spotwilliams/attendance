@@ -14,7 +14,11 @@ class AttendanceTypesController extends Controller
     {
         $request->merge(['date' => $date])->validate(['date' => 'required|date']);
 
-        $types = TipoPresentismosRepository::getByTipoContratoOnDate(agente: $agent, date: $request->date('date'));
+        $parsedDate = $request->date('date');
+        $hasContract = $agent->contratoOnDate($parsedDate)->exists();
+        $types = $hasContract
+            ? TipoPresentismosRepository::getByTipoContratoOnDate(agente: $agent, date: $parsedDate)
+            : collect();
 
         return response()->json([
             'types' => $types->map(fn ($type) => [
@@ -24,7 +28,7 @@ class AttendanceTypesController extends Controller
                 'color' => $type->color,
                 'color_letra' => $type->color_letra,
             ])->values(),
-            'has_contract' => $types->isNotEmpty(),
+            'has_contract' => $hasContract,
         ]);
     }
 }

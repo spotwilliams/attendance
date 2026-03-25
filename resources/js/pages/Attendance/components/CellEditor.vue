@@ -73,6 +73,11 @@ onMounted(async () => {
         const response = await fetch(`/app/attendance/types/agent/${props.agentId}/date/${props.fecha}`, {
             headers: { 'Accept': 'application/json', 'X-Requested-With': 'XMLHttpRequest' },
         });
+        if (!response.ok) {
+            const errorData = await response.json().catch(() => null);
+            error.value = errorData?.message || `Error ${response.status}`;
+            return;
+        }
         const data: TypesResponse = await response.json();
         types.value = data.types;
         hasContract.value = data.has_contract;
@@ -135,6 +140,7 @@ async function clear() {
                 severity="danger"
                 text
                 size="small"
+                aria-label="Eliminar presentismo"
                 @click="clear"
                 :loading="saving"
                 v-tooltip.left="'Eliminar'"

@@ -21,8 +21,11 @@ class AttendanceAgentsRequest extends FormRequest
             'date_from' => 'required|date',
             'date_to' => 'required|date|after_or_equal:date_from',
             'shifts' => 'nullable|array',
+            'shifts.*' => 'integer|distinct',
             'areas' => 'nullable|array',
+            'areas.*' => 'integer|distinct',
             'roles' => 'nullable|array',
+            'roles.*' => 'integer|distinct',
         ];
     }
 

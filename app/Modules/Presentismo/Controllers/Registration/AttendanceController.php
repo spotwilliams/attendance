@@ -46,6 +46,11 @@ class AttendanceController extends Controller
             ->leftJoin('tipo_contratos', 'contratos.id_tipo_contrato', '=', 'tipo_contratos.id')
             ->where('operativos.id_base', $base->id)
             ->whereIn('contratos.id_estado_contrato', $activeStates->pluck('id'))
+            ->where('contratos.fecha_ingreso', '<=', $dateTo)
+            ->where(function ($q) use ($dateFrom) {
+                $q->whereNull('contratos.fecha_fin')
+                    ->orWhere('contratos.fecha_fin', '>=', $dateFrom);
+            })
             ->orderBy('agentes.apellido', 'asc')
             ->select([
                 'agentes.id',

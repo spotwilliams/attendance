@@ -50,9 +50,10 @@ function search(page = 1) {
 
 function handleReset() {
     reset();
-    router.reload({
+    router.visit('/app/attendance', {
         only: ['agents'],
-        data: {},
+        replace: true,
+        preserveState: true,
         onFinish: () => { loading.value = false; },
     });
 }

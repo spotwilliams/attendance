@@ -70,6 +70,9 @@ function toggleMenu(label: string) {
                     <!-- Mobile hamburger -->
                     <button
                         class="lg:hidden p-2 rounded-md text-gray-500 hover:bg-gray-100"
+                        aria-label="Abrir menú de navegación"
+                        :aria-expanded="String(sidebarOpen)"
+                        aria-controls="sidebar-nav"
                         @click="sidebarOpen = !sidebarOpen"
                     >
                         <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -79,6 +82,9 @@ function toggleMenu(label: string) {
                     <!-- Desktop collapse toggle -->
                     <button
                         class="hidden lg:flex p-2 rounded-md text-gray-500 hover:bg-gray-100"
+                        aria-label="Colapsar navegación"
+                        :aria-expanded="String(!sidebarCollapsed)"
+                        aria-controls="sidebar-nav"
                         @click="sidebarCollapsed = !sidebarCollapsed"
                     >
                         <svg class="w-5 h-5 transition-transform" :class="{ 'rotate-180': sidebarCollapsed }" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -106,6 +112,7 @@ function toggleMenu(label: string) {
 
             <!-- Sidebar -->
             <aside
+                id="sidebar-nav"
                 class="fixed lg:sticky top-16 left-0 z-20 h-[calc(100vh-4rem)] bg-white border-r border-gray-200 overflow-y-auto transition-all duration-300 lg:translate-x-0"
                 :class="[
                     sidebarOpen ? 'translate-x-0' : '-translate-x-full',
@@ -140,7 +147,7 @@ function toggleMenu(label: string) {
                         </button>
                         <div v-if="!sidebarCollapsed" v-show="expandedMenu === section.label" class="ml-4 mt-1 space-y-0.5">
                             <Link
-                                v-for="item in section.items"
+                                v-for="item in section.items.filter(i => i.href !== '#')"
                                 :key="item.label"
                                 :href="item.href"
                                 class="block px-3 py-1.5 text-sm rounded-md transition-colors"

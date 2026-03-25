@@ -44,15 +44,15 @@ class AttendanceStoreController extends Controller
                 ->first();
 
             return response()->json([
-                'message' => session()->get('flash_message', 'Guardado correctamente'),
-                'code' => session()->get('flash_code', 200),
+                'message' => session()->get('message', 'Guardado correctamente'),
+                'code' => session()->get('code', 200),
                 'agente' => $agente->id,
                 'presentismo' => $presentismo,
             ]);
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-                'code' => 500,
+                'code' => 422,
                 'agente' => $agente->id,
                 'presentismo' => null,
             ], 422);
@@ -80,7 +80,7 @@ class AttendanceStoreController extends Controller
         } catch (\Exception $e) {
             return response()->json([
                 'message' => $e->getMessage(),
-                'code' => 500,
+                'code' => 422,
                 'agente' => $agente->id,
                 'presentismo' => null,
             ], 422);

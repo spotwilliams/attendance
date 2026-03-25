@@ -62,7 +62,7 @@ function getRecordForDate(agent: Agent, dateKey: string): AttendanceRecord | und
 function getCellStyle(agent: Agent, dateKey: string): Record<string, string> | undefined {
   const tipo = getRecordForDate(agent, dateKey)?.tipo_presentismo;
   if (!tipo) return undefined;
-  return { backgroundColor: '#f3f4f6', color: tipo.color || '#374151' };
+  return { backgroundColor: tipo.color || '#f3f4f6', color: tipo.color_letra || '#374151' };
 }
 
 function formatDate(dateStr: string): string {
@@ -83,6 +83,8 @@ const maxCol = computed(() => dateColumns.value.length - 1);
 const isEditing = computed(() => editingRow.value >= 0 && editingCol.value >= 0);
 
 function openEditor(row: number, col: number) {
+  const agent = props.agents.data[row];
+  if (!agent?.has_contract) return;
   editingRow.value = row;
   editingCol.value = col;
 }
