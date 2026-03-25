@@ -56,6 +56,14 @@ export interface PaginatedAgents {
     to: number | null;
 }
 
+export interface AttendanceComment {
+    id: number;
+    id_presentismo: number;
+    comentario: string;
+    usuario: string;
+    created_at: string;
+}
+
 export interface StoreResponse {
     message: string;
     code: number;
