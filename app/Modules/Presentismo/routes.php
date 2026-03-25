@@ -13,8 +13,35 @@ use Cat\Modules\Presentismo\Controllers\Registro\RegistroController;
 use Cat\Modules\Presentismo\Controllers\GeneralController;
 use Cat\Modules\Presentismo\Controllers\Registro\JustificacionController;
 use Cat\Modules\Presentismo\Controllers\PorAgenteController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceStoreController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceTypesController;
 use Cat\Modules\Presentismo\Controllers\Registro\ComentarioController;
 
+/*
+|--------------------------------------------------------------------------
+| Inertia Routes (new frontend)
+|--------------------------------------------------------------------------
+*/
+Route::group(
+    ['middleware' => ['web', 'auth'], 'prefix' => 'app'],
+    function (): void {
+        Route::get('attendance', AttendanceController::class)
+            ->name('attendance.index');
+
+        Route::post('attendance/store', AttendanceStoreController::class)
+            ->name('attendance.store');
+
+        Route::get('attendance/types/agent/{agent}/date/{date}', AttendanceTypesController::class)
+            ->name('attendance.types');
+    }
+);
+
+/*
+|--------------------------------------------------------------------------
+| Legacy Blade Routes
+|--------------------------------------------------------------------------
+*/
 Route::group(
     ['middleware' => ['web']],
     function (): void {
