@@ -39,7 +39,8 @@ class AttendanceCommentController extends Controller
             'comentario' => $request->input('comentario'),
         ]);
 
-        $attendance->update(['comentario' => 'SI']);
+        $attendance->comentario = 'SI';
+        $attendance->save();
 
         return response()->json([
             'comment' => [
