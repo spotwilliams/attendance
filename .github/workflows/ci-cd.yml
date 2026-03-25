@@ -112,7 +112,8 @@ jobs:
             ${{ runner.os }}-composer-
 
       - name: Install dependencies
-        run: composer install --no-interaction --no-progress --prefer-dist
+        run: |
+          composer install --no-interaction --no-progress --prefer-dist 
           npm install
 
       - name: Prepare Laravel Application
