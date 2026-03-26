@@ -4,9 +4,6 @@ namespace Cat\Modules\Presentismo\Controllers\Registration;
 
 use Cat\Http\Controllers\Controller;
 use Cat\Models\Presentismo;
-use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeInjustificar;
-use Cat\Modules\Presentismo\Exceptions\Validacion\NoSePuedeJustificar;
-use Cat\Modules\Presentismo\Exceptions\Validacion\Validation;
 use Cat\Modules\Presentismo\Services\Registro\Injustificar;
 use Cat\Modules\Presentismo\Services\Registro\Justificar;
 use Illuminate\Http\JsonResponse;
@@ -24,7 +21,7 @@ class AttendanceJustifyController extends Controller
 
         try {
             (new Justificar($attendance))->execute();
-        } catch (Validation | NoSePuedeJustificar $e) {
+        } catch (\Throwable $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
 
@@ -46,7 +43,7 @@ class AttendanceJustifyController extends Controller
 
         try {
             (new Injustificar($attendance))->execute();
-        } catch (Validation | NoSePuedeInjustificar $e) {
+        } catch (\Throwable $e) {
             return response()->json(['message' => $e->getMessage()], 422);
         }
 

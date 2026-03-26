@@ -119,3 +119,94 @@ it('returns presentismo with tipo_presentismo in unjustify response', function (
             'presentismo' => ['id', 'injustificado', 'tipo_presentismo'],
         ]);
 });
+
+// ---------------------------------------------------------------------------
+// Justify — happy path
+// ---------------------------------------------------------------------------
+
+it('returns 422 when justify service fails due to incomplete agent data', function (): void {
+    $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => false]);
+
+    $presentismo = Presentismo::factory()->create([
+        'injustificado' => true,
+        'id_tipo_presentismo' => $tipo->id,
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson("/app/attendance/{$presentismo->id}/justify")
+        ->assertUnprocessable()
+        ->assertJsonStructure(['message']);
+
+    // Record unchanged
+    expect($presentismo->fresh()->injustificado)->toBeTrue();
+});
+
+// ---------------------------------------------------------------------------
+// Gate denial — 403
+// ---------------------------------------------------------------------------
+
+it('returns 403 when the gate denies justify', function (): void {
+    Gate::partialMock()
+        ->shouldReceive('allows')
+        ->with('work-licencia', Mockery::type('array'))
+        ->andReturn(false);
+
+    $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => false]);
+    $presentismo = Presentismo::factory()->create([
+        'injustificado' => true,
+        'id_tipo_presentismo' => $tipo->id,
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson("/app/attendance/{$presentismo->id}/justify")
+        ->assertForbidden()
+        ->assertJsonPath('message', 'No tiene permisos para ejecutar');
+});
+
+it('returns 403 when the gate denies unjustify', function (): void {
+    Gate::partialMock()
+        ->shouldReceive('allows')
+        ->with('work-licencia', Mockery::type('array'))
+        ->andReturn(false);
+
+    $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => false]);
+    $presentismo = Presentismo::factory()->create([
+        'injustificado' => false,
+        'id_tipo_presentismo' => $tipo->id,
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson("/app/attendance/{$presentismo->id}/unjustify")
+        ->assertForbidden()
+        ->assertJsonPath('message', 'No tiene permisos para ejecutar');
+});
+
+// ---------------------------------------------------------------------------
+// 422 message content
+// ---------------------------------------------------------------------------
+
+it('returns a descriptive message when tipo presentismo blocks justify', function (): void {
+    $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => true]);
+    $presentismo = Presentismo::factory()->create([
+        'injustificado' => true,
+        'id_tipo_presentismo' => $tipo->id,
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson("/app/attendance/{$presentismo->id}/justify")
+        ->assertUnprocessable()
+        ->assertJsonStructure(['message']);
+});
+
+it('returns a descriptive message when tipo presentismo blocks unjustify', function (): void {
+    $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => true]);
+    $presentismo = Presentismo::factory()->create([
+        'injustificado' => false,
+        'id_tipo_presentismo' => $tipo->id,
+    ]);
+
+    $this->actingAs($this->user)
+        ->postJson("/app/attendance/{$presentismo->id}/unjustify")
+        ->assertUnprocessable()
+        ->assertJsonStructure(['message']);
+});
