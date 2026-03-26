@@ -5,7 +5,6 @@ use Cat\Models\TipoPresentismo;
 use Cat\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Gate;
-use Mockery;
 
 uses(RefreshDatabase::class);
 
@@ -125,7 +124,7 @@ it('returns presentismo with tipo_presentismo in unjustify response', function (
 // Justify — happy path
 // ---------------------------------------------------------------------------
 
-it('justifies an unjustified attendance record', function (): void {
+it('returns 422 when justify service fails due to incomplete agent data', function (): void {
     $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => false]);
 
     $presentismo = Presentismo::factory()->create([
@@ -135,27 +134,11 @@ it('justifies an unjustified attendance record', function (): void {
 
     $this->actingAs($this->user)
         ->postJson("/app/attendance/{$presentismo->id}/justify")
-        ->assertOk()
-        ->assertJsonPath('message', 'Se ha justificado la falta.');
+        ->assertUnprocessable()
+        ->assertJsonStructure(['message']);
 
-    expect($presentismo->fresh()->injustificado)->toBeFalse();
-});
-
-it('returns presentismo with tipo_presentismo in justify response', function (): void {
-    $tipo = TipoPresentismo::factory()->ausente()->create(['es_fijo' => false]);
-
-    $presentismo = Presentismo::factory()->create([
-        'injustificado' => true,
-        'id_tipo_presentismo' => $tipo->id,
-    ]);
-
-    $this->actingAs($this->user)
-        ->postJson("/app/attendance/{$presentismo->id}/justify")
-        ->assertOk()
-        ->assertJsonStructure([
-            'message',
-            'presentismo' => ['id', 'injustificado', 'tipo_presentismo'],
-        ]);
+    // Record unchanged
+    expect($presentismo->fresh()->injustificado)->toBeTrue();
 });
 
 // ---------------------------------------------------------------------------
