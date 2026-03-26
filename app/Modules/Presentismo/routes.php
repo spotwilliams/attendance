@@ -16,6 +16,8 @@ use Cat\Modules\Presentismo\Controllers\PorAgenteController;
 use Cat\Modules\Presentismo\Controllers\Registration\AttendanceController;
 use Cat\Modules\Presentismo\Controllers\Registration\AttendanceStoreController;
 use Cat\Modules\Presentismo\Controllers\Registration\AttendanceTypesController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceCommentController;
+use Cat\Modules\Presentismo\Controllers\Registration\AttendanceJustifyController;
 use Cat\Modules\Presentismo\Controllers\Registro\ComentarioController;
 
 /*
@@ -34,6 +36,16 @@ Route::group(
 
         Route::get('attendance/types/agent/{agent}/date/{date}', AttendanceTypesController::class)
             ->name('attendance.types');
+
+        Route::get('attendance/{attendance}/comments', [AttendanceCommentController::class, 'index'])
+            ->name('attendance.comments.index');
+        Route::post('attendance/{attendance}/comments', [AttendanceCommentController::class, 'store'])
+            ->name('attendance.comments.store');
+
+        Route::post('attendance/{attendance}/justify', [AttendanceJustifyController::class, 'justify'])
+            ->name('attendance.justify');
+        Route::post('attendance/{attendance}/unjustify', [AttendanceJustifyController::class, 'unjustify'])
+            ->name('attendance.unjustify');
     }
 );
 

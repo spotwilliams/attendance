@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import {computed, ref} from 'vue';
+import axios from 'axios';
 import AttendanceCell from './AttendanceCell.vue';
+import CommentDialog from './CommentDialog.vue';
 import Button from 'primevue/button';
 import type {Agent, PaginatedAgents, Base, AttendanceRecord} from '@/types/attendance';
 
@@ -62,7 +64,7 @@ function getRecordForDate(agent: Agent, dateKey: string): AttendanceRecord | und
 function getCellStyle(agent: Agent, dateKey: string): Record<string, string> | undefined {
   const tipo = getRecordForDate(agent, dateKey)?.tipo_presentismo;
   if (!tipo) return undefined;
-  return { backgroundColor: tipo.color || '#f3f4f6', color: tipo.color_letra || '#374151' };
+  return { backgroundColor: '#f3f4f6', color: tipo.color || '#374151' };
 }
 
 function formatDate(dateStr: string): string {
@@ -80,9 +82,10 @@ const editingRow = ref(-1);
 const editingCol = ref(-1);
 const maxRow = computed(() => props.agents.data.length - 1);
 const maxCol = computed(() => dateColumns.value.length - 1);
-const isEditing = computed(() => editingRow.value >= 0 && editingCol.value >= 0);
+const isEditing = ref(false);
 
 function openEditor(row: number, col: number) {
+  isEditing.value = true;
   const agent = props.agents.data[row];
   if (!agent?.has_contract) return;
   editingRow.value = row;
@@ -90,6 +93,7 @@ function openEditor(row: number, col: number) {
 }
 
 function closeEditor() {
+  isEditing.value = false;
   editingRow.value = -1;
   editingCol.value = -1;
 }
@@ -99,12 +103,50 @@ function onEditorSaved(agentId: number, record: AttendanceRecord | null, fecha: 
   closeEditor();
 }
 
+// Comment dialog
+const commentRecord = ref<AttendanceRecord | undefined>();
+const commentAgentName = ref('');
+const showCommentDialog = ref(false);
+
+function openCommentDialog(agent: Agent, dateKey: string) {
+  const record = getRecordForDate(agent, dateKey);
+  if (!record) return;
+  isEditing.value = true;
+  commentRecord.value = record;
+  commentAgentName.value = `${agent.apellido}, ${agent.nombre}`;
+  showCommentDialog.value = true;
+}
+
+function closeCommentDialog() {
+  showCommentDialog.value = false;
+  isEditing.value = false;
+}
+
+// Justify / Unjustify
+const justifyingId = ref<number | null>(null);
+
+async function toggleJustify(agent: Agent, dateKey: string) {
+  const record = getRecordForDate(agent, dateKey);
+  if (!record) return;
+
+  justifyingId.value = record.id;
+  const action = record.injustificado ? 'justify' : 'unjustify';
+
+  try {
+    const { data } = await axios.post(`/app/attendance/${record.id}/${action}`);
+    emit('saved', agent.id, data.presentismo, dateKey);
+  } catch (e: any) {
+    alert(e.response?.data?.message || 'Error al procesar');
+  } finally {
+    justifyingId.value = null;
+  }
+}
 
 onKeyStroke('Enter', (e) => {
   if (isEditing.value) return;
   e.preventDefault();
   openEditor(focusedRow.value, focusedCol.value);
-}, { target: gridRef })
+})
 
 onKeyStroke('ArrowLeft', (e) => {
   if (isEditing.value) return;
@@ -112,7 +154,7 @@ onKeyStroke('ArrowLeft', (e) => {
   if (focusedCol.value > 0) {
     focusedCol.value--;
   }
-}, { target: gridRef })
+})
 
 onKeyStroke('ArrowRight', (e) => {
   if (isEditing.value) return;
@@ -120,7 +162,7 @@ onKeyStroke('ArrowRight', (e) => {
   if (focusedCol.value < maxCol.value) {
     focusedCol.value++;
   }
-}, { target: gridRef })
+})
 
 onKeyStroke('ArrowDown', (e) => {
   if (isEditing.value) return;
@@ -128,7 +170,7 @@ onKeyStroke('ArrowDown', (e) => {
   if (focusedRow.value < maxRow.value) {
     focusedRow.value++;
   }
-}, { target: gridRef })
+})
 
 onKeyStroke('ArrowUp', (e) => {
   if (isEditing.value) return;
@@ -136,12 +178,12 @@ onKeyStroke('ArrowUp', (e) => {
   if (focusedRow.value > 0) {
     focusedRow.value--;
   }
-}, { target: gridRef })
+})
 
 onKeyStroke('Escape', (e) => {
   e.preventDefault();
   gridHasFocus.value = false;
-}, { target: gridRef })
+})
 
 
 function onCellFocus(row: number, col: number) {
@@ -285,18 +327,68 @@ function onCellClick(row: number, col: number, event: MouseEvent) {
               />
 
               <!-- Display mode -->
-              <button
-                  v-else
-                  class="w-full h-8 rounded-md text-xs font-semibold focus:outline-none"
-                  :class="getRecordForDate(agent, col.key)?.tipo_presentismo
-                                    ? 'cursor-pointer'
-                                    : 'cursor-pointer border border-dashed border-gray-200'"
-                  :style="getCellStyle(agent, col.key)"
-                  @focus="onCellFocus(rowIdx, colIdx)"
-                  @click="onCellClick(rowIdx, colIdx, $event)"
-              >
-                {{ getRecordForDate(agent, col.key)?.tipo_presentismo?.codigo || '' }}
-              </button>
+              <div v-else class="flex flex-col items-center gap-0.5">
+                <button
+                    class="w-full h-8 rounded-md text-xs font-semibold focus:outline-none"
+                    :class="getRecordForDate(agent, col.key)?.tipo_presentismo
+                                      ? 'cursor-pointer'
+                                      : 'cursor-pointer border border-dashed border-gray-200'"
+                    :style="getCellStyle(agent, col.key)"
+                    @focus="onCellFocus(rowIdx, colIdx)"
+                    @click="onCellClick(rowIdx, colIdx, $event)"
+                >
+                  {{ getRecordForDate(agent, col.key)?.tipo_presentismo?.codigo || '' }}
+                </button>
+                <div v-if="getRecordForDate(agent, col.key)" class="flex items-center gap-1">
+                  <!-- Comment button -->
+                  <button
+                      class="p-0.5 text-gray-400 hover:text-orange-600 transition-colors cursor-pointer"
+                      :title="`Comentarios ${col.key}`"
+                      @click.stop="openCommentDialog(agent, col.key)"
+                  >
+                    <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="1.5" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" d="M8.625 12a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H8.25m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0H12m4.125 0a.375.375 0 1 1-.75 0 .375.375 0 0 1 .75 0Zm0 0h-.375M21 12c0 4.556-4.03 8.25-9 8.25a9.764 9.764 0 0 1-2.555-.337A5.972 5.972 0 0 1 5.41 20.97a5.969 5.969 0 0 1-.474-.065 4.48 4.48 0 0 0 .978-2.025c.09-.457-.133-.901-.467-1.226C3.93 16.178 3 14.189 3 12c0-4.556 4.03-8.25 9-8.25s9 3.694 9 8.25Z" />
+                    </svg>
+                  </button>
+                  <!-- Justify/Unjustify button with popover -->
+                  <div class="relative group">
+                    <button
+                        class="p-0.5 transition-colors cursor-pointer"
+                        :class="getRecordForDate(agent, col.key)!.injustificado
+                          ? 'text-red-400 hover:text-green-600'
+                          : 'text-green-500 hover:text-red-400'"
+                        :disabled="justifyingId === getRecordForDate(agent, col.key)!.id"
+                        @click.stop="toggleJustify(agent, col.key)"
+                    >
+                      <svg class="w-3.5 h-3.5" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                        <path v-if="justifyingId === getRecordForDate(agent, col.key)!.id" stroke-linecap="round" stroke-linejoin="round" d="M12 6v6l4 2" />
+                        <path v-else stroke-linecap="round" stroke-linejoin="round" d="M9 12.75 11.25 15 15 9.75M21 12a9 9 0 1 1-18 0 9 9 0 0 1 18 0Z" />
+                      </svg>
+                    </button>
+                    <!-- Popover -->
+                    <div class="hidden group-hover:block absolute bottom-full left-1/2 -translate-x-1/2 mb-1 z-20">
+                      <div class="bg-white border border-gray-200 rounded-lg shadow-lg p-3 w-40 text-center">
+                        <span
+                            class="inline-block text-xs font-bold text-white px-2 py-0.5 rounded mb-2"
+                            :class="getRecordForDate(agent, col.key)!.injustificado ? 'bg-red-500' : 'bg-green-500'"
+                        >
+                          {{ getRecordForDate(agent, col.key)!.injustificado ? 'Injustificado' : 'Justificado' }}
+                        </span>
+                        <p class="text-xs text-gray-600 mb-2">Click para marcar el presentismo como</p>
+                        <span
+                            class="inline-block text-xs font-bold text-white px-2 py-0.5 rounded"
+                            :class="getRecordForDate(agent, col.key)!.injustificado ? 'bg-green-500' : 'bg-red-500'"
+                        >
+                          {{ getRecordForDate(agent, col.key)!.injustificado ? 'Justificado' : 'Injustificado' }}
+                        </span>
+                        <div class="absolute top-full left-1/2 -translate-x-1/2 -mt-px">
+                          <div class="w-2 h-2 bg-white border-b border-r border-gray-200 rotate-45 -translate-y-1"></div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
             </template>
 
             <!-- No contract -->
@@ -352,5 +444,13 @@ function onCellClick(row: number, col: number, event: MouseEvent) {
         />
       </div>
     </div>
+
+    <!-- Comment dialog -->
+    <CommentDialog
+        v-if="showCommentDialog && commentRecord"
+        :record="commentRecord"
+        :agent-name="commentAgentName"
+        @close="closeCommentDialog"
+    />
   </div>
 </template>
