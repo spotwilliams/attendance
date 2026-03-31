@@ -9,28 +9,9 @@ use Cat\Models\Periodo;
 use Cat\Models\Presentismo;
 use Illuminate\Database\QueryException;
 use Illuminate\Support\Facades\Log;
-//use Cat\Repositories\BaseRepository;
 
-class PresentismoRepository //extends BaseRepository
+class PresentismoRepository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable
-        = [
-            'id_agente',
-            'id_jornada',
-            'id_tipo_presentismo',
-            'id_padre',
-        ];
-    
-    /**
-     * Configure the Model
-     **/
-    public function model()
-    {
-        return Presentismo::class;
-    }
     
     /**
      * Entrega el Eloquent Model que maneja

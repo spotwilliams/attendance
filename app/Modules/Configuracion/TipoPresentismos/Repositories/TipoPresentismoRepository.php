@@ -7,22 +7,7 @@ use Cat\Repositories\BaseRepository;
 
 class TipoPresentismoRepository extends BaseRepository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'codigo',
-        'descripcion',
-        'color',
-        'aplica',
-        'injustificado',
-        
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
+    public function model(): string
     {
         return TipoPresentismo::class;
     }

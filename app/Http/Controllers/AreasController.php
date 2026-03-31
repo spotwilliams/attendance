@@ -8,7 +8,6 @@ use App\Repositories\AreasRepository;
 use Cat\Http\Controllers\AppBaseController;
 use Illuminate\Http\Request;
 use Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Response;
 
 class AreasController extends AppBaseController
@@ -30,7 +29,6 @@ class AreasController extends AppBaseController
      */
     public function index(Request $request)
     {
-        $this->areasRepository->pushCriteria(new RequestCriteria($request));
         $areas = $this->areasRepository->all();
 
         return view('areas.index')

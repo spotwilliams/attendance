@@ -13,7 +13,6 @@ use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
 
 class CrudController extends AppBaseController
 {
@@ -45,7 +44,6 @@ class CrudController extends AppBaseController
     {
         $this->authorize('index', $this);
         
-        $this->repository->pushCriteria(new RequestCriteria($request));
         $tipos = TipoPresentismo::where('aplica', '<>', '')->get();
         
         
