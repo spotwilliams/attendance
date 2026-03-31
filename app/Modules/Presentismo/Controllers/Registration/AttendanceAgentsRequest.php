@@ -17,15 +17,15 @@ class AttendanceAgentsRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'base_id' => 'required|exists:bases,id',
-            'date_from' => 'required|date',
-            'date_to' => 'required|date|after_or_equal:date_from',
-            'shifts' => 'nullable|array',
-            'shifts.*' => 'integer|distinct',
-            'areas' => 'nullable|array',
-            'areas.*' => 'integer|distinct',
-            'roles' => 'nullable|array',
-            'roles.*' => 'integer|distinct',
+            'base_id' => ['required', 'exists:bases,id'],
+            'date_from' => ['required', 'date'],
+            'date_to' => ['required', 'date', 'after_or_equal:date_from'],
+            'shifts' => ['nullable', 'array'],
+            'shifts.*' => ['integer', 'distinct'],
+            'areas' => ['nullable', 'array'],
+            'areas.*' => ['integer', 'distinct'],
+            'roles' => ['nullable', 'array'],
+            'roles.*' => ['integer', 'distinct'],
         ];
     }
 

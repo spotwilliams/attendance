@@ -225,6 +225,33 @@ This phase consolidated everything and modernized the developer tooling:
 
 ---
 
+## Phase 9 — Laravel 13.0 + PHP 8.5 (branch: `upgrade/laravel-13`)
+
+**Date**: March 2026
+**Branch**: `upgrade/laravel-13`
+
+**Stack after this phase:**
+- PHP: `^8.5`
+- Laravel: `^13.0`
+- Excel: `^3.1`
+- Permissions: `^6.0`
+- Docker: Laravel Sail with `compose.yaml` (PHP 8.5 runtime)
+- Testing: **Pest 4** (upgraded from Pest 3)
+- Database: PostgreSQL 13
+
+**What happened:**
+
+- **Laravel bumped from `^12.0` to `^13.0`** (v13.2.0)
+- **PHP minimum bumped to `^8.5`** — Sail runtime updated to `sail-8.5/app`
+- **Pest upgraded from `^3.8` to `^4.0`**, Tinker from `^2.9` to `^3.0`
+- **`prettus/l5-repository` removed entirely** — was the only incompatible dependency. Replaced with custom `Cat\Repositories\BaseRepository` using direct Eloquent (PR #24). This also eliminated the inline composer repository hack that was initially needed.
+- **CSRF middleware base class** changed from `VerifyCsrfToken` to `PreventRequestForgery`
+- **Cache `serializable_classes`** config added for L13 security default
+- Rector applied: validation string rules → array, closure return types
+- CargoFactory faker overflow fix on `varchar(80)` column
+
+---
+
 ## Stack Evolution Summary
 
 | Tag | PHP | Laravel | Database | Testing | Docker |
@@ -238,6 +265,7 @@ This phase consolidated everything and modernized the developer tooling:
 | `laravel-10.0-upgrade` | ^8.1 | ^10.0 | **PostgreSQL 13** | PHPUnit 10 | Sail + PgSQL |
 | `laravel-11.0-upgrade` | ^8.2 | ^11.0 | PostgreSQL 13 | PHPUnit 11 | Sail + PgSQL |
 | `laravel-12.0-upgrade` | ^8.3 | ^12.0 | PostgreSQL 13 | **Pest 3** | **Sail compose.yaml** |
+| `upgrade/laravel-13` | ^8.5 | ^13.0 | PostgreSQL 13 | **Pest 4** | Sail compose.yaml |
 
 ---
 
@@ -248,7 +276,8 @@ This phase consolidated everything and modernized the developer tooling:
 | `maatwebsite/excel` | `2.1.17` (callback API) | `^3.1` (class-based exports) |
 | `spatie/laravel-permission` | `^1.12` | `^6.0` |
 | `intervention/image` | `^2.4` | `^2.7` |
-| Test runner | none | Pest 3 |
+| `prettus/l5-repository` | `^2.6` | **Removed** (custom BaseRepository) |
+| Test runner | none | Pest 4 |
 | CI/CD | none | GitHub Actions |
 | Docker | Custom Dockerfile | Laravel Sail |
 
@@ -256,7 +285,7 @@ This phase consolidated everything and modernized the developer tooling:
 
 ## Current State
 
-The modernization is complete. The codebase is on the current branch `laravel-12.0-upgrade` which has been merged to `develop`.
+The latest upgrade is on branch `upgrade/laravel-13` (PHP 8.5 + Laravel 13.0). Previous phases have been merged to `develop`.
 
 **To work with the project today:**
 

@@ -30,7 +30,7 @@ class AttendanceCommentController extends Controller
     public function store(Request $request, Presentismo $attendance): JsonResponse
     {
         $request->validate([
-            'comentario' => 'required|max:400',
+            'comentario' => ['required', 'max:400'],
         ]);
 
         $comment = Comentario::create([

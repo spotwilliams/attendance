@@ -78,4 +78,16 @@ return [
 
     'prefix' => 'laravel',
 
+    /*
+    |--------------------------------------------------------------------------
+    | Serializable Classes
+    |--------------------------------------------------------------------------
+    |
+    | Laravel 13 defaults serializable_classes to false for security.
+    | Since we cache Eloquent collections, we allow all classes.
+    |
+    */
+
+    'serializable_classes' => true,
+
 ];
