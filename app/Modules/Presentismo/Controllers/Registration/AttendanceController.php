@@ -47,7 +47,7 @@ class AttendanceController extends Controller
             ->where('operativos.id_base', $base->id)
             ->whereIn('contratos.id_estado_contrato', $activeStates->pluck('id'))
             ->where('contratos.fecha_ingreso', '<=', $dateTo)
-            ->where(function ($q) use ($dateFrom) {
+            ->where(function ($q) use ($dateFrom): void {
                 $q->whereNull('contratos.fecha_fin')
                     ->orWhere('contratos.fecha_fin', '>=', $dateFrom);
             })
@@ -117,17 +117,15 @@ class AttendanceController extends Controller
 
         // Transform paginated result
         $result = $paginated->toArray();
-        $result['data'] = collect($result['data'])->map(function ($agent) use ($presentismos) {
-            return [
-                'id' => $agent['id'],
-                'nombre' => $agent['nombre'],
-                'apellido' => $agent['apellido'],
-                'cuit' => $agent['cuit'],
-                'contract_type' => $agent['contract_type'],
-                'has_contract' => $agent['contract_type'] !== null,
-                'presentismos' => $presentismos[$agent['id']] ?? [],
-            ];
-        })->all();
+        $result['data'] = collect($result['data'])->map(fn($agent) => [
+            'id' => $agent['id'],
+            'nombre' => $agent['nombre'],
+            'apellido' => $agent['apellido'],
+            'cuit' => $agent['cuit'],
+            'contract_type' => $agent['contract_type'],
+            'has_contract' => $agent['contract_type'] !== null,
+            'presentismos' => $presentismos[$agent['id']] ?? [],
+        ])->all();
 
         return $result;
     }

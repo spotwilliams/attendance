@@ -14,9 +14,9 @@ class AttendanceStoreController extends Controller
     public function __invoke(Request $request): JsonResponse
     {
         $request->validate([
-            'agente' => 'required|exists:agentes,id',
-            'fecha' => 'required|date',
-            'presentismo' => 'required|integer',
+            'agente' => ['required', 'exists:agentes,id'],
+            'fecha' => ['required', 'date'],
+            'presentismo' => ['required', 'integer'],
         ]);
 
         $agente = Agente::findOrFail($request->input('agente'));

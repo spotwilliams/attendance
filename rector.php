@@ -50,8 +50,11 @@ return RectorConfig::configure()
         // Laravel 10.0 -> 11.0 upgrade (completed)
 //        LaravelSetList::LARAVEL_110,
 
-        // Laravel 11.0 -> 12.0 upgrade
-        LaravelSetList::LARAVEL_120,
+        // Laravel 11.0 -> 12.0 upgrade (completed)
+//        LaravelSetList::LARAVEL_120,
+
+        // Laravel 12.0 -> 13.0 upgrade
+        // No LARAVEL_130 set available yet in driftingly/rector-laravel
 
         // Laravel code quality improvements
         LaravelSetList::LARAVEL_CODE_QUALITY,

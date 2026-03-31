@@ -12,7 +12,7 @@ class CargoFactory extends Factory
     public function definition(): array
     {
         return [
-            'nombre' => $this->faker->jobTitle,
+            'nombre' => substr($this->faker->jobTitle, 0, 80),
         ];
     }
 }

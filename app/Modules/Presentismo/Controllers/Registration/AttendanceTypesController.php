@@ -12,7 +12,7 @@ class AttendanceTypesController extends Controller
 {
     public function __invoke(Request $request, Agente $agent, string $date): JsonResponse
     {
-        $request->merge(['date' => $date])->validate(['date' => 'required|date']);
+        $request->merge(['date' => $date])->validate(['date' => ['required', 'date']]);
 
         $parsedDate = $request->date('date');
         $hasContract = $agent->contratoOnDate($parsedDate)->exists();
