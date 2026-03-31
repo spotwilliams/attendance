@@ -96,7 +96,7 @@ vendor/bin/sail composer dump-autoload
 - [X] `doctrine/dbal` `^3.0` — compatible ✅
 - [X] `maatwebsite/excel` `^3.1` — compatible ✅
 - [X] `spatie/laravel-permission` `^6.0` — compatible ✅
-- [X] `prettus/l5-repository` `^3.0` — **NOT compatible** with L13 (caps at `illuminate/support ^12.0`). Patched via inline composer repository override with `^13.0` added to illuminate constraints. Pinned as version `3.0.2`.
+- [X] `prettus/l5-repository` — **Removed entirely** (see PR #24). Replaced with custom `Cat\Repositories\BaseRepository` using direct Eloquent. No longer a dependency.
 - [X] `intervention/image` `^2.7` — compatible ✅ (still on v2, consider `^3.0` later)
 - [X] `laracasts/flash` — compatible ✅
 - [X] `laravel/ui` `^4.0` — compatible ✅
@@ -271,7 +271,7 @@ vendor/bin/sail artisan test --compact tests/Feature/AttendanceCommentController
 | Change | Impact | This Project |
 |--------|--------|-------------|
 | PHP 8.3 → 8.5 + Sail runtime | HIGH | Updated compose.yaml, composer.json, rebuilt container ✅ |
-| Composer dependency bumps | HIGH | All updated, `prettus/l5-repository` patched via inline repo ✅ |
+| Composer dependency bumps | HIGH | All updated, `prettus/l5-repository` removed entirely (PR #24) ✅ |
 | `VerifyCsrfToken` → `PreventRequestForgery` | HIGH | Updated base class in middleware ✅ |
 | Cache `serializable_classes` default | MEDIUM | Added `serializable_classes => true` in config/cache.php ✅ |
 | Pagination view `default` → `bootstrap-3` | LOW | Uses `Paginator::useBootstrap()`, no direct view refs — no impact ✅ |
