@@ -7,7 +7,6 @@ use Cat\Modules\Configuracion\Turnos\Requests\CreateTurnoModelRequest;
 use Cat\Modules\Configuracion\Turnos\Requests\UpdateTurnoModelRequest;
 use Cat\Modules\Configuracion\Turnos\Repositories\TurnoModelRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
 use Illuminate\Http\Response;
@@ -27,7 +26,7 @@ class CrudController extends AppBaseController
      * @return $this
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('index', $this);
 

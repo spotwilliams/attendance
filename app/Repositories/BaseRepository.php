@@ -5,6 +5,7 @@ namespace Cat\Repositories;
 use Cat\Helpers\Cache;
 use Cat\Models\Base;
 use Cat\Models\TipoContrato;
+use Illuminate\Database\Eloquent\Collection;
 use Illuminate\Database\Eloquent\Model;
 
 abstract class BaseRepository
@@ -19,39 +20,39 @@ abstract class BaseRepository
      */
     protected function makeModel(): Model
     {
-        return app($this->model());
+        $model = app($this->model());
+
+        if (! $model instanceof Model) {
+            throw new \RuntimeException(sprintf(
+                'Repository model must resolve to %s, got %s',
+                Model::class,
+                get_debug_type($model)
+            ));
+        }
+
+        return $model;
     }
 
     /**
      * Get all records.
-     *
-     * @param array $columns
-     * @return \Illuminate\Database\Eloquent\Collection
      */
-    public function all(array $columns = ['*'])
+    public function all(array $columns = ['*']): Collection
     {
         return $this->makeModel()->newQuery()->get($columns);
     }
 
     /**
      * Create a new record.
-     *
-     * @param array $attributes
-     * @return Model
      */
-    public function create(array $attributes)
+    public function create(array $attributes): Model
     {
         return $this->makeModel()->newQuery()->create($attributes);
     }
 
     /**
      * Update a record by id.
-     *
-     * @param array $attributes
-     * @param int $id
-     * @return Model
      */
-    public function update(array $attributes, $id)
+    public function update(array $attributes, int $id): Model
     {
         $model = $this->makeModel()->newQuery()->findOrFail($id);
         $model->update($attributes);
@@ -61,35 +62,24 @@ abstract class BaseRepository
 
     /**
      * Delete a record by id.
-     *
-     * @param int $id
-     * @return bool|null
      */
-    public function delete($id)
+    public function delete(int $id): ?bool
     {
         return $this->makeModel()->newQuery()->findOrFail($id)->delete();
     }
 
     /**
      * Find a record by id, returning null on failure.
-     *
-     * @param int $id
-     * @param array $columns
-     * @return Model|null
      */
-    public function findWithoutFail($id, array $columns = ['*'])
+    public function findWithoutFail(int $id, array $columns = ['*']): ?Model
     {
         return $this->makeModel()->newQuery()->find($id, $columns);
     }
 
     /**
      * Find a record by id.
-     *
-     * @param int $id
-     * @param array $columns
-     * @return Model
      */
-    public function find($id, array $columns = ['*'])
+    public function find(int $id, array $columns = ['*']): Model
     {
         return $this->makeModel()->newQuery()->findOrFail($id, $columns);
     }

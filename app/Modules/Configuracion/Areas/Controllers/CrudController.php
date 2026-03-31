@@ -7,7 +7,6 @@ use Cat\Modules\Configuracion\Areas\Requests\CreateAreaRequest;
 use Cat\Modules\Configuracion\Areas\Requests\UpdateAreaRequest;
 use Cat\Modules\Configuracion\Areas\Repositories\AreaRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\View\View;
 use Illuminate\Http\Response;
@@ -27,7 +26,7 @@ class CrudController extends AppBaseController
      * @return $this
      * @throws \Illuminate\Auth\Access\AuthorizationException
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('index', $this);
 

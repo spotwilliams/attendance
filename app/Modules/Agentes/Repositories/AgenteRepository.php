@@ -18,7 +18,7 @@ class AgenteRepository
     /**
      * Find a record by id, returning null on failure.
      */
-    public function findWithoutFail($id)
+    public function findWithoutFail(int $id): ?Agente
     {
         return Agente::find($id);
     }
