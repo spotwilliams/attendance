@@ -7,10 +7,8 @@ use Cat\Modules\Configuracion\Turnos\Requests\CreateTurnoModelRequest;
 use Cat\Modules\Configuracion\Turnos\Requests\UpdateTurnoModelRequest;
 use Cat\Modules\Configuracion\Turnos\Repositories\TurnoModelRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
 
 class CrudController extends AppBaseController
@@ -27,13 +25,11 @@ class CrudController extends AppBaseController
      * @param Request $request
      * @return $this
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('index', $this);
-    
-        $this->turnoModelRepository->pushCriteria(new RequestCriteria($request));
+
         $turnoModels = $this->turnoModelRepository->all();
         
         return view('Configuracion::turnos.index')

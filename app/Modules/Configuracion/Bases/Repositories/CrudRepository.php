@@ -7,17 +7,7 @@ use Cat\Repositories\BaseRepository;
 
 class CrudRepository extends BaseRepository
 {
-    /**
-     * @var array
-     */
-    protected $fieldSearchable = [
-        'nombre'
-    ];
-
-    /**
-     * Configure the Model
-     **/
-    public function model()
+    public function model(): string
     {
         return Base::class;
     }

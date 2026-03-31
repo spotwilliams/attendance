@@ -12,13 +12,23 @@ use Cat\Models\Turno;
 use Illuminate\Database\Eloquent\ModelNotFoundException;
 use Illuminate\Database\QueryException;
 use Illuminate\Pagination\LengthAwarePaginator;
-use Cat\Repositories\BaseRepository;
 
-class AgenteRepository //extends BaseRepository
+class AgenteRepository
 {
-    public function model()
+    /**
+     * Find a record by id, returning null on failure.
+     */
+    public function findWithoutFail(int $id): ?Agente
     {
-        return Agente::class;
+        return Agente::find($id);
+    }
+
+    /**
+     * Delete a record by id.
+     */
+    public function delete($id): ?bool
+    {
+        return Agente::findOrFail($id)->delete();
     }
     
     

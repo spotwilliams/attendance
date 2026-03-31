@@ -17,10 +17,7 @@ use Cat\Repositories\BaseRepository;
 
 class PeriodoRepository extends BaseRepository
 {
-    /**
-     * Configure the Model
-     **/
-    public function model()
+    public function model(): string
     {
         return Periodo::class;
     }

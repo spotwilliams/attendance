@@ -9,7 +9,7 @@ use Illuminate\Support\Facades\Auth;
 
 class UserRepository extends BaseRepository
 {
-    public function model()
+    public function model(): string
     {
         return User::class;
     }

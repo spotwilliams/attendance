@@ -9,11 +9,9 @@ use Cat\Models\TipoPresentismo;
 use Cat\Modules\Configuracion\TipoPresentismos\Repositories\TipoPresentismoRepository;
 use Cat\Modules\Configuracion\TipoPresentismos\Requests\CreateTipoPresentismoRequest;
 use Cat\Modules\Configuracion\TipoPresentismos\Requests\UpdateTipoPresentismoRequest;
-use Illuminate\Http\Request;
 use Illuminate\Http\Response;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
 
 class CrudController extends AppBaseController
 {
@@ -38,14 +36,12 @@ class CrudController extends AppBaseController
     /**
      * Display a listing of the Area.
      *
-     * @param Request $request
      * @return View
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('index', $this);
-        
-        $this->repository->pushCriteria(new RequestCriteria($request));
+
         $tipos = TipoPresentismo::where('aplica', '<>', '')->get();
         
         

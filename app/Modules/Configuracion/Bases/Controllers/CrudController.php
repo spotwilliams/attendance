@@ -7,10 +7,8 @@ use Cat\Modules\Configuracion\Bases\Requests\CreateBaseModelRequest;
 use Cat\Modules\Configuracion\Bases\Requests\UpdateBaseModelRequest;
 use Cat\Modules\Configuracion\Bases\Repositories\CrudRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Illuminate\View\View;
 use Laracasts\Flash\Flash;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
 
 class CrudController extends AppBaseController
@@ -27,13 +25,11 @@ class CrudController extends AppBaseController
      * @param Request $request
      * @return $this
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('index', $this);
-        
-        $this->baseModelRepository->pushCriteria(new RequestCriteria($request));
+
         $baseModels = $this->baseModelRepository->all();
         
         return view('Configuracion::bases.index')

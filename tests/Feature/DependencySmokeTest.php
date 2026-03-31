@@ -73,14 +73,14 @@ class DependencySmokeTest extends TestCase
     }
 
     // ==========================================
-    // REPOSITORY PATTERN (Prettus)
+    // REPOSITORY PATTERN (Custom BaseRepository)
     // ==========================================
 
-    public function test_repository_package_is_installed()
+    public function test_base_repository_class_exists()
     {
         $this->assertTrue(
-            class_exists(\Prettus\Repository\Eloquent\BaseRepository::class),
-            'Prettus Repository package should be installed'
+            class_exists(\Cat\Repositories\BaseRepository::class),
+            'Custom BaseRepository class should exist'
         );
     }
 

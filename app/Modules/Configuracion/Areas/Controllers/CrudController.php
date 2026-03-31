@@ -7,10 +7,8 @@ use Cat\Modules\Configuracion\Areas\Requests\CreateAreaRequest;
 use Cat\Modules\Configuracion\Areas\Requests\UpdateAreaRequest;
 use Cat\Modules\Configuracion\Areas\Repositories\AreaRepository;
 use Cat\Http\Controllers\AppBaseController;
-use Illuminate\Http\Request;
 use Laracasts\Flash\Flash;
 use Illuminate\View\View;
-use Prettus\Repository\Criteria\RequestCriteria;
 use Illuminate\Http\Response;
 
 class CrudController extends AppBaseController
@@ -27,13 +25,11 @@ class CrudController extends AppBaseController
      * @param Request $request
      * @return $this
      * @throws \Illuminate\Auth\Access\AuthorizationException
-     * @throws \Prettus\Repository\Exceptions\RepositoryException
      */
-    public function index(Request $request)
+    public function index()
     {
         $this->authorize('index', $this);
-        
-        $this->areaRepository->pushCriteria(new RequestCriteria($request));
+
         $areas = $this->areaRepository->all();
         
         return view('Configuracion::areas.index')
